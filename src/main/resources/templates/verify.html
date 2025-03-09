@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your Account</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .email-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .email-header {
+            text-align: center;
+            padding: 10px 0;
+        }
+        .email-header h1 {
+            color: #4CAF50;
+            font-size: 24px;
+        }
+        .email-body {
+            padding: 20px;
+            text-align: center;
+        }
+        .email-body p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .email-button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #ffffff;
+            background-color: #4CAF50;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .email-footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            color: #777;
+        }
+        .email-footer a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <div class="email-header">
+        <h1>Verify Your Account</h1>
+    </div>
+    <div class="email-body">
+        <p>Thank you, <span th:text="${name}">[Name]</span>, for registering! Please click the button below to verify your account:</p>
+        <a th:href="${value}" class="email-button">Verify My Account</a>
+        <p>If the button doesn't work, copy and paste the following link into your browser:</p>
+        <p><a th:href="${value}" th:text="${value}">[Verification Link]</a></p>
+    </div>
+    <div class="email-footer">
+        <p>If you didn't sign up for this account, you can safely ignore this email.</p>
+        <p>&copy; 2024 Your Company. All rights reserved.</p>
+    </div>
+</div>
+</body>
+</html>
