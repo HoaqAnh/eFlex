@@ -9,6 +9,7 @@ eFlex là một ứng dụng web tiên tiến hỗ trợ quá trình học tập
 - **Tích hợp công nghệ AI:** Tăng cường tính tương tác và tự động hóa.
 
 ## 📸 Giao diện
+![eFlex Screenshot](./HomePage.png)
 
 ## 🚀 Cách sử dụng:
 1. Clone dự án: `git clone https://github.com/`
