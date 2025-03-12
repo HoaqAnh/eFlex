@@ -1,0 +1,124 @@
+.App {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Căn giữa theo chiều dọc */
+}
+
+.header-container {
+  background-color: #14375F;
+  width: 100%;
+  height: 75px;
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+  margin-bottom: 110px; /* Khoảng cách giữa header và phần còn lại */
+  border-radius: 10px 10px 0 0; /* Bo tròn các góc trên */
+}
+
+.App-logo {
+  height: 50px; /* Điều chỉnh kích thước logo nếu cần */
+  margin-right: 20px; /* Khoảng cách giữa logo và tiêu đề */
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  display: none; /* Ẩn header vì logo và tiêu đề đã được di chuyển */
+  background-color: #282c34;
+  padding: 20px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.login-container {
+  background: white;
+  padding: 25px 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 940px;
+  height: 560px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+}
+
+.side-image {
+  position: absolute;
+  left: 100px;
+  top: 110px;
+  width: 240px;
+  height: 240px;
+}
+
+.button-container {
+  margin-left: auto;
+  margin-right: 30px;
+  width: 470px;
+}
+
+.google-login, .login-button {
+  width: 470px;
+  height: 50px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.input-group {
+  margin-bottom: 10px;
+}
+
+.input-group input {
+  width: 470px;
+  height: 50px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.forgot-password {
+  display: block;
+  text-align: right;
+  margin-bottom: 10px;
+  color: #007bff;
+  text-decoration: none;
+}
+
+a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+p {
+  text-align: right;
+  margin-right: 30px;
+}
