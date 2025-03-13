@@ -1,17 +1,17 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../styles/Home.css';
-import eFlexLogo from '../assets/images/logo_app.png'; // Adjust path as needed
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import "../styles/Home.css";
+import eFlexLogo from "../assets/images/logo_app.png"; // Adjust path as needed
 
 function HomePage() {
   const navigate = useNavigate();
   const username = "Jack4"; // This would come from your authentication
-  
+  const token = localStorage.getItem("token");
   const handleLogout = () => {
-    localStorage.removeItem('user');
-    navigate('/login');
+    localStorage.removeItem("user");
+    navigate("/login");
   };
-
+  useEffect(() => {}, []);
   return (
     <div className="home-container">
       {/* Navigation Side Bar */}
@@ -19,7 +19,7 @@ function HomePage() {
         <div className="logo-container">
           <img src={eFlexLogo} alt="eFlex Logo" className="logo" />
         </div>
-        
+
         <nav className="side-navigation">
           <ul>
             <li className="active">
@@ -45,7 +45,7 @@ function HomePage() {
           </ul>
         </nav>
       </div>
-      
+
       {/* Main Content Area */}
       <div className="main-content">
         {/* Top Navigation Bar */}
@@ -59,15 +59,15 @@ function HomePage() {
             </div>
           </div>
         </header>
-        
+
         {/* Welcome Card */}
         <div className="welcome-card">
           <div className="welcome-content">
             <h2>Chào mừng bạn đến với eFlex</h2>
             <p>
-              Chúng tôi rất vui mừng khi bạn đã chọn EFlex làm người bạn đồng hành 
-              trên con đường học tập. EFlex là Hệ thống hỗ trợ học tập dựa trên 
-              năng lực cá nhân.
+              Chúng tôi rất vui mừng khi bạn đã chọn EFlex làm người bạn đồng
+              hành trên con đường học tập. EFlex là Hệ thống hỗ trợ học tập dựa
+              trên năng lực cá nhân.
             </p>
             <div className="welcome-buttons">
               <button className="primary-btn">Bắt đầu</button>
@@ -75,7 +75,7 @@ function HomePage() {
             </div>
           </div>
         </div>
-        
+
         {/* Content Sections */}
         <div className="content-sections">
           {/* Learning Progress */}
@@ -86,7 +86,7 @@ function HomePage() {
               <div className="placeholder-progress"></div>
             </div>
           </div>
-          
+
           {/* Courses */}
           <div className="section courses-section">
             <h3>Khóa học</h3>

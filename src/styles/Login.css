@@ -1,148 +1,149 @@
 .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
-  }
-  
-  .login-card {
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 900px;
-    overflow: hidden;
-  }
-  
-  .logo-header {
-    background-color: #0a3167;
-    color: white;
-    padding: 20px;
-    text-align: center;
-  }
-  
-  .logo {
-    height: 40px;
-    margin-bottom: 10px;
-  }
-  
-  .login-main {
-    display: flex;
-  }
-  
-  .login-form-section {
-    padding: 30px;
-    flex: 1;
-  }
-  
-  .login-illustration {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 30px;
-  }
-  
-  .circles-illustration {
-    width: 200px;
-    height: 200px;
-    background-image: url('../assets/images/circles-logo.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-  
-  .google-login-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: 10px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    background-color: white;
-    margin: 20px 0;
-  }
-  
-  .google-login-btn img {
-    height: 20px;
-    margin-right: 10px;
-  }
-  
-  .divider {
-    position: relative;
-    text-align: center;
-    margin: 20px 0;
-  }
-  
-  .divider::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background-color: #e0e0e0;
-  }
-  
-  .divider span {
-    background-color: white;
-    padding: 0 10px;
-    position: relative;
-    color: #757575;
-    font-size: 14px;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  font-family: "Jura", sans-serif; /* Thêm font Jura */
+}
 
-  .icon_mail {
-    padding: 10px, 5px, 5px, 10px;
-  }
+.login-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 900px;
+  overflow: hidden;
+}
 
-  .icon_password {
-    padding: 10px;
-  }
-  
-  .input-icon {
-    position: relative;
-    display: flex;
-    align-items: center;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    padding: 0 10px;
-  }
-  
-  .input-icon i {
-    margin-right: 10px;
-    color: #757575;
-  }
-  
-  .input-icon input {
-    width: 100%;
-    padding: 12px 0;
-    border: none;
-    outline: none;
-  }
-  
-  .forgot-password {
-    text-align: right;
-    margin: 10px 0 25px;
-  }
-  
-  .login-btn {
-    width: 100%;
-    padding: 12px;
-    background-color: #0a3167;
-    color: white;
-    border-radius: 4px;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-  
-  .register-prompt {
-    text-align: center;
-    font-size: 14px;
-  }
+.logo-header {
+  background-color: #0a3167;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+.logo {
+  height: 40px;
+  margin-bottom: 10px;
+}
+
+.login-main {
+  display: flex;
+}
+
+.login-form-section {
+  padding: 30px;
+  flex: 1;
+}
+
+.login-illustration {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+}
+
+.circles-illustration {
+  width: 200px;
+  height: 200px;
+  background-image: url("../assets/images/circles-logo.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.google-login-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: white;
+  margin: 20px 0;
+}
+
+.google-login-btn img {
+  height: 20px;
+  margin-right: 10px;
+}
+
+.divider {
+  position: relative;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: #e0e0e0;
+}
+
+.divider span {
+  background-color: white;
+  padding: 0 10px;
+  position: relative;
+  color: #757575;
+  font-size: 14px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.icon_mail {
+  padding: 10px, 5px, 5px, 10px;
+}
+
+.icon_password {
+  padding: 10px;
+}
+
+.input-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 0 10px;
+}
+
+.input-icon i {
+  margin-right: 10px;
+  color: #757575;
+}
+
+.input-icon input {
+  width: 100%;
+  padding: 12px 0;
+  border: none;
+  outline: none;
+}
+
+.forgot-password {
+  text-align: right;
+  margin: 10px 0 25px;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #0a3167;
+  color: white;
+  border-radius: 4px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.register-prompt {
+  text-align: center;
+  font-size: 14px;
+}
