@@ -68,7 +68,7 @@
 /* Circles image */
 .circles-image {
   flex: 1;
-  background-image: url("../assets/images/arcticons_canvasstudent.png");
+  background-image: url("../assets/images/circles-logo.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
