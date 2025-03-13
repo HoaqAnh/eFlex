@@ -1,4 +1,4 @@
-package Util.Enum;
+package EduConnect.Util.Enum;
 
 public enum Enable {
     ENABLE,

@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer>, JpaSpecificationExecutor<User> {
     User findByEmail(String email);
-
+    User findByEmailAndRefreshToken(String email, String refreshToken);
     User save(User user);
 }

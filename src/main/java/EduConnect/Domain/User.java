@@ -1,6 +1,8 @@
 package EduConnect.Domain;
 
-import Util.Enum.Enable;
+import EduConnect.Util.Enum.Education;
+import EduConnect.Util.Enum.Enable;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,6 +35,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Enable enable;
 
+    @Enumerated(EnumType.STRING)
+    private Education education;
 //    @Enumerated(EnumType.STRING)
 //    private AuthProvider provider;
 

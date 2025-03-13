@@ -17,6 +17,7 @@ import java.util.List;
 
 @RestControllerAdvice
 public class GlobalException {
+
     @ExceptionHandler(value = {
             UsernameNotFoundException.class,
             BadRequestException.class,
