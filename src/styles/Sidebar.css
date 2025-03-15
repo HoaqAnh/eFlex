@@ -1,0 +1,94 @@
+/* Sidebar Styles */
+.sidebar {
+  width: 20%; /* 1/5 of the page width */
+  background-color: #F2F6FA;
+  color: #333;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05); /* Thêm bóng đổ nhẹ bên phải */
+  height: 90vh; /* Chiều cao bằng với không gian còn lại sau navbar */
+  overflow-y: auto; /* Cho phép cuộn nếu có nhiều mục */
+}
+
+.side-navigation {
+  padding: 15px 0; /* Thêm padding top và bottom */
+}
+
+.side-navigation ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.side-navigation li {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease; /* Chuyển đổi mượt mà cho tất cả thuộc tính */
+  border-left: 3px solid transparent; /* Border bên trái trong suốt */
+  margin-bottom: 5px; /* Khoảng cách giữa các mục */
+  border-radius: 0 20px 20px 0; /* Bo tròn góc bên phải */
+}
+
+.side-navigation li:hover {
+  background-color: rgba(20, 55, 95, 0.1);
+  border-left-color: #14375F; /* Hiển thị border bên trái khi hover */
+  transform: translateX(5px); /* Di chuyển mục sang phải một chút khi hover */
+}
+
+.side-navigation li.active {
+  background-color: rgba(20, 55, 95, 0.15);
+  border-left-color: #E0312E; /* Border đỏ cho mục đang active */
+  font-weight: 600; /* Đậm hơn cho mục active */
+  color: #14375F; /* Màu chữ đậm hơn cho mục active */
+}
+
+.nav-icon {
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px; /* Chiều rộng cố định cho vùng icon */
+  height: 35px; /* Chiều cao cố định cho vùng icon */
+  background-color: white; /* Nền trắng cho icon */
+  border-radius: 8px; /* Bo tròn góc cho nền icon */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Bóng đổ nhẹ cho icon */
+  transition: all 0.3s ease;
+}
+
+.side-navigation li:hover .nav-icon {
+  transform: scale(1.1); /* Phóng to icon khi hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.side-navigation li.active .nav-icon {
+  background-color: #14375F; /* Nền màu chính cho icon của mục active */
+}
+
+.side-navigation li.active .nav-icon img {
+  filter: brightness(0) invert(1); /* Chuyển icon sang màu trắng */
+}
+
+.side-navigation span {
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+/* Media query cho màn hình nhỏ */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 80px; /* Thu nhỏ sidebar trên màn hình nhỏ */
+  }
+  
+  .side-navigation span {
+    display: none; /* Ẩn text trên màn hình nhỏ */
+  }
+  
+  .nav-icon {
+    margin-right: 0; /* Không cần margin khi không có text */
+  }
+  
+  .side-navigation li {
+    justify-content: center; /* Căn giữa icon */
+    padding: 15px 10px;
+  }
+}

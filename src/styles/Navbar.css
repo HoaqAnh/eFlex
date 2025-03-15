@@ -1,0 +1,83 @@
+/* Navbar Styles */
+.navbar {
+  position: relative;
+  width: 100%;
+  height: 10vh;
+  background-color: #14375F;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 10;
+}
+
+.navbar-logo {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo .logo {
+  height: 50px;
+  width: 140px;
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Tăng khoảng cách giữa các nút */
+}
+
+.nav-icon-btn {
+  border: none;
+  border-radius: 50%; /* Bo tròn nút */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px; /* Tạo padding xung quanh icon */
+  transition: all 0.3s ease; /* Hiệu ứng chuyển đổi mượt mà */
+}
+
+.nav-icon-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2); /* Đổi màu khi hover */
+  transform: translateY(-2px); /* Nút nhấc lên khi hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Thêm bóng đổ khi hover */
+}
+
+.nav-icon-btn:active {
+  transform: translateY(1px); /* Hiệu ứng nhấn xuống khi click */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.nav-icon-btn img {
+  width: 24px; /* Điều chỉnh kích thước icon nhỏ hơn */
+  height: 24px;
+  transition: all 0.3s ease;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.1); /* Thêm nền mờ cho profile */
+  color: white;
+  padding: 8px 15px;
+  border-radius: 20px; /* Bo tròn góc */
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.user-profile:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-bottom-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0.5vh;
+  background-color: #E0312E;
+}

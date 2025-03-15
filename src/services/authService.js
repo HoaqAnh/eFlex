@@ -1,6 +1,6 @@
 // Configure your Google OAuth details
-const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID"; // Thay bằng Google Client ID của bạn
-const BASE_URL = "http://localhost:8080/api/v1"; // Có thể thay đổi tùy theo backend của bạn
+const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID"; // Thay bằng Google Client ID
+const BASE_URL = "http://localhost:8080/api/v1"; // Có thể thay đổi tùy theo backend
 
 // Hàm cấu hình Google Auth
 export const configureGoogleAuth = () => {
@@ -28,8 +28,8 @@ export const configureGoogleAuth = () => {
   loadGoogleScript();
 };
 
-// Hàm đăng nhập bằng username/password
-export const login = async (email, password) => {
+// Hàm đăng nhập bằng email/password
+export const loginService = async (email, password) => {
   const response = await fetch(`${BASE_URL}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/Login.css";
+import "../styles/LoginPage.css";
 import eFlexLogo from "../assets/images/logo_app.png";
-import { login } from "../services/authService";
+import { loginService } from "../services/authService";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -14,22 +14,19 @@ function LoginPage() {
     e.preventDefault();
 
     // Here you would add your authentication logic
-    const response = await login(email, password);
-    if (response.data.statusCode != 200) {
-      alert("Dang Nhap Thanh Cong");
+    const response = await loginService(email, password);
+    if (response.data.statusCode !== 200) {
+      alert("Đăng nhập thất bại");
     } else {
       localStorage.setItem("token", response.data.data.access_token);
-      navigate("/");
+      navigate("/home");
     }
   };
 
   // Function to handle Google login
   const handleGoogleLogin = () => {
     console.log("Google login clicked");
-
-    // After successful Google authentication:
-    // localStorage.setItem('user', JSON.stringify({ email: 'user@example.com' }));
-    // navigate('/');
+    // Authentication logic here
   };
 
   return (
@@ -37,12 +34,19 @@ function LoginPage() {
       <div className="login-card">
         <div className="logo-header">
           <img src={eFlexLogo} alt="eFlex Logo" className="logo" />
-          <h2>Rất vui được gặp bạn!</h2>
+          <h1>Rất vui được gặp bạn!</h1>
         </div>
 
         <div className="login-main">
+          <div className="login-image">
+            <img
+              src={require("../assets/images/login-image.png")}
+              alt="Login illustration"
+            />
+          </div>
+
           <div className="login-form-section">
-            <p>Tiếp tục với</p>
+            <p className="continue-text">Tiếp tục với</p>
 
             <button className="google-login-btn" onClick={handleGoogleLogin}>
               <img
@@ -59,9 +63,9 @@ function LoginPage() {
               <div className="form-group">
                 <div className="input-icon">
                   <img
-                    src={require("../assets/images/icon_mail.png")}
-                    className="icon_mail"
-                    alt="X"
+                    src={require("../assets/icons/icon_mail.png")}
+                    className="input-icon-img"
+                    alt="Email"
                   />
                   <input
                     type="email"
@@ -76,9 +80,9 @@ function LoginPage() {
               <div className="form-group">
                 <div className="input-icon">
                   <img
-                    src={require("../assets/images/icon_password.png")}
-                    className="icon_password"
-                    alt="X"
+                    src={require("../assets/icons/icon_password.png")}
+                    className="input-icon-img"
+                    alt="Password"
                   />
                   <input
                     type="password"
@@ -102,11 +106,6 @@ function LoginPage() {
             <p className="register-prompt">
               Bạn chưa có tài khoản? <a href="#">Đăng ký</a>
             </p>
-          </div>
-
-          <div className="login-illustration">
-            {/* This would be your colorful circular logo from the image */}
-            <div className="circles-illustration"></div>
           </div>
         </div>
       </div>
