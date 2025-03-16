@@ -28,7 +28,7 @@ public class TaskWorker {
 
     private void executeTask(String task) {
         try {
-            Thread.sleep(2000); // Giả lập xử lý mất 2 giây
+            Thread.sleep(2000);
             System.out.println("Task completed: " + task);
         } catch (InterruptedException e) {
             e.printStackTrace();

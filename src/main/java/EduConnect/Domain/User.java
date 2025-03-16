@@ -20,7 +20,7 @@ public class User {
 
     private String email;
 
-
+    private String age;
     private String password;
 
     @Column(columnDefinition = "MEDIUMTEXT")

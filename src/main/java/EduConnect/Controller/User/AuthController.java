@@ -124,10 +124,8 @@ public class AuthController {
             throws IdInValidException {
         ResLoginDTO resLoginDTO = new ResLoginDTO();
 
-
         Jwt decodedToken = this.securityUtil.checkValidRefreshToken(refresh_token);
         String email = decodedToken.getSubject();
-
 
         String redisKey = "refreshtoken:" + email;
         String storedRefreshToken = redisService.getRefreshToken(redisKey);
