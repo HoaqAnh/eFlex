@@ -1,0 +1,21 @@
+@import url("https://fonts.googleapis.com/css?family=Jura");
+
+* {
+  font-family: 'Jura';
+}
+
+:root {
+  --primary-red: #E24943;
+  --primary-gray: #6D8199;
+  --white: #ffffff;
+  --black: #1a1a1a;
+  --light-gray: #f0f2f5;
+  --border-color: #dce1e6;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Jura';
+}

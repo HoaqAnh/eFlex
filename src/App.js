@@ -2,11 +2,11 @@ import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
-  Route,
-  Navigate,
+  Route
 } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
+import ChatBot from "./pages/ChatPage"
 import "./styles/Global.css";
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/home" element={<HomePage />} />
-
+        <Route path="/chatbot" element={<ChatBot />} />
         {/* Add more routes for other pages as needed */}
       </Routes>
     </Router>

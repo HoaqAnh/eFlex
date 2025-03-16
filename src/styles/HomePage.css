@@ -1,7 +1,5 @@
-/* Font Import - Add this to the top of your Home.css file */
 @import url("https://fonts.googleapis.com/css?family=Jura");
 
-/* Apply Jura font to all elements */
 * {
   font-family: 'Jura';
 }

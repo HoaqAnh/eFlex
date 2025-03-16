@@ -11,8 +11,10 @@
     "eflex": "file:",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-markdown": "^10.1.0",
     "react-router-dom": "^7.3.0",
     "react-scripts": "5.0.1",
+    "react-syntax-highlighter": "^15.6.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

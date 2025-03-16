@@ -1,12 +1,24 @@
-import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/Sidebar.css";
 
 function Sidebar() {
-  const [activeMenu, setActiveMenu] = useState("home");
-  
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const activeMenu = location.pathname.replace("/", "") || "home";
+
   const handleMenuClick = (menuId) => {
-    setActiveMenu(menuId);
-    // Ở đây bạn có thể thêm logic để điều hướng hoặc hiển thị content tương ứng
+    if (menuId === "chatbot") {
+      navigate("/chatbot");
+    } else if (menuId === "home") {
+      navigate("/home");
+    } else if (menuId === "study") {
+      navigate("/study");
+    } else if (menuId === "account") {
+      navigate("/account");
+    } else if (menuId === "settings") {
+      navigate("/settings");
+    }
   };
 
   return (
@@ -35,7 +47,7 @@ function Sidebar() {
           
           <li 
             className={activeMenu === "chatbot" ? "active" : ""}
-            onClick={() => handleMenuClick("chatbot")}
+            onClick={(Navigate) => handleMenuClick("chatbot")}
           >
             <div className="nav-icon">
               <img src={require("../assets/icons/iconSmile.png")} alt="Chatbot" width="24" height="24" />
