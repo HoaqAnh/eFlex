@@ -31,7 +31,12 @@ const ChatMessage = ({ content, sender, time }) => {
           }}
         />
       </div>
-      {sender === "bot" && <div className="response-info">Thông tin đưa ra có thể không chính xác.</div>}
+      <span>{time}</span>
+      {sender === "bot" && (
+        <div className="response-info">
+          Thông tin đưa ra có thể không chính xác.
+        </div>
+      )}
     </div>
   );
 };
