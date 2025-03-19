@@ -1,5 +1,7 @@
 package EduConnect.Controller.User;
 
+import EduConnect.Config.Oauth2.GoogleUtils;
+import EduConnect.Config.Oauth2.oauth2.GooglePojo;
 import EduConnect.Domain.Request.ReqDTO;
 import EduConnect.Domain.Response.ResLoginDTO;
 import EduConnect.Domain.Response.UserDTO;
@@ -11,8 +13,10 @@ import EduConnect.Util.ApiMessage;
 import EduConnect.Util.Enum.Enable;
 import EduConnect.Util.Error.IdInValidException;
 import EduConnect.Util.SecurityUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,7 +26,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.*;
 
 
 @RestController
@@ -33,18 +37,90 @@ public class AuthController {
     private final EmailService emailService;
     private final RedisService redisService;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final GoogleUtils googleUtils;
+
     public AuthController(UserService userService, SecurityUtil securityUtil,
                           EmailService emailService,
                           AuthenticationManagerBuilder authenticationManagerBuilder,
-                          RedisService redisService) {
+                          RedisService redisService, GoogleUtils googleUtils) {
         this.userService = userService;
         this.securityUtil = securityUtil;
         this.emailService = emailService;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.redisService = redisService;
+        this.googleUtils = googleUtils;
     }
+    private final Set<String> processedCodes = Collections.synchronizedSet(new HashSet<>());
+
+    private boolean isCodeProcessed(String code) {
+        return processedCodes.contains(code);
+    }
+
+    private void markCodeAsProcessed(String code) {
+        processedCodes.add(code);
+    }
+
     @Value("${imthang.jwt.refresh-token-validity-in-seconds}")
     private long refreshTokenExpiration;
+
+    @RequestMapping(value ="/login/oauth2/code/google", method = RequestMethod.GET)
+    public ResponseEntity<Object> loginGoogle(HttpServletRequest request) {
+
+        String code = request.getParameter("code");
+        if (code == null || code.isEmpty()) {
+            return ResponseEntity.badRequest().body("Lỗi: Không lấy được mã xác thực từ Google.");
+        }
+        if (isCodeProcessed(code)) {
+            return ResponseEntity.badRequest().body("Mã code đã được sử dụng.");
+        }
+        try {
+            markCodeAsProcessed(code);
+            // Lấy Access Token từ Google
+            String accessToken = googleUtils.getToken(code);
+            // Lấy thông tin người dùng từ Google
+            GooglePojo googlePojo = googleUtils.getUserInfo(accessToken);
+            // Xây dựng thông tin người dùng trong hệ thống
+            User user = googleUtils.buildUser(googlePojo);
+
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, user.getPassword());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            ResLoginDTO resLoginDTO = new ResLoginDTO();
+
+            if (user != null) {
+                ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(
+                        user.getId()
+                        , user.getEmail()
+                        , user.getFullname()
+                        , user.getRole());
+
+                resLoginDTO.setUserLogin(userLogin);
+            }
+
+            String accessTokenJWT = this.securityUtil.createAcessToken(user.getEmail(),resLoginDTO);
+            String refreshTokenJWT = this.securityUtil.createRefreshToken(user.getEmail(),resLoginDTO);
+
+            this.userService.updateUserToken(refreshTokenJWT, user.getEmail());
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("status", "Đăng nhập thành công.");
+            response.put("access_token", accessTokenJWT);
+            response.put("user", Map.of("email", user.getEmail(), "name", user.getFullname(), "role", "USER"));
+
+            ResponseCookie resCookies = ResponseCookie.from("refresh_token1", refreshTokenJWT)
+                    .httpOnly(true)
+                    .secure(true)
+                    .path("/")
+                    .maxAge(refreshTokenExpiration)
+                    .build();
+            return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, resCookies.toString()).body(response);
+
+        } catch (Exception e) {
+            // Ghi log lỗi
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đã xảy ra lỗi trong quá trình xử lý.");
+        }
+    }
 
     @PostMapping("/auth/register")
     @ApiMessage("Register Account")

@@ -65,7 +65,7 @@ public class SecurityConfiguration
                         .requestMatchers(HttpMethod.GET,"api/v1/restaurants/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
-//                .oauth2Login(Customizer.withDefaults())
+                .oauth2Login(Customizer.withDefaults())
                 .oauth2ResourceServer(oauth2->oauth2.jwt(Customizer.withDefaults())
                         .authenticationEntryPoint(this.customAuthenticationEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

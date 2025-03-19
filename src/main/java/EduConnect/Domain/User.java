@@ -1,5 +1,6 @@
 package EduConnect.Domain;
 
+import EduConnect.Util.Enum.AuthProvider;
 import EduConnect.Util.Enum.Education;
 import EduConnect.Util.Enum.Enable;
 
@@ -8,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Table(name = "NguoiDung")
@@ -34,7 +36,8 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Enable enable;
-
+    @Enumerated(EnumType.STRING)
+    private AuthProvider authProvider;
     @Enumerated(EnumType.STRING)
     private Education education;
 //    @Enumerated(EnumType.STRING)
@@ -49,4 +52,6 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
+    @OneToMany(mappedBy = "nguoiDung")
+    private List<TienDo> tienDoList;
 }
