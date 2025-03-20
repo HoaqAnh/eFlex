@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import eFlexLogo from "../assets/images/logo_app.png"; // Adjust path as needed
+import eFlexLogo from "../../assets/images/logo_app.png";
 
 function Navbar({ username, onLogout }) {
   const [activeButton, setActiveButton] = useState(null);
@@ -10,7 +10,6 @@ function Navbar({ username, onLogout }) {
   const userBtnRef = useRef(null);
   const navigate = useNavigate();
 
-  // Handle click outside to close dropdown
   useEffect(() => {
     function handleClickOutside(event) {
       if (

@@ -3,30 +3,43 @@ import { useNavigate } from "react-router-dom";
 import "../styles/LoginPage.css";
 import eFlexLogo from "../assets/images/logo_app.png";
 import { loginService } from "../services/authService";
+import { useGoogleLogin } from '@react-oauth/google';
 
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  // Function to handle email/password login
+  const login = useGoogleLogin({
+    onSuccess: tokenResponse => console.log(tokenResponse),
+    flow: 'implicit',
+  });
+
+  // // User loginlogin
+  // const handleLogin = async (e) => {
+  //   e.preventDefault();
+
+  //   const response = await loginService(email, password);
+  //   if (response.data.statusCode !== 200) {
+  //     alert("Đăng nhập thất bại");
+  //   } else {
+  //     localStorage.setItem("token", response.data.data.access_token);
+  //     navigate("/home");
+  //   }
+  // };
+
+  // Admin login
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    // Here you would add your authentication logic
     const response = await loginService(email, password);
     if (response.data.statusCode !== 200) {
       alert("Đăng nhập thất bại");
     } else {
       localStorage.setItem("token", response.data.data.access_token);
-      navigate("/home");
+      // localStorage.setItem("role", response.data.data.role);
+      navigate("/homePanel");
     }
-  };
-
-  // Function to handle Google login
-  const handleGoogleLogin = () => {
-    console.log("Google login clicked");
-    // Authentication logic here
   };
 
   return (
@@ -48,7 +61,7 @@ function LoginPage() {
           <div className="login-form-section">
             <p className="continue-text">Tiếp tục với</p>
 
-            <button className="google-login-btn" onClick={handleGoogleLogin}>
+            <button className="google-login-btn" onClick={login}>
               <img
                 src={require("../assets/images/logo_google.png")}
                 alt="Google"

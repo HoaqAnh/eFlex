@@ -5,7 +5,7 @@
   color: #1a1a1a;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05); 
   height: 90vh;
-  /* overflow-y: auto; Cho phép cuộn nếu có nhiều mục */
+  overflow-y: auto;
 }
 
 .side-navigation {
@@ -25,21 +25,21 @@
   cursor: pointer;
   transition: all 0.3s ease;
   border-left: 3px solid transparent;
-  margin-bottom: 10px; /* Khoảng cách giữa các mục */
-  border-radius: 0 20px 20px 0; /* Bo tròn góc bên phải */
+  margin-bottom: 10px;
+  border-radius: 0 20px 20px 0;
 }
 
 .side-navigation li:hover {
   background-color: rgba(20, 55, 95, 0.1);
-  border-left-color: #14375F; /* Hiển thị border bên trái khi hover */
-  transform: translateX(5px); /* Di chuyển mục sang phải một chút khi hover */
+  border-left-color: #14375F;
+  transform: translateX(5px);
 }
 
 .side-navigation li.active {
   background-color: rgba(20, 55, 95, 0.15);
-  border-left-color: #E0312E; /* Border đỏ cho mục đang active */
+  border-left-color: #E0312E;
   font-weight: 600;
-  color: #14375F; /* Màu chữ đậm hơn cho mục active */
+  color: #14375F;
 }
 
 .nav-icon {
@@ -47,25 +47,25 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 35px; /* Chiều rộng cố định cho vùng icon */
-  height: 35px; /* Chiều cao cố định cho vùng icon */
-  background-color: white; /* Nền trắng cho icon */
-  border-radius: 8px; /* Bo tròn góc cho nền icon */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Bóng đổ nhẹ cho icon */
+  width: 35px;
+  height: 35px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
 
 .side-navigation li:hover .nav-icon {
-  transform: scale(1.1); /* Phóng to icon khi hover */
+  transform: scale(1.1);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .side-navigation li.active .nav-icon {
-  background-color: #14375F; /* Nền màu chính cho icon của mục active */
+  background-color: #14375F;
 }
 
 .side-navigation li.active .nav-icon img {
-  filter: brightness(0) invert(1); /* Chuyển icon sang màu trắng */
+  filter: brightness(0) invert(1);
 }
 
 .side-navigation span {
@@ -73,22 +73,21 @@
   transition: all 0.3s ease;
 }
 
-/* Media query cho màn hình nhỏ */
 @media (max-width: 768px) {
   .sidebar {
-    width: 80px; /* Thu nhỏ sidebar trên màn hình nhỏ */
+    width: 80px;
   }
   
   .side-navigation span {
-    display: none; /* Ẩn text trên màn hình nhỏ */
+    display: none;
   }
   
   .nav-icon {
-    margin-right: 0; /* Không cần margin khi không có text */
+    margin-right: 0;
   }
   
   .side-navigation li {
-    justify-content: center; /* Căn giữa icon */
+    justify-content: center;
     padding: 15px 10px;
   }
 }

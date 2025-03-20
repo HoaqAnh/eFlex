@@ -1,14 +1,16 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar";
+import "../styles/Navbar.css";
+import "../styles/Sidebar.css";
 import "../styles/HomePage.css";
-import Navbar from "../components/Navbar"; // Import the Navbar component
-import Sidebar from "../components/Sidebar"; // Import the Sidebar component
 
 function HomePage() {
   const navigate = useNavigate();
-  const username = "Jack4"; // This would come from your authentication
+  const username = "Jack4";
   const token = localStorage.getItem("token");
-  
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");

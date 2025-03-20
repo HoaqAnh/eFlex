@@ -5,22 +5,30 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import LoginPage from "./pages/loginpage";
+import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import ChatBot from "./pages/ChatPage";
-import "./styles/global.css";
+import HomePanel from "./pages/AdminPanel/HomePanel";
+import CoursePanel from "./pages/AdminPanel/coursePanel";
+import "./styles/Global.css";
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
 
 function App() {
+  const clientId = "586512103905-t1tpvdoi3fc04bijq32aep8svl4hoa2i.apps.googleusercontent.com";
   return (
-    <Router>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/chatbot" element={<ChatBot />} />
-        <Route path="/" element={<Navigate to="/home" replace />} />
-        {/* Add more routes for other pages as needed */}
+    <GoogleOAuthProvider clientId={clientId}>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/chatbot" element={<ChatBot />} />
+          <Route path="/" element={<Navigate to="/home" replace />} />
+          <Route path="/homePanel" element={<HomePanel />} />
+          <Route path="/coursePanel" element={<CoursePanel />} />
       </Routes>
     </Router>
+    </GoogleOAuthProvider>
   );
 }
 

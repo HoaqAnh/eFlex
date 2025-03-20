@@ -3,6 +3,9 @@ import "../styles/ChatPage.css";
 import ChatContent from "../components/Chat/ChatContent";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
+import "../styles/ChatPage.css";
+import "../styles/Navbar.css";
+import "../styles/Sidebar.css";
 
 function ChatPage() {
   const username = "Jack4"

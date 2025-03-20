@@ -1,0 +1,234 @@
+@import url("https://fonts.googleapis.com/css?family=Jura");
+
+* {
+  font-family: 'Jura';
+}
+
+.home-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    height: 100vh;
+    background-color: #F5F7FA;
+}
+
+.content-wrapper {
+    display: flex;
+    flex: 1;
+    height: calc(100vh - 60px);
+    overflow: hidden;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Top Content Styles */
+.top-content {
+    display: flex;
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.04);
+    min-width: 50%;
+    min-height: 80px;
+    height: 10%;
+}
+
+.top-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.top-card-left h2 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #2C3E50;
+    margin: 0;
+}
+
+.top-card-right {
+    text-align: right;
+}
+
+.top-card-right h4 {
+    margin: 8px 0;
+    color: #5D6D7E;
+    font-size: 16px;
+}
+
+/* Body Content Styles */
+.body-content {
+    display: flex;
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.04);
+    min-width: 50%;
+    min-height: 300px;
+    height: 70%;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.body-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.body-card-header {
+    margin-bottom: 24px;
+}
+
+.body-card-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2C3E50;
+    margin: 0;
+}
+
+.body-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.charts-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    padding: 16px;
+    overflow-y: auto;
+    height: 100%;
+    align-content: flex-start;
+    min-height: 0;
+}
+
+.chart-item {
+    flex: 1 1 calc(50% - 12px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    background-color: #F8FAFC;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    min-height: 300px;
+    max-width: calc(50% - 12px);
+}
+
+.chart-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.chart-item h4 {
+    margin: 0;
+    font-size: 18px;
+    color: #34495E;
+    font-weight: 600;
+}
+
+.chart-wrapper {
+    width: 100%;
+    height: 220px;
+    position: relative;
+}
+
+/* Bottom Content Styles */
+.bottom-content {
+    flex: 1;
+    width: 100%;
+    min-height: 300px;
+    height: 20%;
+}
+
+.bottom-card {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.04);
+}
+
+.bottom-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.bottom-card-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2C3E50;
+    margin: 0;
+}
+
+/* Scrollbar Styling */
+.main-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.main-content::-webkit-scrollbar-track {
+    background: #F5F7FA;
+}
+
+.main-content::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 4px;
+}
+
+.main-content::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
+}
+
+/* Tùy chỉnh scrollbar cho charts-container */
+.charts-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.charts-container::-webkit-scrollbar-track {
+    background: #F5F7FA;
+    border-radius: 4px;
+}
+
+.charts-container::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 4px;
+}
+
+.charts-container::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
+}
+
+@media screen and (max-width: 768px) {
+    .chart-item {
+        flex: 1 1 100%;
+        max-width: 100%;
+        min-height: 250px;
+    }
+
+    .charts-container {
+        padding: 12px;
+        gap: 16px;
+    }
+
+    .chart-wrapper {
+        height: 180px;
+    }
+}
