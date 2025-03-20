@@ -130,7 +130,7 @@ public class AuthController {
         }
         UserDTO userDTO=this.userService.CreateUser(user);
 //        this.emailService.sendLinkVerify(user.getEmail(), user.getFullname());
-        this.redisService.RegisterWorker(user.getEmail());
+        this.redisService.sendEmail(userDTO.getEmail());
         return ResponseEntity.ok().body(userDTO);
     }
     @PostMapping("/auth/verify")

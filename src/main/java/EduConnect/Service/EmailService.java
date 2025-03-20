@@ -1,6 +1,7 @@
 package EduConnect.Service;
 
 import EduConnect.Domain.User;
+import EduConnect.Repository.UserRepository;
 import EduConnect.Util.SecurityUtil;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -17,16 +18,16 @@ import java.nio.charset.StandardCharsets;
 
 @Service
 public class EmailService {
-    private final UserService userService;
+    private final UserRepository userRepository;
     private final JavaMailSender javaMailSender;
     private final SpringTemplateEngine templateEngine;
     private final SecurityUtil securityUtil;
 
-public EmailService(UserService userService,
+public EmailService(UserRepository userRepository,
                     JavaMailSender javaMailSender,
                     SpringTemplateEngine templateEngine,
                     SecurityUtil securityUtil){
-    this.userService = userService;
+    this.userRepository = userRepository;
     this.javaMailSender = javaMailSender;
     this.templateEngine = templateEngine;
     this.securityUtil = securityUtil;
@@ -60,7 +61,7 @@ public EmailService(UserService userService,
     @Async
     public void sendLinkReset(String email)
     {
-        User user=this.userService.getUserByEmail(email);
+        User user=this.userRepository.findByEmail(email);
         String token=this.securityUtil.generateResetPasswordLink(user.getEmail(), 9000000);
         String resetLink="http://localhost:5173/forgot/reset?token="+token;
 
