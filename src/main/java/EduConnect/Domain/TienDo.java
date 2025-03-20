@@ -18,8 +18,8 @@ public class TienDo {
     private User nguoiDung;
 
     @ManyToOne
-    @JoinColumn(name = "id_MonHoc", referencedColumnName = "id")
-    private MonHoc monHoc;
+    @JoinColumn(name = "id_course", referencedColumnName = "id")
+    private Course course;
 
     @Column(name = "PhanTram")
     private int phanTram;

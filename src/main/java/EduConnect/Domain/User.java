@@ -4,6 +4,7 @@ import EduConnect.Util.Enum.AuthProvider;
 import EduConnect.Util.Enum.Education;
 import EduConnect.Util.Enum.Enable;
 
+import EduConnect.Util.SecurityUtil;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -54,4 +55,17 @@ public class User {
 
     @OneToMany(mappedBy = "nguoiDung")
     private List<TienDo> tienDoList;
+    @PrePersist
+    public void BeforeCreate() {
+        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+                ? SecurityUtil.getCurrentUserLogin().get() : "";
+        this.createdAt = Instant.now();
+    }
+
+    @PreUpdate
+    public void BeforeUpdate() {
+        this.updatedAt = Instant.now();
+        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+                ? SecurityUtil.getCurrentUserLogin().get() : "";
+    }
 }

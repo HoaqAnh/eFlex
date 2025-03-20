@@ -1,6 +1,6 @@
 package EduConnect.Repository;
 
-import EduConnect.Domain.MonHoc;
+import EduConnect.Domain.Course;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,9 +8,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MonHocRepository extends JpaRepository<MonHoc, Integer> , JpaSpecificationExecutor<MonHoc> {
-    MonHoc findByName(String name);
-    MonHoc findById(int id);
-    MonHoc save(MonHoc monHoc);
-    Page<MonHoc> findAll(Pageable pageable);
+public interface CourseRepository extends JpaRepository<Course, Long> , JpaSpecificationExecutor<Course> {
+    Page<Course> findAll(Pageable pageable);
+    Course findByTenMon(String tenMon);
+    Course findById(long id);
 }
