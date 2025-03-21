@@ -11,8 +11,14 @@ function LoginPage() {
   const navigate = useNavigate();
 
   const login = useGoogleLogin({
-    onSuccess: tokenResponse => console.log(tokenResponse),
-    flow: 'implicit',
+    flow: 'auth-code',
+    ux_mode: 'redirect',
+    redirect_uri: 'http://localhost:3000/login/google',
+    scope: 'email profile',
+    response_type: 'code',
+    onError: errorResponse => {
+      console.error('Google Login Failed:', errorResponse);
+    }
   });
 
   // // User loginlogin
@@ -86,6 +92,7 @@ function LoginPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
+                    autoComplete="email"
                   />
                 </div>
               </div>
@@ -103,6 +110,7 @@ function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
+                    autoComplete="current-password"
                   />
                 </div>
               </div>

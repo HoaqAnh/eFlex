@@ -1,21 +1,28 @@
-@import url("https://fonts.googleapis.com/css?family=Jura");
-
-* {
-  font-family: 'Jura';
+.chat {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-:root {
-  --primary-red: #E24943;
-  --primary-gray: #6D8199;
-  --white: #ffffff;
-  --black: #1a1a1a;
-  --light-gray: #f0f2f5;
-  --border-color: #dce1e6;
+.chat__content {
+  display: flex;
+  flex: 1;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Jura';
+.chat__main {
+  display: flex;
+  flex: 1;
+  height: 90vh;
+  overflow: hidden;
+  background-color: #F4FAFF;
+}
+
+.chat__main-content {
+    flex: 1;
+    padding: 20px;
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    background-color: #F4FAFF;
 }

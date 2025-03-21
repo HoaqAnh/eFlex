@@ -9,7 +9,6 @@
     flex-direction: column;
     min-height: 100vh;
     height: 100vh;
-    background-color: #F5F7FA;
 }
 
 .content-wrapper {
@@ -27,6 +26,7 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+    background-color: #F4FAFF;
 }
 
 /* Top Content Styles */

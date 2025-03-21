@@ -1,32 +1,4 @@
-// Configure your Google OAuth details
-const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID"; // Thay bằng Google Client ID
-const BASE_URL = "http://localhost:8080/api/v1"; // Có thể thay đổi tùy theo backend
-
-// Hàm cấu hình Google Auth
-export const configureGoogleAuth = () => {
-  // Load Google API script
-  const loadGoogleScript = () => {
-    if (!window.gapi) {
-      const script = document.createElement("script");
-      script.src = "https://apis.google.com/js/platform.js";
-      script.onload = initializeGoogleSignIn;
-      document.body.appendChild(script);
-    } else {
-      initializeGoogleSignIn();
-    }
-  };
-
-  // Khởi tạo Google Sign-In
-  const initializeGoogleSignIn = () => {
-    window.gapi.load("auth2", () => {
-      window.gapi.auth2.init({
-        client_id: GOOGLE_CLIENT_ID,
-      });
-    });
-  };
-
-  loadGoogleScript();
-};
+const BASE_URL = "http://localhost:8080/api/v1";
 
 // Hàm đăng nhập bằng email/password
 export const loginService = async (email, password) => {
@@ -54,45 +26,6 @@ export const loginService = async (email, password) => {
     success: true,
     data: data,
   };
-};
-
-// Hàm đăng nhập bằng Google
-export const signInWithGoogle = async () => {
-  try {
-    const auth2 = window.gapi.auth2.getAuthInstance();
-    if (!auth2) throw new Error("Google Auth chưa được khởi tạo.");
-
-    const googleUser = await auth2.signIn();
-    const profile = googleUser.getBasicProfile();
-    const token = googleUser.getAuthResponse().id_token;
-
-    const userData = {
-      id: profile.getId(),
-      name: profile.getName(),
-      email: profile.getEmail(),
-      imageUrl: profile.getImageUrl(),
-      token,
-    };
-
-    // Lưu thông tin người dùng vào localStorage
-    localStorage.setItem("user", JSON.stringify(userData));
-    return userData;
-  } catch (error) {
-    console.error("Lỗi khi đăng nhập bằng Google:", error);
-    throw error;
-  }
-};
-
-// Hàm đăng xuất
-export const signOut = async () => {
-  try {
-    const auth2 = window.gapi.auth2.getAuthInstance();
-    if (auth2) await auth2.signOut();
-    localStorage.removeItem("user");
-  } catch (error) {
-    console.error("Lỗi khi đăng xuất:", error);
-    throw error;
-  }
 };
 
 // Hàm lấy thông tin người dùng hiện tại

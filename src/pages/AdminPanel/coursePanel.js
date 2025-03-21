@@ -35,9 +35,8 @@ function CoursePanel() {
         { id: 17, title: "Khóa học 17", lessons: 100, exercises: 1000 },
     ];
 
-    const handleLogout = () => {
-        localStorage.removeItem("token");
-        navigate("/login");
+    const handleAddCourse = () => {
+        navigate("/coursePanel/addCourse");
     };
 
     const handleSelectAll = (e) => {
@@ -64,12 +63,12 @@ function CoursePanel() {
     }, [token, navigate]);
 
     return (
-        <div className="course-container">
-            <Navbar username={username} onlogout={handleLogout} />
-            <div className="content-wrapper">
+        <div className="course-panel">
+            <Navbar username={username} />
+            <div className="course-panel__content-wrapper">
                 <Sidebar />
-                <div className="main-content">
-                    <div className="header-content">
+                <div className="course-panel__main-content">
+                    <div className="course-panel__header">
                         <div className="header-left">
                             <h2>Khóa học</h2>
                         </div>
@@ -107,15 +106,20 @@ function CoursePanel() {
                     </div>
 
                     <div className="footer-content">
-                        <button className="btn btn-primary">Thêm khóa học</button>
+                        <button 
+                            className="btn btn-primary"
+                            onClick={handleAddCourse}
+                        >
+                            Thêm khóa học
+                        </button>
                         <button 
                             className="btn btn-secondary"
-                            disabled={selectedCourses.length === 0}
+                            disabled={selectedCourses.length !== 1}
                         >
                             Chỉnh sửa
                         </button>
                         <button 
-                            className="btn btn-primary"
+                            className="btn btn-secondary"
                             disabled={selectedCourses.length === 0}
                         >
                             Bật/tắt khóa học

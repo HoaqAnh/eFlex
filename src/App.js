@@ -10,6 +10,8 @@ import HomePage from "./pages/HomePage";
 import ChatBot from "./pages/ChatPage";
 import HomePanel from "./pages/AdminPanel/HomePanel";
 import CoursePanel from "./pages/AdminPanel/coursePanel";
+import AddCourse from "./pages/AdminPanel/addCourse";
+import GoogleLogin from "./pages/GoogleLogin";
 import "./styles/Global.css";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
@@ -26,8 +28,10 @@ function App() {
           <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="/homePanel" element={<HomePanel />} />
           <Route path="/coursePanel" element={<CoursePanel />} />
-      </Routes>
-    </Router>
+          <Route path="/coursePanel/addCourse" element={<AddCourse />} />
+          <Route path="/login/google" element={<GoogleLogin />} />
+        </Routes>
+      </Router>
     </GoogleOAuthProvider>
   );
 }

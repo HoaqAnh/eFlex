@@ -1,35 +1,43 @@
-.course-container {
+@import url("https://fonts.googleapis.com/css?family=Jura");
+
+* {
+  font-family: 'Jura';
+}
+
+.course-panel {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     height: 100vh;
-    background-color: #F5F7FA;
 }
 
-.content-wrapper {
+.course-panel__content-wrapper {
     display: flex;
     flex: 1;
-    height: calc(100vh - 60px);
+    height: 90vh;
     overflow: hidden;
+    background-color: #F4FAFF;
 }
 
-.main-content {
+.course-panel__main-content {
     flex: 1;
-    padding: 24px;
-    height: 100%;
+    padding: 20px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 20px;
+    background-color: #F4FAFF;
 }
 
 /* Header Styles */
-.header-content {
+.course-panel__header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 0 20px 0;
+    padding: 0;
     position: relative;
+    max-height: 10vh;
+    height: 10vh;
 }
 
 .header-left h2 {
@@ -91,11 +99,12 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
-    padding: 20px 0;
-    max-height: calc(100vh - 200px);
+    padding: 0;
     overflow-y: auto;
     background-color: transparent;
     width: 100%;
+    min-height: 200px;
+    max-height: 70vh;
 }
 
 .course-card {
@@ -215,61 +224,132 @@
 
 /* Footer Styles */
 .footer-content {
+    margin-top: auto;
     display: flex;
-    gap: 12px;
+    gap: 16px;
     padding: 20px 0;
+    height: 10vh;
+    max-height: 10vh;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Button Styles */
+/* Base Button Style */
 .btn {
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: 1px solid #E5E7EB;
+    padding: 12px 24px;
+    border-radius: 12px;
+    border: 1px solid #1A1A1A;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease-in-out;
     white-space: nowrap;
     text-align: center;
-    background: white;
-    color: #2C3E50;
     position: relative;
     overflow: hidden;
+    z-index: 1;
 }
 
-.btn::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: linear-gradient(90deg, #3498DB, #2980B9);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border-color: #3498DB;
-    color: #3498DB;
-}
-
-.btn:hover::after {
-    opacity: 1;
+/* Primary Button */
+.btn-primary {
+    background: white;
+    color: #1A1A1A;
+    border-color: #1A1A1A;
 }
 
 .btn-primary:hover {
-    background: linear-gradient(45deg, #3498DB, #2980B9);
-    color: white;
-    border-color: transparent;
+    background-color: #1A1A1A;
+    color: rgb(116, 39, 39);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(26, 26, 26, 0.2);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(26, 26, 26, 0.1);
+}
+
+/* Secondary Button */
+.btn-secondary {
+    background: white;
+    color: #1A1A1A;
+    border-color: #1A1A1A;
+}
+
+.btn-secondary:hover {
+    background-color: white;
+    color: #1A1A1A;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(26, 26, 26, 0.1);
+}
+
+.btn-secondary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(26, 26, 26, 0.05);
+}
+
+/* Danger Button */
+.btn-danger {
+    background: white;
+    color: #DC2626;
+    border-color: #DC2626;
 }
 
 .btn-danger:hover {
-    background: linear-gradient(45deg, #E74C3C, #C0392B);
+    background-color: #DC2626;
     color: white;
-    border-color: transparent;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(220, 38, 38, 0.2);
+}
+
+.btn-danger:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(220, 38, 38, 0.1);
+}
+
+/* Shine Effect for all buttons */
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transition: 0.5s;
+    z-index: -1;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+/* Disabled State for all buttons */
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    border-color: #E5E7EB;
+    color: #9CA3AF;
+    background-color: #F3F4F6;
+    transform: none;
+    box-shadow: none;
+}
+
+.btn:disabled:hover {
+    background-color: #F3F4F6;
+    color: #9CA3AF;
+    transform: none;
+    box-shadow: none;
+    border-color: #E5E7EB;
+}
+
+.btn:disabled::before {
+    display: none;
 }
 
 /* Custom scrollbar */
@@ -293,12 +373,12 @@
 
 /* Responsive adjustments */
 @media screen and (max-width: 768px) {
-    .main-content {
+    .course-panel__main-content {
         padding: 16px;
         gap: 16px;
     }
 
-    .header-content {
+    .course-panel__header {
         flex-direction: column;
         align-items: flex-start;
         gap: 12px;
@@ -375,7 +455,7 @@
 
 /* Small Mobile Devices */
 @media screen and (max-width: 480px) {
-    .main-content {
+    .course-panel__main-content {
         padding: 12px;
     }
 
@@ -441,42 +521,24 @@
 }
 
 /* Scrollbar Styling */
-.main-content::-webkit-scrollbar {
+.course-panel__main-content::-webkit-scrollbar {
     width: 8px;
 }
 
-.main-content::-webkit-scrollbar-track {
+.course-panel__main-content::-webkit-scrollbar-track {
     background: #F5F7FA;
 }
 
-.main-content::-webkit-scrollbar-thumb {
+.course-panel__main-content::-webkit-scrollbar-thumb {
     background: #CBD5E1;
     border-radius: 4px;
 }
 
-.main-content::-webkit-scrollbar-thumb:hover {
+.course-panel__main-content::-webkit-scrollbar-thumb:hover {
     background: #94A3B8;
 }
 
 .course-header {
-    display: none;
-}
-
-.btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    border-color: #E5E7EB;
-}
-
-.btn:disabled:hover {
-    transform: none;
-    box-shadow: none;
-    background: white;
-    color: #2C3E50;
-    border-color: #E5E7EB;
-}
-
-.btn:disabled::after {
     display: none;
 }
 
@@ -496,4 +558,19 @@
         width: 14px;
         height: 14px;
     }
+}
+
+/* Remove unnecessary styles */
+.btn::after {
+    display: none;
+}
+
+.btn-primary:hover {
+    background: #f5f5f5;
+    color: #000000;
+}
+
+.btn-danger:hover {
+    background: #f5f5f5;
+    color: #000000;
 }

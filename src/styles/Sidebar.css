@@ -1,7 +1,7 @@
 /* Sidebar Styles */
 .sidebar {
   width: 20%; 
-  background-color: #F2F6FA;
+  background-color: #F4FAFF;
   color: #1a1a1a;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05); 
   height: 90vh;
@@ -9,7 +9,7 @@
 }
 
 .side-navigation {
-  padding: 20px 0;
+  padding: 20px 10px 0 0;
 }
 
 .side-navigation ul {
@@ -76,6 +76,7 @@
 @media (max-width: 768px) {
   .sidebar {
     width: 80px;
+    height: 100%;
   }
   
   .side-navigation span {

@@ -19,7 +19,6 @@ function Sidebar() {
       navigate("/settingsPanel");
     }
   };
-
   return (
     <div className="sidebar">
       <nav className="side-navigation">
@@ -29,7 +28,7 @@ function Sidebar() {
             onClick={() => handleMenuClick("homePanel")}
           >
             <div className="nav-icon">
-              <img src={require("../../assets/icons/iconHome.png")} alt="Home" width="24" height="24" />
+              <img src={require("../../assets/icons/iconHome.png")} alt="HomePanel" width="24" height="24" />
             </div>
             <span>Trang chủ</span>
           </li>
@@ -39,17 +38,17 @@ function Sidebar() {
             onClick={() => handleMenuClick("coursePanel")}
           >
             <div className="nav-icon">
-              <img src={require("../../assets/icons/iconBook.png")} alt="Study" width="24" height="24" />
+              <img src={require("../../assets/icons/iconBook.png")} alt="CoursePanel" width="24" height="24" />
             </div>
             <span>Khóa học</span>
           </li>
           
           <li 
             className={activeMenu === "systemPanel" ? "active" : ""}
-            onClick={() => handleMenuClick("systemPanel")}
+            onClick={(Navigate) => handleMenuClick("systemPanel")}
           >
             <div className="nav-icon">
-              <img src={require("../../assets/icons/iconUsers.png")} alt="Account" width="24" height="24" />
+              <img src={require("../../assets/icons/iconSmile.png")} alt="SystemPanel" width="24" height="24" />
             </div>
             <span>Hệ thống</span>
           </li>
@@ -59,17 +58,17 @@ function Sidebar() {
             onClick={() => handleMenuClick("dataPanel")}
           >
             <div className="nav-icon">
-              <img src={require("../../assets/icons/iconSettings.png")} alt="Settings" width="24" height="24" />
+              <img src={require("../../assets/icons/iconUsers.png")} alt="DataPanel" width="24" height="24" />
             </div>
             <span>Dữ liệu</span>
           </li>
-
+          
           <li 
             className={activeMenu === "settingsPanel" ? "active" : ""}
-            onClick={() => handleMenuClick("settingsPanel")}
+              onClick={() => handleMenuClick("settingsPanel")}
           >
             <div className="nav-icon">
-              <img src={require("../../assets/icons/iconSettings.png")} alt="Settings" width="24" height="24" />
+              <img src={require("../../assets/icons/iconSettings.png")} alt="SettingsPanel" width="24" height="24" />
             </div>
             <span>Cài đặt</span>
           </li>

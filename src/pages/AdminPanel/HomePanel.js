@@ -77,11 +77,6 @@ function HomePanel() {
         }]
     });
 
-    const handleLogout = () => {
-        localStorage.removeItem("token");
-        navigate("/login");
-    };
-
     useEffect(() => {
         if (token == null)
             navigate("/login");
@@ -89,7 +84,7 @@ function HomePanel() {
 
     return (
         <div className="home-container">
-            <Navbar username={username} onlogout={handleLogout} />
+            <Navbar username={username} />
             <div className="content-wrapper">
                 <Sidebar />
                 <div className="main-content">

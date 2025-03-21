@@ -1,8 +1,9 @@
-/* Navbar Styles */
+/* Block: navbar */
 .navbar {
   position: relative;
   width: 100%;
   height: 10vh;
+  min-height: 60px;
   background-color: #14375F;
   display: flex;
   justify-content: space-between;
@@ -11,72 +12,75 @@
   z-index: 10;
 }
 
-.navbar-logo {
+.navbar__logo {
   height: 100%;
   display: flex;
   align-items: center;
 }
 
-.navbar-logo .logo {
+.navbar__logo-image {
   height: 50px;
   width: 140px;
 }
 
-.navbar-actions {
+.navbar__actions {
   display: flex;
   align-items: center;
-  gap: 15px; /* Tăng khoảng cách giữa các nút */
+  gap: 15px;
 }
 
-.nav-icon-btn {
+/* Element: nav-button */
+.navbar__button {
   border: none;
-  border-radius: 50%; /* Bo tròn nút */
+  border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px; /* Tạo padding xung quanh icon */
-  transition: all 0.3s ease; /* Hiệu ứng chuyển đổi mượt mà */
+  padding: 8px;
+  transition: all 0.3s ease;
   background-color: transparent;
   color: white;
   position: relative;
 }
 
-.nav-icon-btn:hover, .nav-icon-btn.active {
-  background-color: rgba(255, 255, 255, 0.2); /* Đổi màu khi hover */
-  transform: translateY(-2px); /* Nút nhấc lên khi hover */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Thêm bóng đổ khi hover */
+.navbar__button:hover,
+.navbar__button--active {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.nav-icon-btn:active {
-  transform: translateY(1px); /* Hiệu ứng nhấn xuống khi click */
+.navbar__button:active {
+  transform: translateY(1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.nav-icon-btn img {
-  width: 24px; /* Điều chỉnh kích thước icon nhỏ hơn */
+.navbar__button-icon {
+  width: 24px;
   height: 24px;
   transition: all 0.3s ease;
 }
 
-.user-profile {
+/* Element: user-profile */
+.navbar__user-profile {
   display: flex;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.1); /* Thêm nền mờ cho profile */
+  background-color: rgba(255, 255, 255, 0.1);
   color: white;
   padding: 8px 15px;
-  border-radius: 20px; /* Bo tròn góc */
+  border-radius: 20px;
   cursor: pointer;
   font-weight: 500;
   transition: all 0.3s ease;
 }
 
-.user-profile:hover {
+.navbar__user-profile:hover {
   background-color: rgba(255, 255, 255, 0.2);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.navbar-bottom-line {
+.navbar__bottom-line {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -85,11 +89,7 @@
   background-color: #E0312E;
 }
 
-/* User Dropdown Styles */
-.user-dropdown-container {
-  position: relative;
-}
-
+/* Block: user-dropdown */
 .user-dropdown {
   position: absolute;
   top: calc(100% + 10px);
@@ -103,18 +103,7 @@
   animation: dropdown-appear 0.3s ease-out;
 }
 
-@keyframes dropdown-appear {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.dropdown-item {
+.user-dropdown__item {
   display: flex;
   align-items: center;
   padding: 12px 16px;
@@ -123,31 +112,31 @@
   transition: background-color 0.2s ease;
 }
 
-.dropdown-item svg {
+.user-dropdown__item-icon {
   margin-right: 10px;
   color: #14375F;
 }
 
-.dropdown-item:hover {
+.user-dropdown__item:hover {
   background-color: #f5f5f5;
 }
 
-.dropdown-item.logout {
+.user-dropdown__item--logout {
   color: #E0312E;
 }
 
-.dropdown-item.logout svg {
+.user-dropdown__item--logout .user-dropdown__item-icon {
   color: #E0312E;
 }
 
-.dropdown-divider {
+.user-dropdown__divider {
   height: 1px;
   background-color: #eaeaea;
   margin: 4px 0;
 }
 
-/* Modal Overlay Styles */
-.modal-overlay {
+/* Block: modal */
+.modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -161,6 +150,84 @@
   animation: fade-in 0.3s ease;
 }
 
+.modal__content {
+  background-color: white;
+  border-radius: 10px;
+  width: 400px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  animation: modal-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal__header {
+  padding: 16px 20px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.modal__title {
+  margin: 0;
+  color: #14375F;
+  font-size: 18px;
+}
+
+.modal__body {
+  padding: 20px;
+}
+
+.modal__text {
+  margin: 0;
+  color: #333;
+  line-height: 1.5;
+}
+
+.modal__footer {
+  padding: 16px 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  border-top: 1px solid #eaeaea;
+}
+
+.modal__button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal__button--cancel {
+  border: 1px solid #ddd;
+  background-color: white;
+  color: #333;
+}
+
+.modal__button--cancel:hover {
+  background-color: #f5f5f5;
+}
+
+.modal__button--confirm {
+  border: none;
+  background-color: #E0312E;
+  color: white;
+}
+
+.modal__button--confirm:hover {
+  background-color: #c62828;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Animations */
+@keyframes dropdown-appear {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -168,15 +235,6 @@
   to {
     opacity: 1;
   }
-}
-
-.logout-confirm-modal {
-  background-color: white;
-  border-radius: 10px;
-  width: 400px;
-  overflow: hidden;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  animation: modal-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 @keyframes modal-pop {
@@ -188,62 +246,4 @@
     opacity: 1;
     transform: scale(1);
   }
-}
-
-.modal-header {
-  padding: 16px 20px;
-  border-bottom: 1px solid #eaeaea;
-}
-
-.modal-header h3 {
-  margin: 0;
-  color: #14375F;
-  font-size: 18px;
-}
-
-.modal-body {
-  padding: 20px;
-}
-
-.modal-body p {
-  margin: 0;
-  color: #333;
-  line-height: 1.5;
-}
-
-.modal-footer {
-  padding: 16px 20px;
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  border-top: 1px solid #eaeaea;
-}
-
-button.btn-cancel {
-  padding: 8px 16px;
-  border: 1px solid #ddd;
-  background-color: white;
-  color: #333;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-button.btn-cancel:hover {
-  background-color: #f5f5f5;
-}
-
-button.btn-confirm {
-  padding: 8px 16px;
-  border: none;
-  background-color: #E0312E;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-button.btn-confirm:hover {
-  background-color: #c62828;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }

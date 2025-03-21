@@ -11,77 +11,63 @@ function HomePage() {
   const username = "Jack4";
   const token = localStorage.getItem("token");
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
-  };
-
   useEffect(() => {
     if(token == null)
       navigate("/login")
   }, [token, navigate]);
   
   return (
-    <div className="home-container">
-      {/* Top Navigation Bar */}
-      <Navbar username={username} onlogout={handleLogout}/>
+    <div className="home">
+      <Navbar username={username} />
       
-      <div className="content-wrapper">
-        {/* Sidebar Navigation */}
+      <div className="content">
         <Sidebar />
 
-        {/* Main Content Area */}
-        <div className="main-content">
-          {/* Welcome Card */}
-          <div className="welcome-card">
-            <div className="welcome-content">
-              <h2>Chào mừng bạn đến với eFlex</h2>
-              <p>
+        <main className="main">
+          <div className="welcome">
+            <div className="welcome__content">
+              <h2 className="welcome__title">Chào mừng bạn đến với eFlex</h2>
+              <p className="welcome__text">
                 Chúng tôi rất vui mừng khi bạn đã chọn EFlex làm người bạn đồng
                 hành trên con đường học tập. EFlex là Hệ thống hỗ trợ học tập dựa
                 trên năng lực cá nhân.
               </p>
-              <div className="welcome-buttons">
-                <button className="primary-btn">Bắt đầu</button>
-                <button className="secondary-btn">Đọc thêm</button>
+              <div className="welcome__buttons">
+                <button className="welcome__button welcome__button--primary">Bắt đầu</button>
+                <button className="welcome__button welcome__button--secondary">Đọc thêm</button>
               </div>
             </div>
           </div>
 
-          {/* Content Sections */}
-          <div className="content-sections">
-            {/* Learning Progress */}
-            <div className="section progress-section">
-              <h3>Tiến độ học tập</h3>
-              <div className="progress-chart">
-                <div className="placeholder-progress"></div>
-              </div>
+          <div className="sections">
+            <div className="section section--progress">
+              <h3 className="section__title">Tiến độ học tập</h3>
+              <div className="section__progress-chart"></div>
             </div>
 
-            {/* Courses */}
-            <div className="section courses-section">
-              <h3>Khóa học</h3>
-              <div className="course-list">
+            <div className="section section--courses">
+              <h3 className="section__title">Khóa học</h3>
+              <div className="section__course-list">
                 <div className="course-item">
-                  <h4>Khóa học 1</h4>
-                  <button className="continue-btn">Tiếp tục</button>
+                  <h4 className="course-item__title">Khóa học 1</h4>
+                  <button className="course-item__button course-item__button--continue">Tiếp tục</button>
                 </div>
                 <div className="course-item">
-                  <h4>Khóa học 2</h4>
-                  <button className="join-btn">Tham gia</button>
+                  <h4 className="course-item__title">Khóa học 2</h4>
+                  <button className="course-item__button course-item__button--join">Tham gia</button>
                 </div>
                 <div className="course-item">
-                  <h4>Khóa học 3</h4>
-                  <button className="join-btn">Tham gia</button>
+                  <h4 className="course-item__title">Khóa học 3</h4>
+                  <button className="course-item__button course-item__button--join">Tham gia</button>
                 </div>
                 <div className="course-item">
-                  <h4>Khóa học 4</h4>
-                  <button className="join-btn">Tham gia</button>
+                  <h4 className="course-item__title">Khóa học 4</h4>
+                  <button className="course-item__button course-item__button--join">Tham gia</button>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </main>
       </div>
     </div>
   );
