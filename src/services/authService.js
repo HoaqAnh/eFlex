@@ -29,10 +29,27 @@ export const loginService = async (email, password) => {
 };
 
 // Hàm lấy thông tin người dùng hiện tại
-export const getCurrentUser = () => {
-  const userStr = localStorage.getItem("user");
-  if (userStr) {
-    return JSON.parse(userStr);
+export const getCurrentUser = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+
+    const response = await fetch("http://localhost:8080/api/v1/auth/account", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Thêm token vào header
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch user");
+    }
+
+    const userData = await response.json();
+    return userData;
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return null;
   }
-  return null;
 };

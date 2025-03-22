@@ -5,19 +5,19 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import LoginPage from "./pages/LoginPage";
+import LoginPage from "./pages/loginpage";
 import HomePage from "./pages/HomePage";
 import ChatBot from "./pages/ChatPage";
 import HomePanel from "./pages/AdminPanel/HomePanel";
 import CoursePanel from "./pages/AdminPanel/coursePanel";
 import AddCourse from "./pages/AdminPanel/addCourse";
 import GoogleLogin from "./pages/GoogleLogin";
-import "./styles/Global.css";
-import { GoogleOAuthProvider } from '@react-oauth/google';
-
+import "./styles/global.css";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 function App() {
-  const clientId = "586512103905-t1tpvdoi3fc04bijq32aep8svl4hoa2i.apps.googleusercontent.com";
+  const clientId =
+    "169551551152-d80vo21jesjv7r78qlbn3or3bo0nur08.apps.googleusercontent.com";
   return (
     <GoogleOAuthProvider clientId={clientId}>
       <Router>
