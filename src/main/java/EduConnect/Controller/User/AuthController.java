@@ -246,21 +246,35 @@ public class AuthController {
     @GetMapping("/auth/account")
     @ApiMessage("get Account")
     public ResponseEntity<UserDTO> getAccount() throws IdInValidException {
-        UserDTO userDTO=new UserDTO();
-        Optional<String> email=SecurityUtil.getCurrentUserLogin();
-        if(email.isPresent()){
-            User currentUserDB = this.userService.getUserByEmail(email.get());
-            if(currentUserDB.getRole()==null){
-                userDTO.setRoleName("");
-            }else
-            {
-                userDTO.setRoleName(currentUserDB.getRole().getRoleName());
-            }
-            userDTO.setAddress(currentUserDB.getAddress());
-            userDTO.setEmail(currentUserDB.getEmail());
-            userDTO.setFullname(currentUserDB.getFullname());
-            userDTO.setId(currentUserDB.getId());
+        Optional<String> emailOpt = SecurityUtil.getCurrentUserLogin();
+        if (emailOpt.isEmpty()) {
+            throw new IdInValidException("User not logged in");
         }
+        String email = emailOpt.get();
+
+        String redisKey = "userdto:" + email;
+        UserDTO userDTO = redisService.getUserDTO(redisKey);
+        if (userDTO != null) {
+            return ResponseEntity.ok(userDTO);
+        }
+
+
+        User currentUserDB = userService.getUserByEmail(email);
+        if (currentUserDB == null) {
+            throw new IdInValidException("User not found");
+        }
+
+
+        userDTO = new UserDTO();
+        userDTO.setId(currentUserDB.getId());
+        userDTO.setEmail(currentUserDB.getEmail());
+        userDTO.setFullname(currentUserDB.getFullname());
+        userDTO.setAddress(currentUserDB.getAddress());
+        userDTO.setRoleName(currentUserDB.getRole() != null ? currentUserDB.getRole().getRoleName() : "");
+
+
+        redisService.addUserDTO(redisKey, userDTO, 3600);
+
         return ResponseEntity.ok(userDTO);
     }
     @PostMapping("/auth/logout")
