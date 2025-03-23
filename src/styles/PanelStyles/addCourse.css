@@ -1,9 +1,3 @@
-@import url("https://fonts.googleapis.com/css?family=Jura");
-
-* {
-  font-family: 'Jura';
-}
-
 .add-course {
     width: 100%;
     min-height: 100vh;
@@ -63,7 +57,7 @@
     color: #333;
 }
 
-.form-group input,
+.form-group input.addCourse_input,
 .form-group select,
 .form-group textarea {
     width: 100%;

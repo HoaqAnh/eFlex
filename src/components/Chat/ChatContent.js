@@ -155,7 +155,7 @@ const ChatContent = () => {
             time={message.time}
           />
         ))}
-        
+
         {isLoading && (
           <div className="message-wrapper bot">
             <div className="message">
@@ -171,28 +171,28 @@ const ChatContent = () => {
           <div className="input-wrapper">
             <input
               type="text"
-              placeholder="Xin chào, tôi có thể giúp gì cho bạn?"
+              placeholder="Hỏi bất cứ điều gì về học tập của bạn"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyPress}
               disabled={isLoading}
             />
           </div>
-          <button 
-            className="send-button" 
+          <button
+            className="send-button"
             onClick={handleSendMessage}
             disabled={isLoading}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
-              <path fill="none" stroke="currentColor" strokeWidth="2" d="m6.998 10.247l.435.76c.277.485.415.727.415.993s-.138.508-.415.992l-.435.761c-1.238 2.167-1.857 3.25-1.375 3.788c.483.537 1.627.037 3.913-.963l6.276-2.746c1.795-.785 2.693-1.178 2.693-1.832s-.898-1.047-2.693-1.832L9.536 7.422c-2.286-1-3.43-1.5-3.913-.963s.137 1.62 1.375 3.788Z" />
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M20.04 2.323c1.016-.355 1.992.621 1.637 1.637l-5.925 16.93c-.385 1.098-1.915 1.16-2.387.097l-2.859-6.432l4.024-4.025a.75.75 0 0 0-1.06-1.06l-4.025 4.024l-6.432-2.859c-1.063-.473-1-2.002.097-2.387z" />
             </svg>
           </button>
-          <button 
-            className="clear-history-button" 
+          <button
+            className="clear-history-button"
             onClick={clearChatHistory}
             disabled={isLoading}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
               <path fill="currentColor" d="M19 4h-3.5l-1-1h-5l-1 1H5v2h14M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6z" />
             </svg>
           </button>

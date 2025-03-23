@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
+import ChatContent from "../components/Chat/ChatContent";
 
 import "../styles/Navbar.css";
 import "../styles/Sidebar.css";
 import "../styles/ChatPage.css";
-import ChatContent from "../components/Chat/ChatContent";
 
 function ChatPage() {
   const navigate = useNavigate();

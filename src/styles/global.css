@@ -1,21 +1,7 @@
-/* Global styles */
+@import url("https://fonts.googleapis.com/css?family=Jura");
+
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    background-color: #f5f7fa;
-  }
-  
-  a {
-    text-decoration: none;
-    color: #2196f3;
-  }
-  
-  button {
-    cursor: pointer;
-    border: none;
-    outline: none;
-  }
+  font-family: 'Jura';
+  margin: 0;
+  box-sizing: border-box;
+}

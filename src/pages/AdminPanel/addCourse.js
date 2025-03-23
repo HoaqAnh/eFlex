@@ -58,7 +58,8 @@ function AddCourse() {
 
                         <div className="form-group">
                             <label>Tên khóa học</label>
-                            <input 
+                            <input
+                                className="addCourse_input"
                                 type="text" 
                                 placeholder="Nhập tên khóa học"
                                 value={courseData.name}
@@ -95,6 +96,7 @@ function AddCourse() {
                                     <span className="lesson-number">Bài {lesson.id}</span>
                                     <button className="lesson-type">Bài tập</button>
                                     <input 
+                                        className="addCourse_input"
                                         type="text" 
                                         placeholder="Nhập đường dẫn đến bài học"
                                         value={lesson.link}

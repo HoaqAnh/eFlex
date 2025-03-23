@@ -5,14 +5,14 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import LoginPage from "./pages/loginpage";
+import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import ChatBot from "./pages/ChatPage";
 import HomePanel from "./pages/AdminPanel/HomePanel";
 import CoursePanel from "./pages/AdminPanel/coursePanel";
 import AddCourse from "./pages/AdminPanel/addCourse";
 import GoogleLogin from "./pages/GoogleLogin";
-import "./styles/global.css";
+import "./styles/Global.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
 function App() {

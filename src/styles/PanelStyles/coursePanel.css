@@ -1,9 +1,3 @@
-@import url("https://fonts.googleapis.com/css?family=Jura");
-
-* {
-  font-family: 'Jura';
-}
-
 .course-panel {
     display: flex;
     flex-direction: column;

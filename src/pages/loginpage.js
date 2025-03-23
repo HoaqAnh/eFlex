@@ -87,6 +87,7 @@ function LoginPage() {
                     alt="Email"
                   />
                   <input
+                    className="loginPage_input"
                     type="email"
                     placeholder="Email"
                     value={email}
@@ -105,6 +106,7 @@ function LoginPage() {
                     alt="Password"
                   />
                   <input
+                    className="loginPage_input"
                     type="password"
                     placeholder="Mật khẩu"
                     value={password}

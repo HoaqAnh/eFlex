@@ -1,9 +1,3 @@
-@import url("https://fonts.googleapis.com/css?family=Jura");
-
-* {
-  font-family: 'Jura';
-}
-
 .home-container {
     display: flex;
     flex-direction: column;
