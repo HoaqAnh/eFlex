@@ -1,8 +1,11 @@
 package EduConnect.Domain;
 
+import EduConnect.Util.SecurityUtil;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -25,5 +28,9 @@ public class TienDo {
     private int phanTram;
 
     @Column(name = "NgayCapNhat")
-    private String ngayCapNhat;
+    private Instant ngayCapNhat;
+    @PreUpdate
+    public void BeforeUpdate() {
+        this.ngayCapNhat = Instant.now();
+    }
 }

@@ -38,12 +38,13 @@ public class WebSocketEventListener {
     @EventListener
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
         SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.wrap(event.getMessage());
-        Boolean isAdmin = (Boolean) headerAccessor.getSessionAttributes().getOrDefault("isAdmin", false);
         String sessionId = event.getSessionId();
+        String username = (String) headerAccessor.getSessionAttributes().get("username");
+        Boolean isAdmin = (Boolean) headerAccessor.getSessionAttributes().getOrDefault("isAdmin", false);
 
-        System.out.println("User disconnected: " + sessionId + ", isAdmin: " + isAdmin);
-        if (!isAdmin) {
-            accessCounterService.decrementAccessCount(sessionId);
+        System.out.println("User disconnected: " + username + ", sessionId: " + sessionId + ", isAdmin: " + isAdmin);
+        if (!isAdmin && username != null) {
+            accessCounterService.decrementAccessCount(username, sessionId);
         }
     }
 }
