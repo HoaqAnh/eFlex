@@ -93,7 +93,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
-    padding: 0;
+    padding: 10px;
     overflow-y: auto;
     background-color: transparent;
     width: 100%;
@@ -220,21 +220,22 @@
 .footer-content {
     margin-top: auto;
     display: flex;
-    gap: 16px;
+    gap: 10px;
     padding: 20px 0;
     height: 10vh;
     max-height: 10vh;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
+    border-top: 1px solid #eee;
 }
 
 /* Base Button Style */
 .btn {
     padding: 12px 24px;
     border-radius: 12px;
-    border: 1px solid #1A1A1A;
+    border: 2px solid #1A1A1A;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 200;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
     white-space: nowrap;
@@ -246,14 +247,14 @@
 
 /* Primary Button */
 .btn-primary {
-    background: white;
-    color: #1A1A1A;
+    font-weight: 600;
+    font-size: 16px;
+    background: #1A1A1A;
+    color: #ffffff;
     border-color: #1A1A1A;
 }
 
 .btn-primary:hover {
-    background-color: #1A1A1A;
-    color: rgb(116, 39, 39);
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(26, 26, 26, 0.2);
 }
@@ -265,15 +266,18 @@
 
 /* Secondary Button */
 .btn-secondary {
-    background: white;
+    font-weight: 600;
+    font-size: 16px;
+    background: #ffffff;
     color: #1A1A1A;
     border-color: #1A1A1A;
 }
 
 .btn-secondary:hover {
-    background-color: white;
-    color: #1A1A1A;
+    background: #1A1A1A;
+    color: #ffffff;
     transform: translateY(-2px);
+    border-color: #14375F;
     box-shadow: 0 5px 15px rgba(26, 26, 26, 0.1);
 }
 
@@ -284,21 +288,23 @@
 
 /* Danger Button */
 .btn-danger {
-    background: white;
+    font-weight: 600;
+    font-size: 16px;
+    background: #ffffff;
     color: #DC2626;
     border-color: #DC2626;
 }
 
 .btn-danger:hover {
-    background-color: #DC2626;
-    color: white;
+    background: #DC2626;
+    color: #ffffff;
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(220, 38, 38, 0.2);
+    box-shadow: 0 5px 15px rgba(26, 26, 26, 0.1);
 }
 
 .btn-danger:active {
     transform: translateY(0);
-    box-shadow: 0 2px 5px rgba(220, 38, 38, 0.1);
+    box-shadow: 0 2px 5px rgba(26, 26, 26, 0.05);
 }
 
 /* Shine Effect for all buttons */
@@ -552,19 +558,4 @@
         width: 14px;
         height: 14px;
     }
-}
-
-/* Remove unnecessary styles */
-.btn::after {
-    display: none;
-}
-
-.btn-primary:hover {
-    background: #f5f5f5;
-    color: #000000;
-}
-
-.btn-danger:hover {
-    background: #f5f5f5;
-    color: #000000;
 }

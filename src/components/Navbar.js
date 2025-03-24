@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import eFlexLogo from "../assets/images/logo_app.png"; // Adjust path as needed
 import { getCurrentUser } from "../services/authService";
-function Navbar({ username }) {
+
+import eFlexLogo from "../assets/images/logo_app.png";
+
+function Navbar({ username, isAdmin }) {
   const [activeButton, setActiveButton] = useState(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
@@ -12,11 +14,15 @@ function Navbar({ username }) {
   const navigate = useNavigate();
 
   const getUser = async () => {
-    const userData = await getCurrentUser();
-    setUser(userData);
-    console.log("USER", userData);
+    try {
+      const userData = await getCurrentUser();
+      setUser(userData);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      navigate("/login");
+    }
   };
-  // Handle click outside to close dropdown
+
   useEffect(() => {
     getUser();
     function handleClickOutside(event) {
@@ -34,7 +40,7 @@ function Navbar({ username }) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [navigate]);
 
   const handleUserClick = () => {
     setShowUserMenu(!showUserMenu);
@@ -51,11 +57,8 @@ function Navbar({ username }) {
   };
 
   const confirmLogout = () => {
-    // Remove token from localStorage
     localStorage.removeItem("token");
-    // Close the confirmation dialog
     setShowLogoutConfirm(false);
-    // Reload the page
     window.location.reload();
   };
 

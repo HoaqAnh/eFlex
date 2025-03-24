@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/LoginPage.css";
-import eFlexLogo from "../assets/images/logo_app.png";
+
 import { loginService } from "../services/authService";
-import { useGoogleLogin } from '@react-oauth/google';
+import { useGoogleLogin } from "@react-oauth/google";
+
+import eFlexLogo from "../assets/images/logo_app.png";
+import "../styles/LoginPage.css";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -11,30 +13,16 @@ function LoginPage() {
   const navigate = useNavigate();
 
   const login = useGoogleLogin({
-    flow: 'auth-code',
-    ux_mode: 'redirect',
-    redirect_uri: 'http://localhost:3000/login/google',
-    scope: 'email profile',
-    response_type: 'code',
-    onError: errorResponse => {
-      console.error('Google Login Failed:', errorResponse);
-    }
+    flow: "auth-code",
+    ux_mode: "redirect",
+    redirect_uri: "http://localhost:3000/login/google",
+    scope: "email profile",
+    response_type: "code",
+    onError: (errorResponse) => {
+      console.error("Google Login Failed:", errorResponse);
+    },
   });
 
-  // // User loginlogin
-  // const handleLogin = async (e) => {
-  //   e.preventDefault();
-
-  //   const response = await loginService(email, password);
-  //   if (response.data.statusCode !== 200) {
-  //     alert("Đăng nhập thất bại");
-  //   } else {
-  //     localStorage.setItem("token", response.data.data.access_token);
-  //     navigate("/home");
-  //   }
-  // };
-
-  // Admin login
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -43,8 +31,15 @@ function LoginPage() {
       alert("Đăng nhập thất bại");
     } else {
       localStorage.setItem("token", response.data.data.access_token);
-      // localStorage.setItem("role", response.data.data.role);
-      navigate("/homePanel");
+
+      if (response.data.data.userLogin.role.roleName === "admin") {
+        navigate("/homePanel");
+      } else if (
+        response.data.data.userLogin.role.roleName === "user" ||
+        null
+      ) {
+        navigate("/home");
+      }
     }
   };
 

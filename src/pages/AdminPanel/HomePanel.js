@@ -1,13 +1,15 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../styles/PanelStyles/HomePanel.css";
-import Navbar from "../../components/AdminPanel/Navbar";
-import Sidebar from "../../components/AdminPanel/Sidebar";
-import "../../styles//Navbar.css";
-import "../../styles/Sidebar.css";
-
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
+
+import CounterUser from "../../components/AdminPanel/CounterUserComponent";
+import Navbar from "../../components/AdminPanel/Navbar";
+import Sidebar from "../../components/AdminPanel/Sidebar";
+
+import "../../styles//Navbar.css";
+import "../../styles/Sidebar.css";
+import "../../styles/PanelStyles/HomePanel.css";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -94,8 +96,7 @@ function HomePanel() {
                                 <h2>Học viên</h2>
                             </div>
                             <div className="top-card-right">
-                                <h4>Tổng số học viên: {totalStudents}</h4>
-                                <h4>Đăng ký mới trong tháng: {newStudents}</h4>
+                                <CounterUser /> 
                             </div>
                         </div>
                     </div>

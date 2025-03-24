@@ -10,6 +10,7 @@ export const loginService = async (email, password) => {
   });
 
   const data = await response.json(); // Lấy dữ liệu phản hồi bất kể thành công hay thất bại
+  console.log("data", data);
 
   if (!response.ok) {
     // Trả về object chứa thông tin lỗi

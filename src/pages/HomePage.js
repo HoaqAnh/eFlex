@@ -1,25 +1,95 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { getCurrentUser } from "../services/authService";
+import { getAllCourse } from "../services/CourseService";
+import { useWebSocket } from "../WebSocketContext";
+
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
+
 import "../styles/Navbar.css";
 import "../styles/Sidebar.css";
 import "../styles/HomePage.css";
 
 function HomePage() {
   const navigate = useNavigate();
-  const username = "Jack4";
-  const token = localStorage.getItem("token");
+  const [user, setUserData] = useState(null);
+  const [hasAttemptedFetch, setHasAttemptedFetch] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const { isConnected, setUser } = useWebSocket();
+  const [listCourse, setListCourse] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const pageSize = 5;
+  const [hasSetUser, setHasSetUser] = useState(false); // Thêm flag để kiểm tra
+
+  const fetchCourses = async (page) => {
+    try {
+      const data = await getAllCourse(page, pageSize);
+      if (data) {
+        setListCourse(data.data.result.content || []);
+      }
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+    }
+  };
 
   useEffect(() => {
-    if(token == null)
-      navigate("/login")
-  }, [token, navigate]);
-  
+    fetchCourses(currentPage);
+  }, [currentPage]);
+
+  useEffect(() => {
+    if (!hasAttemptedFetch) {
+      const fetchUser = async () => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          navigate("/login");
+          return;
+        }
+
+        try {
+          setHasAttemptedFetch(true);
+          const userData = await getCurrentUser();
+          const roleName = userData?.data?.roleName || "";
+          console.log("role", roleName);
+          setIsAdmin(roleName === "admin");
+          setUserData(userData);
+        } catch (error) {
+          console.error("Error fetching user:", error);
+          navigate("/login");
+        }
+      };
+
+      fetchUser();
+    }
+  }, [navigate, hasAttemptedFetch]);
+
+  useEffect(() => {
+    if (
+      user?.data?.email &&
+      isConnected &&
+      typeof setUser === "function" &&
+      !hasSetUser
+    ) {
+      setUser(user.data.email, isAdmin);
+      setHasSetUser(true); // Đánh dấu đã gọi setUser
+    }
+  }, [user, isConnected, setUser, hasSetUser]);
+
+  const handlePrevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
   return (
     <div className="home">
-      <Navbar username={username} />
-      
+      <Navbar username={user?.data?.username || ""} isAdmin={isAdmin} />
+
       <div className="content">
         <Sidebar />
 

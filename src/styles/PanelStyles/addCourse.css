@@ -1,190 +1,280 @@
 .add-course {
-    width: 100%;
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
+    height: 100vh;
     background-color: #F4FAFF;
-    padding: 20px;
 }
 
-.add-course__content {
+.add-course__main-content {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.add-course__form {
+    background-color: #ffffff;
+    border-radius: 20px;
     width: 100%;
-    max-width: 800px;
+    max-width: 100%;
+    min-width: 50%;
+    height: 100%;
+    max-height: 100%;
+    min-height: 50%;
     margin: 0 auto;
-    background-color: white;
-    border-radius: 12px;
-    padding: 30px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 30px 200px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.add-course__content-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.add-course__header {
+    margin-bottom: 30px;
+}
+
+.add-course__form-group {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 20px;
+}
+
+.add-course__form-subgroup {
+    flex: 1;
 }
 
 .add-course__title {
-    font-size: 28px;
-    margin-bottom: 30px;
-    font-weight: 500;
+    font-size: 24px;
+    font-weight: 600;
+    color: #2C3E50;
+    margin: 0;
+    position: relative;
+    padding-bottom: 8px;
+}
+
+.add-course__title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: linear-gradient(90deg, #3498DB, #2980B9);
+    border-radius: 2px;
 }
 
 .add-course__image-upload {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-bottom: 30px;
+    width: 150px;
 }
 
-.image-placeholder {
+.add-course__image-placeholder {
     width: 150px;
     height: 150px;
-    border: 1px solid #E0E0E0;
+    border: 1px solid #ddd;
     border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 8px;
     cursor: pointer;
-    background-color: #FAFAFA;
+    margin-bottom: 8px;
 }
 
-.image-upload span {
+.add-course__image-text {
     color: #666;
-    font-size: 14px;
+    font-size: 13px;
+    text-align: center;
 }
 
-.form-group {
-    margin-bottom: 25px;
-}
-
-.form-group label {
+.add-course__label {
     display: block;
-    margin-bottom: 10px;
-    font-weight: 500;
+    font-weight: 400;
+    margin-bottom: 8px;
     color: #333;
 }
 
-.form-group input.addCourse_input,
-.form-group select,
-.form-group textarea {
+.add-course__input {
     width: 100%;
-    padding: 10px 15px;
-    border: 1px solid #E0E0E0;
-    border-radius: 6px;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
     font-size: 14px;
-    background-color: white;
+    margin-bottom: 16px;
 }
 
-.form-group select {
+.add-course__select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: white;
+    margin-bottom: 16px;
     appearance: none;
     background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
     background-repeat: no-repeat;
-    background-position: right 15px center;
-    background-size: 15px;
-    padding-right: 45px;
+    background-position: right 8px center;
+    background-size: 16px;
 }
 
-.form-group textarea {
+.add-course__textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
     min-height: 120px;
     resize: vertical;
+    margin-bottom: 20px;
 }
 
-.lessons-section {
-    margin-top: 30px;
+.add-course__lessons {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
-.lessons-section > label {
-    display: block;
-    margin-bottom: 15px;
-    font-weight: 500;
-    color: #333;
+.add-course__lessons-list {
+    flex: 1;
+    overflow-y: auto;
+    max-height: 250px;
+    padding-right: 10px;
+    margin-top: 10px;
+    position: relative;
 }
 
-.lesson-item {
+/* Tùy chỉnh thanh cuộn */
+.add-course__lessons-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.add-course__lessons-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.add-course__lessons-list::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.add-course__lessons-list::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Đảm bảo nút thêm bài học luôn ở dưới cùng và không bị cuộn */
+.add-course__add-lesson-wrapper {
+    position: sticky;
+    bottom: 0;
+    background: white;
+    padding: 15px 0;
+    border-top: 1px solid #eee;
+    margin-top: 10px;
+    z-index: 1;
+}
+
+.add-course__lesson {
     display: flex;
     align-items: center;
     gap: 12px;
     margin-bottom: 12px;
 }
 
-.lesson-number {
-    min-width: 45px;
-    font-size: 14px;
-    color: #333;
-}
-
-.lesson-type {
-    background: white;
-    border: 1px solid #E0E0E0;
-    padding: 8px 15px;
-    border-radius: 6px;
-    cursor: pointer;
-    color: #333;
-    font-size: 14px;
-    min-width: 80px;
-}
-
-.lesson-item input {
-    flex: 1;
-    padding: 8px 15px;
-    border: 1px solid #E0E0E0;
-    border-radius: 6px;
-    font-size: 14px;
-}
-
-.remove-lesson {
-    background: white;
-    color: #FF4444;
-    border: 1px solid #FF4444;
-    width: 32px;
-    height: 32px;
-    border-radius: 6px;
-    cursor: pointer;
-    display: flex;
+.add-course__lesson-number {
+    background: #ffffff;
+    padding: 6px 12px;
+    border-radius: 4px;
+    width: 80px;
+    text-align: center;
     align-items: center;
-    justify-content: center;
-    font-size: 18px;
+    font-weight: 400;
+    font-size: 16px;
+    color: #1a1a1a;
+    border: 0.2px solid #1a1a1a;
 }
 
-.add-lesson {
+.add-course__lesson-type {
+    background: #ffffff;
+    padding: 6px 12px;
+    border-radius: 4px;
+    width: 150px;
+    text-align: center;
+    align-items: center;
+    font-weight: 400;
+    font-size: 16px;
+    color: #1a1a1a;
+    border: 0.2px solid #1a1a1a;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+}
+
+.add-course__lesson-type:hover{
+    background: #1A1A1A;
+    color: #ffffff;
+    border-color: #14375F;
+    box-shadow: 0 5px 15px rgba(26, 26, 26, 0.1);
+}
+
+.add-course__lesson-type:active {
+    background: #ffffff;
+    color: #1A1A1A;
+}
+
+.add-course__lesson-input {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.add-course__lesson-remove {
+    background: #ffffff;
+    padding: 6px 12px;
+    border-radius: 4px;
+    width: 40px;
+    text-align: center;
+    align-items: center;
+    font-weight: 600;
+    font-size: 16px;
+    color: #DC2626;
+    border: 0.2px solid #DC2626;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+}
+
+.add-course__add-lesson {
     display: flex;
     align-items: center;
     gap: 8px;
     background: none;
     border: none;
-    color: #2196F3;
+    color: #14375F;
     cursor: pointer;
-    padding: 12px 0;
-    font-size: 14px;
+    padding: 8px 0;
+    font-size: 16px;
+    font-weight: 500;
 }
 
-.add-lesson span:first-child {
-    font-size: 24px;
-    line-height: 1;
+.add-course__add-lesson-icon {
+    font-size: 18px;
 }
 
-.form-actions {
+.add-course__actions {
     display: flex;
     gap: 12px;
-    margin-top: 40px;
-    justify-content: flex-start;
-}
-
-.form-actions button {
-    padding: 10px 24px;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    font-weight: 500;
-    font-size: 14px;
-    min-width: 120px;
-}
-
-.back-btn {
-    background: #F5F5F5;
-    color: #333;
-}
-
-.add-course-btn {
-    background: #2196F3;
-    color: white;
-}
-
-.save-btn {
+    justify-content: center;
+    margin-top: auto;
+    padding-top: 00;
     background: white;
-    color: #2196F3;
-    border: 1px solid #2196F3 !important;
 }
