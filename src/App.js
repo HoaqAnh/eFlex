@@ -6,16 +6,20 @@ import {
   Navigate,
 } from "react-router-dom";
 
-import LoginPage from "./pages/LoginPage";
-import HomePage from "./pages/HomePage";
-import ChatBot from "./pages/ChatPage";
+//authentication
+import GoogleLogin from "./pages/authentication/google";
+import LoginPage from "./pages/authentication/login";
 
-import GoogleLogin from "./pages/GoogleLogin";
+//user
+import HomePage from "./pages/users/home";
+import ChatBot from "./pages/users/chatbot";
 
-import HomePanel from "./pages/AdminPanel/HomePanel";
-import CoursePanel from "./pages/AdminPanel/coursePanel";
-import AddCourse from "./pages/AdminPanel/addCourse";
+//admin
+import Dashboard from "./pages/admin/dashboard";
+import CoursePanel from "./pages/admin/coursePanel";
+import AddCourse from "./pages/admin/addCourse";
 
+//style
 import "./styles/Global.css";
 
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -28,10 +32,10 @@ function WebSocketRoutes() {
       {" "}
       {/* Bọc WebSocketProvider chỉ xung quanh các route cần WebSocket */}
       <Routes>
+        <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/chatbot" element={<ChatBot />} />
-        <Route path="/" element={<Navigate to="/home" replace />} />
-        <Route path="/homePanel" element={<HomePanel />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/coursePanel" element={<CoursePanel />} />
         <Route path="/coursePanel/addCourse" element={<AddCourse />} />
       </Routes>
