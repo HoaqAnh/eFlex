@@ -1,18 +1,18 @@
-import React from 'react';
-import CourseItem from './CourseItem';
-import { useCourse } from '../../hooks/useCourse';
+import React from "react";
+import CourseItem from "./CourseItem";
+import { useCourse } from "../../hooks/useCourse";
+import { useNavigate } from "react-router-dom";
 
 const CourseSection = () => {
-  const { listCourse } = useCourse();
+  const navigate = useNavigate();
+  const { listCourse, currentPage, setCurrentPage, totalPages } = useCourse();
 
   const handleContinue = (courseId) => {
-    // Xử lý logic tiếp tục khóa học
-    console.log('Continue course:', courseId);
+    console.log("Continue course:", courseId);
   };
 
   const handleJoin = (courseId) => {
-    // Xử lý logic tham gia khóa học
-    console.log('Join course:', courseId);
+    navigate(`/home/course/${courseId}`);
   };
 
   return (
@@ -22,15 +22,36 @@ const CourseSection = () => {
         {listCourse.map((course) => (
           <CourseItem
             key={course.id}
-            title={course.title}
+            title={course.tenMon}
             isEnrolled={course.isEnrolled}
             onContinue={() => handleContinue(course.id)}
             onJoin={() => handleJoin(course.id)}
           />
         ))}
       </div>
+
+      {/* Phân trang */}
+      <div className="pagination">
+        <button
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
+          disabled={currentPage === 0}
+        >
+          Trang trước
+        </button>
+        <span>
+          Trang {currentPage + 1} / {totalPages}
+        </span>
+        <button
+          onClick={() =>
+            setCurrentPage((prev) => (prev < totalPages - 1 ? prev + 1 : prev))
+          }
+          disabled={currentPage >= totalPages - 1}
+        >
+          Trang sau
+        </button>
+      </div>
     </div>
   );
 };
 
-export default CourseSection; 
+export default CourseSection;

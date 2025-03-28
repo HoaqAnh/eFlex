@@ -24,6 +24,7 @@ import "./styles/Global.css";
 
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { WebSocketProvider } from "./WebSocketContext";
+import CoursePage from "./pages/users/course";
 
 // Component trung gian để nhóm các route cần WebSocket
 function WebSocketRoutes() {
@@ -38,6 +39,7 @@ function WebSocketRoutes() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/coursePanel" element={<CoursePanel />} />
         <Route path="/coursePanel/addCourse" element={<AddCourse />} />
+        <Route path="/home/course/:id" element={<CoursePage />} />
       </Routes>
     </WebSocketProvider>
   );

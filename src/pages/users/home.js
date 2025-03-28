@@ -31,6 +31,7 @@ function HomePage() {
   }
 
   if (isAdmin) {
+    console.log("isAdmin", isAdmin);
     navigate("/dashboard");
   }
 

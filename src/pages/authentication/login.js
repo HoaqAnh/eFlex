@@ -24,15 +24,7 @@ function LoginPage() {
       alert("Đăng nhập thất bại");
     } else {
       localStorage.setItem("token", response.data.data.access_token);
-
-      if (response.data.data.userLogin.role.roleName === "admin") {
-        navigate("/dashboard");
-      } else if (
-        response.data.data.userLogin.role.roleName === "user" ||
-        null
-      ) {
-        navigate("/home");
-      }
+      navigate("/home");
     }
   };
 

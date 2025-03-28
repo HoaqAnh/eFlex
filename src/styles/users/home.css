@@ -20,7 +20,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  background-color: #F4FAFF;
+  background-color: #f4faff;
 }
 
 .welcome {
@@ -59,20 +59,40 @@
 }
 
 .welcome__button--primary {
-  background-color: #14375F;
+  background-color: #14375f;
   color: white;
   border: none;
 }
 
 .welcome__button--secondary {
   background-color: transparent;
-  border: 1px solid #14375F;
-  color: #14375F;
+  border: 1px solid #14375f;
+  color: #14375f;
 }
 
 .sections {
   display: flex;
   gap: 20px;
+}
+.section .pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+.section .pagination button {
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 .section {
@@ -129,7 +149,7 @@
 }
 
 .course-item__button--continue {
-  background-color: #14375F;
+  background-color: #14375f;
   color: white;
 }
 

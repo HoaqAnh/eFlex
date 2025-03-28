@@ -17,7 +17,7 @@ function Navbar() {
   const userMenuRef = useRef(null);
   const userBtnRef = useRef(null);
   const navigate = useNavigate();
-  
+
   const { username, logout, isLoading } = useAuth();
 
   useEffect(() => {
