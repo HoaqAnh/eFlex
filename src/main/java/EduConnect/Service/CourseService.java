@@ -3,25 +3,35 @@ package EduConnect.Service;
 import EduConnect.Domain.Course;
 import EduConnect.Domain.Response.ResultPaginationDTO;
 import EduConnect.Repository.CourseRepository;
+import EduConnect.Repository.TienDoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 
 
 @Service
 public class CourseService {
 
     private final CourseRepository sourceRepository;
+    private final TienDoRepository tienDoRepository;
 
-    public CourseService(CourseRepository subjectRepository) {
+    public CourseService(CourseRepository subjectRepository, TienDoRepository tienDoRepository) {
         this.sourceRepository = subjectRepository;
+        this.tienDoRepository = tienDoRepository;
     }
     public Course findByTenMon(String tenMon) {
         return sourceRepository.findByTenMon(tenMon);
     }
     public Course findById(long id) {
-        return sourceRepository.findById(id);
+        if(sourceRepository.findById(id).isPresent()) {
+            return sourceRepository.findById(id).get();
+        }
+        else {
+            return null;
+        }
     }
     public Course CreateCourse(Course course) {
         return this.sourceRepository.save(course);
@@ -44,14 +54,22 @@ public class CourseService {
         result.setResult(listCourse);
         return result;
     }
-
-    public void RemoveCourse(Long id) {
-
-        sourceRepository.deleteById(id);
+    @Transactional
+    public void RemoveCourse(Course course) {
+        if(this.tienDoRepository.countByCourse(course.getId())>0) {
+            this.tienDoRepository.deleteByCourse(course.getId());
+        }
+        sourceRepository.deleteById(course.getId());
     }
 
     public Course GetCourseById(Long id) {
-        return this.sourceRepository.findById(id).orElseThrow(() -> new RuntimeException("Course Not Found"));
+        Optional<Course> course = this.sourceRepository.findById(id);
+        if(course.isPresent()) {
+            return course.get();
+        }else
+        {
+            return null;
+        }
     }
 
 

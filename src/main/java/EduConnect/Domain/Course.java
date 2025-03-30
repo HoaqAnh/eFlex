@@ -39,6 +39,9 @@ public class Course {
 
     private String createdBy;
     private String updatedBy;
+    @OneToMany(mappedBy = "course")
+    @JsonIgnore
+    private List<Lesson> lessonList;
 
     @OneToMany(mappedBy = "course")
     @JsonIgnore

@@ -26,7 +26,11 @@ public class CourseController {
         ResultPaginationDTO result = courseService.GetAllCourses(pageable);
         return ResponseEntity.ok(result);
     }
-
+    @GetMapping("/courses/{id}")
+    @ApiMessage("Get a Course")
+    public ResponseEntity<Course> getCourseById(@PathVariable long id) {
+        return ResponseEntity.ok(courseService.GetCourseById(id));
+    }
     @PostMapping("/courses")
     @ApiMessage("Create a new course")
     public ResponseEntity<Course> createCourse(@RequestBody Course requestCourse) throws IdInValidException {
@@ -40,10 +44,12 @@ public class CourseController {
     @DeleteMapping("/courses/{id}")
     @ApiMessage("Delete a course by ID")
     public ResponseEntity<Void> deleteCourse(@PathVariable("id") long id) throws IdInValidException {
-        if (this.courseService.findById(id)!=null) {
+        Course course = courseService.GetCourseById(id);
+        if (course==null) {
             throw new IdInValidException("Course with ID " + id + " does not exist.");
         }
-        this.courseService.RemoveCourse(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+        this.courseService.RemoveCourse(course);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

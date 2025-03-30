@@ -46,7 +46,9 @@ public class User {
 
     private String providerId;
 
+    @Column(columnDefinition = "TEXT")
     private String image_url;
+
     private String address;
 
     @ManyToOne
