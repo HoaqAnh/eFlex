@@ -2,12 +2,12 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 
 //components
-import Navbar from "../../components/layout/navbar";
+import Navbar from "../../components/admin/layout/navbar";
 import CourseForm from "../../components/admin/course/CourseForm";
 import CourseActions from "../../components/admin/course/CourseActions";
 
 //hooks
-import { useAddCourse } from "../../hooks/useAddCourse";
+import { useAddCourse } from "../../hooks/admin/useAddCourse";
 import { useAuth } from "../../hooks/useAuth";
 
 //style

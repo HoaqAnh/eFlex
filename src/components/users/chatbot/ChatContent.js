@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import Message from "./ChatMessage";
-import { ChatBot } from "../../services/ChatService";
+import { ChatBot } from "../../../services/ChatService";
 
 //style
-import "../../styles/chatbot/chat-content.css";
+import "../../../styles/users/chatbot/chat-content.css";
 
 const ChatContent = () => {
   const [messages, setMessages] = useState([]);

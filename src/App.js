@@ -13,6 +13,7 @@ import LoginPage from "./pages/authentication/login";
 //user
 import HomePage from "./pages/users/home";
 import ChatBot from "./pages/users/chatbot";
+import CoursePage from "./pages/users/course";
 
 //admin
 import Dashboard from "./pages/admin/dashboard";
@@ -24,22 +25,23 @@ import "./styles/Global.css";
 
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { WebSocketProvider } from "./WebSocketContext";
-import CoursePage from "./pages/users/course";
 
 // Component trung gian để nhóm các route cần WebSocket
 function WebSocketRoutes() {
   return (
     <WebSocketProvider>
-      {" "}
       {/* Bọc WebSocketProvider chỉ xung quanh các route cần WebSocket */}
       <Routes>
+        {/* user */}
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/chatbot" element={<ChatBot />} />
+        <Route path="/courses" element={<CoursePage />} />
+
+        {/* admin */}
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/coursePanel" element={<CoursePanel />} />
         <Route path="/coursePanel/addCourse" element={<AddCourse />} />
-        <Route path="/home/course/:id" element={<CoursePage />} />
       </Routes>
     </WebSocketProvider>
   );

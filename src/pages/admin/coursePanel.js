@@ -13,7 +13,7 @@ import PreviewCourse from "../../components/admin/course/PreviewCourse";
 import { filterOptions } from "../../data/courseData";
 
 //hooks
-import { useCoursePanel } from "../../hooks/useCoursePanel";
+import { useCoursePanel } from "../../hooks/admin/useCoursePanel";
 import { useAuth } from "../../hooks/useAuth";
 
 //style

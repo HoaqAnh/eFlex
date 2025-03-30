@@ -1,20 +1,19 @@
-import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 //hooks
 import { useAuth } from "../../hooks/useAuth";
 
 //components
-import Navbar from "../../components/layout/navbar";
-import Sidebar from "../../components/layout/sidebar";
-import ChatContent from "../../components/chatbot/ChatContent";
+import Navbar from "../../components/users/layout/navbar";
+import Sidebar from "../../components/users/layout/sidebar";
+import ChatContent from "../../components/users/chatbot/ChatContent";
 
 //style
-import "../../styles/chatbot/chatbot.css";
+import "../../styles/users/chatbot/chatbot.css";
 
 function ChatPage() {
   const navigate = useNavigate();
-  const { isAdmin, isAuthenticated, isLoading, error } = useAuth();
+  const { isAuthenticated, isLoading, error } = useAuth();
 
   if (isLoading) {
     return <div className="loading">Đang tải...</div>;
@@ -26,10 +25,6 @@ function ChatPage() {
 
   if (!isAuthenticated) {
     navigate("/login");
-  }
-
-  if (isAdmin) {
-    navigate("/dashboard");
   }
 
   return (

@@ -1,5 +1,5 @@
 const BASE_URL = "http://localhost:8080/api/v1";
-const API_KEY = "AIzaSyCEGcXqBcRgWDS5Moyg2PNjWA--B7EvxXc";
+const API_KEY = "AIzaSyAnGoBuTNS4jCcozAzcr0OaciTQFScOEzg";
 const token = localStorage.getItem("token");
 export const ChatBot = async (question, chatHistory = []) => {
   try {

@@ -36,7 +36,7 @@ export const useCourse = (pageSize = 5, fetchOnMount = true) => {
         setLoading(false);
       }
     },
-    [pageSize, hasFetchedCourses, listCourse, currentPage]
+    [pageSize, currentPage]
   );
 
   // Hàm lấy thông tin chi tiết khóa học theo id

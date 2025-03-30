@@ -2,13 +2,13 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 //hooks
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "../../../hooks/useAuth";
 
 //logo
-import eFlexLogo from "../../assets/logo/eFlex.png";
+import eFlexLogo from "../../../assets/logo/eFlex.png";
 
 //style
-import "../../styles/layout/navbar.css";
+import "../../../styles/layout/navbar.css";
 
 function Navbar() {
   const [activeButton, setActiveButton] = useState(null);

@@ -10,7 +10,7 @@ export const loginService = async (email, password) => {
   });
 
   const data = await response.json(); // Lấy dữ liệu phản hồi bất kể thành công hay thất bại
-  console.log("data", data);
+  // console.log("data", data);
 
   if (!response.ok) {
     // Trả về object chứa thông tin lỗi
@@ -39,7 +39,7 @@ export const getCurrentUser = async () => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, // Thêm token vào header
+        Authorization: `Bearer ${token}`,
       },
     });
 

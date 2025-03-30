@@ -141,7 +141,6 @@ export const WebSocketProvider = ({ children }) => {
 
   const setUser = (fullname, isAdmin) => {
     setUserInfo({ fullname, isAdmin });
-    console.log("USER WS", isAdmin);
   };
 
   return (

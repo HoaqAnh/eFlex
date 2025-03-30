@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { sampleCourses } from '../data/courseData';
+import { sampleCourses } from '../../data/courseData';
 
 export const useCoursePanel = () => {
     const navigate = useNavigate();

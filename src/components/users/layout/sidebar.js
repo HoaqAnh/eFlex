@@ -1,14 +1,14 @@
 import { useNavigate, useLocation } from "react-router-dom";
 
 //style
-import "../../styles/layout/sidebar.css";
+import "../../../styles/layout/sidebar.css";
 
 //icons
-import iconHome from "../../assets/icons/iconHome.png";
-import iconBook from "../../assets/icons/iconBook.png";
-import iconSmile from "../../assets/icons/iconSmile.png";
-import iconUsers from "../../assets/icons/iconUsers.png";
-import iconSettings from "../../assets/icons/iconSettings.png";
+import iconHome from "../../../assets/icons/iconHome.png";
+import iconBook from "../../../assets/icons/iconBook.png";
+import iconSmile from "../../../assets/icons/iconSmile.png";
+import iconUsers from "../../../assets/icons/iconUsers.png";
+import iconSettings from "../../../assets/icons/iconSettings.png";
 
 function Sidebar() {
   const navigate = useNavigate();
@@ -21,8 +21,8 @@ function Sidebar() {
       navigate("/chatbot");
     } else if (menuId === "home") {
       navigate("/home");
-    } else if (menuId === "study") {
-      navigate("/study");
+    } else if (menuId === "courses") {
+      navigate("/courses");
     } else if (menuId === "account") {
       navigate("/account");
     } else if (menuId === "settings") {
@@ -45,8 +45,8 @@ function Sidebar() {
           </li>
           
           <li 
-            className={activeMenu === "study" ? "active" : ""}
-            onClick={() => handleMenuClick("study")}
+            className={activeMenu === "courses" ? "active" : ""}
+            onClick={() => handleMenuClick("courses")}
           >
             <div className="nav-icon">
               <img src={iconBook} alt="Study" width="24" height="24" />

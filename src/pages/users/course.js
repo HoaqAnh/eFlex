@@ -1,139 +1,78 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React from "react";
+import { Navigate } from "react-router-dom";
+
+//components
+import Navbar from "../../components/users/layout/navbar";
+import Sidebar from "../../components/users/layout/sidebar";
+import CourseHeader from "../../components/users/course/CourseHeader";
+import CourseGrid from "../../components/users/course/CourseGrid";
+import PreviewCourse from "../../components/users/course/PreviewCourse";
+
+//data
+import { filterOptions } from "../../data/courseData";
+
+//hooks
+import { useCourses } from "../../hooks/users/useCourses";
 import { useAuth } from "../../hooks/useAuth";
-import { useCourse } from "../../hooks/useCourse";
-import Navbar from "../../components/layout/navbar";
-import Sidebar from "../../components/layout/sidebar";
-import "../../styles/users/coursepage.css";
-import { useWebSocket } from "../../WebSocketContext";
-import { getCurrentUser } from "../../services/authService";
 
-function CoursePage() {
-  const navigate = useNavigate();
-  const { id } = useParams();
-  const {
-    isAuthenticated,
-    isLoading: authLoading,
-    error: authError,
-  } = useAuth();
-  const { isConnected, setUser } = useWebSocket();
-  const [hasSetUser, setHasSetUser] = useState(false);
-  const [user, setUserData] = useState(null);
-  const {
-    fetchCourseById,
-    course,
-    loading: courseLoading,
-    error: courseError,
-    resetCourse,
-  } = useCourse(5, false);
+//style
+import "../../styles/users/course.css";
 
-  // Fetch thông tin người dùng từ useAuth
-  useEffect(() => {
-    if (authLoading) return;
+function CoursePanel() {
+    const {
+        selectedCourses,
+        searchTerm,
+        previewCourse,
+        filteredCourses,
+        handleSearch,
+        handleFilterChange,
+        handlePreviewCourse,
+        handleClosePreview
+    } = useCourses();
+
+    const { isAuthenticated, isLoading, error } = useAuth();
+
+    if (isLoading) {
+        return <div className="loading">Đang tải...</div>;
+    }
+
+    if (error) {
+        return <div className="error">Có lỗi xảy ra: {error}</div>;
+    }
+
     if (!isAuthenticated) {
-      navigate("/login");
-      return;
+        return <Navigate to="/login" replace />;
     }
 
-    const fetchUser = async () => {
-      try {
-        const userData = await getCurrentUser();
-        setUserData(userData);
-      } catch (error) {
-        console.error("Error fetching user:", error);
-        navigate("/login");
-      }
-    };
+    return (
+        <div className="course-panel">
+            <Navbar />
+            <div className="course-panel__content-wrapper">
+                <Sidebar />
+                <div className="course-panel__main-content">
+                    <CourseHeader 
+                        searchTerm={searchTerm}
+                        onSearch={handleSearch}
+                        filterOptions={filterOptions}
+                        onFilterChange={handleFilterChange}
+                    />
 
-    fetchUser();
-  }, [isAuthenticated, authLoading, navigate]);
-
-  // Gửi thông tin người dùng qua WebSocket
-  useEffect(() => {
-    if (
-      user?.data?.email &&
-      isConnected &&
-      typeof setUser === "function" &&
-      !hasSetUser
-    ) {
-      setUser(user.data.email, user.data.roleName === "admin");
-      setHasSetUser(true);
-    }
-  }, [user, isConnected, setUser, hasSetUser]);
-
-  // Fetch thông tin khóa học
-  useEffect(() => {
-    if (id) {
-      resetCourse(); // Reset state trước khi fetch khóa học mới
-      fetchCourseById(id);
-    }
-  }, [id, fetchCourseById, resetCourse]);
-
-  // Xử lý trạng thái loading và error từ useAuth
-  if (authLoading) {
-    return <div className="loading">Đang tải...</div>;
-  }
-
-  if (authError) {
-    return <div className="error">Có lỗi xảy ra: {authError}</div>;
-  }
-
-  if (!isAuthenticated) {
-    return null;
-  }
-
-  // Hàm xử lý khi nhấn nút "Tham gia"
-  const handleJoinCourse = () => {
-    console.log(`Joining course with id: ${id}`);
-  };
-
-  return (
-    <div className="course-page">
-      <Navbar />
-      <div className="content">
-        <Sidebar />
-        <main className="main">
-          {courseLoading ? (
-            <p className="course-loading">Đang tải thông tin khóa học...</p>
-          ) : courseError ? (
-            <p className="course-error">{courseError}</p>
-          ) : course ? (
-            <div className="course-detail">
-              <h2 className="course-detail__title">{course.tenMon}</h2>
-              <div className="course-detail__info">
-                <p>
-                  <strong>Mô tả:</strong>{" "}
-                  {course.moTa || "Chưa có mô tả cho khóa học này."}
-                </p>
-                <p>
-                  <strong>Danh mục:</strong>{" "}
-                  {course.category?.nameCategory || "Chưa có danh mục."}
-                </p>
-                <p>
-                  <strong>Người tạo:</strong>{" "}
-                  {course.createdBy || "Chưa có thông tin người tạo."}
-                </p>
-                <p>
-                  <strong>Ngày tạo:</strong>{" "}
-                  {course.ngayTao
-                    ? new Date(course.ngayTao).toLocaleDateString()
-                    : "Chưa có thông tin ngày tạo."}
-                </p>
-              </div>
-              <button
-                className="course-detail__button"
-                onClick={handleJoinCourse}
-              >
-                Tham gia khóa học
-              </button>
+                    <CourseGrid
+                        courses={filteredCourses}
+                        selectedCourses={selectedCourses}
+                        onPreview={handlePreviewCourse}
+                    />
+                </div>
             </div>
-          ) : (
-            <p className="course-error">Không tìm thấy khóa học.</p>
-          )}
-        </main>
-      </div>
-    </div>
-  );
+
+            {previewCourse && (
+                <PreviewCourse
+                    course={previewCourse}
+                    onClose={handleClosePreview}
+                />
+            )}
+        </div>
+    );
 }
 
-export default CoursePage;
+export default CoursePanel;

@@ -28,7 +28,6 @@ function GoogleLogin() {
         }
         const accessToken = data.data.access_token;
         localStorage.setItem("token", accessToken);
-
         navigate("/home");
       } catch (err) {
         setError(err.message || "Đã có lỗi xảy ra trong quá trình xác thực");
