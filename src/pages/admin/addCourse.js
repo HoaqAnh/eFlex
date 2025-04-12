@@ -21,8 +21,10 @@ function AddCourse() {
         error: addCourseError,
         formErrors,
         imagePreview,
+        selectedImage,
         handleInputChange,
-        handleImageUpload,
+        handleImageSelect,
+        handleRemoveImage,
         handleSubmit,
         handleBack
     } = useAddCourse();
@@ -57,9 +59,11 @@ function AddCourse() {
                         <CourseForm
                             courseData={courseData}
                             imagePreview={imagePreview}
+                            selectedImage={selectedImage}
                             formErrors={formErrors}
                             handleInputChange={handleInputChange}
-                            handleImageUpload={handleImageUpload}
+                            handleImageSelect={handleImageSelect}
+                            handleRemoveImage={handleRemoveImage}
                         />
                         <CourseActions
                             handleBack={handleBack}

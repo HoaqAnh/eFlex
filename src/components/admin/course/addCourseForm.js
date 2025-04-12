@@ -1,10 +1,12 @@
 import React from 'react';
 
-const CourseForm = ({ 
-    courseData, 
+const CourseForm = ({
+    courseData,
     handleInputChange,
     imagePreview,
-    handleImageUpload,
+    handleImageSelect,
+    handleRemoveImage,
+    selectedImage,
     formErrors
 }) => {
     return (
@@ -23,11 +25,11 @@ const CourseForm = ({
                                 <img src="/placeholder.png" alt="placeholder" />
                             )}
                         </div>
-                        <input 
+                        <input
                             type="file"
                             id="courseImage"
                             accept="image/*"
-                            onChange={handleImageUpload}
+                            onChange={handleImageSelect}
                             style={{ display: 'none' }}
                         />
                         <label htmlFor="courseImage" className="add-course__image-text">

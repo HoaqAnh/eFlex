@@ -1,0 +1,58 @@
+/* Custom scrollbar */
+.courses-grid::-webkit-scrollbar {
+    width: 6px;
+}
+
+.courses-grid::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.courses-grid::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 3px;
+    transition: background 0.3s ease;
+}
+
+.courses-grid::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
+}
+
+/* Scrollbar Styling */
+.course-panel__main-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.course-panel__main-content::-webkit-scrollbar-track {
+    background: #F5F7FA;
+}
+
+.course-panel__main-content::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 4px;
+}
+
+.course-panel__main-content::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
+}
+
+.course-header {
+    display: none;
+}
+
+/* Scrollbar Styling */
+.course__main-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.course__main-content::-webkit-scrollbar-track {
+    background: #F5F7FA;
+}
+
+.course__main-content::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 4px;
+}
+
+.course__main-content::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
+}

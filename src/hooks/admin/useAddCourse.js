@@ -61,31 +61,30 @@ export const useAddCourse = () => {
     // Hàm xử lý upload hình ảnh riêng biệt - sẽ được gọi trước khi submit form
     const uploadImage = async () => {
         if (!selectedImage) return null;
-        
-        // Đây là nơi bạn sẽ thêm code để gọi API upload ảnh trong tương lai
-        // Tạm thời trả về null vì chưa có API thực tế
-        
-        /* 
-        Ví dụ mẫu cho API upload ảnh trong tương lai:
         try {
             setUploadingImage(true);
             const token = localStorage.getItem('token');
-            
+    
             const imageFormData = new FormData();
-            imageFormData.append('image', selectedImage);
-            
-            const response = await fetch('URL_API_UPLOAD_IMAGE', {
+            imageFormData.append('file', selectedImage);
+    
+            const response = await fetch(`${BASE_URL}/upload/course-image`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`
                 },
                 body: imageFormData
             });
-            
+    
             if (!response.ok) throw new Error('Lỗi upload hình ảnh');
-            
+    
             const data = await response.json();
-            return data.imageUrl; // hoặc data.imageId tùy vào API trả về gì
+    
+            // Cắt đuôi _timestamp
+            const imageUrlWithTimestamp = data.data.imageUrl;
+            const cleanImageUrl = removeTimestampFromUrl(imageUrlWithTimestamp);
+    
+            return cleanImageUrl;
         } catch (error) {
             console.error('Lỗi khi upload hình ảnh:', error);
             setError('Không thể upload hình ảnh. Vui lòng thử lại.');
@@ -93,10 +92,14 @@ export const useAddCourse = () => {
         } finally {
             setUploadingImage(false);
         }
-        */
-       
-        return null; // Tạm thời trả về null
     };
+    
+    // Hàm loại bỏ `_timestamp` khỏi tên file
+    const removeTimestampFromUrl = (url) => {
+        return url.replace(/(\.\w+)_\d+$/, '$1');
+    };
+    
+    
 
     // Validate form
     const validateForm = () => {

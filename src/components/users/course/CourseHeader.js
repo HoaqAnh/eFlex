@@ -9,7 +9,7 @@ const CourseHeader = ({
   onFilterChange
 }) => {
   return (
-    <div className="course-panel__header">
+    <div className="course__header">
       <div className="header-left">
         <h2>Khóa học</h2>
       </div>
