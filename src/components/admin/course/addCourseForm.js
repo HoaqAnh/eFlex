@@ -52,37 +52,6 @@ const CourseForm = ({
                     value={courseData.description}
                     onChange={(e) => handleInputChange('description', e.target.value)}
                 />
-
-                <div className="add-course__lessons">
-                    <label className="add-course__label">Nội dung bài học</label>
-                    <div className="add-course__lessons-list">
-                        {courseData.lessons.map((lesson) => (
-                            <div key={lesson.id} className="add-course__lesson">
-                                <span className="add-course__lesson-number">Bài {lesson.id}</span>
-                                <button className="add-course__lesson-type">Nhập bài tập</button>
-                                <button
-                                    className="add-course__lesson-remove"
-                                    onClick={() => handleRemoveLesson(lesson.id)}
-                                >
-                                    −
-                                </button>
-                                <input
-                                    className="add-course__input add-course__lesson-input"
-                                    type="text"
-                                    placeholder="Nhập đường dẫn đến bài học"
-                                    value={lesson.link}
-                                    onChange={(e) => handleLessonChange(lesson.id, e.target.value)}
-                                />
-                            </div>
-                        ))}
-                        <div className="add-course__add-lesson-wrapper">
-                            <button className="add-course__add-lesson" onClick={handleAddLesson}>
-                                <span className="add-course__add-lesson-icon">+</span>
-                                <span>Thêm bài học</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     );

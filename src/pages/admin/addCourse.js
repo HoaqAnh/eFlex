@@ -3,8 +3,8 @@ import { Navigate } from "react-router-dom";
 
 //components
 import Navbar from "../../components/admin/layout/navbar";
-import CourseForm from "../../components/admin/course/CourseForm";
-import CourseActions from "../../components/admin/course/CourseActions";
+import CourseForm from "../../components/admin/course/addCourseForm";
+import CourseActions from "../../components/admin/course/addCourseActions";
 
 //hooks
 import { useAddCourse } from "../../hooks/admin/useAddCourse";
@@ -12,6 +12,7 @@ import { useAuth } from "../../hooks/useAuth";
 
 //style
 import "../../styles/admin/addCourse.css";
+import "../../styles/button/style.css";
 
 function AddCourse() {
     const {

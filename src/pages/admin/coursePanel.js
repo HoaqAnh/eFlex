@@ -18,6 +18,7 @@ import { useAuth } from "../../hooks/useAuth";
 
 //style
 import "../../styles/admin/coursePanel.css";
+import "../../styles/button/style.css";
 
 function CoursePanel() {
     const {

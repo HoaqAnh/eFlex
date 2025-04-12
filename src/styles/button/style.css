@@ -1,0 +1,201 @@
+/* Footer Styles */
+.footer-content {
+    margin-top: auto;
+    display: flex;
+    gap: 18px;
+    padding: 20px 0;
+    height: 10vh;
+    max-height: 10vh;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid #eee;
+}
+
+/* Base Button Style */
+.btn {
+    padding: 12px 24px;
+    border-radius: 20px;
+    border: 1.8px solid #1A1A1A;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    white-space: nowrap;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+/* Primary Button */
+.btn-primary {
+    font-weight: 500;
+    font-size: 16px;
+    background: #1A1A1A;
+    color: #ffffff;
+    border-color: #1A1A1A;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(26, 26, 26, 0.2);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(26, 26, 26, 0.1);
+}
+
+/* Secondary Button */
+.btn-secondary {
+    font-weight: 500;
+    font-size: 16px;
+    background: #ffffff;
+    color: #1A1A1A;
+    border-color: #1A1A1A;
+}
+
+.btn-secondary:hover {
+    background: #1A1A1A;
+    color: #ffffff;
+    transform: translateY(-2px);
+    border-color: #14375F;
+    box-shadow: 0 5px 15px rgba(26, 26, 26, 0.1);
+}
+
+.btn-secondary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(26, 26, 26, 0.05);
+}
+
+/* Danger Button */
+.btn-danger {
+    font-weight: 500;
+    font-size: 16px;
+    background: #ffffff;
+    color: #DC2626;
+    border-color: #DC2626;
+}
+
+.btn-danger:hover {
+    background: #DC2626;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(26, 26, 26, 0.1);
+}
+
+.btn-danger:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(26, 26, 26, 0.05);
+}
+
+/* Return Button */
+.btn-return {
+    background: transparent;
+    border: none;
+    padding: 8px;
+    color: #1A1A1A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-return:hover {
+    color: #555;
+    transform: translateX(-3px);
+}
+
+.btn-return:active {
+    transform: translateX(-1px);
+}
+
+.btn-return svg {
+    transform: scale(1.8);
+}
+
+.btn-return p {
+    color: #1A1A1A;
+    font-weight: 500;
+    font-size: 16px;
+    padding-left: 5px;
+}
+
+.btn-return:hover svg {
+    transform: scale(1.1);
+}
+
+/* Loại bỏ hiệu ứng shine cho nút return */
+.btn-return::before {
+    display: none;
+}
+
+/* Shine Effect for all buttons */
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transition: 0.5s;
+    z-index: -1;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+/* Disabled State for all buttons */
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    border-color: #E5E7EB;
+    color: #9CA3AF;
+    background-color: #F3F4F6;
+    transform: none;
+    box-shadow: none;
+}
+
+.btn:disabled:hover {
+    background-color: #F3F4F6;
+    color: #9CA3AF;
+    transform: none;
+    box-shadow: none;
+    border-color: #E5E7EB;
+}
+
+.btn:disabled::before {
+    display: none;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .btn {
+        flex: 1 1 calc(50% - 4px);
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
+    .footer-content {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+}
+
+/* Small Mobile Devices */
+@media screen and (max-width: 480px) {
+    .btn {
+        flex: 1;
+        width: 100%;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        gap: 8px;
+    }
+}

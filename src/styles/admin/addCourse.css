@@ -12,6 +12,7 @@
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    gap: 20px;
 }
 
 .add-course__form {
@@ -24,10 +25,11 @@
     max-height: 100%;
     min-height: 50%;
     margin: 0 auto;
-    padding: 30px 200px;
+    padding: 30px 40px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
+    overflow: auto;
 }
 
 .add-course__content-wrapper {
@@ -126,13 +128,13 @@
 
 .add-course__textarea {
     width: 100%;
+    height: 100%;
     padding: 8px 12px;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 14px;
     min-height: 120px;
     resize: vertical;
-    margin-bottom: 20px;
 }
 
 .add-course__lessons {
@@ -148,133 +150,4 @@
     padding-right: 10px;
     margin-top: 10px;
     position: relative;
-}
-
-/* Tùy chỉnh thanh cuộn */
-.add-course__lessons-list::-webkit-scrollbar {
-    width: 6px;
-}
-
-.add-course__lessons-list::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 3px;
-}
-
-.add-course__lessons-list::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 3px;
-}
-
-.add-course__lessons-list::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
-/* Đảm bảo nút thêm bài học luôn ở dưới cùng và không bị cuộn */
-.add-course__add-lesson-wrapper {
-    position: sticky;
-    bottom: 0;
-    background: white;
-    padding: 15px 0;
-    border-top: 1px solid #eee;
-    margin-top: 10px;
-    z-index: 1;
-}
-
-.add-course__lesson {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
-}
-
-.add-course__lesson-number {
-    background: #ffffff;
-    padding: 6px 12px;
-    border-radius: 4px;
-    width: 80px;
-    text-align: center;
-    align-items: center;
-    font-weight: 400;
-    font-size: 16px;
-    color: #1a1a1a;
-    border: 0.2px solid #1a1a1a;
-}
-
-.add-course__lesson-type {
-    background: #ffffff;
-    padding: 6px 12px;
-    border-radius: 4px;
-    width: 150px;
-    text-align: center;
-    align-items: center;
-    font-weight: 400;
-    font-size: 16px;
-    color: #1a1a1a;
-    border: 0.2px solid #1a1a1a;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-    white-space: nowrap;
-    overflow: hidden;
-    position: relative;
-}
-
-.add-course__lesson-type:hover{
-    background: #1A1A1A;
-    color: #ffffff;
-    border-color: #14375F;
-    box-shadow: 0 5px 15px rgba(26, 26, 26, 0.1);
-}
-
-.add-course__lesson-type:active {
-    background: #ffffff;
-    color: #1A1A1A;
-}
-
-.add-course__lesson-input {
-    flex: 1;
-    margin-bottom: 0;
-}
-
-.add-course__lesson-remove {
-    background: #ffffff;
-    padding: 6px 12px;
-    border-radius: 4px;
-    width: 40px;
-    text-align: center;
-    align-items: center;
-    font-weight: 600;
-    font-size: 16px;
-    color: #DC2626;
-    border: 0.2px solid #DC2626;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-    white-space: nowrap;
-    overflow: hidden;
-    position: relative;
-}
-
-.add-course__add-lesson {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: none;
-    border: none;
-    color: #14375F;
-    cursor: pointer;
-    padding: 8px 0;
-    font-size: 16px;
-    font-weight: 500;
-}
-
-.add-course__add-lesson-icon {
-    font-size: 18px;
-}
-
-.add-course__actions {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    margin-top: auto;
-    padding-top: 00;
-    background: white;
 }
