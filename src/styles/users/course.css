@@ -1,11 +1,11 @@
-.course-panel {
+.course {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     height: 100vh;
 }
 
-.course-panel__content-wrapper {
+.course__content-wrapper {
     display: flex;
     flex: 1;
     height: 90vh;
@@ -13,7 +13,7 @@
     background-color: #F4FAFF;
 }
 
-.course-panel__main-content {
+.course__main-content {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
@@ -24,7 +24,7 @@
 }
 
 /* Header Styles */
-.course-panel__header {
+.course__header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -239,12 +239,12 @@
 
 /* Responsive adjustments */
 @media screen and (max-width: 768px) {
-    .course-panel__main-content {
+    .course__main-content {
         padding: 16px;
         gap: 16px;
     }
 
-    .course-panel__header {
+    .course__header {
         flex-direction: column;
         align-items: flex-start;
         gap: 12px;
@@ -308,7 +308,7 @@
 
 /* Small Mobile Devices */
 @media screen and (max-width: 480px) {
-    .course-panel__main-content {
+    .course__main-content {
         padding: 12px;
     }
 
@@ -364,20 +364,20 @@
 }
 
 /* Scrollbar Styling */
-.course-panel__main-content::-webkit-scrollbar {
+.course__main-content::-webkit-scrollbar {
     width: 8px;
 }
 
-.course-panel__main-content::-webkit-scrollbar-track {
+.course__main-content::-webkit-scrollbar-track {
     background: #F5F7FA;
 }
 
-.course-panel__main-content::-webkit-scrollbar-thumb {
+.course__main-content::-webkit-scrollbar-thumb {
     background: #CBD5E1;
     border-radius: 4px;
 }
 
-.course-panel__main-content::-webkit-scrollbar-thumb:hover {
+.course__main-content::-webkit-scrollbar-thumb:hover {
     background: #94A3B8;
 }
 

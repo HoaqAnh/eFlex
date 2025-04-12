@@ -17,22 +17,24 @@ import "../../styles/button/style.css";
 function AddCourse() {
     const {
         courseData,
-        handleAddLesson,
-        handleRemoveLesson,
-        handleLessonChange,
+        loading,
+        error: addCourseError,
+        formErrors,
+        imagePreview,
         handleInputChange,
+        handleImageUpload,
         handleSubmit,
         handleBack
     } = useAddCourse();
 
-    const { isAdmin, isAuthenticated, isLoading, error } = useAuth();
+    const { isAdmin, isAuthenticated, isLoading, error: authError } = useAuth();
 
     if (isLoading) {
         return <div className="loading">Đang tải...</div>;
     }
 
-    if (error) {
-        return <div className="error">Có lỗi xảy ra: {error}</div>;
+    if (authError) {
+        return <div className="error">Có lỗi xảy ra: {authError}</div>;
     }
 
     if (!isAuthenticated) {
@@ -47,21 +49,27 @@ function AddCourse() {
         <div className="add-course">
             <Navbar />
             <div className="add-course__main-content">
-                <CourseForm
-                    courseData={courseData}
-                    handleInputChange={handleInputChange}
-                    handleLessonChange={handleLessonChange}
-                    handleAddLesson={handleAddLesson}
-                    handleRemoveLesson={handleRemoveLesson}
-                />
-                <CourseActions
-                    handleBack={handleBack}
-                    handleSubmit={handleSubmit}
-                />
+                {addCourseError && <div className="error-message">{addCourseError}</div>}
+                {loading ? (
+                    <div className="loading-message">Đang thêm khóa học...</div>
+                ) : (
+                    <>
+                        <CourseForm
+                            courseData={courseData}
+                            imagePreview={imagePreview}
+                            formErrors={formErrors}
+                            handleInputChange={handleInputChange}
+                            handleImageUpload={handleImageUpload}
+                        />
+                        <CourseActions
+                            handleBack={handleBack}
+                            handleSubmit={handleSubmit}
+                        />
+                    </>
+                )}
             </div>
         </div>
     );
 }
 
 export default AddCourse;
-

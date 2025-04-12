@@ -22,6 +22,8 @@ import "../../styles/button/style.css";
 
 function CoursePanel() {
     const {
+        loading: coursesLoading,
+        error: coursesError,
         selectedCourses,
         selectAll,
         searchTerm,
@@ -39,12 +41,16 @@ function CoursePanel() {
 
     const { isAdmin, isAuthenticated, isLoading, error } = useAuth();
 
-    if (isLoading) {
+    if (isLoading || coursesLoading) {
         return <div className="loading">Đang tải...</div>;
     }
 
     if (error) {
         return <div className="error">Có lỗi xảy ra: {error}</div>;
+    }
+
+    if (coursesError) {
+        return <div className="error">Có lỗi khi tải khóa học: {coursesError}</div>;
     }
 
     if (!isAuthenticated) {
@@ -71,12 +77,20 @@ function CoursePanel() {
                         onFilterChange={handleFilterChange}
                     />
 
-                    <CourseGrid
-                        courses={filteredCourses}
-                        selectedCourses={selectedCourses}
-                        onSelectCourse={handleSelectCourse}
-                        onPreview={handlePreviewCourse}
-                    />
+                    {filteredCourses.length > 0 ? (
+                        <CourseGrid
+                            courses={filteredCourses}
+                            selectedCourses={selectedCourses}
+                            onSelectCourse={handleSelectCourse}
+                            onPreview={handlePreviewCourse}
+                        />
+                    ) : (
+                        <div className="no-courses">
+                            {searchTerm || selectedFilter ? 
+                                "Không tìm thấy khóa học phù hợp với điều kiện tìm kiếm." : 
+                                "Không có khóa học nào. Hãy thêm khóa học mới."}
+                        </div>
+                    )}
 
                     <CourseFooter
                         onAddCourse={handleAddCourse}

@@ -45,11 +45,11 @@ function CoursePanel() {
     }
 
     return (
-        <div className="course-panel">
+        <div className="course">
             <Navbar />
-            <div className="course-panel__content-wrapper">
+            <div className="course__content-wrapper">
                 <Sidebar />
-                <div className="course-panel__main-content">
+                <div className="course__main-content">
                     <CourseHeader 
                         searchTerm={searchTerm}
                         onSearch={handleSearch}
