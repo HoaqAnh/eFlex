@@ -97,10 +97,15 @@
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/com.cloudinary/cloudinary-core -->
+<!--		<dependency>-->
+<!--			<groupId>com.cloudinary</groupId>-->
+<!--			<artifactId>cloudinary-core</artifactId>-->
+<!--			<version>2.2.0</version>-->
+<!--		</dependency>-->
 		<dependency>
 			<groupId>com.cloudinary</groupId>
-			<artifactId>cloudinary-core</artifactId>
-			<version>2.2.0</version>
+			<artifactId>cloudinary-http44</artifactId>  <!-- Dùng http4.4 thay vì http5 -->
+			<version>1.37.0</version> <!-- Hoặc bản mới nhất -->
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
 		<dependency>

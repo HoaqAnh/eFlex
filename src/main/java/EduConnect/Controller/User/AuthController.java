@@ -67,6 +67,7 @@ public class AuthController {
     public ResponseEntity<Object> loginGoogle(HttpServletRequest request) {
 
         String code = request.getParameter("code");
+        System.out.println(code);
         if (code == null || code.isEmpty()) {
             return ResponseEntity.badRequest().body("Lỗi: Không lấy được mã xác thực từ Google.");
         }
@@ -132,6 +133,7 @@ public class AuthController {
 //        this.emailService.sendLinkVerify(user.getEmail(), user.getFullname());
         this.redisService.sendEmail(userDTO.getEmail());
         return ResponseEntity.ok().body(userDTO);
+
     }
     @PostMapping("/auth/verify")
     @ApiMessage("Verify Account")
