@@ -32,6 +32,7 @@
     background: #1A1A1A;
     color: #ffffff;
     border-color: #1A1A1A;
+    padding: 10px 20px;
 }
 
 .btn-primary:hover {
@@ -51,6 +52,11 @@
     background: #ffffff;
     color: #1A1A1A;
     border-color: #1A1A1A;
+    padding: 10px 20px;
+    width: auto; 
+    display: flex; 
+    align-items: center; 
+    gap: 8px;
 }
 
 .btn-secondary:hover {
@@ -66,6 +72,70 @@
     box-shadow: 0 2px 5px rgba(26, 26, 26, 0.05);
 }
 
+.btn-secondary svg {
+    width: 20px; 
+    height: 20px;
+    flex-shrink: 0; 
+}
+
+.btn-secondary p {
+    margin: 0;
+    flex-grow: 0; 
+}
+
+.btn-secondary:hover svg {
+    transform: scale(1.1); 
+}
+
+.btn-secondary:hover p {
+    color: #ffffff;
+}
+
+/* Section Secondary Button */
+.btn-section-secondary {
+    font-weight: 500;
+    font-size: 13px;
+    background: #ffffff;
+    color: #1A1A1A;
+    border-color: #1A1A1A;
+    padding: 4px 18px; 
+    width: auto; 
+    display: flex; 
+    align-items: center; 
+    gap: 8px;
+}
+
+.btn-section-secondary:hover {
+    background: #1A1A1A;
+    color: #ffffff;
+    transform: translateY(-2px);
+    border-color: #14375F;
+    box-shadow: 0 5px 15px rgba(26, 26, 26, 0.1);
+}
+
+.btn-section-secondary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(26, 26, 26, 0.05);
+}
+
+.btn-section-secondary svg {
+    width: 20px; 
+    height: 20px;
+    flex-shrink: 0; 
+}
+
+.btn-section-secondary p {
+    margin: 0;
+    flex-grow: 0; 
+}
+
+.btn-section-secondary:hover svg {
+    transform: scale(1.1); 
+}
+
+.btn-section-secondary:hover p {
+    color: #ffffff;
+}
 /* Danger Button */
 .btn-danger {
     font-weight: 500;
@@ -73,6 +143,7 @@
     background: #ffffff;
     color: #DC2626;
     border-color: #DC2626;
+    padding: 10px 20px;
 }
 
 .btn-danger:hover {

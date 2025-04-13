@@ -85,8 +85,6 @@ export const useCourses = () => {
                         title: course.tenMon,
                         image: course.anhMonHoc,
                         description: course.moTa,
-                        lessons: 0,
-                        exercises: 0,
                         status: 'active',
                         createdAt: course.ngayTao,
                         updatedAt: course.ngayCapNhat,
@@ -117,7 +115,6 @@ export const useCourses = () => {
         fetchCourses();
     }, [navigate]);
 
-    // Filtered courses và các handlers vẫn giữ nguyên
     const filteredCourses = useMemo(() => {
         return courses.filter(course => {
             const matchesSearch = course.title.toLowerCase().includes(searchTerm.toLowerCase());

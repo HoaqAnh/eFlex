@@ -1,6 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { getCourseLessonCount } from '../../../services/courseService';
 
 const CourseCard = ({ course, onPreview }) => {
+  const [lessonCount, setLessonCount] = useState({ baiHoc: 0, baiTap: 0 });
+
+  useEffect(() => {
+    const fetchLessonCount = async () => {
+      const count = await getCourseLessonCount(course.id);
+      setLessonCount(count);
+    };
+    fetchLessonCount();
+  }, [course.id]);
+
   const handleCardClick = () => {
     onPreview(course);
   };
@@ -16,8 +27,9 @@ const CourseCard = ({ course, onPreview }) => {
       </div>
       <div className="course-info">
         <h3>{course.title}</h3>
-        <p>{course.lessons} bài học</p>
-        <p>{course.exercises} bài tập</p>
+        <p>{lessonCount.baiHoc} bài học</p>
+        <p>{lessonCount.baiTap} bài tập</p>
+        <p className="course-category">{course.category?.nameCategory || 'Chưa có danh mục'}</p>
         <span className={`status-badge ${course.status?.toLowerCase()}`}>
           {course.status === 'active' ? 'Đang hoạt động' :
             course.status === 'inactive' ? 'Đã tạm dừng' : 'Bản nháp'}

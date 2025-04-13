@@ -1,0 +1,196 @@
+/* Base styles */
+.add-lesson {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    height: 100vh;
+    background-color: #F4FAFF;
+    font-family: 'Inter', 'Roboto', sans-serif;
+}
+
+.add-lesson__main-content {
+    flex: 1;
+    padding: 40px;
+    padding-bottom: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Form container */
+.add-lesson__form {
+    background-color: #ffffff;
+    border-radius: 20px;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    padding: 30px 40px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.add-lesson__content-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header styles */
+.add-lesson__header {
+    margin-bottom: 30px;
+    border-bottom: 1px solid #eaeaea;
+    padding-bottom: 16px;
+}
+
+.add-lesson__title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2C3E50;
+    margin: 0;
+    position: relative;
+    padding-bottom: 8px;
+}
+
+.add-lesson__title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: linear-gradient(90deg, #3498DB, #2980B9);
+    border-radius: 2px;
+}
+
+/* Form group styles */
+.add-lesson__form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 28px;
+}
+
+.add-section__form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
+}
+
+/* Labels */
+.add-lesson__label,
+.add-section__label {
+    font-weight: 500;
+    font-size: 15px;
+    color: #4a5568;
+}
+
+/* Input fields */
+.add-lesson__input,
+.add-section__input {
+    padding: 12px 16px;
+    border: 1.5px solid #dde2e8;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.2s ease;
+    color: #2d3748;
+    background-color: #fff;
+    width: 100%;
+}
+
+input.add-section__input,
+input.add-lesson__input {
+    height: 40px;
+}
+
+textarea.add-section__input {
+    min-height: 300px;
+    height: auto;
+    resize: vertical;
+    font-family: inherit;
+    line-height: 1.5;
+    padding: 16px;
+}
+
+.add-lesson__input:focus,
+.add-section__input:focus {
+    outline: none;
+    border-color: #3498DB;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+}
+
+.add-lesson__input::placeholder,
+.add-section__input::placeholder {
+    color: #a0aec0;
+}
+
+/* Section actions positioning */
+.add-section__form-group > *:last-child {
+    margin-top: 16px;
+}
+
+/* Required field indicator */
+.add-lesson__label::after,
+.add-section__label::after {
+    content: " *";
+    color: #e53e3e;
+}
+
+.section-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: left;
+    align-items: center;
+}
+
+/* Animation for focus states */
+@keyframes focusAnimation {
+    0% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.3); }
+    70% { box-shadow: 0 0 0 5px rgba(52, 152, 219, 0.1); }
+    100% { box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15); }
+}
+
+.add-lesson__input:focus,
+.add-section__input:focus {
+    animation: focusAnimation 0.5s ease;
+}
+
+/* Button styles for SectionActions component compatibility */
+.section-action-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.section-action-button--primary {
+    background-color: #3498DB;
+    color: white;
+    border: none;
+}
+
+.section-action-button--primary:hover {
+    background-color: #2980B9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(41, 128, 185, 0.2);
+}
+
+.section-action-button--secondary {
+    background-color: white;
+    color: #3498DB;
+    border: 1.5px solid #3498DB;
+}
+
+.section-action-button--secondary:hover {
+    background-color: #f0f9ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(41, 128, 185, 0.1);
+}

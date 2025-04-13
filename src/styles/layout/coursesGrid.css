@@ -21,7 +21,7 @@
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    height: 300px;
+    height: 400px;
     position: relative;
 }
 
@@ -94,8 +94,9 @@
     padding: 8px 25px 8px 25px;
     display: flex;
     height: 40%;
+    width: 100%;
     flex-direction: column;
-    gap: 5px;
+    gap: 0;
     flex: 1;
     overflow: hidden;
     position: relative;
@@ -106,7 +107,7 @@
 }
 
 .courses-grid .course-card .course-info h3 {
-    margin: 0;
+    margin-bottom: 10px;
     font-size: 16px;
     color: #2C3E50;
     font-weight: 600;
@@ -136,6 +137,7 @@
 
 .courses-grid .course-card .course-info .status-badge {
     padding: 4px 12px;
+    margin-top: 10px;
     border-radius: 20px;
     font-size: 14px;
     font-weight: 500;

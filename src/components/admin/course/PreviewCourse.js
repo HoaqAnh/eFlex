@@ -1,6 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { getCourseLessonCount } from '../../../services/courseService';
 
 const PreviewCourse = ({ course, onClose }) => {
+  const [lessonCount, setLessonCount] = useState({ baiHoc: 0, baiTap: 0 });
+
+  useEffect(() => {
+    const fetchLessonCount = async () => {
+      if (course) {
+        const count = await getCourseLessonCount(course.id);
+        setLessonCount(count);
+      }
+    };
+    fetchLessonCount();
+  }, [course]);
+
   if (!course) return null;
 
   return (
@@ -19,8 +32,14 @@ const PreviewCourse = ({ course, onClose }) => {
           <div className="preview-course-info">
             <h3>{course.title}</h3>
             <div className="preview-course-stats">
-              <p><span className="stat-label">Số bài học:</span> {course.lessons}</p>
-              <p><span className="stat-label">Số bài tập:</span> {course.exercises}</p>
+              <p><span className="stat-label">Số bài học:</span> {lessonCount.baiHoc}</p>
+              <p><span className="stat-label">Số bài tập:</span> {lessonCount.baiTap}</p>
+              <p><span className="stat-label">Ngày tạo:</span> {course.createdAt}</p>
+              <p><span className="stat-label">Tạo bởi:</span> {course.createdBy}</p>
+              <p><span className="stat-label">Ngày cập nhật:</span> {course.updatedAt}</p>
+              <p><span className="stat-label">Cập nhật bởi:</span> {course.updatedBy}</p>
+              <p><span className="stat-label">Tổng học viên:</span> {course.userCount}</p>
+              <p><span className="stat-label">Danh mục:</span> {course.category?.nameCategory || 'No category'}</p>
               <p><span className="stat-label">Trạng thái:</span> 
                 <span className={`status-badge ${course.status}`}>
                   {course.status === 'active' ? 'Đang hoạt động' : 

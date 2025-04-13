@@ -19,7 +19,7 @@ import CoursePage from "./pages/users/course";
 import Dashboard from "./pages/admin/dashboard";
 import CoursePanel from "./pages/admin/coursePanel";
 import AddCourse from "./pages/admin/addCourse";
-
+import AddLesson from "./pages/admin/addLesson";
 //style
 import "./styles/Global.css";
 
@@ -42,6 +42,7 @@ function WebSocketRoutes() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/coursePanel" element={<CoursePanel />} />
         <Route path="/coursePanel/addCourse" element={<AddCourse />} />
+        <Route path="/coursePanel/addCourse/addLesson" element={<AddLesson />} />
       </Routes>
     </WebSocketProvider>
   );

@@ -26,7 +26,8 @@ function AddCourse() {
         handleImageSelect,
         handleRemoveImage,
         handleSubmit,
-        handleBack
+        handleBack,
+        handleNext
     } = useAddCourse();
 
     const { isAdmin, isAuthenticated, isLoading, error: authError } = useAuth();
@@ -68,6 +69,7 @@ function AddCourse() {
                         <CourseActions
                             handleBack={handleBack}
                             handleSubmit={handleSubmit}
+                            handleNext={handleNext}
                         />
                     </>
                 )}

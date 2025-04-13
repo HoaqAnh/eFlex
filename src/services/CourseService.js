@@ -1,5 +1,34 @@
 const BASE_URL = "http://localhost:8080/api/v1";
 
+export const getCourseLessonCount = async (courseId) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("No token found, user is not authenticated");
+      return { baiHoc: 0, baiTap: 0 };
+    }
+
+    const response = await fetch(`${BASE_URL}/course/count/${courseId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch lesson count: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error('Lỗi khi lấy số lượng bài học:', error);
+    return { baiHoc: 0, baiTap: 0 };
+  }
+};
+
+/*
 export const getAllCourse = async (page = 0, size = 10) => {
   try {
     const token = localStorage.getItem("token");
@@ -26,6 +55,7 @@ export const getAllCourse = async (page = 0, size = 10) => {
     return null;
   }
 };
+
 export const getCourse = async (id) => {
   try {
     const token = localStorage.getItem("token");
@@ -59,3 +89,4 @@ export const getCourse = async (id) => {
     return null;
   }
 };
+*/

@@ -1,6 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { getCourseLessonCount } from '../../../services/courseService';
 
 const PreviewCourse = ({ course, onClose }) => {
+  const [lessonCount, setLessonCount] = useState({ baiHoc: 0, baiTap: 0 });
+
+  useEffect(() => {
+    const fetchLessonCount = async () => {
+      const count = await getCourseLessonCount(course.id);
+      setLessonCount(count);
+    };
+    fetchLessonCount();
+  }, [course.id]);
+
   if (!course) return null;
 
   return (
@@ -19,8 +30,9 @@ const PreviewCourse = ({ course, onClose }) => {
           <div className="preview-course-info">
             <h3>{course.title}</h3>
             <div className="preview-course-stats">
-              <p><span className="stat-label">Số bài học:</span> {course.lessons}</p>
-              <p><span className="stat-label">Số bài tập:</span> {course.exercises}</p>
+            <p><span className="stat-label">Số bài học:</span> {lessonCount.baiHoc}</p>
+              <p><span className="stat-label">Số bài tập:</span> {lessonCount.baiTap}</p>
+              <p><span className="stat-label">Danh mục:</span> {course.category?.nameCategory || 'No category'}</p>
               <p><span className="stat-label">Trạng thái:</span> 
                 <span className={`status-badge ${course.status}`}>
                   {course.status === 'active' ? 'Đang hoạt động' : 

@@ -212,6 +212,81 @@ export const useAddCourse = () => {
         navigate('/coursePanel');
     };
 
+    // Xử lý nút tiếp theo
+    const handleNext = async () => {
+        // Validate form trước khi gửi
+        if (!validateForm()) {
+            return;
+        }
+
+        try {
+            setLoading(true);
+            setError(null);
+            
+            // Bước 1: Upload hình ảnh nếu có
+            let imageUrl = null;
+            if (selectedImage) {
+                imageUrl = await uploadImage();
+            }
+            
+            // Lấy token từ localStorage
+            const token = localStorage.getItem('token');
+            
+            if (!token) {
+                throw new Error("Không tìm thấy token xác thực. Vui lòng đăng nhập lại.");
+            }
+            
+            // Bước 2: Tạo payload JSON để gửi thông tin khóa học
+            const jsonPayload = {
+                tenMon: courseData.tenMon.trim(),
+                moTa: courseData.moTa.trim(),
+                anhMonHoc: imageUrl,
+                category: {
+                    id: parseInt(courseData.category)
+                }
+            };
+
+            // Gọi API thêm khóa học với JSON
+            const response = await fetch(`${BASE_URL}/courses`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonPayload),
+                credentials: 'include'
+            });
+            
+            if (!response.ok) {
+                if (response.status === 401 || response.status === 403) {
+                    throw new Error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
+                } else {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || `Lỗi ${response.status}: ${response.statusText}`);
+                }
+            }
+            
+            const responseData = await response.json();
+            console.log('Khóa học đã được thêm thành công:', responseData);
+            
+            // Lấy ID của khóa học vừa tạo và chuyển hướng đến trang thêm bài học
+            const newCourseId = responseData.data.id;
+            navigate('/coursePanel/addCourse/addLesson', { state: { courseId: newCourseId } });
+            console.log("newCourseId: ", newCourseId);
+        } catch (err) {
+            console.error('Lỗi khi thêm khóa học:', err);
+            setError(err.message || 'Không thể thêm khóa học. Vui lòng thử lại sau.');
+            
+            // Nếu lỗi là do xác thực, chuyển hướng đến trang đăng nhập
+            if (err.message.includes("đăng nhập lại")) {
+                localStorage.removeItem('token');
+                navigate('/login');
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+
     // Hàm xóa ảnh đã chọn
     const handleRemoveImage = () => {
         setSelectedImage(null);
@@ -234,6 +309,7 @@ export const useAddCourse = () => {
         handleImageSelect,
         handleRemoveImage,
         handleSubmit,
-        handleBack
+        handleBack,
+        handleNext
     };
 };
