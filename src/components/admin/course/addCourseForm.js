@@ -1,4 +1,5 @@
 import React from 'react';
+import { useCategory } from '../../../hooks/useCategory';
 
 const CourseForm = ({
     courseData,
@@ -9,6 +10,8 @@ const CourseForm = ({
     selectedImage,
     formErrors
 }) => {
+    const { categories, loading, error } = useCategory();
+
     return (
         <div className="add-course__form">
             <div className="add-course__content-wrapper">
@@ -49,18 +52,28 @@ const CourseForm = ({
                         {formErrors.tenMon && (
                             <span className="error-message">{formErrors.tenMon}</span>
                         )}
-                        <label className="add-course__label">Danh mục</label>
-
+                        <label className="add-course__label">Danh mục *</label>
                         <select
-                            className="add-course__select"
+                            className={`add-course__select ${formErrors.category ? 'input-error' : ''}`}
                             value={courseData.category || ''}
                             onChange={(e) => handleInputChange('category', e.target.value)}
                         >
                             <option value="">Lựa chọn danh mục</option>
-                            <option value="programming">Lập trình</option>
-                            <option value="design">Thiết kế</option>
-                            <option value="business">Kinh doanh</option>
+                            {loading ? (
+                                <option value="" disabled>Đang tải danh mục...</option>
+                            ) : error ? (
+                                <option value="" disabled>Có lỗi xảy ra khi tải danh mục</option>
+                            ) : (
+                                categories.map((category) => (
+                                    <option key={category.id} value={category.id}>
+                                        {category.nameCategory}
+                                    </option>
+                                ))
+                            )}
                         </select>
+                        {formErrors.category && (
+                            <span className="error-message">{formErrors.category}</span>
+                        )}
                     </div>
                 </div>
 

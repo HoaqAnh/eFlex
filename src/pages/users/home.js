@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 //components
-import Navbar from "../../components/users/layout/navbar";
+import Navbar from "../../components/navbar";
 import Sidebar from "../../components/users/layout/sidebar";
 import Welcome from "../../components/users/home/Welcome";
 import ProgressSection from "../../components/users/home/ProgressSection";
-import CourseSection from "../../components/users/home/CourseSection";
+// import CourseSection from "../../components/users/home/CourseSection";
 
 //hooks
 import { useAuth } from "../../hooks/useAuth";
@@ -49,7 +49,7 @@ function HomePage() {
 
           <div className="sections">
             <ProgressSection />
-            <CourseSection />
+            {/* <CourseSection /> */}
           </div>
         </main>
       </div>

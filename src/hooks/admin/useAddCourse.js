@@ -11,7 +11,7 @@ export const useAddCourse = () => {
         tenMon: "",
         category: "",
         moTa: "",
-        anhMonHoc: null // Sẽ lưu URL hoặc ID của ảnh sau khi upload thành công
+        anhMonHoc: null
     });
     
     // State cho trạng thái upload và validation
@@ -20,7 +20,8 @@ export const useAddCourse = () => {
     const [error, setError] = useState(null);
     const [formErrors, setFormErrors] = useState({
         tenMon: "",
-        moTa: ""
+        moTa: "",
+        category: ""
     });
     
     // State cho tệp hình ảnh và preview
@@ -98,15 +99,14 @@ export const useAddCourse = () => {
     const removeTimestampFromUrl = (url) => {
         return url.replace(/(\.\w+)_\d+$/, '$1');
     };
-    
-    
 
     // Validate form
     const validateForm = () => {
         let isValid = true;
         const errors = {
             tenMon: "",
-            moTa: ""
+            moTa: "",
+            category: ""
         };
 
         // Kiểm tra tenMon
@@ -118,6 +118,12 @@ export const useAddCourse = () => {
         // Kiểm tra moTa
         if (!courseData.moTa.trim()) {
             errors.moTa = "Vui lòng nhập mô tả khóa học";
+            isValid = false;
+        }
+
+        // Kiểm tra category
+        if (!courseData.category) {
+            errors.category = "Vui lòng chọn danh mục";
             isValid = false;
         }
 
@@ -153,14 +159,14 @@ export const useAddCourse = () => {
             const jsonPayload = {
                 tenMon: courseData.tenMon.trim(),
                 moTa: courseData.moTa.trim(),
-                anhMonHoc: imageUrl // Sẽ là null nếu không có ảnh hoặc upload thất bại
+                anhMonHoc: imageUrl,
+                category: {
+                    id: parseInt(courseData.category)
+                }
             };
             
-            // Thêm các trường không bắt buộc nếu có
-            if (courseData.category) {
-                jsonPayload.category = courseData.category;
-            }
-            
+            // console.log("JSON Payload:", jsonPayload);
+
             // Gọi API thêm khóa học với JSON
             const response = await fetch(`${BASE_URL}/courses`, {
                 method: 'POST',

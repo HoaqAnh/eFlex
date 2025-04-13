@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
 //components
-import Navbar from "../../components/admin/layout/navbar";
+import Navbar from "../../components/navbar";
 import Sidebar from "../../components/admin/layout/sidebar";
 import TopCard from "../../components/admin/dashboard/TopCard";
 import BodyCard from "../../components/admin/dashboard/BodyCard";

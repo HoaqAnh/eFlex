@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 const BASE_URL = "http://localhost:8080/api/v1";
 
-export const useCoursePanel = () => {
+export const useCourses = () => {
     const navigate = useNavigate();
 
     // States

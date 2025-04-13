@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 
 //components
-import Navbar from "../../components/users/layout/navbar";
+import Navbar from "../../components/navbar";
 import Sidebar from "../../components/users/layout/sidebar";
 import ChatContent from "../../components/users/chatbot/ChatContent";
 

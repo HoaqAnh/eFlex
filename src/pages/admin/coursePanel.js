@@ -2,7 +2,7 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 
 //components
-import Navbar from "../../components/admin/layout/navbar";
+import Navbar from "../../components/navbar";
 import Sidebar from "../../components/admin/layout/sidebar";
 import CourseHeader from "../../components/admin/course/CourseHeader";
 import CourseGrid from "../../components/admin/course/CourseGrid";
@@ -13,11 +13,13 @@ import PreviewCourse from "../../components/admin/course/PreviewCourse";
 import { filterOptions } from "../../data/courseData";
 
 //hooks
-import { useCoursePanel } from "../../hooks/admin/useCoursePanel";
+import { useCourses } from "../../hooks/useCourses";
 import { useAuth } from "../../hooks/useAuth";
 
 //style
 import "../../styles/admin/coursePanel.css";
+import "../../styles/layout/previewCourse.css";
+import "../../styles/layout/coursesGrid.css";
 import "../../styles/button/style.css";
 
 function CoursePanel() {
@@ -37,7 +39,7 @@ function CoursePanel() {
         handleFilterChange,
         handlePreviewCourse,
         handleClosePreview
-    } = useCoursePanel();
+    } = useCourses();
 
     const { isAdmin, isAuthenticated, isLoading, error } = useAuth();
 

@@ -2,7 +2,7 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 
 //components
-import Navbar from "../../components/admin/layout/navbar";
+import Navbar from "../../components/navbar";
 import CourseForm from "../../components/admin/course/addCourseForm";
 import CourseActions from "../../components/admin/course/addCourseActions";
 

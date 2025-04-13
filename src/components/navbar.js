@@ -2,13 +2,13 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 //hooks
-import { useAuth } from "../../../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 
 //logo
-import eFlexLogo from "../../../assets/logo/eFlex.png";
+import eFlexLogo from "../assets/logo/eFlex.png";
 
 //style
-import "../../../styles/layout/navbar.css";
+import "../styles/layout/navbar.css";
 
 function Navbar() {
   const [activeButton, setActiveButton] = useState(null);
@@ -72,9 +72,8 @@ function Navbar() {
       </div>
       <div className="navbar__actions">
         <button
-          className={`navbar__button ${
-            activeButton === "help" ? "navbar__button--active" : ""
-          }`}
+          className={`navbar__button ${activeButton === "help" ? "navbar__button--active" : ""
+            }`}
           onMouseEnter={() => setActiveButton("help")}
           onMouseLeave={() => setActiveButton(null)}
           title="Trợ giúp"
@@ -91,9 +90,8 @@ function Navbar() {
           </svg>
         </button>
         <button
-          className={`navbar__button ${
-            activeButton === "theme" ? "navbar__button--active" : ""
-          }`}
+          className={`navbar__button ${activeButton === "theme" ? "navbar__button--active" : ""
+            }`}
           onMouseEnter={() => setActiveButton("theme")}
           onMouseLeave={() => setActiveButton(null)}
           title="Đổi giao diện"
@@ -114,9 +112,8 @@ function Navbar() {
           </svg>
         </button>
         <button
-          className={`navbar__button ${
-            activeButton === "notifications" ? "navbar__button--active" : ""
-          }`}
+          className={`navbar__button ${activeButton === "notifications" ? "navbar__button--active" : ""
+            }`}
           onMouseEnter={() => setActiveButton("notifications")}
           onMouseLeave={() => setActiveButton(null)}
           title="Thông báo"
@@ -135,11 +132,10 @@ function Navbar() {
         <div className="navbar__user-container">
           <button
             ref={userBtnRef}
-            className={`navbar__button ${
-              activeButton === "user" || showUserMenu
+            className={`navbar__button ${activeButton === "user" || showUserMenu
                 ? "navbar__button--active"
                 : ""
-            }`}
+              }`}
             onMouseEnter={() => setActiveButton("user")}
             onMouseLeave={() => setActiveButton(null)}
             onClick={handleUserClick}
