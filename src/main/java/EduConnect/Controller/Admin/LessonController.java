@@ -1,6 +1,7 @@
 package EduConnect.Controller.Admin;
 
 import EduConnect.Domain.Lesson;
+import EduConnect.Domain.Response.CountCourseDTO;
 import EduConnect.Domain.Response.LessonDTO;
 import EduConnect.Domain.Response.ResultPaginationDTO;
 import EduConnect.Service.LessonService;
@@ -25,6 +26,7 @@ public class LessonController {
 
         return ResponseEntity.ok(lessonService.createLesson(lesson));
     }
+
     @PostMapping("/lesson/excel/{id}")
     @ApiMessage("Create a Lesson")
     public ResponseEntity<List<Lesson>> createLessonExcel(@RequestParam("file") MultipartFile file, @PathVariable long CourseId) {
@@ -41,5 +43,10 @@ public class LessonController {
     @ApiMessage("Get Lesson By idCourse")
     public ResponseEntity<List<LessonDTO>> getLessonById(@PathVariable long idCourse) {
         return ResponseEntity.ok(this.lessonService.getLessonByCourse(idCourse));
+    }
+    @GetMapping("/course/count/{idCourse}")
+    @ApiMessage("Count Lesson By Course")
+    public ResponseEntity<CountCourseDTO> countLessonByCourse(@PathVariable("idCourse") long idCourse) {
+        return ResponseEntity.ok(this.lessonService.CountLessonByCourse(idCourse));
     }
 }

@@ -2,6 +2,7 @@ package EduConnect.Service;
 
 import EduConnect.Domain.Course;
 import EduConnect.Domain.Lesson;
+import EduConnect.Domain.Response.CountCourseDTO;
 import EduConnect.Domain.Response.LessonDTO;
 import EduConnect.Domain.Response.ResultPaginationDTO;
 import EduConnect.Repository.CourseRepository;
@@ -26,14 +27,23 @@ import java.util.Optional;
 public class LessonService {
     private final CourseRepository courseRepository;
     private LessonRepository lessonRepository;
-public LessonService(LessonRepository lessonRepository, CourseRepository courseRepository) {
+    private ExerciseService exerciseService;
+public LessonService(LessonRepository lessonRepository, CourseRepository courseRepository, ExerciseService exerciseService) {
     this.lessonRepository = lessonRepository;
     this.courseRepository = courseRepository;
+    this.exerciseService = exerciseService;
 }
 public Lesson createLesson(Lesson lesson) {
     return lessonRepository.save(lesson);
 }
 
+    public CountCourseDTO CountLessonByCourse(long id)
+    {
+        CountCourseDTO countCourseDTO = new CountCourseDTO();
+        countCourseDTO.setBaiHoc(this.lessonRepository.countLessonByCourseId(id));
+        countCourseDTO.setBaiTap(this.exerciseService.countExerciseByCourse(id));
+        return countCourseDTO;
+    }
     public List<Lesson> importLessons(MultipartFile file, long idCourse) {
         List<Lesson> lessons = new ArrayList<>();
         try {

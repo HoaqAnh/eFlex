@@ -34,9 +34,6 @@ public class Course {
     @Column(name = "AnhMonHoc")
     private String anhMonHoc;
 
-    @Column(name = "id_DanhMuc")
-    private long idDanhMuc;
-
     private String createdBy;
     private String updatedBy;
     @OneToMany(mappedBy = "course")

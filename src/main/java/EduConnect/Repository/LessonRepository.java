@@ -17,4 +17,5 @@ public interface LessonRepository extends JpaRepository<Lesson, Integer> , JpaSp
     Page<Lesson> findAll(Pageable pageable);
     @Query("select T from Lesson T where T.course.id = ?1 order by T.viTri asc ")
     List<Lesson> findByLessByCourseId(long idCourse);
+    long countLessonByCourseId(long idCourse);
 }

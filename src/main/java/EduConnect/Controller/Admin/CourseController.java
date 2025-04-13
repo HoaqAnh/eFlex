@@ -52,4 +52,5 @@ public class CourseController {
         this.courseService.RemoveCourse(course);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
 }

@@ -26,6 +26,9 @@ public class Lesson {
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Section> sections = new ArrayList<>();
 
+    @OneToMany(mappedBy = "lesson")
+    private List<Exercise> exercises = new ArrayList<>();
+
     @PrePersist
     protected void onCreate() {
         ngayTao = Instant.now();
