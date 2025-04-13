@@ -1,8 +1,8 @@
 package EduConnect.Domain;
 
+import EduConnect.Util.Enum.StatusCourse;
 import EduConnect.Util.SecurityUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,10 +33,12 @@ public class Course {
 
     @Column(name = "AnhMonHoc")
     private String anhMonHoc;
+    @Enumerated(EnumType.STRING)
+    private StatusCourse statusCourse;
 
     private String createdBy;
     private String updatedBy;
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Lesson> lessonList;
 

@@ -20,7 +20,7 @@ public class InforController {
     @SendTo("/topic/public")
     public Message addUser(@Payload Message message, SimpMessageHeaderAccessor headerAccessor) {
         String sessionId = headerAccessor.getSessionId();
-        String username = message.getSender(); // Lấy username từ message
+        String username = message.getSender();
 
         headerAccessor.getSessionAttributes().put("username", username);
         headerAccessor.getSessionAttributes().put("isAdmin", message.isAdmin());

@@ -1,9 +1,7 @@
 package EduConnect.Service;
 
-import EduConnect.Domain.Course;
 import EduConnect.Domain.Response.SubcriberCourseDTO;
 import EduConnect.Domain.TienDo;
-import EduConnect.Domain.User;
 import EduConnect.Repository.TienDoRepository;
 import org.springframework.stereotype.Service;
 

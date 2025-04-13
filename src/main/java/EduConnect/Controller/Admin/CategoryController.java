@@ -38,24 +38,16 @@ public class CategoryController {
         Category newCategory = categoryService.addCategory(category);
         return ResponseEntity.status(HttpStatus.OK).body(newCategory);
     }
-    @DeleteMapping("/Category/{id}")
-    @ApiMessage("Delete a Category")
-    public ResponseEntity<Void> deleteCategory(@PathVariable("id") Long id) throws IdInValidException {
-        if (categoryService.findCategoryById(id) == null) {
-            throw new IdInValidException("Category Id: " + id + "does not exist");
-        }
-        categoryService.deleteCategory(categoryService.findCategoryById(id));
-        return ResponseEntity.noContent().build();
-    }
+
 
     @PutMapping("Category/{id}")
     @ApiMessage("Update Category")
     public ResponseEntity<Category> updateCategory(@PathVariable("id") Long id,
                                                    @RequestBody Category category) throws IdInValidException {
-        if (categoryService.findCategoryById(id) == null) {
+        Category updateCategory = categoryService.findCategoryById(id);
+        if (updateCategory == null) {
             throw new IdInValidException("Category Id: " + id + "does not exist");
         }
-        Category updateCategory = categoryService.findCategoryById(id);
         updateCategory.setNameCategory(category.getNameCategory());
         categoryService.updateCategory(updateCategory);
         return ResponseEntity.status(HttpStatus.OK).body(updateCategory);

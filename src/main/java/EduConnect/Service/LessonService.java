@@ -12,9 +12,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,9 +31,15 @@ public LessonService(LessonRepository lessonRepository, CourseRepository courseR
     this.courseRepository = courseRepository;
     this.exerciseService = exerciseService;
 }
-public Lesson createLesson(Lesson lesson) {
-    return lessonRepository.save(lesson);
-}
+
+    public Lesson createLesson(Lesson lesson) {
+        Integer maxViTri = lessonRepository.findMaxViTriByCourseId(lesson.getCourse().getId());
+        int nextViTri = (maxViTri == null) ? 0 : maxViTri + 1;
+
+        lesson.setViTri(nextViTri);
+        return lessonRepository.save(lesson);
+    }
+
 
     public CountCourseDTO CountLessonByCourse(long id)
     {

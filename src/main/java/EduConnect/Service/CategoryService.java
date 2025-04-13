@@ -21,8 +21,8 @@ public class CategoryService {
     public Category findCategoryByNameCategory(String name) {
         return categoryRepository.findByNameCategory(name);
     }
-    public void deleteCategory(Category category) {
-        categoryRepository.delete(category);
+    public void deleteCategory(long categoryId) {
+        categoryRepository.deleteById(categoryId);
     }
     public Category findCategoryById(Long id) {
         return categoryRepository.findById(id).orElse(null);

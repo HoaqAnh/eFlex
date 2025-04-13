@@ -6,6 +6,7 @@ import EduConnect.Domain.Response.LessonDTO;
 import EduConnect.Domain.Response.ResultPaginationDTO;
 import EduConnect.Service.LessonService;
 import EduConnect.Util.ApiMessage;
+import EduConnect.Util.Error.IdInValidException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +23,7 @@ public class LessonController {
     }
     @PostMapping("/lesson")
     @ApiMessage("Create a Lesson")
-    public ResponseEntity<Lesson> createLesson(@RequestBody Lesson lesson) {
-
+    public ResponseEntity<Lesson> createLesson(@RequestBody Lesson lesson) throws IdInValidException {
         return ResponseEntity.ok(lessonService.createLesson(lesson));
     }
 
