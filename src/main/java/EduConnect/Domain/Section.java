@@ -15,11 +15,13 @@ public class Section {
     private long id;
 
     private String tenBai;
+
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String moTa;
     private String video;
     private String file;
     private Instant ngayTao;
-
+    private int viTri;
     @ManyToOne
     @JoinColumn(name = "id_BaiHoc")
     private Lesson lesson;

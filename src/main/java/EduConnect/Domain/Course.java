@@ -22,7 +22,7 @@ public class Course {
     @Column(name = "TenMon")
     private String tenMon;
 
-    @Column(name = "MoTa")
+    @Column(name = "MoTa",columnDefinition = "MEDIUMTEXT")
     private String moTa;
 
     @Column(name = "NgayTao")
