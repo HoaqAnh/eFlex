@@ -59,7 +59,6 @@ public class CourseController {
         if (course==null) {
             throw new IdInValidException("Course with ID " + id + " does not exist.");
         }
-
         this.courseService.RemoveCourse(course);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

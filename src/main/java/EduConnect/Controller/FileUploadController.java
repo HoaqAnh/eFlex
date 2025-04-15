@@ -2,7 +2,10 @@ package EduConnect.Controller;
 
 import EduConnect.Domain.Course;
 import EduConnect.Domain.Response.ImageResponse;
+import EduConnect.Domain.Response.VideoResponse;
+import EduConnect.Domain.Section;
 import EduConnect.Repository.CourseRepository;
+import EduConnect.Repository.SectionRepository;
 import EduConnect.Service.CloudinaryService;
 import EduConnect.Util.Error.IdInValidException;
 import org.springframework.http.HttpStatus;
@@ -18,11 +21,14 @@ import java.util.Optional;
 public class FileUploadController {
     private final CloudinaryService cloudinaryService;
     private final CourseRepository courseRepository;
+    private final SectionRepository sectionRepository;
 
     public FileUploadController(CloudinaryService cloudinaryService,
-                                CourseRepository courseRepository) {
+                                CourseRepository courseRepository,
+                                SectionRepository sectionRepository) {
         this.cloudinaryService = cloudinaryService;
         this.courseRepository = courseRepository;
+        this.sectionRepository = sectionRepository;
     }
 
     @PostMapping("/upload/course-image")
@@ -67,6 +73,37 @@ public class FileUploadController {
         }
     }
 
+    @PostMapping("/upload/course-video")
+    public ResponseEntity<VideoResponse> uploadVideo(@RequestParam("file") MultipartFile file,
+                                         @RequestParam("folder") String folderName) throws IOException, IdInValidException {
+        try {
+            // 1. Upload ảnh lên Cloudinary
+            String videoUrl = (String)cloudinaryService.uploadVideo(file, "courses").get("secure_url");
+            VideoResponse videoResponse = new VideoResponse();
+            videoResponse.setVideoUrl(videoUrl+"_"+ System.currentTimeMillis());
+            // 3. Trả về phản hồi
+            return ResponseEntity.ok(videoResponse);
+        } catch (IOException e) {
+            throw new IdInValidException(e.getMessage());
+        }
+    }
 
-
+    @GetMapping("/section/{id}/video")
+    public ResponseEntity<?> getVideoSection(@PathVariable Long id) throws IdInValidException {
+        Section section = sectionRepository.findById(id);
+        if (section != null)
+            if (section.getVideo() != null) {
+                String videoUrl = section.getVideo().toString().split("_")[0];
+                if (cloudinaryService.videoExists(videoUrl)) {
+                    VideoResponse videoResponse = new VideoResponse();
+                    videoResponse.setVideoUrl(videoUrl);
+                    return ResponseEntity.ok(videoResponse);
+                } else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Video not found on Cloudinary.");
+                }
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No video found for this Section.");
+            }
+        throw new IdInValidException("Section Not Found");
+    }
 }

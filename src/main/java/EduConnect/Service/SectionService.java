@@ -3,10 +3,9 @@ package EduConnect.Service;
 import EduConnect.Domain.Lesson;
 import EduConnect.Domain.Section;
 import EduConnect.Repository.SectionRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class SectionService {
@@ -14,27 +13,23 @@ public class SectionService {
     public SectionService(SectionRepository sectionRepository) {
         this.sectionRepository = sectionRepository;
     }
-
-    @Transactional
     public Section save(Section section) {
+        Integer maxViTri = sectionRepository.findMaxViTriBySectionId(section.getLesson().getId());
+        int nextViTri = (maxViTri == null) ? 0 : maxViTri + 1;
+
+        section.setViTri(nextViTri);
         return sectionRepository.save(section);
     }
 
-    public Optional<Section> findById(Long id) {
+    public Section findById(long id) {
         return sectionRepository.findById(id);
     }
 
-
-    public boolean existsById(Long id) {
-        return sectionRepository.existsById(id);
+    public List<Section> findAll() {
+        return sectionRepository.findAll();
     }
 
-    @Transactional
-    public void deleteById(Long id) {
-        sectionRepository.deleteById(id);
+    public void deleteSectionById(long id) {
+        this.sectionRepository.deleteById(id);
     }
-    public Section findByLessonId(Long lessonId) {
-        return sectionRepository.findByLessonId(lessonId);
-    }
-
 }
