@@ -51,7 +51,6 @@ public LessonService(LessonRepository lessonRepository, CourseRepository courseR
     public List<Lesson> importLessons(MultipartFile file, long idCourse) {
         List<Lesson> lessons = new ArrayList<>();
         try {
-            // Kiểm tra định dạng file
             System.out.println("File type: " + file.getContentType());
             if (!file.getContentType().equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
                 throw new IllegalArgumentException("File không phải định dạng Excel (.xlsx)");
@@ -62,7 +61,7 @@ public LessonService(LessonRepository lessonRepository, CourseRepository courseR
             Sheet sheet = workbook.getSheetAt(0);
 
             for (Row row : sheet) {
-                if (row.getRowNum() == 0) continue; // Bỏ qua dòng tiêu đề
+                if (row.getRowNum() == 0) continue;
 
                 Lesson lesson = new Lesson();
                 lesson.setTenBai(row.getCell(0).getStringCellValue());

@@ -10,11 +10,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface LessonRepository extends JpaRepository<Lesson, Integer> , JpaSpecificationExecutor<Lesson> {
     Lesson save(Lesson lesson);
     Lesson getLessonById(int id);
+
+    Optional<Lesson> findById(long id);
     Page<Lesson> findAll(Pageable pageable);
     @Query("select T from Lesson T where T.course.id = ?1 order by T.viTri asc ")
     List<Lesson> findByLessByCourseId(long idCourse);

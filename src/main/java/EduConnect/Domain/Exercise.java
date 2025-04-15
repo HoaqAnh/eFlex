@@ -1,6 +1,8 @@
 package EduConnect.Domain;
 
+import EduConnect.Util.Enum.AnswerCorrect;
 import EduConnect.Util.Enum.Dificulty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import lombok.Getter;
@@ -16,12 +18,23 @@ public class Exercise {
     private long id;
 
     private String CauHoi;
+    @Column(columnDefinition = "MEDIUMTEXT")
+    private String dapAn1;
+    @Column(columnDefinition = "MEDIUMTEXT")
+    private String dapAn2;
+    @Column(columnDefinition = "MEDIUMTEXT")
+    private String dapAn3;
+    @Column(columnDefinition = "MEDIUMTEXT")
+    private String dapAn4;
+    @Enumerated(EnumType.STRING)
+    private AnswerCorrect dapAnDung;
 
     @Enumerated(EnumType.STRING)
     private Dificulty dificulty;
 
     @ManyToOne
     @JoinColumn(name = "id_Lesson")
+    @JsonIgnore
     private Lesson lesson;
 
 
