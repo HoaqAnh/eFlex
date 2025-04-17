@@ -1,0 +1,124 @@
+.add-section__form {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 24px;
+}
+
+.add-section__header {
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.add-section__form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.add-section__title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2C3E50;
+    margin: 0;
+    position: relative;
+}
+
+.add-section__label {
+    margin-top: 10px;
+    font-weight: 500;
+    font-size: 14px;
+    color: #4a5568;
+}
+
+.add-section__input {
+    padding: 12px 16px;
+    border: 1.5px solid #dde2e8;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    color: #2d3748;
+    background-color: #fff;
+    width: 100%;
+}
+
+input.add-section__input {
+    height: 40px;
+}
+
+textarea.add-section__input {
+    min-height: 300px;
+    height: auto;
+    resize: vertical;
+    font-family: inherit;
+    line-height: 1.15;
+    padding: 16px;
+}
+
+.add-section__input:focus {
+    outline: none;
+    border-color: #3498DB;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+}
+
+.add-section__input::placeholder {
+    color: #a0aec0;
+}
+
+.add-section__textarea {
+    min-height: 350px;
+    resize: vertical;
+    line-height: 1.25;
+    padding: 12px 16px;
+    border: 1.5px solid #dde2e8;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    color: #2d3748;
+    background-color: #fff;
+    width: 100%;
+}
+
+.add-section__textarea:focus {
+    outline: none;
+    border-color: #3498DB;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+}
+
+.add-section__textarea::placeholder {
+    color: #a0aec0;
+}
+
+.error-message {
+    color: #e53e3e;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* Required field indicator */
+.add-section__label::after {
+    content: " *";
+    color: #e53e3e;
+}
+
+.section-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: left;
+    align-items: center;
+}
+
+.add-section__input:focus {
+    animation: focusAnimation 0.5s ease;
+}
+
+/* Add Section Actions */
+.add-section__actions {
+    display: flex;
+    gap: 10px;
+    justify-content: left;
+    align-items: center;
+}

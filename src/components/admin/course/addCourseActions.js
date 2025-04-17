@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CourseActions = ({ handleBack, handleSubmit, handleNext }) => {
+const CourseActions = ({ handleBack, handleNext, handleSubmitDraft }) => {
     
     return (
         <div className="footer-content">
@@ -10,7 +10,7 @@ const CourseActions = ({ handleBack, handleSubmit, handleNext }) => {
                 </svg>
                 <p>Trở về</p>
             </button>
-            <button className="btn btn-secondary" onClick={handleSubmit}>
+            <button className="btn btn-secondary" onClick={handleSubmitDraft}>
                 Lưu nháp
             </button>
             <button className="btn btn-primary" onClick={handleNext}>

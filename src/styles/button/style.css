@@ -158,6 +158,52 @@
     box-shadow: 0 2px 5px rgba(26, 26, 26, 0.05);
 }
 
+/* Section danger Button */
+.btn-section-danger {
+    font-weight: 500;
+    font-size: 13px;
+    background: #ffffff;
+    color: #DC2626;
+    border-color: #DC2626;
+    padding: 4px 18px; 
+    width: auto; 
+    display: flex; 
+    align-items: center; 
+    gap: 8px;
+}
+
+.btn-section-danger:hover {
+    background: #DC2626;
+    color: #ffffff;
+    transform: translateY(-2px);
+    border-color: #DC2626;
+    box-shadow: 0 5px 15px rgba(26, 26, 26, 0.1);
+}
+
+.btn-section-danger:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(26, 26, 26, 0.05);
+}
+
+.btn-section-danger svg {
+    width: 20px; 
+    height: 20px;
+    flex-shrink: 0; 
+}
+
+.btn-section-danger p {
+    margin: 0;
+    flex-grow: 0; 
+}
+
+.btn-section-danger:hover svg {
+    transform: scale(1.1); 
+}
+
+.btn-section-danger:hover p {
+    color: #ffffff;
+}
+
 /* Return Button */
 .btn-return {
     background: transparent;

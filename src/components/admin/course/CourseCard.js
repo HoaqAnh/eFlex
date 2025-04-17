@@ -43,8 +43,8 @@ const CourseCard = ({ course, isSelected, onSelect, onPreview }) => {
         <p>{lessonCount.baiTap} bài tập</p>
         <p className="course-category">{course.category?.nameCategory || 'Chưa có danh mục'}</p>
         <span className={`status-badge ${course.status?.toLowerCase()}`}>
-          {course.status === 'active' ? 'Đang hoạt động' :
-            course.status === 'inactive' ? 'Đã tạm dừng' : 'Bản nháp'}
+          {course.status === 'ACTIVE' ? 'Đang hoạt động' :
+            course.status === 'INACTIVE' ? 'Đã tạm dừng' : 'Bản nháp'}
         </span>
       </div>
     </div>

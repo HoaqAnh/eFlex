@@ -4,19 +4,23 @@ import React from 'react';
 import "../../../styles/admin/addLesson.css";
 
 //component
-import SectionActions from "./addSectionAction";
-
-//hook
-// import { useAddSection } from "../../../hooks/admin/useAddSection";
+import AddSectionForm from "./addSectionForm";
 
 const LessonForm = ({
     lessonData,
-    formErrors,
-    handleInputChange,
-    handleUploadVideo,
+    lessonErrors,
+    sectionForms,
+    sectionErrors,
+    handleLessonInputChange,
+    handleSectionInputChange,
     handleAddSection,
-    handleUploadTest
+    handleRemoveSection
 }) => {
+    const handleUploadVideo = (index) => {
+        // TODO: Implement video upload functionality
+        console.log("Upload video for section", index);
+    };
+
     return (
         <div className="add-lesson__form">
             <div className="add-lesson__content-wrapper">
@@ -31,31 +35,28 @@ const LessonForm = ({
                         type="text"
                         placeholder="Nhập tên bài học"
                         value={lessonData.tenBai || ''}
-                        onChange={(e) => handleInputChange('tenBai', e.target.value)}
+                        onChange={(e) => handleLessonInputChange('tenBai', e.target.value)}
                     />
-                    {formErrors.tenBai && (
-                        <span className="error-message">{formErrors.tenBai}</span>
+                    {lessonErrors.tenBai && (
+                        <span className="error-message">{lessonErrors.tenBai}</span>
                     )}
                 </div>
 
-                <div className="add-section__form-group">
-                    <label className="add-section__label">Phần học</label>
-                    <input
-                        className="add-section__input"
-                        type="text"
-                        placeholder="Nhập tên phần học"
-                    />
-                    <textarea
-                        className="add-section__input"
-                        type="text"
-                        placeholder="Nhập nội dung phần học"
-                    />
-                    <SectionActions 
-                        handleUploadVideo={handleUploadVideo}
-                        handleAddSection={handleAddSection}
-                        handleUploadTest={handleUploadTest}
-                    />
-                </div>
+                {sectionForms.map((section, index) => (
+                    <div key={section.id} className="add-section__form-group">
+                        <AddSectionForm
+                            sectionData={section}
+                            formErrors={sectionErrors[index]}
+                            handleInputChange={handleSectionInputChange}
+                            handleUploadVideo={handleUploadVideo}
+                            handleAddSection={handleAddSection}
+                            handleRemoveSection={() => handleRemoveSection(index)}
+                            isFirstSection={index === 0}
+                            sectionNumber={index + 1}
+                            index={index}
+                        />
+                    </div>
+                ))}
             </div>
         </div>
     );

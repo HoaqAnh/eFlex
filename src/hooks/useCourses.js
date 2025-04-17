@@ -85,7 +85,7 @@ export const useCourses = () => {
                         title: course.tenMon,
                         image: course.anhMonHoc,
                         description: course.moTa,
-                        status: 'active',
+                        status: course.statusCourse,
                         createdAt: course.ngayTao,
                         updatedAt: course.ngayCapNhat,
                         createdBy: course.createdBy,

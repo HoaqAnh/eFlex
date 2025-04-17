@@ -7,7 +7,7 @@ import LessonForm from "../../components/admin/course/addLessonForm";
 import LessonActions from "../../components/admin/course/addLessonAction";
 
 //hooks
-import { useAddLesson } from "../../hooks/admin/useAddLesson";
+import { useLessonAndSections } from "../../hooks/admin/useLessonAndSection";
 import { useAuth } from "../../hooks/useAuth";
 
 //style
@@ -19,12 +19,17 @@ function AddLesson() {
         lessonData,
         loading,
         error: addLessonError,
-        formErrors,
-        handleInputChange,
+        lessonErrors,
+        sectionForms,
+        sectionErrors,
+        handleLessonInputChange,
+        handleSectionInputChange,
+        handleAddSection,
+        handleRemoveSection,
         handleSubmit,
-        handleBack,
-        handleAddLesson
-    } = useAddLesson();
+        handleAddAndContinue,
+        handleBack
+    } = useLessonAndSections();
 
     const { isAdmin, isAuthenticated, isLoading, error } = useAuth();
 
@@ -55,20 +60,25 @@ function AddLesson() {
                     <>
                         <LessonForm
                             lessonData={lessonData}
-                            formErrors={formErrors}
-                            handleInputChange={handleInputChange}
+                            lessonErrors={lessonErrors}
+                            sectionForms={sectionForms}
+                            sectionErrors={sectionErrors}
+                            handleLessonInputChange={handleLessonInputChange}
+                            handleSectionInputChange={handleSectionInputChange}
+                            handleAddSection={handleAddSection}
+                            handleRemoveSection={handleRemoveSection}
                         />
                         <LessonActions
                             handleSubmit={handleSubmit}
                             handleBack={handleBack}
-                            handleAddLesson={handleAddLesson}
+                            handleAddAndContinue={handleAddAndContinue}
+                            handleAddSection={handleAddSection}
                         />
                     </>
                 )}
             </div>
         </div>
     );
-
 }
 
 export default AddLesson;
