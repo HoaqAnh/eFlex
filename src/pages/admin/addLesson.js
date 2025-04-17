@@ -28,7 +28,8 @@ function AddLesson() {
         handleRemoveSection,
         handleSubmit,
         handleAddAndContinue,
-        handleBack
+        handleBack,
+        handleUploadTest
     } = useLessonAndSections();
 
     const { isAdmin, isAuthenticated, isLoading, error } = useAuth();
@@ -73,6 +74,7 @@ function AddLesson() {
                             handleBack={handleBack}
                             handleAddAndContinue={handleAddAndContinue}
                             handleAddSection={handleAddSection}
+                            handleUploadTest={handleUploadTest}
                         />
                     </>
                 )}

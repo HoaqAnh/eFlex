@@ -35,21 +35,21 @@ export const lessonService = {
     }
   },
 
-  // Hàm gọi API tạo section
-  async createSection(sectionData) {
+  // Hàm gọi API tạo nhiều section cùng lúc
+  async createSections(sectionsData) {
     try {
       const token = localStorage.getItem('token');
       if (!token) {
         throw new Error("Không tìm thấy token xác thực. Vui lòng đăng nhập lại.");
       }
 
-      const response = await fetch(`${BASE_URL}/section`, {
+      const response = await fetch(`${BASE_URL}/Listsection`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(sectionData),
+        body: JSON.stringify(sectionsData),
         credentials: 'include'
       });
 
@@ -64,7 +64,7 @@ export const lessonService = {
 
       return await response.json();
     } catch (error) {
-      console.error('Lỗi khi tạo phần học:', error);
+      console.error('Lỗi khi tạo các phần học:', error);
       throw error;
     }
   },
@@ -97,15 +97,14 @@ export const lessonService = {
         }
       }));
 
-      // Gọi API tạo các section
-      const sectionPromises = sectionsData.map(sectionData => this.createSection(sectionData));
-      const sectionResults = await Promise.all(sectionPromises);
-      console.log("Các phần học đã được thêm thành công:", sectionResults);
+      // Gọi API tạo tất cả các section cùng lúc
+      const sectionsResponse = await this.createSections(sectionsData);
+      console.log("Các phần học đã được thêm thành công:", sectionsResponse);
 
       return { 
         success: true, 
         lessonData: lessonResponse, 
-        sectionsData: sectionResults 
+        sectionsData: sectionsResponse 
       };
     } catch (error) {
       console.error('Lỗi khi thêm bài học và các phần học:', error);
@@ -113,6 +112,42 @@ export const lessonService = {
         success: false, 
         error 
       };
+    }
+  },
+
+  // Hàm tải lên file Excel cho bài tập trắc nghiệm
+  async uploadExerciseExcel(lessonId, file) {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error("Không tìm thấy token xác thực. Vui lòng đăng nhập lại.");
+      }
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch(`${BASE_URL}/exercise/excel/${lessonId}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData,
+        credentials: 'include'
+      });
+
+      if (!response.ok) {
+        if (response.status === 401 || response.status === 403) {
+          throw new Error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
+        } else {
+          const errorData = await response.json();
+          throw new Error(errorData.message || `Lỗi ${response.status}: ${response.statusText}`);
+        }
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Lỗi khi tải lên file Excel bài tập:', error);
+      throw error;
     }
   }
 };

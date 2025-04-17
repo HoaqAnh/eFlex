@@ -5,6 +5,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import { Toaster } from 'react-hot-toast';
 
 //authentication
 import GoogleLogin from "./pages/authentication/google";
@@ -55,6 +56,7 @@ function App() {
   return (
     <GoogleOAuthProvider clientId={clientId}>
       <Router>
+        <Toaster position="top-right" />
         <Routes>
           {/* Các route không cần WebSocket */}
           <Route path="/login" element={<LoginPage />} />

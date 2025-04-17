@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { lessonService } from '../../services/lessonService';
+import { toast } from 'react-hot-toast';
 
 export const useLessonAndSections = () => {
     const navigate = useNavigate();
@@ -37,6 +38,9 @@ export const useLessonAndSections = () => {
         tenBai: "",
         moTa: ""
     }]);
+
+    // State cho file Excel
+    const [excelFile, setExcelFile] = useState(null);
 
     // Xử lý thay đổi input cho lesson
     const handleLessonInputChange = (field, value) => {
@@ -178,10 +182,49 @@ export const useLessonAndSections = () => {
         }
     };
 
+    // Xử lý tải lên bài kiểm tra
+    const handleUploadTest = async (file) => {
+        try {
+            // Kiểm tra nếu không có file được chọn
+            if (!file) {
+                throw new Error("Vui lòng chọn file Excel để tải lên");
+            }
+
+            // Kiểm tra định dạng file
+            if (!file.name.endsWith('.xlsx') && !file.name.endsWith('.xls')) {
+                throw new Error("Vui lòng chọn file Excel (.xlsx hoặc .xls)");
+            }
+
+            // Lưu file vào state
+            setExcelFile(file);
+            
+            // Hiển thị thông báo thành công
+            toast.success("Đã chọn file Excel thành công!");
+            
+            return { success: true };
+        } catch (error) {
+            // Hiển thị thông báo lỗi
+            toast.error(error.message || "Có lỗi xảy ra khi chọn file");
+            return { success: false, error: error.message };
+        }
+    };
+
     // Xử lý gửi form và quay lại danh sách bài học
     const handleSubmit = async () => {
         const result = await submitLessonWithSections();
         if (result.success) {
+            // Nếu có file Excel đã chọn, thực hiện upload
+            if (excelFile) {
+                try {
+                    const lessonId = result.lessonData.data.id;
+                    await lessonService.uploadExerciseExcel(lessonId, excelFile);
+                    toast.success("Tạo bài học và tải lên bài tập trắc nghiệm thành công!");
+                } catch (error) {
+                    toast.error("Tạo bài học thành công nhưng tải lên bài tập thất bại: " + error.message);
+                }
+            } else {
+                toast.success("Tạo bài học thành công!");
+            }
             // Điều hướng về trang danh sách bài học của khóa học
             navigate('/coursePanel');
         }
@@ -191,6 +234,19 @@ export const useLessonAndSections = () => {
     const handleAddAndContinue = async () => {
         const result = await submitLessonWithSections();
         if (result.success) {
+            // Nếu có file Excel đã chọn, thực hiện upload
+            if (excelFile) {
+                try {
+                    const lessonId = result.lessonData.data.id;
+                    await lessonService.uploadExerciseExcel(lessonId, excelFile);
+                    toast.success("Tạo bài học và tải lên bài tập trắc nghiệm thành công!");
+                } catch (error) {
+                    toast.error("Tạo bài học thành công nhưng tải lên bài tập thất bại: " + error.message);
+                }
+            } else {
+                toast.success("Tạo bài học thành công!");
+            }
+
             // Reset form để tạo bài học mới
             setLessonData({
                 tenBai: "",
@@ -216,6 +272,9 @@ export const useLessonAndSections = () => {
                 tenBai: "",
                 moTa: ""
             }]);
+
+            // Reset file Excel
+            setExcelFile(null);
         }
     };
 
@@ -271,6 +330,7 @@ export const useLessonAndSections = () => {
         error,
         handleSubmit,
         handleAddAndContinue,
-        handleBack
+        handleBack,
+        handleUploadTest
     };
 };
