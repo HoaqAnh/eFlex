@@ -13,6 +13,7 @@ public class SectionService {
     public SectionService(SectionRepository sectionRepository) {
         this.sectionRepository = sectionRepository;
     }
+
     public Section save(Section section) {
         Integer maxViTri = sectionRepository.findMaxViTriBySectionId(section.getLesson().getId());
         int nextViTri = (maxViTri == null) ? 0 : maxViTri + 1;
@@ -31,5 +32,12 @@ public class SectionService {
 
     public void deleteSectionById(long id) {
         this.sectionRepository.deleteById(id);
+    }
+
+    public List<Section> saveList(List<Section> sectionList) {
+        for (Section section : sectionList) {
+            this.save(section);
+        }
+        return sectionList;
     }
 }

@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/")
 public class SectionController {
@@ -21,4 +23,11 @@ public class SectionController {
     public ResponseEntity<Section> createSection(@RequestBody Section section) {
         return ResponseEntity.ok(this.sectionService.save(section));
     }
+
+    @PostMapping("/Listsection")
+    @ApiMessage("Create List Section")
+    public ResponseEntity<List<Section>> createListSection(@RequestBody List<Section> section) {
+        return ResponseEntity.ok(this.sectionService.saveList(section));
+    }
+
 }
