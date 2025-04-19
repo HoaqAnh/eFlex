@@ -38,11 +38,55 @@
 .btn-primary:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(26, 26, 26, 0.2);
+    background-color: #ffffff;
+    color: #1A1A1A;
+    font-weight: 600;
 }
 
 .btn-primary:active {
     transform: translateY(0);
     box-shadow: 0 2px 5px rgba(26, 26, 26, 0.1);
+}
+
+/* Section Primary Button */
+.btn-section-primary {
+    font-weight: 500;
+    font-size: 13px;
+    background: #1A1A1A;
+    color: #ffffff;
+    border-color: #1A1A1A;
+    padding: 4px 18px;
+}
+
+.btn-section-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(26, 26, 26, 0.2);
+    background-color: #ffffff;
+    color: #1A1A1A;
+}
+
+.btn-section-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(26, 26, 26, 0.1);
+}
+
+.btn-section-primary svg {
+    width: 20px; 
+    height: 20px;
+    flex-shrink: 0; 
+}
+
+.btn-section-primary p {
+    margin: 0;
+    flex-grow: 0; 
+}
+
+.btn-section-primary:hover svg {
+    transform: scale(1.1); 
+}
+
+.btn-section-primary:hover p {
+    color: #ffffff;
 }
 
 /* Secondary Button */
@@ -56,6 +100,7 @@
     width: auto; 
     display: flex; 
     align-items: center; 
+    justify-content: center;
     gap: 8px;
 }
 
@@ -243,6 +288,39 @@
 /* Loại bỏ hiệu ứng shine cho nút return */
 .btn-return::before {
     display: none;
+}
+
+/* Favorite Button */
+.btn-favorite {
+    font-weight: 500;
+    font-size: 13px;
+    background: #ffffff;
+    color: #1A1A1A;
+    border-color: #1A1A1A;
+    padding: 4px 18px; 
+    width: auto; 
+    display: flex; 
+    align-items: center; 
+    gap: 8px;
+}
+
+.btn-favorite:hover {
+    background: #1A1A1A;
+    color: #ffffff;
+    transform: translateY(-2px);
+    border-color: #14375F;
+    box-shadow: 0 5px 15px rgba(26, 26, 26, 0.1);
+}
+
+.btn-favorite:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(26, 26, 26, 0.05);
+}
+
+.btn-favorite svg {
+    width: 20px; 
+    height: 20px;
+    flex-shrink: 0;
 }
 
 /* Shine Effect for all buttons */

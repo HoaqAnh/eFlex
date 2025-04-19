@@ -1,0 +1,55 @@
+/* Sidebar */
+.lesson-details__sidebar {
+    width: 300px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    height: fit-content;
+}
+
+.lesson-details__sidebar-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.lesson-details__sidebar-content-header h2 {
+    margin: 0;
+    color: #333;
+    font-size: 1.5rem;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.lesson-details__sidebar-content-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.lesson-details__sidebar-content-body-item button {
+    width: 100%;
+    text-align: left;
+    padding: 12px;
+    border: none;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.lesson-details__sidebar-content-body-item button:hover {
+    background-color: #e9ecef;
+}
+
+.lesson-details__sidebar-content-body-item button p {
+    margin: 0;
+    color: #495057;
+    font-size: 1rem;
+}
+
+.lesson-details__sidebar-content-footer {
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}

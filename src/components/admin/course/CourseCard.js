@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getCourseLessonCount } from '../../../services/courseService';
+import { getCourseLessonCount } from '../../../services/lessonService';
 
 const CourseCard = ({ course, isSelected, onSelect, onPreview }) => {
   const [lessonCount, setLessonCount] = useState({ baiHoc: 0, baiTap: 0 });

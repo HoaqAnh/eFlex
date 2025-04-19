@@ -1,0 +1,39 @@
+/* Body Styles */
+.course-details__body {
+    width: 100%;
+    margin: 0 auto;
+    padding: 24px 32px;
+    padding-top: 0;
+}
+
+/* Header phần body */
+.course-details__body-header {
+    padding: 24px 0;
+    border: 1px solid #e0e0e0;
+    margin-bottom: 24px;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.course-details__body-header-action {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.course-details__body-header-action h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+/* Content phần body */
+.course-details__body-content {
+    display: flex;
+    gap: 24px;
+}
+
+.course-details__body-content-left {
+    flex: 1;
+}

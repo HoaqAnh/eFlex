@@ -119,3 +119,10 @@
     color: #6B7280;
     line-height: 1.6;
 }
+
+.preview-course-footer {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    margin: 10px;
+}

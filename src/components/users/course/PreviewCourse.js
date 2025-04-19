@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { getCourseLessonCount } from '../../../services/courseService';
+import { getCourseLessonCount } from '../../../services/lessonService';
+import { useNavigate } from 'react-router-dom';
 
 const PreviewCourse = ({ course, onClose }) => {
   const [lessonCount, setLessonCount] = useState({ baiHoc: 0, baiTap: 0 });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchLessonCount = async () => {
@@ -11,6 +13,11 @@ const PreviewCourse = ({ course, onClose }) => {
     };
     fetchLessonCount();
   }, [course.id]);
+
+  const handleViewDetails = () => {
+    navigate(`/courses/${course.id}`);
+    onClose();
+  };
 
   if (!course) return null;
 
@@ -44,6 +51,10 @@ const PreviewCourse = ({ course, onClose }) => {
             <div className="preview-course-description">
               <h4>Mô tả khóa học</h4>
               <p>{course.description || 'Chưa có mô tả chi tiết.'}</p>
+            </div>
+
+            <div className="preview-course-footer">
+              <button className="btn btn-primary" onClick={handleViewDetails}>Xem chi tiết</button>
             </div>
           </div>
         </div>

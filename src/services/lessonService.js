@@ -151,3 +151,115 @@ export const lessonService = {
     }
   }
 };
+
+export const getCourseLessonCount = async (courseId) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("No token found, user is not authenticated");
+      return { baiHoc: 0, baiTap: 0 };
+    }
+
+    const response = await fetch(`${BASE_URL}/course/count/${courseId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch lesson count: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error('Lỗi khi lấy số lượng bài học:', error);
+    return { baiHoc: 0, baiTap: 0 };
+  }
+};
+
+export const getCourseLessons = async (courseId) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("No token found, user is not authenticated");
+      return [];
+    }
+
+    const response = await fetch(`${BASE_URL}/lesson/${courseId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch lessons: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error('Lỗi khi lấy danh sách bài học:', error);
+    throw error;
+  }
+};
+
+export const getLessonSections = async (lessonId) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("No token found, user is not authenticated");
+      return [];
+    }
+
+    const response = await fetch(`${BASE_URL}/${lessonId}/Listsection`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch sections: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error('Lỗi khi lấy danh sách phần học:', error);
+    throw error;
+  }
+};
+
+export const getLessonDetails = async (lessonId) => {
+    try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            console.error("No token found, user is not authenticated");
+            return null;
+        }
+
+        const response = await fetch(`${BASE_URL}/GetLesson/${lessonId}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch lesson details: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        return data.data;
+    } catch (error) {
+        console.error('Lỗi khi lấy thông tin bài học:', error);
+        throw error;
+    }
+};

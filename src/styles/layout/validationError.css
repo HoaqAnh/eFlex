@@ -1,0 +1,40 @@
+/* Styles cho validation error */
+.error-message {
+    color: #e74c3c;
+    font-size: 13px;
+    margin-top: 5px;
+    display: block;
+}
+
+.input-error {
+    border: 1px solid #e74c3c !important;
+}
+
+/* Để error message hiển thị ngay dưới input */
+.add-course__form-subgroup {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.add-course__form-subgroup .error-message {
+    margin-bottom: 10px;
+}
+
+/* Hiển thị thông báo lỗi chung */
+.error-message {
+    background-color: rgba(231, 76, 60, 0.1);
+    border-left: 3px solid #e74c3c;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border-radius: 0 3px 3px 0;
+}
+
+/* Hiển thị thông báo loading */
+.loading-message {
+    background-color: rgba(52, 152, 219, 0.1);
+    border-left: 3px solid #3498db;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border-radius: 0 3px 3px 0;
+}

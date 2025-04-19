@@ -1,0 +1,120 @@
+/* lesson-with-section Styles */
+.eflex-playlist__lesson {
+    width: 100%;
+    font-family: Arial, sans-serif;
+}
+
+.lesson-body__content {
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+.lesson-body__content-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #e0e0e0;
+    cursor: pointer;
+}
+
+.lesson-body__content-top h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    display: flex;
+    align-items: center;
+}
+
+.lesson-body__content-top h3::before {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #eaf7f2;
+    color: #28a745;
+    margin-right: 10px;
+    font-size: 12px;
+}
+
+.lesson-body__content-content {
+    padding: 0;
+}
+
+.lesson-body__content-content h4 {
+    margin: 0;
+    padding: 12px 20px 12px 50px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #0066cc;
+    border-bottom: 1px solid #f0f0f0;
+    position: relative;
+    cursor: pointer;
+}
+
+.lesson-body__content-content h4::before {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    left: 20px;
+    color: #28a745;
+    font-size: 12px;
+}
+
+.lesson-body__content-content h4:hover {
+    background-color: #f5f9ff;
+}
+
+.lesson-body__content-actions {
+    padding: 16px 20px;
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+/* Nút thu gọn/mở rộng */
+.expand-button {
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.expand-button::after {
+    content: "−";
+    font-size: 18px;
+    color: #666;
+}
+
+.collapsed .expand-button::after {
+    content: "+";
+}
+
+.collapsed .lesson-body__content-content {
+    display: none;
+}
+
+/* Thiết kế cho bài học đã mở */
+.lesson-body__content.active {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Thiết kế cho bài học bị ẩn (nhấn vào nút trừ) */
+.lesson-body__content.collapsed .lesson-body__content-content,
+.lesson-body__content.collapsed .lesson-body__content-actions {
+    display: none;
+}
