@@ -1,8 +1,11 @@
 package EduConnect.Domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import net.minidev.json.annotate.JsonIgnore;
+
 import java.time.Instant;
 
 @Getter
@@ -24,6 +27,7 @@ public class Section {
     private int viTri;
     @ManyToOne
     @JoinColumn(name = "id_BaiHoc")
+    @JsonBackReference
     private Lesson lesson;
 
     @PrePersist

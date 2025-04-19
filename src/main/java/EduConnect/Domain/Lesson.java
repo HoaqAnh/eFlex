@@ -1,5 +1,6 @@
 package EduConnect.Domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +25,7 @@ public class Lesson {
     private Course course;
 
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Section> sections = new ArrayList<>();
 
     @OneToMany(mappedBy = "lesson")
