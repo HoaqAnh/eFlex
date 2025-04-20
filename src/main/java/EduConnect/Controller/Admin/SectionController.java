@@ -42,10 +42,8 @@ public class SectionController {
         if (lesson == null) {
             throw new IdInValidException("Lesson not Exists");
         }
-        List<Section> sectionList = new ArrayList<>();
-        for (Section section : lesson.getSections()) {
-            sectionList.add(section);
-        }
-        return ResponseEntity.ok(sectionList);
+        List<Section> sectionList1=lesson.getSections().stream().toList();
+        return ResponseEntity.ok(sectionList1);
     }
+
 }

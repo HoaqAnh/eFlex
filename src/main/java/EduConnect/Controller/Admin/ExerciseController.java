@@ -1,6 +1,8 @@
 package EduConnect.Controller.Admin;
 
 import EduConnect.Domain.Exercise;
+import EduConnect.Domain.Request.AnswerRequest;
+import EduConnect.Domain.Response.ScoreRes;
 import EduConnect.Service.ExerciseService;
 import EduConnect.Util.ApiMessage;
 import EduConnect.Util.Enum.Dificulty;
@@ -70,7 +72,7 @@ public class ExerciseController {
     }
 
     @GetMapping("/lesson/{lessonId}/exercises")
-    public ResponseEntity<Exercise> getExercisesByLesson(
+    public ResponseEntity<List<Exercise>> getExercisesByLesson(
             @PathVariable("lessonId") Long lessonId)
            {
 
@@ -92,5 +94,12 @@ public class ExerciseController {
         }
 
         return ResponseEntity.ok(exerciseService.findAll(pageable));
+    }
+    @PostMapping("/toScore/{idLesson}")
+    public ResponseEntity<ScoreRes> scoreExercises(
+            @PathVariable Long idLesson,
+            @RequestBody List<AnswerRequest> answerRequests) {
+        ScoreRes scoreRes = exerciseService.scoreExercises(idLesson, answerRequests);
+        return ResponseEntity.ok(scoreRes);
     }
 }
