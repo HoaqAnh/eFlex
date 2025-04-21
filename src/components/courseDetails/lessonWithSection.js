@@ -47,6 +47,12 @@ function LessonWithSection({ lesson, course }) {
         }
     };
 
+    const handleExercises = () => {
+        if (course?.id && lesson?.id) {
+            navigate(`/courses/${course.id}/lesson/${lesson.id}/exercises`);
+        }
+    };
+
     return (
         <div className="eflex-playlist__lesson">
             <div className={`lesson-body__content ${collapsed ? 'collapsed' : ''}`}>
@@ -61,7 +67,7 @@ function LessonWithSection({ lesson, course }) {
                 </div>
                 <div className="lesson-body__content-actions">
                     <button className="btn btn-section-primary" onClick={handleLessonDetails}>Bắt đầu học</button>
-                    <button className="btn btn-section-secondary">Làm bài tập</button>
+                    <button className="btn btn-section-secondary" onClick={handleExercises}>Làm bài tập</button>
                 </div>
             </div>
         </div>

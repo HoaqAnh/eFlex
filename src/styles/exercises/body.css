@@ -1,0 +1,24 @@
+.exercises__body {
+    display: flex;
+    flex-direction: column;
+    background: transparent;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.exercises__body-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Actions */
+
+.exercises__body-content-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    gap: 20px;
+}

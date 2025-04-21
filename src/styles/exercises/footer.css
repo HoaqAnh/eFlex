@@ -1,0 +1,75 @@
+.exercises__footer {
+    display: flex;
+    background: white;
+    border-top: 1px solid #eee;
+    padding: 1rem 0;
+}
+
+.exercises__footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.exercises__footer-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.button-ZoomIn,
+.button-ZoomOut {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-ZoomIn:hover,
+.button-ZoomOut:hover {
+    background-color: #f5f5f5;
+    transform: scale(1.1);
+}
+
+.zoom-icon {
+    transition: all 0.2s ease;
+    color: #666;
+}
+
+.button-ZoomIn:hover .zoom-icon,
+.button-ZoomOut:hover .zoom-icon {
+    color: #333;
+    transform: scale(1.1);
+}
+
+.exercises__footer-actions p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.exercises__footer-formCheck {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.exercises__footer-formCheck input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+}
+
+.exercises__footer-formCheck label {
+    color: #666;
+    font-size: 0.9rem;
+    cursor: pointer;
+}

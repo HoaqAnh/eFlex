@@ -17,6 +17,8 @@ import ChatBot from "./pages/users/chatbot";
 import CoursePage from "./pages/users/course";
 import CourseDetails from "./pages/users/courseDetails";
 import LessonDetails from "./pages/users/lessonDetails";
+import Exercises from "./pages/users/exercises";
+
 //admin
 import Dashboard from "./pages/admin/dashboard";
 import CoursePanel from "./pages/admin/coursePanel";
@@ -41,6 +43,7 @@ function WebSocketRoutes() {
         <Route path="/courses" element={<CoursePage />} />
         <Route path="/courses/:id" element={<CourseDetails />} />
         <Route path="/courses/:id/lesson/:lessonId" element={<LessonDetails />} />
+        <Route path="/courses/:id/lesson/:lessonId/exercises" element={<Exercises />} />
 
         {/* admin */}
         <Route path="/dashboard" element={<Dashboard />} />
