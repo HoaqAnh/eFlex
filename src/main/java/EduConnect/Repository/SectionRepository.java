@@ -19,4 +19,5 @@ public interface SectionRepository extends JpaRepository<Section, Integer> {
     @Query("SELECT MAX(l.viTri) FROM Section l WHERE l.lesson.id = ?1")
     Integer findMaxViTriBySectionId(long lessonId);
     void deleteById(long sectionId);
+    long countByLessonId(Long lessonId);
 }

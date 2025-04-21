@@ -37,7 +37,7 @@ public class SectionController {
 
     @GetMapping("/{idLesson}/Listsection")
     @ApiMessage("Get List Section")
-    public ResponseEntity<List<Section>> getListSection(@PathVariable("idLesson") int idLesson) throws IdInValidException {
+    public ResponseEntity<List<Section>> getListSection(@PathVariable("idLesson") long idLesson) throws IdInValidException {
         Lesson lesson = lessonRepository.getLessonById(idLesson);
         if (lesson == null) {
             throw new IdInValidException("Lesson not Exists");

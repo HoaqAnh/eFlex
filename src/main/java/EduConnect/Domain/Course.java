@@ -42,7 +42,7 @@ public class Course {
     @JsonIgnore
     private List<Lesson> lessonList;
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<TienDo> tienDoList;
 

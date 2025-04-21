@@ -13,14 +13,14 @@ import java.util.List;
 
 @Repository
 public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
-    @Query("SELECT COUNT(bt) FROM Exercise bt WHERE bt.lesson.id IN " +
+    @Query("SELECT COUNT(bt) FROM TestExercise bt WHERE bt.lesson.id IN " +
             "(SELECT bh.id FROM Lesson bh WHERE bh.course.id = :idCourse)")
     long countExerciseByCourseId(@Param("idCourse") long idCourse);
 
-    List<Exercise> findByLessonId(Long lessonId);
+    List<Exercise> findByTestExerciseId(Long lessonId);
 
     Page<Exercise> findByDificulty(Dificulty dificulty, Pageable pageable);
-
+    void deleteById(Long id);
     boolean existsById(Long id);
     Page<Exercise> findAll(Pageable pageable);
 }

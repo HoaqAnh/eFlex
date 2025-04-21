@@ -1,5 +1,6 @@
 package EduConnect.Domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,11 +26,17 @@ public class Lesson {
     private Course course;
 
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonIgnore
     private List<Section> sections = new ArrayList<>();
 
-    @OneToMany(mappedBy = "lesson")
-    private List<Exercise> exercises = new ArrayList<>();
+    @OneToMany(mappedBy = "lesson",cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<ProgressLesson> progressLessons;
+
+    @OneToOne(mappedBy = "lesson",cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private TestExercise testExercise;
+
 
     @PrePersist
     protected void onCreate() {

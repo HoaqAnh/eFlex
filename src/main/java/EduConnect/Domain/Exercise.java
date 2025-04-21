@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+
 @Getter
 @Setter
 @Table(name = "Bai_Tap")
@@ -33,9 +34,9 @@ public class Exercise {
     private Dificulty dificulty;
 
     @ManyToOne
-    @JoinColumn(name = "id_Lesson")
-    @JsonIgnore
-    private Lesson lesson;
+    @JoinColumn(name = "id_BKT")
+    private TestExercise testExercise;
+
 
 
 

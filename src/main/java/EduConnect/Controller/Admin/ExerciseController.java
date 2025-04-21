@@ -25,10 +25,10 @@ public class ExerciseController {
     public ExerciseController(ExerciseService exerciseService) {
         this.exerciseService = exerciseService;
     }
-    @PostMapping("/exercise/excel/{idLesson}")
+    @PostMapping("/exercise/excel/{idTestExercise}")
     @ApiMessage("Excel for Exercise")
-    public  ResponseEntity<List<Exercise>> getExercise(@PathVariable int idLesson,@RequestParam("file") MultipartFile file) {
-        return ResponseEntity.ok(this.exerciseService.excelExercise(file,idLesson));
+    public  ResponseEntity<List<Exercise>> getExercise(@PathVariable long idTestExercise,@RequestParam("file") MultipartFile file) {
+        return ResponseEntity.ok(this.exerciseService.excelExercise(file,idTestExercise));
     }
     @PostMapping("/exercise")
     public ResponseEntity<Exercise> createExercise(@RequestBody  Exercise exercise) {
@@ -48,8 +48,8 @@ public class ExerciseController {
         existingExercise.setDapAn4(exercise.getDapAn4());
         existingExercise.setDapAnDung(exercise.getDapAnDung());
         existingExercise.setDificulty(exercise.getDificulty());
-        if (exercise.getLesson() != null) {
-            existingExercise.setLesson(exercise.getLesson());
+        if (exercise.getTestExercise() != null) {
+            existingExercise.setTestExercise(exercise.getTestExercise());
         }
 
         return ResponseEntity.ok(exerciseService.save(existingExercise));
@@ -71,12 +71,12 @@ public class ExerciseController {
         return ResponseEntity.ok(exercise);
     }
 
-    @GetMapping("/lesson/{lessonId}/exercises")
+    @GetMapping("/lesson/{testExerciseId}/exercises")
     public ResponseEntity<List<Exercise>> getExercisesByLesson(
-            @PathVariable("lessonId") Long lessonId)
+            @PathVariable("testExerciseId") Long testExerciseId)
            {
 
-        return ResponseEntity.ok(exerciseService.findByLessonId(lessonId));
+        return ResponseEntity.ok(exerciseService.findByTestExerciseId(testExerciseId));
     }
 
     @GetMapping("/exercises")
@@ -95,11 +95,11 @@ public class ExerciseController {
 
         return ResponseEntity.ok(exerciseService.findAll(pageable));
     }
-    @PostMapping("/toScore/{idLesson}")
-    public ResponseEntity<ScoreRes> scoreExercises(
-            @PathVariable Long idLesson,
-            @RequestBody List<AnswerRequest> answerRequests) {
-        ScoreRes scoreRes = exerciseService.scoreExercises(idLesson, answerRequests);
-        return ResponseEntity.ok(scoreRes);
-    }
+//    @PostMapping("/toScore/{idLesson}")
+//    public ResponseEntity<ScoreRes> scoreExercises(
+//            @PathVariable Long idLesson,
+//            @RequestBody List<AnswerRequest> answerRequests) {
+//        ScoreRes scoreRes = exerciseService.scoreExercises(idLesson, answerRequests);
+//        return ResponseEntity.ok(scoreRes);
+//    }
 }

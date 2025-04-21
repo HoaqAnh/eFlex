@@ -55,6 +55,12 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
+    @OneToMany(mappedBy = "user")
+    private List<ProgressSection> progressSections;
+
+    @OneToMany(mappedBy = "user")
+    private List<ProgressLesson> progressLessons;
+
     @OneToMany(mappedBy = "nguoiDung")
     private List<TienDo> tienDoList;
     @PrePersist

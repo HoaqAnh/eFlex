@@ -15,8 +15,9 @@ import java.util.Optional;
 @Repository
 public interface LessonRepository extends JpaRepository<Lesson, Integer> , JpaSpecificationExecutor<Lesson> {
     Lesson save(Lesson lesson);
-    Lesson getLessonById(int id);
-
+    Lesson getLessonById(long id);
+    @Query("select T.id from Lesson T where T.id=?1")
+    long findLessonByLessonId(long id);
     Optional<Lesson> findById(long id);
     Page<Lesson> findAll(Pageable pageable);
     @Query("select T from Lesson T where T.course.id = ?1 order by T.viTri asc ")
@@ -25,5 +26,6 @@ public interface LessonRepository extends JpaRepository<Lesson, Integer> , JpaSp
     boolean existsByCourse_IdAndViTri(Long courseId, int viTri);
     @Query("SELECT MAX(l.viTri) FROM Lesson l WHERE l.course.id = ?1")
     Integer findMaxViTriByCourseId(long courseId);
+
 
 }

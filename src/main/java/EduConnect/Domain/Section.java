@@ -1,12 +1,14 @@
 package EduConnect.Domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import net.minidev.json.annotate.JsonIgnore;
 
 import java.time.Instant;
+import java.util.List;
 
 @Getter
 @Setter
@@ -29,6 +31,11 @@ public class Section {
     @JoinColumn(name = "id_BaiHoc")
     @JsonBackReference
     private Lesson lesson;
+
+    @OneToMany(mappedBy = "section")
+    @JsonIgnore
+    private List<ProgressSection> progressSections;
+
 
     @PrePersist
     protected void onCreate() {
