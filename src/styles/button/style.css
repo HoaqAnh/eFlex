@@ -13,7 +13,7 @@
 
 /* Base Button Style */
 .btn {
-    padding: 12px 24px;
+    padding: 8px 16px;
     border-radius: 20px;
     border: 1.8px solid #1A1A1A;
     cursor: pointer;
@@ -23,6 +23,11 @@
     position: relative;
     overflow: hidden;
     z-index: 1;
+    width: auto; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    gap: 8px;
 }
 
 /* Primary Button */
@@ -32,7 +37,7 @@
     background: #1A1A1A;
     color: #ffffff;
     border-color: #1A1A1A;
-    padding: 10px 20px;
+    padding: 8px 16px;
 }
 
 .btn-primary:hover {
@@ -55,7 +60,7 @@
     background: #1A1A1A;
     color: #ffffff;
     border-color: #1A1A1A;
-    padding: 4px 18px;
+    padding: 6px 12px;
 }
 
 .btn-section-primary:hover {
@@ -96,12 +101,7 @@
     background: #ffffff;
     color: #1A1A1A;
     border-color: #1A1A1A;
-    padding: 10px 20px;
-    width: auto; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center;
-    gap: 8px;
+    padding: 8px 16px;
 }
 
 .btn-secondary:hover {
@@ -143,11 +143,7 @@
     background: #ffffff;
     color: #1A1A1A;
     border-color: #1A1A1A;
-    padding: 4px 18px; 
-    width: auto; 
-    display: flex; 
-    align-items: center; 
-    gap: 8px;
+    padding: 6px 12px;
 }
 
 .btn-section-secondary:hover {
@@ -188,7 +184,7 @@
     background: #ffffff;
     color: #DC2626;
     border-color: #DC2626;
-    padding: 10px 20px;
+    padding: 8px 16px;
 }
 
 .btn-danger:hover {
@@ -210,11 +206,7 @@
     background: #ffffff;
     color: #DC2626;
     border-color: #DC2626;
-    padding: 4px 18px; 
-    width: auto; 
-    display: flex; 
-    align-items: center; 
-    gap: 8px;
+    padding: 6px 12px;
 }
 
 .btn-section-danger:hover {
@@ -253,7 +245,7 @@
 .btn-return {
     background: transparent;
     border: none;
-    padding: 8px;
+    padding: 6px 12px;
     color: #1A1A1A;
     display: flex;
     align-items: center;
@@ -298,10 +290,6 @@
     color: #1A1A1A;
     border-color: #1A1A1A;
     padding: 4px 18px; 
-    width: auto; 
-    display: flex; 
-    align-items: center; 
-    gap: 8px;
 }
 
 .btn-favorite:hover {

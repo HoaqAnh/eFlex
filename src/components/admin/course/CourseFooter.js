@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CourseFooter = ({ onAddCourse, selectedCoursesCount }) => {
+const CourseFooter = ({ onAddCourse, selectedCoursesCount, onDeleteCourses, onEditCourse }) => {
   return (
     <div className="footer-content">
       <button 
@@ -12,6 +12,7 @@ const CourseFooter = ({ onAddCourse, selectedCoursesCount }) => {
       <button 
         className="btn btn-secondary"
         disabled={selectedCoursesCount !== 1}
+        onClick={onEditCourse}
       >
         Chỉnh sửa
       </button>
@@ -24,6 +25,7 @@ const CourseFooter = ({ onAddCourse, selectedCoursesCount }) => {
       <button 
         className="btn btn-danger"
         disabled={selectedCoursesCount === 0}
+        onClick={onDeleteCourses}
       >
         Xóa khóa học
       </button>

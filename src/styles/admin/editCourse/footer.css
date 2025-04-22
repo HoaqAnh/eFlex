@@ -1,0 +1,11 @@
+.editCourse-footer {
+    margin-top: auto;
+    display: flex;
+    gap: 18px;
+    padding: 20px 0;
+    height: 10vh;
+    max-height: 10vh;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid #eee;
+}

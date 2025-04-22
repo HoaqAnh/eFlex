@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-const BASE_URL = "http://localhost:8080/api/v1";
+import { fetchCourses, deleteCourse } from '../services/courseService';
 
 export const useCourses = () => {
     const navigate = useNavigate();
@@ -15,6 +14,7 @@ export const useCourses = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedFilter, setSelectedFilter] = useState("");
     const [previewCourse, setPreviewCourse] = useState(null);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [pagination, setPagination] = useState({
         page: 1,
         pageSize: 20,
@@ -24,87 +24,20 @@ export const useCourses = () => {
 
     // Fetch courses from API
     useEffect(() => {
-        const fetchCourses = async () => {
+        const loadCourses = async () => {
             try {
                 setLoading(true);
-        
-                // Lấy token từ localStorage
-                const token = localStorage.getItem('token');
-                
-                if (!token) {
-                    throw new Error("Không tìm thấy token xác thực. Vui lòng đăng nhập lại.");
+                const { courses: fetchedCourses, pagination: fetchedPagination } = await fetchCourses();
+                setCourses(fetchedCourses);
+                if (fetchedPagination) {
+                    setPagination(fetchedPagination);
                 }
-                
-                const response = await fetch(`${BASE_URL}/courses`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    credentials: 'include'
-                });
-
-                if (!response.ok) {
-                    if (response.status === 401 || response.status === 403) {
-                        throw new Error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
-                    } else {
-                        throw new Error(`Lỗi ${response.status}: ${response.statusText}`);
-                    }
-                }
-
-                const responseData = await response.json();
-                
-                // Truy cập đúng cấu trúc dữ liệu theo API
-                if (responseData.data && 
-                    responseData.data.result && 
-                    Array.isArray(responseData.data.result.content)) {
-                    
-                    // Truy cập mảng courses trong cấu trúc dữ liệu
-                    const coursesData = responseData.data.result.content;
-                    
-                    /* Cập nhật thông tin phân trang */
-                    if (responseData.data.meta) {
-                        setPagination({
-                            page: responseData.data.meta.page,
-                            pageSize: responseData.data.meta.pageSize,
-                            total: responseData.data.meta.total,
-                            pages: responseData.data.meta.pages
-                        });
-                    } else if (responseData.data.result.page) {
-                        setPagination({
-                            page: responseData.data.result.page.number + 1,
-                            pageSize: responseData.data.result.page.size,
-                            total: responseData.data.result.page.totalElements,
-                            pages: responseData.data.result.page.totalPages
-                        });
-                    }
-                    
-                    // Chuyển đổi dữ liệu API thành định dạng ứng dụng
-                    const formattedCourses = coursesData.map(course => ({
-                        id: course.id,
-                        title: course.tenMon,
-                        image: course.anhMonHoc,
-                        description: course.moTa,
-                        status: course.statusCourse,
-                        createdAt: course.ngayTao,
-                        updatedAt: course.ngayCapNhat,
-                        createdBy: course.createdBy,
-                        updatedBy: course.updatedBy,
-                        category: course.category
-                    }));
-
-                    setCourses(formattedCourses);
-                } else {
-                    throw new Error("Cấu trúc dữ liệu không đúng định dạng");
-                }
-                
                 setLoading(false);
             } catch (err) {
                 console.error('Error fetching courses:', err);
                 setError(err.message || 'Không thể tải danh sách khóa học. Vui lòng thử lại sau.');
                 setLoading(false);
-                
-                // Nếu lỗi là do xác thực, chuyển hướng đến trang đăng nhập
+
                 if (err.message.includes("đăng nhập lại")) {
                     localStorage.removeItem('token');
                     navigate('/login');
@@ -112,7 +45,7 @@ export const useCourses = () => {
             }
         };
 
-        fetchCourses();
+        loadCourses();
     }, [navigate]);
 
     const filteredCourses = useMemo(() => {
@@ -164,6 +97,56 @@ export const useCourses = () => {
         setPreviewCourse(null);
     };
 
+    const handleDeleteClick = () => {
+        if (selectedCourses.length === 0) {
+            setError("Vui lòng chọn ít nhất một khóa học để xóa");
+            return;
+        }
+        setShowDeleteConfirm(true);
+    };
+
+    const handleDeleteConfirm = async () => {
+        try {
+            setLoading(true);
+            setShowDeleteConfirm(false);
+            
+            // Xóa từng khóa học một
+            for (const courseId of selectedCourses) {
+                await deleteCourse(courseId);
+            }
+            
+            // Cập nhật lại danh sách khóa học sau khi xóa
+            const { courses: updatedCourses, pagination: updatedPagination } = await fetchCourses();
+            setCourses(updatedCourses);
+            if (updatedPagination) {
+                setPagination(updatedPagination);
+            }
+            
+            // Reset các state liên quan
+            setSelectedCourses([]);
+            setSelectAll(false);
+            setError(null);
+        } catch (error) {
+            console.error('Error deleting courses:', error);
+            setError(error.message || 'Không thể xóa khóa học. Vui lòng thử lại sau.');
+            
+            if (error.message.includes("đăng nhập lại")) {
+                localStorage.removeItem('token');
+                navigate('/login');
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleDeleteCancel = () => {
+        setShowDeleteConfirm(false);
+    };
+
+    const handleEditCourse = () => {
+        navigate(`/coursePanel/editCourse/${selectedCourses[0]}`);
+    };
+
     return {
         courses,
         loading,
@@ -175,6 +158,7 @@ export const useCourses = () => {
         previewCourse,
         filteredCourses,
         pagination,
+        showDeleteConfirm,
         handleAddCourse,
         handleSelectAll,
         handleSelectCourse,
@@ -182,5 +166,9 @@ export const useCourses = () => {
         handleFilterChange,
         handlePreviewCourse,
         handleClosePreview,
+        handleDeleteClick,
+        handleDeleteConfirm,
+        handleDeleteCancel,
+        handleEditCourse
     };
 };

@@ -8,6 +8,7 @@ import CourseHeader from "../../components/admin/course/CourseHeader";
 import CourseGrid from "../../components/admin/course/CourseGrid";
 import CourseFooter from "../../components/admin/course/CourseFooter";
 import PreviewCourse from "../../components/admin/course/PreviewCourse";
+import ConfirmDialog from "../../components/common/ConfirmDialog";
 
 //data
 import { filterOptions } from "../../data/courseData";
@@ -32,13 +33,18 @@ function CoursePanel() {
         selectedFilter,
         previewCourse,
         filteredCourses,
+        showDeleteConfirm,
         handleAddCourse,
         handleSelectAll,
         handleSelectCourse,
         handleSearch,
         handleFilterChange,
         handlePreviewCourse,
-        handleClosePreview
+        handleClosePreview,
+        handleDeleteClick,
+        handleDeleteConfirm,
+        handleDeleteCancel,
+        handleEditCourse
     } = useCourses();
 
     const { isAdmin, isAuthenticated, isLoading, error } = useAuth();
@@ -97,6 +103,9 @@ function CoursePanel() {
                     <CourseFooter
                         onAddCourse={handleAddCourse}
                         selectedCoursesCount={selectedCourses.length}
+                        onDeleteCourses={handleDeleteClick}
+                        isDeleting={coursesLoading}
+                        onEditCourse={handleEditCourse}
                     />
                 </div>
             </div>
@@ -107,6 +116,14 @@ function CoursePanel() {
                     onClose={handleClosePreview}
                 />
             )}
+
+            <ConfirmDialog
+                isOpen={showDeleteConfirm}
+                onClose={handleDeleteCancel}
+                onConfirm={handleDeleteConfirm}
+                title="Xác nhận xóa khóa học"
+                message={`Bạn có chắc chắn muốn xóa ${selectedCourses.length} khóa học đã chọn? Hành động này không thể hoàn tác.`}
+            />
         </div>
     );
 }

@@ -1,0 +1,182 @@
+.addCourse-body {
+    background-color: #ffffff;
+    border-radius: 20px;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    padding: 30px 40px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.addCourse-body__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.addCourse-body__form-group {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 20px;
+}
+
+.addCourse-body__image-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.addCourse-body__image-placeholder {
+    width: 150px;
+    height: 150px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    justify-content: center;
+}
+
+.addCourse-body__image-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* hoặc "contain" nếu bạn muốn vừa khung mà không bị crop */
+    border-radius: 4px;
+}
+
+.addCourse-body__label {
+    display: block;
+    font-weight: 400;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.addCourse-body__input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+.addCourse-body__form-subgroup {
+    flex: 1;
+}
+
+.addCourse-body__form-subgroup-2 {
+    display: flex;
+    align-items: center;
+}
+
+/* Tải lên hình ảnh */
+.addCourse-body__input-file-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: start;
+}
+
+.addCourse-body__input-file {
+    position: absolute;
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.addCourse-body__input-file-label {
+    min-width: 90px;
+    text-align: center;
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #5a80ac;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.addCourse-body__input-file-label::before {
+    font-weight: 900;
+    margin-right: 8px;
+}
+
+.addCourse-body__input-file-label:hover {
+    background-color: #4a90e2;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-1px);
+}
+
+.addCourse-body__input-file:focus + .addCourse-body__input-file-label {
+    outline: 2px solid #4a90e2;
+    outline-offset: 2px;
+}
+
+.addCourse-body__input-file-name {
+    padding: 8px 12px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px;
+}
+
+.addCourse-body__form-subgroup-2-item {
+    flex: 1;
+}
+
+.addCourse-body__select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: white;
+    margin-bottom: 16px;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 16px;  
+}
+
+.addCourse-body__textarea {
+    width: 100%;
+    height: 100%;
+    min-height: 100px;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    resize: vertical;
+}
+
+.input-error {
+    border-color: #ff4d4f;
+}
+
+.addCourse-body__error-message {
+    color: #ff4d4f;
+    font-size: 12px;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+
+
+
+
+
+
+
+

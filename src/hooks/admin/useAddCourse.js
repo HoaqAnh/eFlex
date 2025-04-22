@@ -20,7 +20,8 @@ export const useAddCourse = () => {
     const [formErrors, setFormErrors] = useState({
         tenMon: "",
         moTa: "",
-        category: ""
+        category: "",
+        image: ""
     });
     
     // State cho tệp hình ảnh và preview
@@ -46,16 +47,44 @@ export const useAddCourse = () => {
     // Xử lý chọn hình ảnh
     const handleImageSelect = (event) => {
         const file = event.target.files[0];
-        if (file) {
-            setSelectedImage(file);
-            
-            // Tạo preview cho hình ảnh
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImagePreview(reader.result);
-            };
-            reader.readAsDataURL(file);
+        if (!file) return;
+
+        // Kiểm tra định dạng file
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+        if (!allowedTypes.includes(file.type)) {
+            setFormErrors(prev => ({
+                ...prev,
+                image: 'Chỉ chấp nhận file ảnh có định dạng JPG, JPEG hoặc PNG'
+            }));
+            event.target.value = ''; // Reset input file
+            return;
         }
+
+        // Kiểm tra kích thước file (ví dụ: tối đa 5MB)
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        if (file.size > maxSize) {
+            setFormErrors(prev => ({
+                ...prev,
+                image: 'Kích thước file không được vượt quá 5MB'
+            }));
+            event.target.value = ''; // Reset input file
+            return;
+        }
+
+        // Xóa lỗi nếu file hợp lệ
+        setFormErrors(prev => ({
+            ...prev,
+            image: ''
+        }));
+        
+        setSelectedImage(file);
+        
+        // Tạo preview cho hình ảnh
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setImagePreview(reader.result);
+        };
+        reader.readAsDataURL(file);
     };
 
     // Hàm xóa ảnh đã chọn

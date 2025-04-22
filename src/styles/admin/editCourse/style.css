@@ -1,0 +1,24 @@
+.editCourse {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    height: 100vh;
+    background-color: #F4FAFF;
+}
+
+.editCourse__main-content {
+    flex: 1;
+    padding: 40px;
+    padding-bottom: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.editCourse__content-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
