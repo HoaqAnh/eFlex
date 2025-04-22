@@ -61,6 +61,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<ProgressLesson> progressLessons;
 
+    @OneToMany(mappedBy = "user")
+    private List<Assessment> assessments;
+
     @OneToMany(mappedBy = "nguoiDung")
     private List<TienDo> tienDoList;
     @PrePersist
