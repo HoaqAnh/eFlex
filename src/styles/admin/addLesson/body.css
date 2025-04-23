@@ -1,0 +1,68 @@
+.addLesson-body {
+    background-color: #ffffff;
+    border-radius: 20px;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    padding: 30px 40px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.addLesson-body__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.addLesson-body__form-group {
+    display: flex;
+    gap: 15px;
+    flex-direction: column;
+}
+
+.addLesson-body__form-subgroup {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.addLesson-body__form-subgroup label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.add-lesson__input {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+/* Section */
+.addSection-body__form-group {
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    height: auto;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    margin-top: 35px;
+}
+
+.addSection-body__form-subgroup-container {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+    transition: all 0.3s ease;
+    border-top: 1px solid #ddd;
+}
+
+.addSection-body__form-group.collapsed .addSection-body__form-subgroup-container {
+    display: none;
+}

@@ -2,19 +2,19 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 
 //components
-import Navbar from "../../components/navbar";
-import LessonForm from "../../components/admin/course/addLessonForm";
-import LessonActions from "../../components/admin/course/addLessonAction";
+import Navbar from "../../../components/navbar";
+import Header from "../../../components/admin/course/addLesson/header";
+import Body from "../../../components/admin/course/addLesson/body";
+import Footer from "../../../components/admin/course/addLesson/footer";
 
 //hooks
-import { useLessonAndSections } from "../../hooks/admin/useLesson-Section";
-import { useAuth } from "../../hooks/useAuth";
+import { useLessonAndSections } from "../../../hooks/admin/useLesson-Section";
+import { useAuth } from "../../../hooks/useAuth";
 
-//style
-import "../../styles/admin/addLesson.css";
-import "../../styles/button/style.css";
+//styles
+import "../../../styles/admin/addLesson/style.css";
 
-function AddLesson() {
+const AddLesson = () => {
     const {
         lessonData,
         loading,
@@ -51,36 +51,39 @@ function AddLesson() {
     }
 
     return (
-        <div className="add-lesson">
+        <div className="addLesson">
             <Navbar />
-            <div className="add-lesson__main-content">
+            <div className="addLesson__main-content">
                 {addLessonError && <div className="error-message">{addLessonError}</div>}
                 {loading ? (
                     <div className="loading-message">Đang thêm bài học...</div>
                 ) : (
                     <>
-                        <LessonForm
-                            lessonData={lessonData}
-                            lessonErrors={lessonErrors}
-                            sectionForms={sectionForms}
-                            sectionErrors={sectionErrors}
-                            handleLessonInputChange={handleLessonInputChange}
-                            handleSectionInputChange={handleSectionInputChange}
-                            handleAddSection={handleAddSection}
-                            handleRemoveSection={handleRemoveSection}
-                        />
-                        <LessonActions
-                            handleSubmit={handleSubmit}
+                        <Header />
+                        <div className="addLesson__content-wrapper">
+                            <Body
+                                lessonData={lessonData}
+                                lessonErrors={lessonErrors}
+                                handleLessonInputChange={handleLessonInputChange}
+                                handleSectionInputChange={handleSectionInputChange}
+                                sectionData={sectionForms}
+                                sectionErrors={sectionErrors}
+                                handleRemoveSection={handleRemoveSection}
+                            />
+                        </div>
+                        <Footer 
                             handleBack={handleBack}
                             handleAddAndContinue={handleAddAndContinue}
-                            handleAddSection={handleAddSection}
+                            handleSubmit={handleSubmit}
                             handleUploadTest={handleUploadTest}
+                            handleAddSection={handleAddSection}
+                            // handleAddTest={handleAddTest}
                         />
                     </>
                 )}
             </div>
         </div>
     );
-}
+};
 
 export default AddLesson;

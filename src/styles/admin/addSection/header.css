@@ -1,0 +1,27 @@
+.addSection-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.addSection-header h2 {
+    color: #333;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.addSection-header__toggle {
+    background-color: #eee;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #666;
+    transition: all 0.3s ease;
+}
+
+.addSection-header__toggle:hover {
+    background-color: #e0e0e0;
+}

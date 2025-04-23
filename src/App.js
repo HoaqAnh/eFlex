@@ -23,8 +23,9 @@ import Exercises from "./pages/users/exercises";
 import Dashboard from "./pages/admin/dashboard";
 import CoursePanel from "./pages/admin/coursePanel";
 import AddCourse from "./pages/admin/course/addCourse";
-import AddLesson from "./pages/admin/addLesson";
+import AddLesson from "./pages/admin/course/addLesson";
 import EditCourse from "./pages/admin/course/editCourse";
+import AddTest from "./pages/admin/course/addTest";
 
 //style
 import "./styles/Global.css";
@@ -51,7 +52,8 @@ function WebSocketRoutes() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/coursePanel" element={<CoursePanel />} />
         <Route path="/coursePanel/addCourse" element={<AddCourse />} />
-        <Route path="/coursePanel/addCourse/addLesson" element={<AddLesson />} />
+        <Route path="/coursePanel/addCourse/:id/addLesson" element={<AddLesson />} />
+        <Route path="/coursePanel/addCourse/:id/addLesson/:lessonId/addTest" element={<AddTest />} />
         <Route path="/coursePanel/editCourse/:id" element={<EditCourse />} />
       </Routes>
     </WebSocketProvider>

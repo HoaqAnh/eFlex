@@ -132,14 +132,14 @@ export const useAddCourse = () => {
             }
             
             // Gọi API tạo khóa học
-            const responseData = await apiMethod(courseData, imageUrl);
-            console.log('Khóa học đã được thêm thành công:', responseData);
+            const response = await apiMethod(courseData, imageUrl);
+            console.log('Khóa học đã được thêm thành công:', response);
             
             // Xử lý điều hướng
             if (extractId) {
-                const newCourseId = responseData.data.id;
-                navigate(redirectPath, { state: { courseId: newCourseId } });
+                const newCourseId = response.data.id;
                 console.log("newCourseId: ", newCourseId);
+                return newCourseId;
             } else {
                 navigate(redirectPath);
             }
@@ -160,7 +160,12 @@ export const useAddCourse = () => {
 
     // Các handler gọi API với các phương thức khác nhau
     const handleSubmit = () => submitCourse(CourseApi.addCourse, '/coursePanel');
-    const handleNext = () => submitCourse(CourseApi.addCourse, '/coursePanel/addCourse/addLesson', true);
+    const handleNext = async () => {
+        const courseId = await submitCourse(CourseApi.addCourse, null, true);
+        if (courseId) {
+            navigate(`/coursePanel/addCourse/${courseId}/addLesson`);
+        }
+    };
     const handleSubmitDraft = () => submitCourse(CourseApi.saveCourseAsDraft, '/coursePanel');
     
     // Xử lý quay lại

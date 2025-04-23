@@ -1,15 +1,12 @@
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { lessonService } from '../../services/lessonService';
 import { toast } from 'react-hot-toast';
 
 export const useLessonAndSections = () => {
     const navigate = useNavigate();
-    const location = useLocation();
+    const { id: courseId } = useParams();
     
-    // Lấy courseId từ state của location
-    const courseId = location.state?.courseId;
-
     // State cho lesson
     const [lessonData, setLessonData] = useState({
         tenBai: "",
@@ -41,6 +38,28 @@ export const useLessonAndSections = () => {
 
     // State cho file Excel
     const [excelFile, setExcelFile] = useState(null);
+
+    // Kiểm tra nếu không có courseId
+    if (!courseId) {
+        console.error('Không tìm thấy courseId');
+        navigate('/coursePanel');
+        return {
+            lessonData,
+            loading,
+            error: 'Không tìm thấy courseId',
+            lessonErrors,
+            sectionForms,
+            sectionErrors,
+            handleLessonInputChange: () => {},
+            handleSectionInputChange: () => {},
+            handleAddSection: () => {},
+            handleRemoveSection: () => {},
+            handleSubmit: () => {},
+            handleAddAndContinue: () => {},
+            handleBack: () => {},
+            handleUploadTest: () => {}
+        };
+    }
 
     // Xử lý thay đổi input cho lesson
     const handleLessonInputChange = (field, value) => {
@@ -211,7 +230,14 @@ export const useLessonAndSections = () => {
 
     // Xử lý gửi form và quay lại danh sách bài học
     const handleSubmit = async () => {
+        console.log('handleSubmit called');
+        console.log('Lesson data:', lessonData);
+        console.log('Section forms:', sectionForms);
+        console.log('Course ID:', courseId);
+        
         const result = await submitLessonWithSections();
+        console.log('Submit result:', result);
+        
         if (result.success) {
             // Nếu có file Excel đã chọn, thực hiện upload
             if (excelFile) {
@@ -232,7 +258,14 @@ export const useLessonAndSections = () => {
 
     // Xử lý thêm bài học và tiếp tục thêm bài học mới
     const handleAddAndContinue = async () => {
+        console.log('handleAddAndContinue called');
+        console.log('Lesson data:', lessonData);
+        console.log('Section forms:', sectionForms);
+        console.log('Course ID:', courseId);
+        
         const result = await submitLessonWithSections();
+        console.log('Submit result:', result);
+        
         if (result.success) {
             // Nếu có file Excel đã chọn, thực hiện upload
             if (excelFile) {
