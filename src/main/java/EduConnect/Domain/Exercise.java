@@ -18,7 +18,7 @@ public class Exercise {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String CauHoi;
+    private String cauHoi;
     @Column(columnDefinition = "MEDIUMTEXT")
     private String dapAn1;
     @Column(columnDefinition = "MEDIUMTEXT")
@@ -34,10 +34,7 @@ public class Exercise {
     private Dificulty dificulty;
 
     @ManyToOne
-    @JoinColumn(name = "id_BKT")
+    @JoinColumn(name = "id_bkt")
     private TestExercise testExercise;
-
-
-
 
 }

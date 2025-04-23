@@ -35,16 +35,17 @@ public class TestExerciseService {
     }
     @Transactional
     public void deleteTestExercise(Long id) {
-        TestExercise testExercise = testExerciseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Bài kiểm tra không tồn tại: " + id));
+        Optional<TestExercise> optional = testExerciseRepository.findById(id);
 
-        if (testExercise.getExerciseList() != null) {
-            for(Exercise exercise : testExercise.getExerciseList()) {
-                this.exerciseRepository.deleteById(exercise.getId());
-            }
+        if (optional.isPresent()) {
+            TestExercise test = optional.get();
+
+            test.getExerciseList().clear();
+
+            testExerciseRepository.delete(test);
+        } else {
+            throw new RuntimeException("TestExercise id " + id + " doesn't exist");
         }
-
-        testExerciseRepository.deleteById(id);
     }
 
     public TestExercise getTestExerciseById(Long id) {
