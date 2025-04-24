@@ -8,7 +8,7 @@ import Body from "../../../components/admin/course/addLesson/body";
 import Footer from "../../../components/admin/course/addLesson/footer";
 
 //hooks
-import { useLessonAndSections } from "../../../hooks/admin/useLesson-Section";
+import { useLessonManagement } from "../../../hooks/admin/useLessonManagement";
 import { useAuth } from "../../../hooks/useAuth";
 
 //styles
@@ -29,8 +29,11 @@ const AddLesson = () => {
         handleSubmit,
         handleAddAndContinue,
         handleBack,
-        handleUploadTest
-    } = useLessonAndSections();
+        handleUploadTest,
+
+        // Bài kiểm tra
+        handleAddTest
+    } = useLessonManagement();
 
     const { isAdmin, isAuthenticated, isLoading, error } = useAuth();
 
@@ -75,9 +78,8 @@ const AddLesson = () => {
                             handleBack={handleBack}
                             handleAddAndContinue={handleAddAndContinue}
                             handleSubmit={handleSubmit}
-                            handleUploadTest={handleUploadTest}
                             handleAddSection={handleAddSection}
-                            // handleAddTest={handleAddTest}
+                            handleAddTest={handleAddTest}
                         />
                     </>
                 )}

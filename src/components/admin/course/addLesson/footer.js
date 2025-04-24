@@ -3,7 +3,7 @@ import React from "react";
 //styles
 import "../../../../styles/admin/addLesson/footer.css";
 
-const Footer = ({ handleBack, handleAddAndContinue, handleSubmit, handleUploadTest, handleAddSection, handleAddTest }) => {
+const Footer = ({ handleBack, handleAddAndContinue, handleSubmit, handleAddSection, handleAddTest }) => {
     return (
         <div className="addLesson-footer">
             <button className="btn btn-return" onClick={handleBack}>

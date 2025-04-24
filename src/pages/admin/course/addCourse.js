@@ -8,7 +8,7 @@ import Body from "../../../components/admin/course/addCourse/body";
 import Footer from "../../../components/admin/course/addCourse/footer";
 
 //hooks
-import { useAddCourse } from "../../../hooks/admin/useAddCourse";
+import { useCourse } from "../../../hooks/admin/useCourse";
 import { useAuth } from "../../../hooks/useAuth";
 
 //styles
@@ -28,7 +28,7 @@ const AddCourse = () => {
         handleBack,
         handleSubmitDraft,
         handleNext
-    } = useAddCourse();
+    } = useCourse();
 
     const { isAdmin, isAuthenticated, isLoading, error: authError } = useAuth();
 

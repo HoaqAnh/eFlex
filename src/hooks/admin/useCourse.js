@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CourseApi } from '../../services/courseService';
+import { useValidation } from './useValidation';
 
-export const useAddCourse = () => {
+export const useCourse = () => {
     const navigate = useNavigate();
+    const { validateCourseForm } = useValidation();
     
     // State cho dữ liệu khóa học
     const [courseData, setCourseData] = useState({
@@ -99,14 +101,9 @@ export const useAddCourse = () => {
 
     // Validate form
     const validateForm = () => {
-        const errors = {
-            tenMon: !courseData.tenMon.trim() ? "Vui lòng nhập tên khóa học" : "",
-            moTa: !courseData.moTa.trim() ? "Vui lòng nhập mô tả khóa học" : "",
-            category: !courseData.category ? "Vui lòng chọn danh mục" : ""
-        };
-
+        const { isValid, errors } = validateCourseForm(courseData);
         setFormErrors(errors);
-        return !Object.values(errors).some(error => error);
+        return isValid;
     };
 
     // Thực hiện gọi API
