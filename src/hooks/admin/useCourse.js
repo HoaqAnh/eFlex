@@ -1,12 +1,11 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CourseApi } from '../../services/courseService';
+import { CourseApi, getCourseDetails } from '../../services/courseService';
 import { useValidation } from './useValidation';
 
 export const useCourse = () => {
     const navigate = useNavigate();
     const { validateCourseForm } = useValidation();
-    
     // State cho dữ liệu khóa học
     const [courseData, setCourseData] = useState({
         tenMon: "",
@@ -14,7 +13,7 @@ export const useCourse = () => {
         moTa: "",
         anhMonHoc: null
     });
-    
+
     // State cho trạng thái và validation
     const [loading, setLoading] = useState(false);
     const [uploadingImage, setUploadingImage] = useState(false);
@@ -25,7 +24,7 @@ export const useCourse = () => {
         category: "",
         image: ""
     });
-    
+
     // State cho tệp hình ảnh và preview
     const [selectedImage, setSelectedImage] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
@@ -36,7 +35,7 @@ export const useCourse = () => {
             ...prev,
             [field]: value
         }));
-        
+
         // Xóa thông báo lỗi khi người dùng bắt đầu nhập
         if (formErrors[field]) {
             setFormErrors(prev => ({
@@ -78,9 +77,9 @@ export const useCourse = () => {
             ...prev,
             image: ''
         }));
-        
+
         setSelectedImage(file);
-        
+
         // Tạo preview cho hình ảnh
         const reader = new FileReader();
         reader.onloadend = () => {
@@ -113,7 +112,7 @@ export const useCourse = () => {
         try {
             setLoading(true);
             setError(null);
-            
+
             // Upload hình ảnh nếu có
             let imageUrl = null;
             if (selectedImage) {
@@ -127,11 +126,11 @@ export const useCourse = () => {
                     setUploadingImage(false);
                 }
             }
-            
+
             // Gọi API tạo khóa học
             const response = await apiMethod(courseData, imageUrl);
             console.log('Khóa học đã được thêm thành công:', response);
-            
+
             // Xử lý điều hướng
             if (extractId) {
                 const newCourseId = response.data.id;
@@ -140,11 +139,11 @@ export const useCourse = () => {
             } else {
                 navigate(redirectPath);
             }
-            
+
         } catch (err) {
             console.error('Lỗi khi thêm khóa học:', err);
             setError(err.message || 'Không thể thêm khóa học. Vui lòng thử lại sau.');
-            
+
             // Nếu lỗi là do xác thực, chuyển hướng đến trang đăng nhập
             if (err.message.includes("đăng nhập lại")) {
                 localStorage.removeItem('token');
@@ -164,9 +163,43 @@ export const useCourse = () => {
         }
     };
     const handleSubmitDraft = () => submitCourse(CourseApi.saveCourseAsDraft, '/coursePanel');
-    
+
     // Xử lý quay lại
     const handleBack = () => navigate('/coursePanel');
+
+
+    // Lấy thông tin khóa học
+    const handleGetCourseDetails = useCallback(async (courseId) => {
+        if (!courseId) return setError('Không tìm thấy ID khóa học');
+
+        try {
+            setLoading(true);
+            setError(null);
+
+            const course = await getCourseDetails(courseId);
+            if (!course) return setError('Không tìm thấy thông tin khóa học');
+
+            setCourseData({
+                tenMon: course?.tenMon ?? "",
+                category: course?.category ?? { id: "", nameCategory: "" },
+                moTa: course?.moTa ?? "",
+                anhMonHoc: course?.anhMonHoc ?? null
+            });
+
+        } catch (error) {
+            console.error('Lỗi khi lấy thông tin khóa học:', error);
+
+            const message = error?.message || 'Không thể lấy thông tin khóa học. Vui lòng thử lại sau.';
+            setError(message);
+
+            if (message.includes("đăng nhập lại") && typeof navigate === 'function') {
+                localStorage.removeItem('token');
+                navigate('/login');
+            }
+        } finally {
+            setLoading(false);
+        }
+    }, [setCourseData, setError, setLoading, navigate]);
 
     return {
         courseData,
@@ -182,6 +215,7 @@ export const useCourse = () => {
         handleSubmit,
         handleBack,
         handleNext,
-        handleSubmitDraft
+        handleSubmitDraft,
+        handleGetCourseDetails
     };
 };

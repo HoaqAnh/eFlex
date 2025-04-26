@@ -18,7 +18,7 @@ function Navbar() {
   const userBtnRef = useRef(null);
   const navigate = useNavigate();
 
-  const { username, logout, isLoading } = useAuth();
+  const { username, logout } = useAuth();
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -60,10 +60,6 @@ function Navbar() {
   const cancelLogout = () => {
     setShowLogoutConfirm(false);
   };
-
-  if (isLoading) {
-    return <div className="navbar__loading">Loading...</div>;
-  }
 
   return (
     <div className="navbar">

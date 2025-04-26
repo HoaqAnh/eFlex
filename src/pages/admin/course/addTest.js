@@ -44,7 +44,7 @@ const AddTest = () => {
             toast.error(result.error || 'Có lỗi xảy ra khi tạo bài kiểm tra');
         }
         if (result.success) {
-            // toast.success(result.message || 'Bài kiểm tra đã được tạo thành công');
+            toast.success(result.message || 'Bài kiểm tra đã được tạo thành công');
             navigate(`/coursePanel`);
         }
     };

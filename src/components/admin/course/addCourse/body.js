@@ -46,7 +46,8 @@ const Body = ({
                             <div className="addCourse-body__form-subgroup-2-item">
                                 <label className="addCourse-body__label">Ảnh môn học</label>
                                 <div className="addCourse-body__input-file-container">
-                                    <input type="file"
+                                    <input 
+                                        type="file"
                                         id="courseImage"
                                         className="addCourse-body__input-file"
                                         onChange={handleImageSelect}
@@ -61,7 +62,7 @@ const Body = ({
                                     </div>
 
                                     {selectedImage && (
-                                        <button 
+                                        <button
                                             type="button"
                                             className="btn btn-section-danger"
                                             onClick={handleRemoveImage}
@@ -90,7 +91,7 @@ const Body = ({
                                     ) : error ? (
                                         <option value="" disabled>Có lỗi xảy ra khi tải danh mục</option>
                                     ) : (
-                                        categories.map((category) => (
+                                        categories?.length > 0 && categories.map((category) => (
                                             <option key={category.id} value={category.id}>
                                                 {category.nameCategory}
                                             </option>
@@ -113,5 +114,5 @@ const Body = ({
         </div>
     );
 };
-export default Body;
 
+export default Body;

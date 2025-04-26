@@ -9,20 +9,18 @@ export const loginService = async (email, password) => {
     credentials: "include",
   });
 
-  const data = await response.json(); // Lấy dữ liệu phản hồi bất kể thành công hay thất bại
+  const data = await response.json();
   // console.log("data", data);
 
   if (!response.ok) {
-    // Trả về object chứa thông tin lỗi
     return {
       success: false,
       error: data.message || "Failed to login.",
       status: response.status,
-      data: data, // Có thể bao gồm dữ liệu bổ sung từ server nếu có
+      data: data,
     };
   }
 
-  // Trả về object khi thành công
   return {
     success: true,
     data: data,

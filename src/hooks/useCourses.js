@@ -4,7 +4,6 @@ import { fetchCourses, deleteCourse } from '../services/courseService';
 
 export const useCourses = () => {
     const navigate = useNavigate();
-
     // States
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -144,6 +143,14 @@ export const useCourses = () => {
     };
 
     const handleEditCourse = () => {
+        if (selectedCourses.length === 0) {
+            setError("Vui lòng chọn một khóa học để chỉnh sửa");
+            return;
+        }
+        if (selectedCourses.length > 1) {
+            setError("Chỉ có thể chỉnh sửa một khóa học tại một thời điểm");
+            return;
+        }
         navigate(`/coursePanel/editCourse/${selectedCourses[0]}`);
     };
 

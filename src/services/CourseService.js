@@ -18,11 +18,16 @@ export const getCourseDetails = async (courseId) => {
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch course details: ${response.statusText}`);
+      if (response.status === 401 || response.status === 403) {
+        throw new Error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
+      } else {
+        throw new Error(`Lỗi ${response.status}: ${response.statusText}`);
+      }
     }
 
-    const data = await response.json();
-    return data.data;
+    const responseData = await response.json();
+    return responseData.data;
+
   } catch (error) {
     console.error('Lỗi khi lấy thông tin khóa học:', error);
     throw error;
@@ -130,7 +135,7 @@ export const deleteCourse = async (courseId) => {
       },
       credentials: 'include'
     });
-    
+
     if (!response.ok) {
       throw new Error(`Lỗi xóa khóa học: ${response.statusText}`);
     }
@@ -168,11 +173,11 @@ export const fetchCourses = async () => {
     }
 
     const responseData = await response.json();
-    
-    if (responseData.data && 
-        responseData.data.result && 
-        Array.isArray(responseData.data.result.content)) {
-      
+
+    if (responseData.data &&
+      responseData.data.result &&
+      Array.isArray(responseData.data.result.content)) {
+
       const coursesData = responseData.data.result.content;
       const pagination = responseData.data.meta ? {
         page: responseData.data.meta.page,
@@ -185,7 +190,7 @@ export const fetchCourses = async () => {
         total: responseData.data.result.page.totalElements,
         pages: responseData.data.result.page.totalPages
       } : null;
-      
+
       const formattedCourses = coursesData.map(course => ({
         id: course.id,
         title: course.tenMon,
