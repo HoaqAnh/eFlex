@@ -11,10 +11,7 @@ import EduConnect.Repository.LessonRepository;
 import EduConnect.Repository.TestExerciseRepository;
 import EduConnect.Util.Enum.AnswerCorrect;
 import EduConnect.Util.Enum.Dificulty;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.usermodel.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -40,7 +37,7 @@ public class ExerciseService {
     public Page<Exercise> findAll(Pageable pageable) {
         return exerciseRepository.findAll(pageable);
     }
-    public List<Exercise> excelExercise(MultipartFile file, long idTestExercise)  {
+    public List<Exercise> excelExercise(MultipartFile file, long idTestExercise) {
         List<Exercise> exerciseList = new ArrayList<>();
         try {
             System.out.println("File type: " + file.getContentType());
@@ -55,14 +52,21 @@ public class ExerciseService {
             for (Row row : sheet) {
                 if (row.getRowNum() == 0) continue;
 
+                Cell questionCell = row.getCell(0);
+                if (questionCell == null || questionCell.getCellType() == CellType.BLANK ||
+                        (questionCell.getCellType() == CellType.STRING && questionCell.getStringCellValue().trim().isEmpty())) {
+                    continue;
+                }
+
                 Exercise exercise = new Exercise();
-                exercise.setCauHoi(row.getCell(0).getStringCellValue());
-                exercise.setDapAn1(row.getCell(1).getStringCellValue());
-                exercise.setDapAn2(row.getCell(2).getStringCellValue());
-                exercise.setDapAn3(row.getCell(3).getStringCellValue());
-                exercise.setDapAn4(row.getCell(4).getStringCellValue());
-                String correctAnswer = row.getCell(5).getStringCellValue();
-                String dificultyAnswer = row.getCell(6).getStringCellValue();
+                exercise.setCauHoi(questionCell.getStringCellValue());
+
+                exercise.setDapAn1(getCellStringValue(row.getCell(1)));
+                exercise.setDapAn2(getCellStringValue(row.getCell(2)));
+                exercise.setDapAn3(getCellStringValue(row.getCell(3)));
+                exercise.setDapAn4(getCellStringValue(row.getCell(4)));
+
+                String correctAnswer = getCellStringValue(row.getCell(5));
                 if (correctAnswer != null && !correctAnswer.isEmpty()) {
                     try {
                         exercise.setDapAnDung(AnswerCorrect.valueOf(correctAnswer.toUpperCase()));
@@ -70,12 +74,13 @@ public class ExerciseService {
                         throw new IllegalArgumentException("Invalid Correct Answer value in row " + (row.getRowNum() + 1) + ": " + correctAnswer);
                     }
                 }
-                if (dificultyAnswer != null && !dificultyAnswer.isEmpty()) {
-                        exercise.setDificulty(Dificulty.valueOf(dificultyAnswer.toUpperCase()));
-                }
-                else {
+                String difficultyAnswer = getCellStringValue(row.getCell(6));
+                if (difficultyAnswer != null && !difficultyAnswer.isEmpty()) {
+                    exercise.setDificulty(Dificulty.valueOf(difficultyAnswer.toUpperCase()));
+                } else {
                     exercise.setDificulty(Dificulty.EASY);
                 }
+
                 Optional<TestExercise> lesson1 = testExerciseRepository.findById(idTestExercise);
                 lesson1.ifPresent(exercise::setTestExercise);
 
@@ -84,8 +89,19 @@ public class ExerciseService {
             workbook.close();
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException("Error processing Excel file: " + e.getMessage());
         }
         return exerciseRepository.saveAll(exerciseList);
+    }
+
+    private String getCellStringValue(Cell cell) {
+        if (cell == null || cell.getCellType() == CellType.BLANK) {
+            return null;
+        }
+        if (cell.getCellType() == CellType.STRING) {
+            return cell.getStringCellValue().trim();
+        }
+        return String.valueOf(cell);
     }
 
 

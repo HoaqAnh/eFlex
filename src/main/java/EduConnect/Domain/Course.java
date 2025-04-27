@@ -48,7 +48,7 @@ public class Course {
 
     @OneToMany(mappedBy = "course",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Assessment> assessmentList;
+    private List<HistoryLearn> historyLearnList;
 
     @ManyToOne
     @JoinColumn(name = "id_category")
