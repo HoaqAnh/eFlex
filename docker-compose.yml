@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   backend:
     build:
@@ -8,53 +10,60 @@ services:
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-      - REDIS_PASSWORD=
-      - GEMINI_API_KEY=${GEMINI_API_KEY}
-      - SMTP_HOST=smtp-server
-      - SMTP_PORT=1025
+      - REDIS_PASSWORD=mypass
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/eduflex?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - SPRING_DATASOURCE_PASSWORD=admin123
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - SPRING_JPA_SHOW_SQL=true
-      - SPRING_MAIL_AUTH=false
-      - SPRING_MAIL_STARTTLS=false
+      - SPRING_MAIL_AUTH=true
+      - SPRING_MAIL_STARTTLS=true
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_PORT=587
+      - SMTP_USERNAME=xamthang09@gmail.com
+      - SMTP_PASSWORD=enotqwjnuyphtfzd
+      - GEMINI_API_KEY=AIzaSyAnGoBuTNS4jCcozAzcr0OaciTQFScOEzg
+      - CLOUDINARY_CLOUD_NAME=ddqxvxnbc
+      - CLOUDINARY_API_KEY=574289475634492
+      - CLOUDINARY_API_SECRET=8bXuhjAHvxWS7rfSXymqGxmh5qM
     depends_on:
       redis:
         condition: service_healthy
       mysql:
         condition: service_healthy
       smtp-server:
-        condition: service_started
+        condition: service_healthy
+    volumes:
+      - logs:/app/logs
     restart: unless-stopped
 
   redis:
     image: redis:7.0-alpine
-    ports:
-      - "6379:6379"
+    command: redis-server --requirepass mypass
     volumes:
       - redis-data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
+      test: ["CMD", "redis-cli", "-a", "Str0ng_R3d1s_P@ssw0rd", "ping"]
+      interval: 10s
+      timeout: 10s
+      retries: 15
+      start_period: 20s
     restart: unless-stopped
 
   mysql:
     image: mysql:8.0
-    ports:
-      - "3307:3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=admin123
       - MYSQL_DATABASE=eduflex
     volumes:
       - mysql-data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pStr0ng_MySQL_P@ssw0rd"]
       interval: 5s
       timeout: 5s
       retries: 10
+      start_period: 10s
     restart: unless-stopped
 
   smtp-server:
@@ -63,7 +72,7 @@ services:
       - "1025:1025"
       - "8025:8025"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8025"]
+      test: ["CMD", "nc", "-z", "localhost", "8025"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -72,3 +81,4 @@ services:
 volumes:
   redis-data:
   mysql-data:
+  logs:
