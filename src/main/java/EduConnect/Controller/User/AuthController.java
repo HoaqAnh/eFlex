@@ -262,6 +262,7 @@ public class AuthController {
 
 
         User currentUserDB = userService.getUserByEmail(email);
+        System.out.println("USER"+currentUserDB);
         if (currentUserDB == null) {
             throw new IdInValidException("User not found");
         }
