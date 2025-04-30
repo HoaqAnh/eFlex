@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-
-const BASE_URL = "http://localhost:8080/api/v1";
+import { getAllCategory } from '../services/categoryService';
 
 export const useCategory = () => {
     const [categories, setCategories] = useState([]);
@@ -11,35 +10,29 @@ export const useCategory = () => {
         const fetchCategories = async () => {
             try {
                 setLoading(true);
-                const token = localStorage.getItem('token');
-
-                const response = await fetch(`${BASE_URL}/Category`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    credentials: 'include'
-                });
-
-                if (!response.ok) {
-                    throw new Error('Không thể lấy danh sách danh mục');
+                setError(null);
+                const categoryData = await getAllCategory();
+                
+                if (!categoryData) {
+                    throw new Error('Không thể kết nối đến máy chủ');
                 }
-
-                const responseData = await response.json();
-
-                const categoriesData = responseData.data;
-
-                setCategories(categoriesData);
+                
+                if (!categoryData.data || !Array.isArray(categoryData.data)) {
+                    throw new Error('Dữ liệu danh mục không hợp lệ');
+                }
+                
+                setCategories(categoryData.data);
             } catch (err) {
-                setError(err.message);
+                console.error('Error fetching category:', err);
+                setError(err.message || 'Không thể tải danh sách danh mục. Vui lòng thử lại sau.');
+                setCategories([]);
             } finally {
                 setLoading(false);
             }
-    };
+        };
 
-    fetchCategories();
-}, []);
+        fetchCategories();
+    }, []);
 
-return { categories, loading, error };
+    return { categories, loading, error };
 };

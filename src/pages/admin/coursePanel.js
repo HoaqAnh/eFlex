@@ -1,5 +1,4 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
 
 //components
 import Navbar from "../../components/navbar";
@@ -23,10 +22,9 @@ import "../../styles/layout/previewCourse.css";
 import "../../styles/layout/coursesGrid.css";
 import "../../styles/button/style.css";
 
-function CoursePanel() {
+const CoursePanel = () => {
     const {
         loading: coursesLoading,
-        error: coursesError,
         selectedCourses,
         selectAll,
         searchTerm,
@@ -47,26 +45,11 @@ function CoursePanel() {
         handleEditCourse
     } = useCourses();
 
-    const { isAdmin, isAuthenticated, isLoading, error } = useAuth();
+    const { checkAuth } = useAuth();
+    const authCheck = checkAuth();
 
-    if (isLoading || coursesLoading) {
-        return <div className="loading">Đang tải...</div>;
-    }
-
-    if (error) {
-        return <div className="error">Có lỗi xảy ra: {error}</div>;
-    }
-
-    if (coursesError) {
-        return <div className="error">Có lỗi khi tải khóa học: {coursesError}</div>;
-    }
-
-    if (!isAuthenticated) {
-        return <Navigate to="/login" replace />;
-    }
-
-    if (!isAdmin) {
-        return <Navigate to="/" replace />;
+    if (!authCheck.shouldRender) {
+        return authCheck.component;
     }
 
     return (
@@ -75,7 +58,7 @@ function CoursePanel() {
             <div className="course-panel__content-wrapper">
                 <Sidebar />
                 <div className="course-panel__main-content">
-                    <CourseHeader 
+                    <CourseHeader
                         selectAll={selectAll}
                         onSelectAll={handleSelectAll}
                         searchTerm={searchTerm}
@@ -94,8 +77,8 @@ function CoursePanel() {
                         />
                     ) : (
                         <div className="no-courses">
-                            {searchTerm || selectedFilter ? 
-                                "Không tìm thấy khóa học phù hợp với điều kiện tìm kiếm." : 
+                            {searchTerm || selectedFilter ?
+                                "Không tìm thấy khóa học phù hợp với điều kiện tìm kiếm." :
                                 "Không có khóa học nào. Hãy thêm khóa học mới."}
                         </div>
                     )}

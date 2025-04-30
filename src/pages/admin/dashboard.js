@@ -1,5 +1,4 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
 //components
@@ -17,7 +16,7 @@ import "../../styles/admin/dashboard.css";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-function Dashboard() {
+const Dashboard = () => {
     const chartData = {
         english: {
             labels: ['Đang học', 'Hoàn thành', 'Bỏ học', 'Khác'],
@@ -51,22 +50,11 @@ function Dashboard() {
         }
     };
 
-    const { isAdmin, isAuthenticated, isLoading, error } = useAuth();
+    const { checkAuth } = useAuth();
+    const authCheck = checkAuth();
 
-    if (isLoading) {
-        return <div className="loading">Đang tải...</div>;
-    }
-
-    if (error) {
-        return <div className="error">Có lỗi xảy ra: {error}</div>;
-    }
-
-    if (!isAuthenticated) {
-        return <Navigate to="/login" replace />;
-    }
-
-    if (!isAdmin) {
-        return <Navigate to="/" replace />;
+    if (!authCheck.shouldRender) {
+        return authCheck.component;
     }
 
     return (

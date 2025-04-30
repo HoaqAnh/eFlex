@@ -1,5 +1,4 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
 
 //components
 import Navbar from "../../../components/navbar";
@@ -16,6 +15,7 @@ import "../../../styles/admin/addCourse/style.css";
 import "../../../styles/button/style.css";
 
 const AddCourse = () => {
+    const { checkAuth } = useAuth();
     const {
         courseData,
         loading, 
@@ -30,22 +30,9 @@ const AddCourse = () => {
         handleNext
     } = useCourse();
 
-    const { isAdmin, isAuthenticated, isLoading, error: authError } = useAuth();
-
-    if (isLoading) {
-        return <div className="loading">Đang tải...</div>;
-    }
-
-    if (authError) {
-        return <div className="error">Có lỗi xảy ra: {authError}</div>;
-    }
-
-    if (!isAuthenticated) {
-        return <Navigate to="/login" replace />;
-    }
-
-    if (!isAdmin) {
-        return <Navigate to="/" replace />;
+    const authCheck = checkAuth();
+    if (!authCheck.shouldRender) {
+        return authCheck.component;
     }
 
     return (

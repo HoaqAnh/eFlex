@@ -1,5 +1,4 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
 
 //components
 import Navbar from "../../components/navbar";
@@ -14,20 +13,13 @@ import { useAuth } from "../../hooks/useAuth";
 import "../../styles/courseDetails/style.css"
 import "../../styles/layout/header.css"
 
-function CourseDetails() {
-    const { isAuthenticated, isLoading, error } = useAuth();
-
-    if (isLoading) {
-        return <div className="loading">Đang tải...</div>;
+const CourseDetails = () => {
+    const { checkAuth } = useAuth();
+    const authCheck = checkAuth();
+    if (!authCheck.shouldRender) {
+        return authCheck.component;
     }
 
-    if (error) {
-        return <div className="error">Có lỗi xảy ra: {error}</div>;
-    }
-
-    if (!isAuthenticated) {
-        return <Navigate to="/login" replace />;
-    }
     return (
         <div className="course-details">
             <Navbar />

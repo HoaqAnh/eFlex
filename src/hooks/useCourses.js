@@ -36,16 +36,11 @@ export const useCourses = () => {
                 console.error('Error fetching courses:', err);
                 setError(err.message || 'Không thể tải danh sách khóa học. Vui lòng thử lại sau.');
                 setLoading(false);
-
-                if (err.message.includes("đăng nhập lại")) {
-                    localStorage.removeItem('token');
-                    navigate('/login');
-                }
             }
         };
 
         loadCourses();
-    }, [navigate]);
+    }, []);
 
     const filteredCourses = useMemo(() => {
         return courses.filter(course => {
@@ -108,19 +103,19 @@ export const useCourses = () => {
         try {
             setLoading(true);
             setShowDeleteConfirm(false);
-            
+
             // Xóa từng khóa học một
             for (const courseId of selectedCourses) {
                 await deleteCourse(courseId);
             }
-            
+
             // Cập nhật lại danh sách khóa học sau khi xóa
             const { courses: updatedCourses, pagination: updatedPagination } = await fetchCourses();
             setCourses(updatedCourses);
             if (updatedPagination) {
                 setPagination(updatedPagination);
             }
-            
+
             // Reset các state liên quan
             setSelectedCourses([]);
             setSelectAll(false);
@@ -128,7 +123,7 @@ export const useCourses = () => {
         } catch (error) {
             console.error('Error deleting courses:', error);
             setError(error.message || 'Không thể xóa khóa học. Vui lòng thử lại sau.');
-            
+
             if (error.message.includes("đăng nhập lại")) {
                 localStorage.removeItem('token');
                 navigate('/login');

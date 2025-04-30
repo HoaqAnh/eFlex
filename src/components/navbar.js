@@ -18,7 +18,7 @@ function Navbar() {
   const userBtnRef = useRef(null);
   const navigate = useNavigate();
 
-  const { username, logout } = useAuth();
+  const { user, logout } = useAuth();
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -189,7 +189,7 @@ function Navbar() {
           )}
         </div>
         <div className="navbar__user-profile">
-          {username && <span>{username}</span>}
+          {user?.fullname && <span>{user?.fullname}</span>}
         </div>
       </div>
       <div className="navbar__bottom-line"></div>

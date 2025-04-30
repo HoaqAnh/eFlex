@@ -20,10 +20,8 @@ import "../../styles/users/course.css";
 import "../../styles/layout/previewCourse.css";
 import "../../styles/layout/coursesGrid.css";
 
-function Course() {
+const Course = () => {
     const {
-        loading: coursesLoading,
-        error: coursesError,
         selectedCourses,
         searchTerm,
         selectedFilter,
@@ -36,22 +34,11 @@ function Course() {
         handleClosePreview
     } = useCourses();
 
-    const { isAuthenticated, isLoading, error } = useAuth();
+    const { checkAuth } = useAuth();
 
-    if (isLoading || coursesLoading) {
-        return <div className="loading">Đang tải...</div>;
-    }
-
-    if (error) {
-        return <div className="error">Có lỗi xảy ra: {error}</div>;
-    }
-
-    if (coursesError) {
-        return <div className="error">Có lỗi khi tải khóa học: {coursesError}</div>;
-    }
-
-    if (!isAuthenticated) {
-        return <Navigate to="/login" replace />;
+    const authCheck = checkAuth();
+    if (!authCheck.shouldRender) {
+        return authCheck.component;
     }
 
     return (

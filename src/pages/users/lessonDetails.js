@@ -14,8 +14,7 @@ import { getLessonSections } from '../../services/lessonService';
 //style
 import "../../styles/lessonDetails/style.css"
 
-function LessonDetails() {
-    const { isAuthenticated, isLoading, error } = useAuth();
+const LessonDetails = () => {
     const { lessonId } = useParams();
     const [selectedSection, setSelectedSection] = useState(null);
     const [sections, setSections] = useState([]);
@@ -34,16 +33,11 @@ function LessonDetails() {
         fetchSections();
     }, [lessonId]);
 
-    if (isLoading) {
-        return <div className="loading">Đang tải...</div>;
-    }
+    const { checkAuth } = useAuth();
+    const authCheck = checkAuth();
 
-    if (error) {
-        return <div className="error">Có lỗi xảy ra: {error}</div>;
-    }
-
-    if (!isAuthenticated) {
-        return <Navigate to="/login" replace />;
+    if (!authCheck.shouldRender) {
+        return authCheck.component;
     }
 
     const handleSectionSelect = (section) => {

@@ -6,10 +6,20 @@ import Footer from "../../../components/admin/course/editCourse/footer";
 import Header from "../../../components/admin/course/editCourse/header";
 import Navbar from "../../../components/navbar";
 
+//hooks
+import { useAuth } from "../../../hooks/useAuth";
+
 //styles
 import "../../../styles/admin/editCourse/style.css";
 
-function EditCourse() {
+const EditCourse = () => {
+    const { checkAuth } = useAuth();
+    const authCheck = checkAuth();
+
+    if (!authCheck.shouldRender) {
+        return authCheck.component;
+    }
+
     return (
         <div className="editCourse">
             <Navbar />

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 //hooks
 import { useTest } from '../../../hooks/admin/useTest';
+import { useAuth } from "../../../hooks/useAuth";
 
 //components
 import Navbar from "../../../components/navbar";
@@ -16,10 +17,9 @@ import "../../../styles/admin/addTest/style.css";
 
 const AddTest = () => {
     const navigate = useNavigate();
+    const { checkAuth } = useAuth();
     const {
         testData,
-        // loading,
-        // error,
         testErrors,
         excelFile,
         handleTestInputChange,
@@ -29,6 +29,11 @@ const AddTest = () => {
         handleSubmitAndCreateTest,
         handleSubmitAndCreateLesson
     } = useTest();
+
+    const authCheck = checkAuth();
+    if (!authCheck.shouldRender) {
+        return authCheck.component;
+    }
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];

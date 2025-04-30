@@ -13,19 +13,12 @@ import { useAuth } from "../../hooks/useAuth";
 //style
 import "../../styles/exercises/style.css"
 
-function Exercises() {
-    const { isAuthenticated, isLoading, error } = useAuth();
+const Exercises = () => {
+    const { checkAuth } = useAuth();
+    const authCheck = checkAuth();
 
-    if (isLoading) {
-        return <div className="loading">Đang tải...</div>;
-    }
-
-    if (error) {
-        return <div className="error">Có lỗi xảy ra: {error}</div>;
-    }
-
-    if (!isAuthenticated) {
-        return <Navigate to="/login" replace />;
+    if (!authCheck.shouldRender) {
+        return authCheck.component;
     }
     return (
         <div className="exercises">

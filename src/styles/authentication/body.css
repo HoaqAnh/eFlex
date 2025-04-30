@@ -1,0 +1,59 @@
+.login-body {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    padding: 20px;
+    background: transparent;
+    height: 100%
+}
+
+.login-body__left {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-body__left img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.login-body__right {
+    width: 50%;
+    height: 100%;
+}
+
+.divider {
+    position: relative;
+    text-align: left;
+    margin: 20px 0;
+}
+
+.divider:first-child {
+    position: relative;
+    text-align: left;
+    margin: 20px 0;
+    margin-top: 0;
+}
+
+.divider::before {
+    content: "";
+    position: absolute;
+    align-items: center;
+    top: 60%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #e0e0e0;
+}
+
+.divider span {
+    background-color: white;
+    padding: 0x;
+    position: relative;
+    color: #757575;
+    font-size: 14px;
+}

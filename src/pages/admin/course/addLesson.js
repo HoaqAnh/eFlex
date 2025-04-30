@@ -1,5 +1,4 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
 
 //components
 import Navbar from "../../../components/navbar";
@@ -15,6 +14,7 @@ import { useAuth } from "../../../hooks/useAuth";
 import "../../../styles/admin/addLesson/style.css";
 
 const AddLesson = () => {
+    const { checkAuth } = useAuth();
     const {
         lessonData,
         loading,
@@ -29,28 +29,12 @@ const AddLesson = () => {
         handleSubmit,
         handleAddAndContinue,
         handleBack,
-        handleUploadTest,
-
-        // Bài kiểm tra
         handleAddTest
     } = useLessonManagement();
 
-    const { isAdmin, isAuthenticated, isLoading, error } = useAuth();
-
-    if (isLoading) {
-        return <div className="loading">Đang tải...</div>;
-    }
-
-    if (error) {
-        return <div className="error">Có lỗi xảy ra: {error}</div>;
-    }
-
-    if (!isAuthenticated) {
-        return <Navigate to="/login" replace />;
-    }
-
-    if (!isAdmin) {
-        return <Navigate to="/" replace />;
+    const authCheck = checkAuth();
+    if (!authCheck.shouldRender) {
+        return authCheck.component;
     }
 
     return (
@@ -74,7 +58,7 @@ const AddLesson = () => {
                                 handleRemoveSection={handleRemoveSection}
                             />
                         </div>
-                        <Footer 
+                        <Footer
                             handleBack={handleBack}
                             handleAddAndContinue={handleAddAndContinue}
                             handleSubmit={handleSubmit}

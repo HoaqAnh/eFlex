@@ -1,9 +1,11 @@
 import React from 'react';
 import { useGoogleLogin } from "@react-oauth/google";
-import googleLogo from "../../assets/logo/google.png";
+import googleLogo from "../../../assets/logo/google.png";
+//style
+import "../../../styles/button/style.css"
 
 const GoogleLoginButton = () => {
-  const login = useGoogleLogin({
+  const login = useGoogleLogin({  
     flow: "auth-code",
     ux_mode: "redirect",
     redirect_uri: "http://localhost:3000/login/google",

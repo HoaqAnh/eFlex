@@ -23,19 +23,19 @@ export const WebSocketProvider = ({ children }) => {
     const stompClient = new Client({
       webSocketFactory: () => socket,
       reconnectDelay: 5000,
-      debug: (str) => console.log(str),
+      // debug: (str) => console.log(str),
     });
 
     stompClientRef.current = stompClient;
 
     stompClient.onConnect = (frame) => {
-      console.log("WebSocket Connected: " + frame);
+      // console.log("WebSocket Connected: " + frame);
       setIsConnected(true);
 
       stompClient.subscribe("/topic/public", (message) => {
         try {
           const response = JSON.parse(message.body);
-          console.log("Received message from /topic/public:", response);
+          // console.log("Received message from /topic/public:", response);
           if (response && typeof response.activeUsers === "number") {
             setActiveUsers(response.activeUsers);
           } else {
@@ -71,7 +71,7 @@ export const WebSocketProvider = ({ children }) => {
     };
 
     stompClient.onWebSocketClose = () => {
-      console.log("WebSocket connection closed");
+      // console.log("WebSocket connection closed");
       setIsConnected(false);
       hasSentInitialMessage.current = false;
       hasSentJoinMessage.current = false;
@@ -89,7 +89,7 @@ export const WebSocketProvider = ({ children }) => {
             isAdmin: userInfo.isAdmin,
           }),
         });
-        console.log("User LEAVE message sent successfully");
+        // console.log("User LEAVE message sent successfully");
       }
     };
 
@@ -106,7 +106,7 @@ export const WebSocketProvider = ({ children }) => {
               isAdmin: userInfo.isAdmin,
             }),
           });
-          console.log("User LEAVE message sent successfully");
+          // console.log("User LEAVE message sent successfully");
         }
         stompClientRef.current.deactivate();
         stompClientRef.current = null;
@@ -134,7 +134,7 @@ export const WebSocketProvider = ({ children }) => {
           isAdmin: userInfo.isAdmin,
         }),
       });
-      console.log("User JOIN message sent successfully:", userInfo);
+      // console.log("User JOIN message sent successfully:", userInfo);
       hasSentJoinMessage.current = true;
     }
   }, [userInfo, isConnected]);

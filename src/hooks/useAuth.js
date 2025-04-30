@@ -1,10 +1,13 @@
 import { useState, useCallback, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { getCurrentUser } from "../services/authService";
+import { useNavigate, useLocation } from "react-router-dom";
+import { getCurrentUser, loginService, logoutService } from "../services/authService";
 import { useWebSocket } from "../WebSocketContext";
+import { toast } from 'react-hot-toast';
+import TokenService from "../services/tokenService";
 
 export const useAuth = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [user, setUserData] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -14,63 +17,228 @@ export const useAuth = () => {
   const { isConnected, setUser } = useWebSocket();
 
   const fetchUser = useCallback(async () => {
-    if (hasFetchedUser && user?.data) {
-      return;
+    if (hasFetchedUser) {
+      console.log("hasFetchedUser");
+      return null;
     }
     try {
       setIsLoading(true);
       setError(null);
 
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.log("No token in localStorage, redirecting to login");
-        navigate("/login");
-        return;
-      }
-
       const userData = await getCurrentUser();
-      if (!userData || !userData.data) {
+      if (!userData) {
         console.error("Invalid user data received");
-        throw new Error("Invalid user data");
+        setIsLoading(false);
+        navigate("/login");
+        return null;
       }
 
-      const roleName = userData?.data?.roleName || "";
-      setUserData(userData);
-      setIsAdmin(roleName === "admin");
       setHasFetchedUser(true);
 
-      if (isConnected && userData?.data?.email) {
-        setUser(userData.data.email, roleName === "admin");
+      if (userData) {
+        const roleName = userData.data.roleName;
+        setUserData(userData.data);
+        if (roleName === "admin") {
+          setIsAdmin(true);
+        } else {
+          setIsAdmin(false);
+        }
+        if (isConnected && userData?.data?.email) {
+          setUser(userData.data.email, roleName === "admin");
+        }
+        setIsLoading(false);
+        return { roleName };
       }
+
+      return null;
+
     } catch (error) {
-      console.error("Error in fetchUser:", error);
       setError(error.message);
-      localStorage.removeItem("token");
+      toast.error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại");
+      setIsLoading(false);
       navigate("/login");
+      return null;
     } finally {
       setIsLoading(false);
     }
-  }, [navigate, isConnected, setUser, hasFetchedUser, user?.data]);
+  }, [navigate, isConnected, setUser, hasFetchedUser, user]);
 
   useEffect(() => {
-    fetchUser();
+    let isMounted = true;
+    const fetchAuth = async () => {
+      if (TokenService.getToken() && location.pathname !== '/login') {
+        if (!hasFetchedUser) {
+          try {
+            await fetchUser();
+          } catch (error) {
+            console.error("Fetch user failed:", error);
+          }
+        }
+      } else {
+        setIsLoading(false);
+      }
+
+      if (isMounted) {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAuth();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [fetchUser, hasFetchedUser, location.pathname]);
+
+  const handleLogin = useCallback(async (email, password) => {
+    try {
+      // Validate input
+      if (!email || !password) {
+        toast.error("Vui lòng nhập đầy đủ email và mật khẩu");
+        return;
+      }
+
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        toast.error("Email không hợp lệ");
+        return;
+      }
+
+      setIsLoading(true);
+      setError(null);
+
+      const response = await loginService(email, password);
+      if (!response || !response.data) {
+        throw new Error("Invalid login response");
+      }
+      
+      // Fetch user info after successful login
+      const userInfo = await fetchUser();
+
+      // Navigate based on role
+      if (userInfo) {
+        console.log(userInfo);
+        if (userInfo.roleName === "admin") {
+          navigate("/dashboard", { replace: true });
+        } else if (userInfo.roleName === "user") {
+          navigate("/home", { replace: true });
+        } else {
+          console.error("Thông tin role không hợp lệ");
+        }
+      }
+
+      toast.success("Đăng nhập thành công!");
+    } catch (error) {
+      console.error("Login error:", error);
+      setError(error.message);
+
+      if (error.message.includes("Email hoặc mật khẩu không chính xác")) {
+        toast.error("Email hoặc mật khẩu không chính xác");
+      } else if (error.message.includes("Tài khoản của bạn đã bị khóa")) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+      } else {
+        toast.error("Đã có lỗi xảy ra. Vui lòng thử lại sau");
+      }
+
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [navigate, fetchUser]);
+
+  const logout = useCallback(async () => {
+    try {
+      await logoutService();
+      setUserData(null);
+      setIsAdmin(false);
+      setHasFetchedUser(false);
+      toast.success("Đăng xuất thành công!");
+      setTimeout(() => {
+        navigate("/login", { replace: true });
+      }, 100);
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast.error("Đã có lỗi xảy ra khi đăng xuất");
+    }
+  }, [navigate]);
+
+  const isAdminRoute = useCallback((path) => {
+    const adminRoutes = [
+      '/dashboard',
+      '/coursePanel'
+    ];
+
+    return adminRoutes.some(route => path.startsWith(route));
   }, []);
 
-  const logout = useCallback(() => {
-    localStorage.removeItem("token");
-    setUserData(null);
-    setIsAdmin(false);
-    setHasFetchedUser(false);
-    navigate("/login");
-  }, [navigate]);
+  const checkAuth = useCallback(() => {
+    if (isLoading) {
+      return {
+        shouldRender: false,
+        component: <div className="loading">Đang tải...</div>
+      };
+    }
+
+    if (error) {
+      return {
+        shouldRender: false,
+        component: <div className="error">Có lỗi xảy ra: {error}</div>
+      };
+    }
+
+    const token = TokenService.getToken();
+    if (!token || !TokenService.isTokenValid()) {
+      setTimeout(() => navigate("/login", { replace: true }), 100);
+      return {
+        shouldRender: false,
+        component: <div className="loading">Đang chuyển đến trang đăng nhập...</div>
+      };
+    }
+
+    // Kiểm tra quyền admin cho các trang admin
+    const currentPath = location.pathname;
+    if (isAdminRoute(currentPath) && !isAdmin) {
+      toast.error("Bạn không có quyền truy cập trang này");
+      setTimeout(() => navigate("/home", { replace: true }), 100);
+      return {
+        shouldRender: false,
+        component: <div className="loading">Bạn không có quyền truy cập. Đang chuyển hướng...</div>
+      };
+    }
+
+    return { shouldRender: true };
+  }, [isLoading, error, isAdmin, navigate, location.pathname, isAdminRoute]);
+
+  const requireAdmin = useCallback(() => {
+    if (isLoading) {
+      return {
+        isAllowed: false,
+        component: <div className="loading">Đang tải...</div>
+      };
+    }
+
+    if (!isAdmin) {
+      toast.error("Bạn không có quyền truy cập trang này");
+      setTimeout(() => navigate("/home", { replace: true }), 100);
+      return {
+        isAllowed: false,
+        component: <div className="loading">Bạn không có quyền truy cập. Đang chuyển hướng...</div>
+      };
+    }
+
+    return { isAllowed: true };
+  }, [isAdmin, isLoading, navigate]);
 
   return {
     user,
     isAdmin,
-    username: user?.data?.fullname || "",
-    isAuthenticated: !!user?.data,
     isLoading,
     error,
     logout,
+    handleLogin,
+    checkAuth,
+    requireAdmin,
+    isAdminRoute
   };
 };

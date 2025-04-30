@@ -5,7 +5,7 @@ import { lessonService } from '../../services/lessonService';
 import { useLesson } from './useLesson';
 import { useSection } from './useSection';
 import { useExercises } from './useExercises';
-import { useTest } from './useTest';
+// import { useTest } from './useTest';
 
 export const useLessonManagement = () => {
     const navigate = useNavigate();
@@ -13,7 +13,7 @@ export const useLessonManagement = () => {
     const lesson = useLesson();
     const section = useSection();
     const exercises = useExercises();
-    const test = useTest(lesson.courseId);
+    // const test = useTest(lesson.courseId);
 
     const validateAllForms = () => {
         const lessonValid = lesson.validateLessonForm();

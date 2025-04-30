@@ -1,10 +1,20 @@
+import TokenService from './tokenService';
+
 const BASE_URL = "http://localhost:8080/api/v1";
 
 export const createTest = async (testData) => {
     try {
-        const token = localStorage.getItem("token");
+        const token = TokenService.getToken();
         if (!token) {
-            throw new Error("No token found, user is not authenticated");
+            console.error("Không tìm thấy token, người dùng chưa đăng nhập");
+            return null;
+        }
+
+        // Kiểm tra token hợp lệ
+        if (!TokenService.isTokenValid()) {
+            console.error("Token không hợp lệ hoặc đã hết hạn");
+            TokenService.clearTokens();
+            return null;
         }
 
         const response = await fetch(`${BASE_URL}/test-exercises`, {
@@ -19,10 +29,10 @@ export const createTest = async (testData) => {
 
         if (!response.ok) {
             if (response.status === 401 || response.status === 403) {
+                TokenService.clearTokens();
                 throw new Error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
             } else {
-                const errorData = await response.json();
-                throw new Error(errorData.message || `Lỗi ${response.status}: ${response.statusText}`);
+                throw new Error(`Error: ${response.status}. ${response.statusText}`);
             }
         }
 
@@ -36,9 +46,17 @@ export const createTest = async (testData) => {
 
 export const uploadExerciseExcel = async (testId, file) => {
     try {
-        const token = localStorage.getItem("token");
+        const token = TokenService.getToken();
         if (!token) {
-            throw new Error("No token found, user is not authenticated");
+            console.error("Không tìm thấy token, người dùng chưa đăng nhập");
+            return null;
+        }
+
+        // Kiểm tra token hợp lệ
+        if (!TokenService.isTokenValid()) {
+            console.error("Token không hợp lệ hoặc đã hết hạn");
+            TokenService.clearTokens();
+            return null;
         }
 
         const formData = new FormData();
@@ -50,14 +68,15 @@ export const uploadExerciseExcel = async (testId, file) => {
                 Authorization: `Bearer ${token}`,
             },
             body: formData,
+            credentials: "include"
         });
 
         if (!response.ok) {
             if (response.status === 401 || response.status === 403) {
+                TokenService.clearTokens();
                 throw new Error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
             } else {
-                const errorData = await response.json();
-                throw new Error(errorData.message || `Lỗi ${response.status}: ${response.statusText}`);
+                throw new Error(`Error: ${response.status}. ${response.statusText}`);
             }
         }
 

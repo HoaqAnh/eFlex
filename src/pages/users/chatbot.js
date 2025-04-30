@@ -11,20 +11,12 @@ import ChatContent from "../../components/users/chatbot/ChatContent";
 //style
 import "../../styles/users/chatbot/chatbot.css";
 
-function ChatPage() {
-  const navigate = useNavigate();
-  const { isAuthenticated, isLoading, error } = useAuth();
+const ChatPage = () => {
+  const { checkAuth } = useAuth();
+  const authCheck = checkAuth();
 
-  if (isLoading) {
-    return <div className="loading">Đang tải...</div>;
-  }
-
-  if (error) {
-    return <div className="error">Có lỗi xảy ra: {error}</div>;
-  }
-
-  if (!isAuthenticated) {
-    navigate("/login");
+  if (!authCheck.shouldRender) {
+      return authCheck.component;
   }
 
   return (

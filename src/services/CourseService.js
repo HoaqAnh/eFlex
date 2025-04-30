@@ -1,10 +1,19 @@
+import TokenService from './tokenService';
+
 const BASE_URL = "http://localhost:8080/api/v1";
 
 export const getCourseDetails = async (courseId) => {
   try {
-    const token = localStorage.getItem("token");
+    const token = TokenService.getToken();
     if (!token) {
-      console.error("No token found, user is not authenticated");
+      console.error("Không tìm thấy token, người dùng chưa đăng nhập");
+      return null;
+    }
+
+    // Kiểm tra token hợp lệ
+    if (!TokenService.isTokenValid()) {
+      console.error("Token không hợp lệ hoặc đã hết hạn");
+      TokenService.clearTokens();
       return null;
     }
 
@@ -19,15 +28,15 @@ export const getCourseDetails = async (courseId) => {
 
     if (!response.ok) {
       if (response.status === 401 || response.status === 403) {
+        TokenService.clearTokens();
         throw new Error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
       } else {
-        throw new Error(`Lỗi ${response.status}: ${response.statusText}`);
+        throw new Error(`Error: ${response.status}. ${response.statusText}`);
       }
     }
 
     const responseData = await response.json();
     return responseData.data;
-
   } catch (error) {
     console.error('Lỗi khi lấy thông tin khóa học:', error);
     throw error;
@@ -35,11 +44,20 @@ export const getCourseDetails = async (courseId) => {
 };
 
 export const CourseApi = {
-  // Upload hình ảnh khóa học
   uploadCourseImage: async (imageFile) => {
     try {
-      const token = localStorage.getItem('token');
-      if (!token) throw new Error("Không tìm thấy token xác thực");
+      const token = TokenService.getToken();
+      if (!token) {
+        console.error("Không tìm thấy token, người dùng chưa đăng nhập");
+        return null;
+      }
+
+      // Kiểm tra token hợp lệ
+      if (!TokenService.isTokenValid()) {
+        console.error("Token không hợp lệ hoặc đã hết hạn");
+        TokenService.clearTokens();
+        return null;
+      }
 
       const imageFormData = new FormData();
       imageFormData.append('file', imageFile);
@@ -49,10 +67,18 @@ export const CourseApi = {
         headers: {
           'Authorization': `Bearer ${token}`
         },
-        body: imageFormData
+        body: imageFormData,
+        credentials: "include"
       });
 
-      if (!response.ok) throw new Error('Lỗi upload hình ảnh');
+      if (!response.ok) {
+        if (response.status === 401 || response.status === 403) {
+          TokenService.clearTokens();
+          throw new Error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
+        } else {
+          throw new Error(`Error: ${response.status}. ${response.statusText}`);
+        }
+      }
 
       const data = await response.json();
 
@@ -79,8 +105,18 @@ export const CourseApi = {
 // Helper function để gửi request tạo/cập nhật khóa học
 const sendCourseRequest = async (courseData, imageUrl, endpoint) => {
   try {
-    const token = localStorage.getItem('token');
-    if (!token) throw new Error("Không tìm thấy token xác thực");
+    const token = TokenService.getToken();
+    if (!token) {
+      console.error("Không tìm thấy token, người dùng chưa đăng nhập");
+      return null;
+    }
+
+    // Kiểm tra token hợp lệ
+    if (!TokenService.isTokenValid()) {
+      console.error("Token không hợp lệ hoặc đã hết hạn");
+      TokenService.clearTokens();
+      return null;
+    }
 
     const payload = {
       tenMon: courseData.tenMon.trim(),
@@ -103,11 +139,11 @@ const sendCourseRequest = async (courseData, imageUrl, endpoint) => {
 
     if (!response.ok) {
       if (response.status === 401 || response.status === 403) {
+        TokenService.clearTokens();
         throw new Error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
+      } else {
+        throw new Error(`Error: ${response.status}. ${response.statusText}`);
       }
-
-      const errorData = await response.json();
-      throw new Error(errorData.message || `Lỗi ${response.status}: ${response.statusText}`);
     }
 
     return await response.json();
@@ -125,8 +161,18 @@ const removeTimestampFromUrl = (url) => {
 //Hàm xóa khóa học
 export const deleteCourse = async (courseId) => {
   try {
-    const token = localStorage.getItem('token');
-    if (!token) throw new Error("Không tìm thấy token xác thực");
+    const token = TokenService.getToken();
+    if (!token) {
+      console.error("Không tìm thấy token, người dùng chưa đăng nhập");
+      return null;
+    }
+
+    // Kiểm tra token hợp lệ
+    if (!TokenService.isTokenValid()) {
+      console.error("Token không hợp lệ hoặc đã hết hạn");
+      TokenService.clearTokens();
+      return null;
+    }
 
     const response = await fetch(`${BASE_URL}/courses/${courseId}`, {
       method: 'DELETE',
@@ -137,7 +183,12 @@ export const deleteCourse = async (courseId) => {
     });
 
     if (!response.ok) {
-      throw new Error(`Lỗi xóa khóa học: ${response.statusText}`);
+      if (response.status === 401 || response.status === 403) {
+        TokenService.clearTokens();
+        throw new Error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
+      } else {
+        throw new Error(`Error: ${response.status}. ${response.statusText}`);
+      }
     }
 
     return await response.json();
@@ -150,9 +201,17 @@ export const deleteCourse = async (courseId) => {
 // Hàm lấy danh sách khóa học
 export const fetchCourses = async () => {
   try {
-    const token = localStorage.getItem('token');
+    const token = TokenService.getToken();
     if (!token) {
-      throw new Error("Không tìm thấy token xác thực. Vui lòng đăng nhập lại.");
+      console.error("Không tìm thấy token, người dùng chưa đăng nhập");
+      return null;
+    }
+
+    // Kiểm tra token hợp lệ
+    if (!TokenService.isTokenValid()) {
+      console.error("Token không hợp lệ hoặc đã hết hạn");
+      TokenService.clearTokens();
+      return null;
     }
 
     const response = await fetch(`${BASE_URL}/courses`, {
@@ -166,9 +225,10 @@ export const fetchCourses = async () => {
 
     if (!response.ok) {
       if (response.status === 401 || response.status === 403) {
+        TokenService.clearTokens();
         throw new Error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
       } else {
-        throw new Error(`Lỗi ${response.status}: ${response.statusText}`);
+        throw new Error(`Error: ${response.status}. ${response.statusText}`);
       }
     }
 

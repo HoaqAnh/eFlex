@@ -12,6 +12,7 @@
       "@testing-library/user-event": "^13.5.0",
       "axios": "^1.8.4",
       "chart.js": "^4.4.8",
+      "crypto-js": "^4.2.0",
       "eflex": "file:",
       "react": "^19.0.0",
       "react-chartjs-2": "^5.3.0",
@@ -48,5 +49,8 @@
          "last 1 firefox version",
          "last 1 safari version"
       ]
+   },
+   "devDependencies": {
+      "webpack-dev-server": "^5.2.1"
    }
 }

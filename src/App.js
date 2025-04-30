@@ -8,8 +8,8 @@ import {
 import { Toaster } from 'react-hot-toast';
 
 //authentication
-import GoogleLogin from "./pages/authentication/google";
-import LoginPage from "./pages/authentication/login";
+import GoogleLogin from "./pages/auth/google";
+import LoginPage from "./pages/auth/login";
 
 //user
 import HomePage from "./pages/users/home";
@@ -39,6 +39,7 @@ function WebSocketRoutes() {
     <WebSocketProvider>
       {/* Bọc WebSocketProvider chỉ xung quanh các route cần WebSocket */}
       <Routes>
+        <Route path="/login" element={<LoginPage />} />
         {/* user */}
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/home" element={<HomePage />} />
@@ -65,19 +66,20 @@ function App() {
     "169551551152-d80vo21jesjv7r78qlbn3or3bo0nur08.apps.googleusercontent.com";
 
   return (
-    <GoogleOAuthProvider clientId={clientId}>
-      <Router>
-        <Toaster position="top-right" />
-        <Routes>
-          {/* Các route không cần WebSocket */}
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/login/google" element={<GoogleLogin />} />
+    <>
+      <GoogleOAuthProvider clientId={clientId}>
+        <Router>
+          <Toaster position="top-right" />
+          <Routes>
+            {/* Các route không cần WebSocket */}
+            <Route path="/login/google" element={<GoogleLogin />} />
 
-          {/* Nhóm các route cần WebSocket */}
-          <Route path="/*" element={<WebSocketRoutes />} />
-        </Routes>
-      </Router>
-    </GoogleOAuthProvider>
+            {/* Nhóm các route cần WebSocket */}
+            <Route path="/*" element={<WebSocketRoutes />} />
+          </Routes>
+        </Router>
+      </GoogleOAuthProvider>
+    </>
   );
 }
 
