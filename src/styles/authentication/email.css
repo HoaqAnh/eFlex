@@ -27,18 +27,6 @@
   font-size: 16px;
 }
 
-.register-prompt {
-  text-align: center;
-  font-size: 14px;
-  margin-top: 10px;
-}
-
-.register-prompt a {
-  color: #1E88E5;
-  text-decoration: none;
-  font-weight: bold;
-}
-
 .forgot-password {
   text-align: right;
   margin: 10px 0 20px;

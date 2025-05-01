@@ -1,10 +1,13 @@
 import React from 'react';
 import { useGoogleLogin } from "@react-oauth/google";
+
+//image
 import googleLogo from "../../../assets/logo/google.png";
+
 //style
 import "../../../styles/button/style.css"
 
-const GoogleLoginButton = () => {
+const GoogleBtn = () => {
   const login = useGoogleLogin({  
     flow: "auth-code",
     ux_mode: "redirect",
@@ -23,4 +26,4 @@ const GoogleLoginButton = () => {
   );
 };
 
-export default GoogleLoginButton; 
+export default GoogleBtn;

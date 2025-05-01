@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { getCurrentUser, loginService, logoutService } from "../services/authService";
+import { getCurrentUser, loginService, logoutService, registerService } from "../services/authService";
 import { useWebSocket } from "../WebSocketContext";
 import { toast } from 'react-hot-toast';
 import TokenService from "../services/tokenService";
@@ -61,7 +61,7 @@ export const useAuth = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [navigate, isConnected, setUser, hasFetchedUser, user]);
+  }, [navigate, isConnected, setUser, hasFetchedUser]);
 
   useEffect(() => {
     let isMounted = true;
@@ -92,13 +92,11 @@ export const useAuth = () => {
 
   const handleLogin = useCallback(async (email, password) => {
     try {
-      // Validate input
       if (!email || !password) {
         toast.error("Vui lòng nhập đầy đủ email và mật khẩu");
         return;
       }
 
-      // Validate email format
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
         toast.error("Email không hợp lệ");
@@ -112,13 +110,10 @@ export const useAuth = () => {
       if (!response || !response.data) {
         throw new Error("Invalid login response");
       }
-      
-      // Fetch user info after successful login
+
       const userInfo = await fetchUser();
 
-      // Navigate based on role
       if (userInfo) {
-        console.log(userInfo);
         if (userInfo.roleName === "admin") {
           navigate("/dashboard", { replace: true });
         } else if (userInfo.roleName === "user") {
@@ -146,6 +141,57 @@ export const useAuth = () => {
       setIsLoading(false);
     }
   }, [navigate, fetchUser]);
+
+  const handleRegister = useCallback(async (fullname, email, password, confirmPassword) => {
+    try {
+      if (!fullname || !email || !password || !confirmPassword) {
+        toast.error("Vui lòng nhập đầy đủ thông tin");
+        return;
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        toast.error("Email không hợp lệ");
+        return;
+      }
+
+      if (password.length < 6) {
+        toast.error("Mật khẩu phải có ít nhất 6 ký tự");
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        toast.error("Mật khẩu xác nhận không khớp");
+        return;
+      }
+
+      setIsLoading(true);
+      setError(null);
+
+      const response = await registerService(fullname, email, password);
+      if (!response || !response.data) {
+        throw new Error("Invalid registration response");
+      } else if (response && response.data) {
+        toast.success("Đăng ký thành công! Hãy đăng nhập lại.");
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+      setError(error.message);
+
+      if (error.message.includes("Email đã tồn tại")) {
+        toast.error("Email đã tồn tại");
+      } else if (error.message.includes("thông tin không hợp lệ")) {
+        toast.error("Thông tin đăng ký không hợp lệ");
+      } else {
+        toast.error("Đã có lỗi xảy ra. Vui lòng thử lại sau");
+      }
+
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [navigate]);
 
   const logout = useCallback(async () => {
     try {
@@ -237,6 +283,7 @@ export const useAuth = () => {
     error,
     logout,
     handleLogin,
+    handleRegister,
     checkAuth,
     requireAdmin,
     isAdminRoute

@@ -2,6 +2,39 @@ import TokenService from './tokenService';
 
 const BASE_URL = "http://localhost:8080/api/v1";
 
+// Hàm đăng ký bằng email/password
+export const registerService = async (fullname, email, password) => {
+  try {
+    const response = await fetch(`${BASE_URL}/auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        fullname,
+        role: {
+          id: 2
+        }
+      }),
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      if (response.status === 400) {
+        throw new Error("Email đã tồn tại hoặc thông tin không hợp lệ");
+      } else {
+        throw new Error(`Lỗi ${response.status}: ${response.statusText}`);
+      }
+    }
+
+    return await response.json();
+  } catch (error) {
+    throw error;
+  }
+}
+
 // Hàm đăng nhập bằng email/password
 export const loginService = async (email, password) => {
   try {
@@ -33,7 +66,6 @@ export const loginService = async (email, password) => {
 
     return responseData;
   } catch (error) {
-    console.error("Lỗi đăng nhập:", error);
     throw error;
   }
 };
@@ -73,10 +105,8 @@ export const getCurrentUser = async () => {
     }
 
     const responseData = await response.json();
-    // console.log(responseData);
     return responseData;
   } catch (error) {
-    console.error("Lỗi lấy thông tin người dùng:", error);
     throw error;
   }
 };
@@ -145,7 +175,6 @@ export const logoutService = async () => {
     TokenService.clearTokens();
     return true;
   } catch (error) {
-    console.error("Lỗi đăng xuất:", error);
     throw error;
   }
 };

@@ -11,7 +11,7 @@ const Header = () => (
             <img src={Logo} alt="eFlex Logo" className="logo" loading='lazy'/>
         </div>
         <div className="login-header__right">
-            <h1>Đăng nhập để tiếp tục !</h1>
+            <h1>Welcome back !</h1>
         </div>
     </div>
 );

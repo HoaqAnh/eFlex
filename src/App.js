@@ -10,6 +10,7 @@ import { Toaster } from 'react-hot-toast';
 //authentication
 import GoogleLogin from "./pages/auth/google";
 import LoginPage from "./pages/auth/login";
+import RegisterPage from "./pages/auth/register";
 
 //user
 import HomePage from "./pages/users/home";
@@ -40,6 +41,8 @@ function WebSocketRoutes() {
       {/* Bọc WebSocketProvider chỉ xung quanh các route cần WebSocket */}
       <Routes>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        
         {/* user */}
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/home" element={<HomePage />} />
