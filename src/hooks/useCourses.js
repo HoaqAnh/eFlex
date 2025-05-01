@@ -44,7 +44,7 @@ export const useCourses = () => {
 
     const filteredCourses = useMemo(() => {
         return courses.filter(course => {
-            const matchesSearch = course.title.toLowerCase().includes(searchTerm.toLowerCase());
+            const matchesSearch = course.title?.toLowerCase().includes(searchTerm.toLowerCase());
             const matchesFilter = !selectedFilter || course.status === selectedFilter;
             return matchesSearch && matchesFilter;
         });

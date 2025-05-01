@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from 'react-hot-toast';
 import TokenService from "../../services/tokenService";
 import { getCurrentUser } from "../../services/authService";
+
 //style
 import "../../styles/authentication/google-login.css";
 
@@ -10,12 +11,12 @@ const GoogleLogin = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const authenticateWithGoogle = async () => {
       try {
-        setIsLoading(true);
+        // setIsLoading(true);
         const urlParams = new URLSearchParams(location.search);
         const code = urlParams.get("code");
 
@@ -68,7 +69,7 @@ const GoogleLogin = () => {
           navigate("/login", { replace: true });
         }, 3000);
       } finally {
-        setIsLoading(false);
+        // setIsLoading(false);
       }
     };
 

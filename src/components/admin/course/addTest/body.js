@@ -3,7 +3,7 @@ import React from "react";
 //styles
 import "../../../../styles/admin/addTest/body.css";
 
-const Body = ({ testData, testErrors, excelFile, handleTestInputChange, handleFileChange, onSubmit }) => {
+const Body = ({ testData, testErrors, excelFile, handleTestInputChange, handleFileChange}) => {
     return (
         <div className="addTest-body">
             <div className="addTest-body__content">
@@ -52,14 +52,14 @@ const Body = ({ testData, testErrors, excelFile, handleTestInputChange, handleFi
                     <div className="addExercise-body__form-group">
                         <div className="addExercise-upload-file">
                             <input type="file" id="exerciseFile" className="addExercise-body__input-file" onChange={handleFileChange} />
-                            <img src="https://cf.quizizz.com/CreateWithAIV2/Source%20abstractions-min.png" alt="Image" loading="lazy" />
+                            <img src="https://cf.quizizz.com/CreateWithAIV2/Source%20abstractions-min.png" alt="UploadFile" loading="lazy" />
                             <label htmlFor="exerciseFile" className="addExercise-body__input-file-label">Tải lên tệp câu hỏi</label>
                             <div className={`addExercise-body__input-file-name ${testErrors.excelFile ? 'input-error' : ''}`}>
                                 {excelFile ? excelFile.name : "Chưa có tệp nào được chọn"}
                             </div>
                         </div>
                         <div className="addExercise-create-question">
-                            <img src="https://cf.quizizz.com/CreateWithAIV2/Source%20abstractions-2-min.png" alt="Image" loading="lazy" />
+                            <img src="https://cf.quizizz.com/CreateWithAIV2/Source%20abstractions-2-min.png" alt="CreateExercises" loading="lazy" />
                             <label className="addExercise-body__create-question-label">Tạo câu hỏi thủ công</label>
                             <div className="addExercise-body__create-question">
                                 <p>Chưa có</p>

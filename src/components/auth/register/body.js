@@ -10,7 +10,7 @@ const Body = ({ loginImage, formData, handleChange, handleSubmit, isLoading }) =
     return (
         <div className="register-body">
             <div className="register-body__left">
-                <img src={loginImage} alt="eFlex image" className="image" loading='lazy' />
+                <img src={loginImage} alt="eFlex" className="image" loading='lazy' />
             </div>
             <div className="register-body__right">
                 <div className="divider">

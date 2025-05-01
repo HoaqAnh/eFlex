@@ -115,7 +115,7 @@ export const WebSocketProvider = ({ children }) => {
         hasSentJoinMessage.current = false;
       }
     };
-  }, []);
+  }, [userInfo]);
 
   // Gửi JOIN khi userInfo thay đổi
   useEffect(() => {

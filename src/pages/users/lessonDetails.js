@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 //components
 import Navbar from "../../components/navbar";
@@ -9,15 +9,25 @@ import Footer from "../../components/lessonDetails/footer";
 
 //hooks
 import { useAuth } from "../../hooks/useAuth";
+import useCourseStudyTimer from "../../hooks/courses/useCourseStudyTimer";
 import { getLessonSections } from '../../services/lessonService';
 
 //style
 import "../../styles/lessonDetails/style.css"
 
 const LessonDetails = () => {
-    const { lessonId } = useParams();
+    const { id: courseId, lessonId } = useParams();
     const [selectedSection, setSelectedSection] = useState(null);
     const [sections, setSections] = useState([]);
+    const { checkAuth } = useAuth();
+    const authCheck = checkAuth();
+
+    const handleExit = () => {};
+    useCourseStudyTimer(handleExit, courseId);
+
+    const handleSectionSelect = (section) => {
+        setSelectedSection(section);
+    };
 
     useEffect(() => {
         const fetchSections = async () => {
@@ -33,16 +43,9 @@ const LessonDetails = () => {
         fetchSections();
     }, [lessonId]);
 
-    const { checkAuth } = useAuth();
-    const authCheck = checkAuth();
-
     if (!authCheck.shouldRender) {
         return authCheck.component;
     }
-
-    const handleSectionSelect = (section) => {
-        setSelectedSection(section);
-    };
 
     return (
         <div className="lesson-details">
@@ -52,9 +55,9 @@ const LessonDetails = () => {
                     <Sidebar onSectionSelect={handleSectionSelect} />
                     <div className="lesson-details__body-container">
                         <Body selectedSection={selectedSection} />
-                        <Footer 
-                            selectedSection={selectedSection} 
-                            sections={sections} 
+                        <Footer
+                            selectedSection={selectedSection}
+                            sections={sections}
                             onSectionSelect={handleSectionSelect}
                         />
                     </div>
