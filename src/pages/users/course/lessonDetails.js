@@ -2,18 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 
 //components
-import Navbar from "../../components/navbar";
-import Sidebar from "../../components/lessonDetails/sidebar";
-import Body from "../../components/lessonDetails/body";
-import Footer from "../../components/lessonDetails/footer";
+import Navbar from "../../../components/navbar";
+import Sidebar from "../../../components/lessonDetails/sidebar";
+import Body from "../../../components/lessonDetails/body";
+import Footer from "../../../components/lessonDetails/footer";
 
 //hooks
-import { useAuth } from "../../hooks/useAuth";
-import useCourseStudyTimer from "../../hooks/courses/useCourseStudyTimer";
-import { getLessonSections } from '../../services/lessonService';
+import { useAuth } from "../../../hooks/useAuth";
+import useCourseStudyTimer from "../../../hooks/courses/useCourseStudyTimer";
+import { getLessonSections } from '../../../services/lessonService';
 
 //style
-import "../../styles/lessonDetails/style.css"
+import "../../../styles/lessonDetails/style.css"
 
 const LessonDetails = () => {
     const { id: courseId, lessonId } = useParams();

@@ -1,23 +1,23 @@
 import React from "react";
 
 //components
-import Navbar from "../../components/navbar";
-import Sidebar from "../../components/users/layout/sidebar";
-import CourseHeader from "../../components/users/course/CourseHeader";
-import CourseGrid from "../../components/users/course/CourseGrid";
-import PreviewCourse from "../../components/users/course/PreviewCourse";
+import Navbar from "../../../components/navbar";
+import Sidebar from "../../../components/users/layout/sidebar";
+import CourseHeader from "../../../components/users/course/CourseHeader";
+import CourseGrid from "../../../components/users/course/CourseGrid";
+import PreviewCourse from "../../../components/users/course/PreviewCourse";
 
 //data
-import { filterOptions } from "../../data/courseData";
+import { filterOptions } from "../../../data/courseData";
 
 //hooks
-import { useCourses } from "../../hooks/useCourses";
-import { useAuth } from "../../hooks/useAuth";
+import { useCourses } from "../../../hooks/useCourses";
+import { useAuth } from "../../../hooks/useAuth";
 
 //style
-import "../../styles/users/course.css";
-import "../../styles/layout/previewCourse.css";
-import "../../styles/layout/coursesGrid.css";
+import "../../../styles/users/course.css";
+import "../../../styles/layout/previewCourse.css";
+import "../../../styles/layout/coursesGrid.css";
 
 const Course = () => {
     const {

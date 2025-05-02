@@ -1,15 +1,15 @@
 import React from "react";
 
 //hooks
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "../../../hooks/useAuth";
 
 //components
-import Navbar from "../../components/navbar";
-import Sidebar from "../../components/users/layout/sidebar";
-import ChatContent from "../../components/users/chatbot/ChatContent";
+import Navbar from "../../../components/navbar";
+import Sidebar from "../../../components/users/layout/sidebar";
+import ChatContent from "../../../components/users/chatbot/ChatContent";
 
 //style
-import "../../styles/users/chatbot/chatbot.css";
+import "../../../styles/users/chatbot/chatbot.css";
 
 const ChatPage = () => {
   const { checkAuth } = useAuth();

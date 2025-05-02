@@ -1,16 +1,16 @@
 import React from "react";
 
 //components
-import Navbar from "../../components/navbar";
-import Sidebar from "../../components/users/layout/sidebar";
-import Welcome from "../../components/users/home/Welcome";
-import ProgressSection from "../../components/users/home/ProgressSection";
+import Navbar from "../../../components/navbar";
+import Sidebar from "../../../components/users/layout/sidebar";
+import Welcome from "../../../components/users/home/Welcome";
+import ProgressSection from "../../../components/users/home/ProgressSection";
 
 //hooks
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "../../../hooks/useAuth";
 
 //style
-import "../../styles/users/home.css";
+import "../../../styles/users/home.css";
 
 const HomePage = () => {
   const { checkAuth } = useAuth();

@@ -13,12 +13,12 @@ import LoginPage from "./pages/auth/login";
 import RegisterPage from "./pages/auth/register";
 
 //user
-import HomePage from "./pages/users/home";
-import ChatBot from "./pages/users/chatbot";
-import CoursePage from "./pages/users/course";
-import CourseDetails from "./pages/users/courseDetails";
-import LessonDetails from "./pages/users/lessonDetails";
-import Exercises from "./pages/users/exercises";
+import HomePage from "./pages/users/home/home";
+import ChatBot from "./pages/users/chat/chatbot";
+import CoursePage from "./pages/users/course/course";
+import CourseDetails from "./pages/users/course/courseDetails";
+import LessonDetails from "./pages/users/course/lessonDetails";
+import Exercises from "./pages/users/test/exercises";
 
 //admin
 import Dashboard from "./pages/admin/dashboard";

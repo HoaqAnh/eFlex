@@ -2,21 +2,21 @@ import React from "react";
 import { useParams } from "react-router-dom";
 
 //components
-import Navbar from "../../components/navbar";
-import Header from "../../components/courseDetails/header"
-import Body from "../../components/courseDetails/body"
-import Footer from "../../components/courseDetails/footer"
+import Navbar from "../../../components/navbar";
+import Header from "../../../components/courseDetails/header"
+import Body from "../../../components/courseDetails/body"
+import Footer from "../../../components/courseDetails/footer"
 
 //hooks
-import { useAuth } from "../../hooks/useAuth";
-import useCourseStudyTimer from "../../hooks/courses/useCourseStudyTimer"
+import { useAuth } from "../../../hooks/useAuth";
+import useCourseStudyTimer from "../../../hooks/courses/useCourseStudyTimer"
 
 //service
-import { userStudyData } from "../../services/modelService"
+import { userStudyData } from "../../../services/modelService"
 
 //style
-import "../../styles/courseDetails/style.css"
-import "../../styles/layout/header.css"
+import "../../../styles/courseDetails/style.css"
+import "../../../styles/layout/header.css"
 
 const CourseDetails = () => {
     const { checkAuth } = useAuth();

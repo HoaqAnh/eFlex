@@ -1,16 +1,16 @@
 import React from "react";
 
 //components
-import Navbar from "../../components/navbar";
-import Header from "../../components/exercises/header";
-import Body from "../../components/exercises/body";
-import Footer from "../../components/exercises/footer";
+import Navbar from "../../../components/navbar";
+import Header from "../../../components/exercises/header";
+import Body from "../../../components/exercises/body";
+import Footer from "../../../components/exercises/footer";
 
 //hooks
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "../../../hooks/useAuth";
 
 //style
-import "../../styles/exercises/style.css"
+import "../../../styles/exercises/style.css"
 
 const Exercises = () => {
     const { checkAuth } = useAuth();
