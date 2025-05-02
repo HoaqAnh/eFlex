@@ -39,7 +39,8 @@ public class HistoryLearnController {
     @GetMapping("/recommend/{userId}")
     public ResponseEntity<Map<String, Object>> recommend(@PathVariable("userId") Integer userId) {
         try {
-            String flaskApiUrl = "http://localhost:5000/recommend/" + userId;
+            String flaskApiUrl = "http://host.docker.internal:5000/recommend/" + userId;
+
             ResponseEntity<Map> response = restTemplate.getForEntity(flaskApiUrl, Map.class);
 
             if (response.getStatusCode() == HttpStatus.OK) {
