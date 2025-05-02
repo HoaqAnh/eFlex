@@ -1,7 +1,7 @@
 import React from "react";
 
 //style
-import "../../styles/exercises/multipleChoice.css"
+import "../../../../styles/exercises/multipleChoice.css"
 
 function MultipleChoice() {
     return (

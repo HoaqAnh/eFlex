@@ -1,0 +1,29 @@
+.test {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    height: 100vh;
+    background-color: #F4FAFF;
+}
+
+.test__main-content {
+    flex: 1;
+    display: flex;
+    height: 100%;
+    min-width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.test__content-wrapper {
+    height: auto;
+    width: 90%;
+    max-width: 900px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    border: 0.5px solid #aaa;  
+}

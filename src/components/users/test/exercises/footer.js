@@ -1,7 +1,7 @@
 import React from "react";
 
 //style
-import "../../styles/exercises/footer.css"
+import "../../../../styles/exercises/footer.css"
 
 function Footer() {
     return (

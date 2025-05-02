@@ -49,7 +49,7 @@ function LessonWithSection({ lesson, course }) {
 
     const handleExercises = () => {
         if (course?.id && lesson?.id) {
-            navigate(`/courses/${course.id}/lesson/${lesson.id}/exercises`);
+            navigate(`/courses/${course.id}/lesson/${lesson.id}/test`);
         }
     };
 

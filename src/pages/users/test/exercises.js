@@ -1,10 +1,9 @@
 import React from "react";
 
 //components
-import Navbar from "../../../components/navbar";
-import Header from "../../../components/exercises/header";
-import Body from "../../../components/exercises/body";
-import Footer from "../../../components/exercises/footer";
+import Header from "../../../components/users/test/exercises/header";
+import Body from "../../../components/users/test/exercises/body";
+import Footer from "../../../components/users/test/exercises/footer";
 
 //hooks
 import { useAuth } from "../../../hooks/useAuth";
@@ -21,7 +20,6 @@ const Exercises = () => {
     }
     return (
         <div className="exercises">
-            <Navbar />
             <div className="exercises__main-content">
                 <Header />
                 <div className="exercises__content-wrapper">

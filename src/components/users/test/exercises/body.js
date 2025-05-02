@@ -4,7 +4,7 @@ import React from "react";
 import MultipleChoice from "./multipleChoice"
 
 //style
-import "../../styles/exercises/body.css"
+import "../../../../styles/exercises/body.css"
 
 function Body() {
     return(

@@ -1,7 +1,7 @@
 import React from "react";
 
 //style
-import "../../styles/exercises/header.css"
+import "../../../../styles/exercises/header.css"
 
 function Header() {
     return (
