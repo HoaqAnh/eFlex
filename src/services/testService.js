@@ -24,7 +24,7 @@ export const createTest = async (testData) => {
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(testData),
-            credentials: 'include',
+            credentials: 'include'
         });
 
         if (!response.ok) {
@@ -44,47 +44,11 @@ export const createTest = async (testData) => {
     }
 };
 
-export const uploadExerciseExcel = async (testId, file) => {
+export const getTestInfo = (testId) => {
     try {
-        const token = TokenService.getToken();
-        if (!token) {
-            console.error("Không tìm thấy token, người dùng chưa đăng nhập");
-            return null;
-        }
-
-        // Kiểm tra token hợp lệ
-        if (!TokenService.isTokenValid()) {
-            console.error("Token không hợp lệ hoặc đã hết hạn");
-            TokenService.clearTokens();
-            return null;
-        }
-
-        const formData = new FormData();
-        formData.append('file', file);
-
-        const response = await fetch(`${BASE_URL}/exercise/excel/${testId}`, {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-            body: formData,
-            credentials: "include"
-        });
-
-        if (!response.ok) {
-            if (response.status === 401 || response.status === 403) {
-                TokenService.clearTokens();
-                throw new Error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
-            } else {
-                throw new Error(`Error: ${response.status}. ${response.statusText}`);
-            }
-        }
-
-        const data = await response.json();
-        return { success: true, data: data.data };
+        
     } catch (error) {
-        console.error('Lỗi khi tải lên file Excel:', error);
-        return { success: false, error: error.message };
+        console.error('API request error:', error);
+        throw error;
     }
-};
-
+}

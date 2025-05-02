@@ -11,6 +11,9 @@ import Footer from "../../components/courseDetails/footer"
 import { useAuth } from "../../hooks/useAuth";
 import useCourseStudyTimer from "../../hooks/courses/useCourseStudyTimer"
 
+//service
+import { userStudyData } from "../../services/modelService"
+
 //style
 import "../../styles/courseDetails/style.css"
 import "../../styles/layout/header.css"
@@ -23,6 +26,7 @@ const CourseDetails = () => {
     const handleExit = (totalTimeInSeconds) => {
         if (totalTimeInSeconds > 0) {
             console.log(totalTimeInSeconds);
+            userStudyData(id, totalTimeInSeconds);
         }
     };
 

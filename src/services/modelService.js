@@ -2,7 +2,7 @@ import TokenService from './tokenService';
 
 const BASE_URL = "http://localhost:8080/api/v1";
 
-export const uploadExerciseExcel = async (testId, file) => {
+export const userStudyData = async (courseId, duration) => {
     try {
         const token = TokenService.getToken();
         if (!token) {
@@ -10,23 +10,24 @@ export const uploadExerciseExcel = async (testId, file) => {
             return null;
         }
 
-        // Kiểm tra token hợp lệ
         if (!TokenService.isTokenValid()) {
             console.error("Token không hợp lệ hoặc đã hết hạn");
             TokenService.clearTokens();
             return null;
         }
 
-        console.log("testId: ", testId);
-        const formData = new FormData();
-        formData.append('file', file);
-
-        const response = await fetch(`${BASE_URL}/exercise/excel/${testId}`, {
+        const response = await fetch(`${BASE_URL}/log_learning`, {
             method: "POST",
             headers: {
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
-            body: formData,
+            body: JSON.stringify({
+                course: {
+                    id: courseId
+                },
+                duration: duration
+            }),
             credentials: 'include'
         });
 
@@ -39,22 +40,14 @@ export const uploadExerciseExcel = async (testId, file) => {
             }
         }
 
-        const responseData = await response.json();
-        console.log('Response data:', responseData);
-
-        return {
-            success: true,
-            data: responseData.data,
-            message: responseData.message
-        };
+        return;
     } catch (error) {
-        console.error('Lỗi khi tải lên file Excel:', error);
-        return { success: false, error: error.message };
+        console.error('API request error:', error);
+        throw error;
     }
-};
+}
 
-/*
-export const getExercisesByLessonId = async (lessonId) => {
+export const getCourseRecommend = async (userId) => {
     try {
         const token = TokenService.getToken();
         if (!token) {
@@ -62,20 +55,19 @@ export const getExercisesByLessonId = async (lessonId) => {
             return null;
         }
 
-        // Kiểm tra token hợp lệ
         if (!TokenService.isTokenValid()) {
             console.error("Token không hợp lệ hoặc đã hết hạn");
             TokenService.clearTokens();
             return null;
         }
 
-        const response = await fetch(`${BASE_URL}/lesson/${lessonId}/exercises`, {
+        const response = await fetch(`${BASE_URL}/recommend/${userId}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${token}`
             },
-            credentials: "include",
+            credentials: "include"
         });
 
         if (!response.ok) {
@@ -87,11 +79,9 @@ export const getExercisesByLessonId = async (lessonId) => {
             }
         }
 
-        const data = await response.json();
-        return data.data;
+        return await response.JSON();
     } catch (error) {
-        console.error('Lỗi khi lấy danh sách bài tập:', error);
+        console.error('API request error:', error);
         throw error;
     }
-}; 
-*/
+};
