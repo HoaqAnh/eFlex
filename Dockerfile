@@ -3,11 +3,12 @@ FROM maven:3.9.9-eclipse-temurin-17-alpine AS builder
 
 WORKDIR /app
 
-# Sao chép file cấu hình Maven và source code
+# Sao chép và tải dependencies trước
 COPY pom.xml .
-COPY src ./src
+RUN mvn dependency:go-offline
 
-# Build JAR, bỏ qua test để nhanh hơn
+# Sao chép source code và build
+COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Giai đoạn 2: Tạo image chạy ứng dụng
@@ -20,6 +21,7 @@ COPY --from=builder /app/target/*.jar app.jar
 
 # Tạo user non-root để tăng bảo mật
 RUN addgroup -S mygroup && adduser -S myuser -G mygroup
+RUN chown -R myuser:mygroup /app
 USER myuser
 
 # Mở port 8080
