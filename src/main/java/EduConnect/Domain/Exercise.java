@@ -35,6 +35,7 @@ public class Exercise {
 
     @ManyToOne
     @JoinColumn(name = "id_bkt")
+    @JsonIgnore
     private TestExercise testExercise;
 
 }

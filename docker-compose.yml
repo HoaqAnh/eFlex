@@ -51,6 +51,8 @@ services:
     restart: unless-stopped
 
   mysql:
+    ports:
+      - "3306:3306"
     image: mysql:8.0
     environment:
       - MYSQL_ROOT_PASSWORD=admin123
@@ -59,7 +61,7 @@ services:
       - mysql-data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pStr0ng_MySQL_P@ssw0rd"]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-padmin123" ]
       interval: 5s
       timeout: 5s
       retries: 10
