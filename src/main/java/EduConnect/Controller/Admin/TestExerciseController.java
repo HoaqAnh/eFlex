@@ -1,21 +1,29 @@
 package EduConnect.Controller.Admin;
 
+import EduConnect.Domain.Lesson;
 import EduConnect.Domain.TestExercise;
+import EduConnect.Repository.LessonRepository;
+import EduConnect.Service.LessonService;
 import EduConnect.Service.TestExerciseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/test-exercises")
 public class TestExerciseController {
 
     private final TestExerciseService testExerciseService;
+    private final LessonRepository lessonRepository;
 
     @Autowired
-    public TestExerciseController(TestExerciseService testExerciseService) {
+    public TestExerciseController(TestExerciseService testExerciseService, LessonRepository lessonRepository) {
         this.testExerciseService = testExerciseService;
+        this.lessonRepository = lessonRepository;
     }
     @PostMapping
     public ResponseEntity<TestExercise> createTestExercise(@RequestBody TestExercise testExercise) {
@@ -39,4 +47,12 @@ public class TestExerciseController {
         TestExercise testExercise = testExerciseService.getTestExerciseById(id);
         return new ResponseEntity<>(testExercise, HttpStatus.OK);
     }
+
+    @GetMapping("/lesson/{id}")
+    public ResponseEntity<List<TestExercise>> getTestExercisesByLesson(@PathVariable Long id) {
+        Lesson lesson = lessonRepository.getLessonById(id);
+
+        return new ResponseEntity<>(lesson.getTestExercise(), HttpStatus.OK);
+    }
+
 }

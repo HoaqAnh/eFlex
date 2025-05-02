@@ -3,6 +3,8 @@ package EduConnect.Controller.Admin;
 import EduConnect.Domain.Exercise;
 import EduConnect.Domain.Request.AnswerRequest;
 import EduConnect.Domain.Response.ScoreRes;
+import EduConnect.Domain.TestExercise;
+import EduConnect.Repository.TestExerciseRepository;
 import EduConnect.Service.ExerciseService;
 import EduConnect.Util.ApiMessage;
 import EduConnect.Util.Enum.Dificulty;
@@ -11,19 +13,24 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1")
 public class ExerciseController {
     private final ExerciseService exerciseService;
+    private final TestExerciseRepository testExerciseRepository;
 
-    public ExerciseController(ExerciseService exerciseService) {
+    public ExerciseController(ExerciseService exerciseService,
+                              TestExerciseRepository testExerciseRepository) {
         this.exerciseService = exerciseService;
+        this.testExerciseRepository = testExerciseRepository;
     }
     @PostMapping("/exercise/excel/{idTestExercise}")
     @ApiMessage("Excel for Exercise")
@@ -95,6 +102,7 @@ public class ExerciseController {
 
         return ResponseEntity.ok(exerciseService.findAll(pageable));
     }
+
 //    @PostMapping("/toScore/{idLesson}")
 //    public ResponseEntity<ScoreRes> scoreExercises(
 //            @PathVariable Long idLesson,

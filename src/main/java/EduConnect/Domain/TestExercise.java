@@ -3,6 +3,7 @@ package EduConnect.Domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import net.minidev.json.annotate.JsonIgnore;
 
 import java.time.Instant;
 import java.util.List;
@@ -22,11 +23,12 @@ public class TestExercise {
 
     private Integer duration;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_BaiHoc")
     private Lesson lesson;
 
     @OneToMany(mappedBy = "testExercise", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Exercise> exerciseList;
 
     @PrePersist
