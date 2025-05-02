@@ -53,6 +53,57 @@ export const uploadExerciseExcel = async (testId, file) => {
     }
 };
 
+export const getExercisesByTestId = async (testId) => {
+    try {
+        const token = TokenService.getToken();
+        if (!token) {
+            console.error("Không tìm thấy token, người dùng chưa đăng nhập");
+            return null;
+        }
+
+        // Kiểm tra token hợp lệ
+        if (!TokenService.isTokenValid()) {
+            console.error("Token không hợp lệ hoặc đã hết hạn");
+            TokenService.clearTokens();
+            return null;
+        }
+        
+        const response = await fetch(`${BASE_URL}/lesson/${testId}/exercises`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            credentials: "include"
+        });
+
+        if (!response.ok) {
+            if (response.status === 401 || response.status === 403) {
+                TokenService.clearTokens();
+                throw new Error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
+            } else {
+                throw new Error(`Error: ${response.status}. ${response.statusText}`);
+            }
+        }
+
+        const responseData = await response.json(); 
+        
+        // Kiểm tra cấu trúc response
+        if (!responseData || !responseData.data || !Array.isArray(responseData.data)) {
+            throw new Error("Dữ liệu trả về không đúng định dạng");
+        }
+
+        return {
+            statusCode: responseData.statusCode,
+            message: responseData.message,
+            data: responseData.data
+        };
+    } catch (error) {
+        console.error('API request error:', error);
+        throw error;
+    }
+};
+
 /*
 export const getExercisesByLessonId = async (lessonId) => {
     try {
@@ -93,5 +144,5 @@ export const getExercisesByLessonId = async (lessonId) => {
         console.error('Lỗi khi lấy danh sách bài tập:', error);
         throw error;
     }
-}; 
+};
 */

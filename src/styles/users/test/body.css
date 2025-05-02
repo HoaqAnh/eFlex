@@ -5,7 +5,6 @@
     padding: 20px;
     background: transparent;
     height: 100%;
-    cursor: pointer;
 }
 
 .test-body__left {
@@ -20,10 +19,6 @@
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.test-body__left:hover {
-    transform: translateY(1px);
 }
 
 .test-body__left-top {
@@ -73,10 +68,11 @@
     width: 60%;
     max-height: 300px;
     overflow-y: auto;
-    background-color: #f5f5f5;
-    border-radius: 10px;
+    background-color: transparent;
+    border-left: 1px dashed #1A1A1A;
+    /* border-radius: 10px; */
     padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
 }
 
 .test-body__right::-webkit-scrollbar {

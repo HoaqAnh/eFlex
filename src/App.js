@@ -52,7 +52,7 @@ function WebSocketRoutes() {
         <Route path="/courses/:id" element={<CourseDetails />} />
         <Route path="/courses/:id/lesson/:lessonId" element={<LessonDetails />} />
         <Route path="/courses/:id/lesson/:lessonId/test" element={<Test />} />
-        <Route path="/courses/:id/lesson/:lessonId/test/exercise" element={<Exercises />} />
+        <Route path="/courses/:id/lesson/:lessonId/test/:testId" element={<Exercises />} />
 
         {/* admin */}
         <Route path="/dashboard" element={<Dashboard />} />

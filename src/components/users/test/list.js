@@ -8,7 +8,7 @@ const List = () => {
     const { id: courseId, lessonId } = useParams();
     const handleExercises = () => {
         if (courseId && lessonId) {
-            navigate(`/courses/${courseId}/lesson/${lessonId}/test/exercise`);
+            navigate(`/courses/${courseId}/lesson/${lessonId}/test/:testId`);
         }
     };
     const exercises = 45;
