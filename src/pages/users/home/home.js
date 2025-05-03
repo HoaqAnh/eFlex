@@ -3,37 +3,34 @@ import React from "react";
 //components
 import Navbar from "../../../components/navbar";
 import Sidebar from "../../../components/users/layout/sidebar";
-import Welcome from "../../../components/users/home/Welcome";
-import ProgressSection from "../../../components/users/home/ProgressSection";
+import Header from "../../../components/users/home/header";
+import Body from "../../../components/users/home/body";
+import Footer from "../../../components/users/home/footer";
 
 //hooks
 import { useAuth } from "../../../hooks/useAuth";
 
 //style
-import "../../../styles/users/home.css";
+import "../../../styles/users/home/style.css";
 
 const HomePage = () => {
   const { checkAuth } = useAuth();
   const authCheck = checkAuth();
 
   if (!authCheck.shouldRender) {
-      return authCheck.component;
+    return authCheck.component;
   }
 
   return (
     <div className="home">
       <Navbar />
-
-      <div className="content">
+      <div className="home__content-wrapper">
         <Sidebar />
-
-        <main className="main">
-          <Welcome />
-
-          <div className="sections">
-            <ProgressSection />
-          </div>
-        </main>
+        <div className="home__main-content">
+          <Header />
+          <Body />
+          <Footer />
+        </div>
       </div>
     </div>
   );

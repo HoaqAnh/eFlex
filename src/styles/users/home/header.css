@@ -1,0 +1,143 @@
+.home-header {
+    display: flex;
+    height: 10%;
+    min-height: 100px;
+    border-radius: 15px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative;
+}
+
+.home-header:hover {
+    transform: translateY(1px);
+    border: 0.5px solid #aaa;
+}
+
+.home-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 100%;
+    background: linear-gradient(180deg, #4a6ef5, #7a99ff);
+}
+
+.home-header__container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    padding-left: 30px;
+    gap: 1rem;
+    width: 100%;
+}
+
+/* Phần trái */
+.home-header__container-left {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    height: 100%;
+    width: 40%;
+}
+
+.home-header__container-left__avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 20%;
+    height: 100%;
+}
+
+.home-header__container-left__avatar .avatarImage {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #aaa;
+    cursor: pointer;
+}
+
+.home-header__container-left__avatar .avatarImage:hover {
+    transform: scale(1.05);
+}
+
+.home-header__container-left__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 80%;
+    height: 100%;
+}
+
+.home-header__container-left__content h4 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0 0 5px 0;
+    color: #333;
+    position: relative;
+    display: inline-block;
+}
+
+.home-header__container-left__content p {
+    font-size: 1rem;
+    color: #666;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* Dấu phân cách */
+.home-header__divider-vertical {
+    height: 90%;
+    width: 1px;
+    background-color: #ddd;
+}
+
+/* Phần phải */
+.home-header__container-right {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    height: 100%;
+    width: 60%;
+}
+
+.home-header__container-right p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #666;
+    text-align: justify;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .home-header__container {
+        flex-direction: column;
+        padding: 20px 15px;
+    }
+
+    .home-header__container-left,
+    .home-header__container-right {
+        width: 100%;
+    }
+
+    .home-header__divider-vertical {
+        width: 80%;
+        height: 2px;
+        margin: 15px 0;
+        background: linear-gradient(90deg, #4a6ef5, transparent);
+    }
+
+    .home-header {
+        min-height: 200px;
+    }
+}

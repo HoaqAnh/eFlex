@@ -1,0 +1,41 @@
+.home-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 20px;
+    height: 50%;
+    min-height: 300px;
+    border-radius: 15px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative;
+}
+
+.home-body:hover {
+    transform: translateY(1px);
+    border: 0.5px solid #aaa;
+}
+
+.home-body__container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    gap: 1rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.home-body__container-title {
+
+}
+
+.home-body__container-main {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: auto;
+    gap: 2rem;
+    overflow-x: auto;
+}

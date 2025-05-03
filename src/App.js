@@ -2,8 +2,7 @@ import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
-  Route,
-  Navigate,
+  Route
 } from "react-router-dom";
 import { Toaster } from 'react-hot-toast';
 
@@ -45,8 +44,8 @@ function WebSocketRoutes() {
         <Route path="/register" element={<RegisterPage />} />
         
         {/* user */}
-        <Route path="/" element={<Navigate to="/home" replace />} />
-        <Route path="/home" element={<HomePage />} />
+        {/* <Route path="/" element={<Navigate to="/home" replace />} /> */}
+        <Route path="/" element={<HomePage />} />
         <Route path="/chatbot" element={<ChatBot />} />
         <Route path="/courses" element={<CoursePage />} />
         <Route path="/courses/:id" element={<CourseDetails />} />

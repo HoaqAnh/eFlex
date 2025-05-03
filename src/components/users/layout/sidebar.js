@@ -20,7 +20,7 @@ function Sidebar() {
     if (menuId === "chatbot") {
       navigate("/chatbot");
     } else if (menuId === "home") {
-      navigate("/home");
+      navigate("/");
     } else if (menuId === "courses") {
       navigate("/courses");
     } else if (menuId === "account") {

@@ -117,7 +117,7 @@ export const useAuth = () => {
         if (userInfo.roleName === "admin") {
           navigate("/dashboard", { replace: true });
         } else if (userInfo.roleName === "user") {
-          navigate("/home", { replace: true });
+          navigate("/", { replace: true });
         } else {
           console.error("Thông tin role không hợp lệ");
         }
