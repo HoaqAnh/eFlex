@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { getCurrentUser, loginService, logoutService, registerService } from "../services/authService";
 import { useWebSocket } from "../WebSocketContext";
@@ -13,6 +13,9 @@ export const useAuth = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [hasFetchedUser, setHasFetchedUser] = useState(false);
+
+  const shouldRedirect = useRef(false);
+  const redirectPath = useRef("");
 
   const { isConnected, setUser } = useWebSocket();
 
@@ -29,7 +32,8 @@ export const useAuth = () => {
       if (!userData) {
         console.error("Invalid user data received");
         setIsLoading(false);
-        navigate("/login");
+        shouldRedirect.current = true;
+        redirectPath.current = "/login";
         return null;
       }
 
@@ -54,14 +58,24 @@ export const useAuth = () => {
 
     } catch (error) {
       setError(error.message);
-      toast.error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại");
+      setTimeout(() => {
+        toast.error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại");
+      }, 0);
       setIsLoading(false);
-      navigate("/login");
+      shouldRedirect.current = true;
+      redirectPath.current = "/login";
       return null;
     } finally {
       setIsLoading(false);
     }
-  }, [navigate, isConnected, setUser, hasFetchedUser]);
+  }, [isConnected, setUser, hasFetchedUser]);
+
+  useEffect(() => {
+    if (shouldRedirect.current) {
+      navigate(redirectPath.current, { replace: true });
+      shouldRedirect.current = false;
+    }
+  }, [navigate, location.pathname, isLoading]);
 
   useEffect(() => {
     let isMounted = true;
@@ -235,7 +249,8 @@ export const useAuth = () => {
 
     const token = TokenService.getToken();
     if (!token || !TokenService.isTokenValid()) {
-      setTimeout(() => navigate("/login", { replace: true }), 100);
+      shouldRedirect.current = true;
+      redirectPath.current = "/login";
       return {
         shouldRender: false,
         component: <div className="loading">Đang chuyển đến trang đăng nhập...</div>
@@ -245,8 +260,11 @@ export const useAuth = () => {
     // Kiểm tra quyền admin cho các trang admin
     const currentPath = location.pathname;
     if (isAdminRoute(currentPath) && !isAdmin) {
-      toast.error("Bạn không có quyền truy cập trang này");
-      setTimeout(() => navigate("/home", { replace: true }), 100);
+      setTimeout(() => {
+        toast.error("Bạn không có quyền truy cập trang này");
+      }, 0);
+      shouldRedirect.current = true;
+      redirectPath.current = "/";
       return {
         shouldRender: false,
         component: <div className="loading">Bạn không có quyền truy cập. Đang chuyển hướng...</div>
@@ -254,7 +272,7 @@ export const useAuth = () => {
     }
 
     return { shouldRender: true };
-  }, [isLoading, error, isAdmin, navigate, location.pathname, isAdminRoute]);
+  }, [isLoading, error, isAdmin, location.pathname, isAdminRoute]);
 
   const requireAdmin = useCallback(() => {
     if (isLoading) {
@@ -265,8 +283,11 @@ export const useAuth = () => {
     }
 
     if (!isAdmin) {
-      toast.error("Bạn không có quyền truy cập trang này");
-      setTimeout(() => navigate("/home", { replace: true }), 100);
+      setTimeout(() => {
+        toast.error("Bạn không có quyền truy cập trang này");
+      }, 0);
+      shouldRedirect.current = true;
+      redirectPath.current = "/";
       return {
         isAllowed: false,
         component: <div className="loading">Bạn không có quyền truy cập. Đang chuyển hướng...</div>
@@ -274,7 +295,7 @@ export const useAuth = () => {
     }
 
     return { isAllowed: true };
-  }, [isAdmin, isLoading, navigate]);
+  }, [isAdmin, isLoading]);
 
   return {
     user,
