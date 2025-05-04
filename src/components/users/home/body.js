@@ -10,9 +10,9 @@ const Body = () => {
     return (
         <div className="home-body">
             <div className="home-body__container">
-                <div className="home-body__container-title">
-                    <h3>Khóa học bạn đã tham gia</h3>
-                </div>
+                <p className="home-body__container-title">
+                    Khóa học bạn đã tham gia
+                </p>
                 <div className="home-body__container-main">
                     <Course />
                     <Course />

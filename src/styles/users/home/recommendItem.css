@@ -3,11 +3,11 @@
     height: 100%;
     min-width: 150px;
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
 .home-RecommendItem:hover {
-    background-color: #eee;
+    border: 2px dashed #aaa;
 }
 
 .home-RecommendItem__container {

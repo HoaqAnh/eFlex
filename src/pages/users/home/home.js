@@ -5,7 +5,6 @@ import Navbar from "../../../components/navbar";
 import Sidebar from "../../../components/users/layout/sidebar";
 import Header from "../../../components/users/home/header";
 import Body from "../../../components/users/home/body";
-import Footer from "../../../components/users/home/footer";
 
 //hooks
 import { useAuth } from "../../../hooks/useAuth";
@@ -29,7 +28,6 @@ const HomePage = () => {
         <div className="home__main-content">
           <Header />
           <Body />
-          <Footer />
         </div>
       </div>
     </div>

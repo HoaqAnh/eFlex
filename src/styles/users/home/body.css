@@ -3,8 +3,8 @@
     flex-direction: column;
     gap: 0.5rem;
     padding: 20px;
-    height: 50%;
-    min-height: 300px;
+    height: 60%;
+    min-height: 400px;
     border-radius: 15px;
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -13,8 +13,8 @@
 }
 
 .home-body:hover {
-    transform: translateY(1px);
-    border: 0.5px solid #aaa;
+    border: 1px solid #4a6ef5;
+    border-left: 4px solid #4a6ef5;
 }
 
 .home-body__container {
@@ -28,7 +28,12 @@
 }
 
 .home-body__container-title {
-
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0 0 5px 0;
+    color: #333;
+    position: relative;
+    display: inline-block;
 }
 
 .home-body__container-main {

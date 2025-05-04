@@ -4,13 +4,13 @@ import React from "react";
 import RecommendItem from "./recommendItem"
 
 //style
-import "../../../styles/users/home/footer.css"
+import "../../../styles/users/home/recommend.css"
 
-const Footer = () => {
+const Recommend = () => {
     return (
-        <div className="home-footer">
-            <h3>Môn học đề xuất cho bạn</h3>
-            <div className="home-footer__container">
+        <div className="home-recommend">
+            <p className="home-recommend__title">Môn học đề xuất cho bạn</p>
+            <div className="home-recommend__container">
                 <RecommendItem />
                 <RecommendItem />
                 <RecommendItem />
@@ -26,4 +26,4 @@ const Footer = () => {
     );
 }
 
-export default Footer;
+export default Recommend;
