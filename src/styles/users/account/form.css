@@ -34,7 +34,7 @@
 .modal-title {
     margin: 0;
     font-size: 1.2rem;
-    font-weight: bold;
+    color: #333;
 }
 
 .close-button {
@@ -56,7 +56,6 @@
 .form-group label {
     display: block;
     margin-bottom: 5px;
-    font-weight: bold;
 }
 
 .form-group input {

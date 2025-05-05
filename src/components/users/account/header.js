@@ -21,7 +21,7 @@ const Header = () => {
                     <img src={userInfo.avatar_url} alt="avatar" loading="lazy" />
                 </div>
                 <div className="account-header__container_username">
-                    <h1>{userInfo.user_name} !</h1>
+                    <h1>Hi, {userInfo.user_name} !</h1>
                 </div>
             </div>
 

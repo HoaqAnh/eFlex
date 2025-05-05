@@ -7,9 +7,12 @@ import Recommend from "./recommend"
 import "../../../styles/users/home/header.css"
 
 const Header = () => {
-    const user = "Nguoi dung 1";
-    const avatar = "./avatar"
-    const news = "eFlex ứng dụng cung cấp tài liệu phù hợp, đánh giá chính xác và hỗ trợ rèn luyện hiệu quả. Hãy khám phá eFlex ngay hôm nay để nâng cao kiến thức một cách linh hoạt!"
+    const info = {
+        user: "Nguoi dung 1",
+        avatar: "./avatar",
+        news: "Doanh nghiệp ba thành viên mỗi người trúng 20 tỷ. Xin chúc mừng !"
+    }
+
     const today = new Date().toLocaleDateString('vi-VN', {
         weekday: 'long',
         year: 'numeric',
@@ -23,11 +26,11 @@ const Header = () => {
                 <div className="home-header__container-left">
                     <div className="home-header__container-left__top">
                         <div className="home-header__container-left__top-avatar">
-                            <img src={avatar} alt="avatar" loading="lazy" className="avatarImage" />
+                            <img src={info.avatar} alt="avatar" loading="lazy" className="avatarImage" />
                         </div>
                         <div className="home-header__container-divider__vertical" />
                         <div className="home-header__container-left__top-content">
-                            <p className="welcome-content">Xin chào, {user}!</p>
+                            <p className="welcome-content">Xin chào, {info.user}!</p>
                             <p className="time-content">{today}</p>
                         </div>
                     </div>
@@ -36,7 +39,7 @@ const Header = () => {
                             Tin tức
                         </p>
                         <p className="home-header__container-left__bottom-content">
-                            {news}
+                            {info.news}
                         </p>
                     </div>
                 </div>
@@ -49,6 +52,3 @@ const Header = () => {
 }
 
 export default Header;
-
-
-// <div className="home-header__divider-vertical" />

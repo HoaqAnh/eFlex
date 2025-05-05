@@ -3,10 +3,8 @@
     justify-content: center;
     align-items: center;
     height: 40%;
-    min-height: 250px;
     overflow: hidden;
     position: relative;
-    /* background-color: aqua; */
 }
 
 .account-header__container {
@@ -14,7 +12,6 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 2rem;
     width: 100%;
     height: 6rem;
     background-color: #14375F;
@@ -22,7 +19,7 @@
 
 .account-header__container_avatar {
     display: flex;
-    justify-content: right;
+    justify-content: center;
     align-items: center;
     width: 40%;
     height: auto;

@@ -9,12 +9,15 @@
 }
 
 .home-recommend__title {
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin: 0 0 5px 0;
+    width: 100%;
+    font-size: 1.25rem;
+    font-weight: bold;
     color: #333;
     position: relative;
     display: inline-block;
+    padding: 5px 10px;
+    border-radius: 10px;
+    background-color: #f8ffbb;
 }
 
 .home-recommend__container {

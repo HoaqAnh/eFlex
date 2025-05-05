@@ -5,6 +5,7 @@
     padding: 20px;
     height: 60%;
     min-height: 400px;
+    cursor: default;
     border-radius: 15px;
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -13,8 +14,7 @@
 }
 
 .home-body:hover {
-    border: 1px solid #4a6ef5;
-    border-left: 4px solid #4a6ef5;
+    border: 1px solid #333;
 }
 
 .home-body__container {
@@ -28,12 +28,15 @@
 }
 
 .home-body__container-title {
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin: 0 0 5px 0;
+    width: 100%;
+    font-size: 1.25rem;
+    font-weight: bold;
     color: #333;
     position: relative;
     display: inline-block;
+    padding: 5px 10px;
+    border-radius: 10px;
+    background-color: #f8ffbb;
 }
 
 .home-body__container-main {
