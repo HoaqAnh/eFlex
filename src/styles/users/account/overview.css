@@ -1,0 +1,41 @@
+.account-overview {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+    overflow: hidden;
+    position: relative;
+}
+
+.account-overview__container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    gap: 1rem;
+    overflow-y: auto;
+}
+
+.account-overview__input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    width: 100%;
+    height: auto;
+    min-height: 2.25rem;
+    border-radius: 10px;
+}
+
+.account-overview__input:hover {
+    border: 1px solid #333;
+}
+
+.account-overview__input p {
+    font-size: 1.05rem;
+}
+
+.account-overview__input svg {
+    cursor: pointer;
+}
