@@ -9,7 +9,7 @@ import Footer from "../../../components/lessonDetails/footer";
 
 //hooks
 import { useAuth } from "../../../hooks/useAuth";
-import useCourseStudyTimer from "../../../hooks/courses/useCourseStudyTimer";
+import useCourseStudyTimer from "../../../hooks/model/useCourseStudyTimer";
 import { getLessonSections } from '../../../services/lessonService';
 
 //style

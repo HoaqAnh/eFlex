@@ -79,7 +79,18 @@ export const getCourseRecommend = async (userId) => {
             }
         }
 
-        return await response.JSON();
+        const responseData = await response.json();
+        console.log(responseData.data);
+        // Kiểm tra cấu trúc response
+        if (!responseData || !responseData.data || !Array.isArray(responseData.data.recommendations)) {
+            throw new Error("Dữ liệu trả về không đúng định dạng");
+        }
+
+        return {
+            statusCode: responseData.statusCode,
+            message: responseData.message,
+            data: responseData.data
+        };
     } catch (error) {
         console.error('API request error:', error);
         throw error;

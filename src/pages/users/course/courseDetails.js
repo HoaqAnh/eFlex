@@ -9,28 +9,26 @@ import Footer from "../../../components/courseDetails/footer"
 
 //hooks
 import { useAuth } from "../../../hooks/useAuth";
-import useCourseStudyTimer from "../../../hooks/courses/useCourseStudyTimer"
+import useCourseStudyTimer from "../../../hooks/model/useCourseStudyTimer"
 
 //service
 import { userStudyData } from "../../../services/modelService"
-
 //style
 import "../../../styles/courseDetails/style.css"
 import "../../../styles/layout/header.css"
 
 const CourseDetails = () => {
-    const { checkAuth } = useAuth();
+    const { checkAuth} = useAuth();
     const authCheck = checkAuth();
     const { id } = useParams();
 
     const handleExit = (totalTimeInSeconds) => {
         if (totalTimeInSeconds > 0) {
-            console.log(totalTimeInSeconds);
+            console.log("ID Course: %d - Total Time: %d", id, totalTimeInSeconds);
             userStudyData(id, totalTimeInSeconds);
         }
     };
-
-    const { currentTimeInSeconds } = useCourseStudyTimer(handleExit, id);
+    useCourseStudyTimer(handleExit, id);
 
     if (!authCheck.shouldRender) {
         return authCheck.component;
@@ -41,7 +39,6 @@ const CourseDetails = () => {
             <Navbar />
             <div className="course-details__main-content">
                 <div className="course-details__content-wrapper">
-                    <p>Thời gian hiện tại: {currentTimeInSeconds}</p>
                     <Header />
                     <Body />
                     <Footer />
