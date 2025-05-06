@@ -103,11 +103,11 @@ public class ExerciseController {
         return ResponseEntity.ok(exerciseService.findAll(pageable));
     }
 
-//    @PostMapping("/toScore/{idLesson}")
-//    public ResponseEntity<ScoreRes> scoreExercises(
-//            @PathVariable Long idLesson,
-//            @RequestBody List<AnswerRequest> answerRequests) {
-//        ScoreRes scoreRes = exerciseService.scoreExercises(idLesson, answerRequests);
-//        return ResponseEntity.ok(scoreRes);
-//    }
+    @PostMapping("/toScore/{testExerciseId}")
+    public ResponseEntity<ScoreRes> scoreExercises(
+            @PathVariable Long testExerciseId,
+            @RequestBody List<AnswerRequest> answerRequests) {
+        ScoreRes scoreRes = exerciseService.scoreExercises(testExerciseId, answerRequests);
+        return ResponseEntity.ok(scoreRes);
+    }
 }

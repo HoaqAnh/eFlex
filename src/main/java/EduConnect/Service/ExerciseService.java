@@ -134,57 +134,57 @@ public class ExerciseService {
     public Page<Exercise> findByDificulty(Dificulty dificulty, Pageable pageable) {
         return exerciseRepository.findByDificulty(dificulty,pageable);
     }
-//    public ScoreRes scoreExercises(Long idLesson, List<AnswerRequest> answerRequests) {
-//        List<Exercise> exercises = exerciseRepository.findByLessonId(idLesson);
-//        if (exercises.isEmpty()) {
-//            ScoreRes scoreRes = new ScoreRes();
-//            scoreRes.setScore(0.0f);
-//            scoreRes.setMessage("No exercises found for this lesson.");
-//            scoreRes.setResults(new ArrayList<>());
-//            return scoreRes;
-//        }
-//
-//        if (answerRequests == null || answerRequests.isEmpty()) {
-//            ScoreRes scoreRes = new ScoreRes();
-//            scoreRes.setScore(0.0f);
-//            scoreRes.setMessage("No answers provided.");
-//            scoreRes.setResults(new ArrayList<>());
-//            return scoreRes;
-//        }
-//
-//        Map<Long, Exercise> exerciseMap = exercises.stream()
-//                .collect(Collectors.toMap(Exercise::getId, exercise -> exercise));
-//
-//        int answerCorrect = 0;
-//        float soNhan = exercises.size() / 10.0f;
-//        List<ScoreRes.ExerciseResult> results = new ArrayList<>();
-//
-//        for (AnswerRequest answerRequest : answerRequests) {
-//            Exercise exercise = exerciseMap.get(answerRequest.getIdExercise());
-//            ScoreRes.ExerciseResult result = new ScoreRes.ExerciseResult();
-//            result.setExerciseId(answerRequest.getIdExercise());
-//            result.setUserAnswer(answerRequest.getAnswer());
-//
-//            if (exercise == null) {
-//                result.setCorrect(false);
-//            } else {
-//                boolean isCorrect = isCorrectAnswer(exercise, answerRequest.getAnswer());
-//                result.setCorrect(isCorrect);
-//                if (isCorrect) {
-//                    answerCorrect++;
-//                }
-//            }
-//            results.add(result);
-//        }
-//
-//        float score = answerCorrect * soNhan;
-//
-//        ScoreRes scoreRes = new ScoreRes();
-//        scoreRes.setScore(score);
-//        scoreRes.setMessage(String.format("You scored %.2f points out of %d exercises.", score, exercises.size()));
-//        scoreRes.setResults(results);
-//        return scoreRes;
-//    }
+    public ScoreRes scoreExercises(Long testExerciseId, List<AnswerRequest> answerRequests) {
+        List<Exercise> exercises = exerciseRepository.findByTestExerciseId(testExerciseId);
+        if (exercises.isEmpty()) {
+            ScoreRes scoreRes = new ScoreRes();
+            scoreRes.setScore(0.0f);
+            scoreRes.setMessage("No exercises found for this lesson.");
+            scoreRes.setResults(new ArrayList<>());
+            return scoreRes;
+        }
+
+        if (answerRequests == null || answerRequests.isEmpty()) {
+            ScoreRes scoreRes = new ScoreRes();
+            scoreRes.setScore(0.0f);
+            scoreRes.setMessage("No answers provided.");
+            scoreRes.setResults(new ArrayList<>());
+            return scoreRes;
+        }
+
+        Map<Long, Exercise> exerciseMap = exercises.stream()
+                .collect(Collectors.toMap(Exercise::getId, exercise -> exercise));
+
+        int answerCorrect = 0;
+        float soNhan = exercises.size() / 10.0f;
+        List<ScoreRes.ExerciseResult> results = new ArrayList<>();
+
+        for (AnswerRequest answerRequest : answerRequests) {
+            Exercise exercise = exerciseMap.get(answerRequest.getIdExercise());
+            ScoreRes.ExerciseResult result = new ScoreRes.ExerciseResult();
+            result.setExerciseId(answerRequest.getIdExercise());
+            result.setUserAnswer(answerRequest.getAnswer());
+
+            if (exercise == null) {
+                result.setCorrect(false);
+            } else {
+                boolean isCorrect = isCorrectAnswer(exercise, answerRequest.getAnswer());
+                result.setCorrect(isCorrect);
+                if (isCorrect) {
+                    answerCorrect++;
+                }
+            }
+            results.add(result);
+        }
+
+        float score = answerCorrect * soNhan;
+
+        ScoreRes scoreRes = new ScoreRes();
+        scoreRes.setScore(score);
+        scoreRes.setMessage(String.format("You scored %.2f points out of %d exercises.", score, exercises.size()));
+        scoreRes.setResults(results);
+        return scoreRes;
+    }
 
     private boolean isCorrectAnswer(Exercise exercise, String userAnswer) {
         if (userAnswer == null || !List.of("A", "B", "C", "D").contains(userAnswer.toUpperCase())) {

@@ -17,10 +17,10 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
             "(SELECT bh.id FROM Lesson bh WHERE bh.course.id = :idCourse)")
     long countExerciseByCourseId(@Param("idCourse") long idCourse);
 
-    List<Exercise> findByTestExerciseId(Long lessonId);
-
+    List<Exercise> findByTestExerciseId(Long testExerciseId);
     Page<Exercise> findByDificulty(Dificulty dificulty, Pageable pageable);
     void deleteById(Long id);
     boolean existsById(Long id);
     Page<Exercise> findAll(Pageable pageable);
+
 }

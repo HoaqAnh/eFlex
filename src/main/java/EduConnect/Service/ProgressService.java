@@ -22,6 +22,12 @@ public class ProgressService {
         this.sectionRepository = sectionRepository;
         this.lessonRepository = lessonRepository;
     }
+    public Boolean checkProgressSection(Long idNguoiDung,Long idSection){
+        return this.progressSectionRepository.existsByUser_IdAndSection_Id(idNguoiDung,idSection);
+    }
+    public Boolean checkProgressLesson(Long idNguoiDung,Long Lesson){
+        return this.progressLessonRepository.existsByUserIdAndLessonId(idNguoiDung,Lesson);
+    }
     public ProgressSectionDTO createProgressSection(User currentUser, ProgressSection progressSection) {
         Long sectionId = progressSection.getSection().getId();
         Section section = sectionRepository.findById(sectionId);

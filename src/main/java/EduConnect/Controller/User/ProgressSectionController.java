@@ -9,10 +9,7 @@ import EduConnect.Util.ApiMessage;
 import EduConnect.Util.Error.IdInValidException;
 import EduConnect.Util.SecurityUtil;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -35,4 +32,15 @@ public class ProgressSectionController {
         }
         return ResponseEntity.ok(progressService.createProgressSection(currentUser,progressSection));
     }
+    @GetMapping("/progressSectionCheck/{idNgDung}/{idSection}")
+    @ApiMessage("Check Seciton")
+    public ResponseEntity<Boolean> checkProgressSection(@PathVariable Long idNgDung, @PathVariable Long idSection)  {
+        return ResponseEntity.ok(progressService.checkProgressSection(idNgDung,idSection));
+    }
+    @GetMapping("/progressLessonCheck/{idNgDung}/{idLesson}")
+    @ApiMessage("Check Seciton")
+    public ResponseEntity<Boolean> checkProgressLesson(@PathVariable Long idNgDung, @PathVariable Long idLesson)  {
+        return ResponseEntity.ok(progressService.checkProgressLesson(idNgDung,idLesson));
+    }
+
 }
