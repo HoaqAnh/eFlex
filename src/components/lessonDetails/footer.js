@@ -4,12 +4,16 @@ import { useNavigate, useParams } from 'react-router-dom';
 //components
 import ConfirmDialog from './confirmDialog';
 
-//styles
-import "../../styles/lessonDetails/footer.css"
+//hook
+import { useProgress } from '../../hooks/progress/useProgress';
 
-function Footer({ selectedSection, sections, onSectionSelect }) {
+//styles
+import "../../styles/lessonDetails/footer.css";
+
+const Footer = ({ selectedSection, sections, onSectionSelect }) => {
     const { id, lessonId } = useParams();
     const navigate = useNavigate();
+    const { sendSectionProgress } = useProgress();
     const [showExitConfirm, setShowExitConfirm] = useState(false);
     const [showTestConfirm, setShowTestConfirm] = useState(false);
 
@@ -18,25 +22,23 @@ function Footer({ selectedSection, sections, onSectionSelect }) {
 
         const currentIndex = sections.findIndex(s => s.id === selectedSection.id);
         if (currentIndex > 0) {
-            // Chuyển đến phần học trước
             const previousSection = sections[currentIndex - 1];
             onSectionSelect(previousSection);
         } else {
-            // Nếu đang ở phần học đầu tiên, hiển thị xác nhận thoát
             setShowExitConfirm(true);
         }
     };
 
     const handleNext = () => {
         if (!selectedSection || !sections) return;
-
         const currentIndex = sections.findIndex(s => s.id === selectedSection.id);
+        const sectionId = sections[currentIndex];
+        sendSectionProgress(sectionId.id);
+
         if (currentIndex < sections.length - 1) {
-            // Chuyển đến phần học tiếp theo
             const nextSection = sections[currentIndex + 1];
             onSectionSelect(nextSection);
         } else {
-            // Nếu đang ở phần học cuối cùng, hiển thị xác nhận làm bài kiểm tra
             setShowTestConfirm(true);
         }
     };
@@ -44,7 +46,6 @@ function Footer({ selectedSection, sections, onSectionSelect }) {
     const handleExitConfirm = (confirmed) => {
         setShowExitConfirm(false);
         if (confirmed) {
-            // Quay lại trang courseDetails
             navigate(`/courses/${id}`);
         }
     };
@@ -52,7 +53,6 @@ function Footer({ selectedSection, sections, onSectionSelect }) {
     const handleTestConfirm = (confirmed) => {
         setShowTestConfirm(false);
         if (confirmed) {
-            // Điều hướng đến trang làm bài kiểm tra
             navigate(`/courses/${id}/lesson/${lessonId}/test`);
         }
     };
@@ -60,14 +60,14 @@ function Footer({ selectedSection, sections, onSectionSelect }) {
     return (
         <div className="lesson-details__footer">
             <div className="lesson-details__footer-content">
-                <button 
-                    className="btn btn-secondary" 
+                <button
+                    className="btn btn-secondary"
                     onClick={handlePrevious}
                 >
                     Quay lại
                 </button>
-                <button 
-                    className="btn btn-primary" 
+                <button
+                    className="btn btn-primary"
                     onClick={handleNext}
                 >
                     Tiếp tục

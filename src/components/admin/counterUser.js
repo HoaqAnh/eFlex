@@ -1,5 +1,5 @@
 import React from "react";
-import { useWebSocket } from "../../WebSocketContext";
+import { useWebSocket } from "../../context/WebSocketContext";
 
 function CounterUser({ totalStudents, newRegistrations }) {
     const { activeUsers } = useWebSocket();

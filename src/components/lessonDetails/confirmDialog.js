@@ -3,7 +3,7 @@ import React from 'react';
 //styles
 import '../../styles/lessonDetails/confirmDialog.css';
 
-function ConfirmDialog({ 
+const ConfirmDialog = ({ 
     isOpen, 
     title, 
     message, 
@@ -11,7 +11,7 @@ function ConfirmDialog({
     onCancel,
     confirmText = "Đồng ý",
     cancelText = "Hủy"
-}) {
+}) => {
     if (!isOpen) return null;
 
     return (

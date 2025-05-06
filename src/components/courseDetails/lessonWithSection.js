@@ -7,7 +7,7 @@ import { getLessonSections } from "../../services/lessonService";
 //styles
 import "../../styles/courseDetails/lessonWithSection.css"
 
-function LessonWithSection({ lesson, course }) {
+const LessonWithSection = ({ lesson, course }) => {
     const [sections, setSections] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);

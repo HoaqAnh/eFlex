@@ -7,7 +7,7 @@ import { getCourseLessons, getLessonSections } from "../../services/lessonServic
 //styles
 import "../../styles/lessonDetails/sidebar.css"
 
-function Sidebar({ onSectionSelect }) {
+const Sidebar = ({ onSectionSelect }) => {
     const { id, lessonId } = useParams();
     const [lesson, setLesson] = useState(null);
     const [sections, setSections] = useState([]);

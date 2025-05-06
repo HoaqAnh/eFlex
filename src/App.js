@@ -34,7 +34,7 @@ import AddTest from "./pages/admin/course/addTest";
 import "./styles/Global.css";
 
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import { WebSocketProvider } from "./WebSocketContext";
+import { WebSocketProvider } from "../src/context/WebSocketContext";
 
 // Component trung gian để nhóm các route cần WebSocket
 function WebSocketRoutes() {

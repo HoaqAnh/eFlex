@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { getCurrentUser, loginService, logoutService, registerService } from "../services/authService";
-import { useWebSocket } from "../WebSocketContext";
+import { useWebSocket } from "../context/WebSocketContext";
 import { toast } from 'react-hot-toast';
 import TokenService from "../services/tokenService";
 

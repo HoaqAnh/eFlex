@@ -11,7 +11,7 @@ import LessonWithSection from "./lessonWithSection";
 //styles
 import "../../styles/courseDetails/body.css";
 
-function Body() {
+const Body = () => {
     const { id } = useParams();
     const [course, setCourse] = useState(null);
     const [lessons, setLessons] = useState([]);

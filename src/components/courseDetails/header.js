@@ -8,7 +8,7 @@ import { getCourseDetails } from "../../services/courseService";
 //styles
 import "../../styles/courseDetails/header.css"
 
-function Header() {
+const Header = () => {
     const { id } = useParams();
     const [course, setCourse] = useState(null);
     const [lessonCount, setLessonCount] = useState({ baiHoc: 0, baiTap: 0 });

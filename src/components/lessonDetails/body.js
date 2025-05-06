@@ -7,7 +7,7 @@ import { getLessonSections } from '../../services/lessonService';
 //styles
 import "../../styles/lessonDetails/body.css"
 
-function Body({ selectedSection }) {
+const Body = ({ selectedSection }) => {
     const { lessonId } = useParams();
     const [sectionDetails, setSectionDetails] = useState(null);
     const [loading, setLoading] = useState(false);

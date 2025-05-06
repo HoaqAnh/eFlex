@@ -111,11 +111,6 @@ export const useTest = () => {
         } catch (err) {
             console.error('Lỗi khi tạo bài kiểm tra:', err);
             setError(err.message || 'Không thể tạo bài kiểm tra. Vui lòng thử lại sau.');
-
-            if (err.message.includes("đăng nhập lại")) {
-                localStorage.removeItem('token');
-                navigate('/login');
-            }
             return { success: false, error: err };
         } finally {
             setLoading(false);
