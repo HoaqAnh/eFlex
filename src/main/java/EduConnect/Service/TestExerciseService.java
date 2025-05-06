@@ -7,6 +7,7 @@ import EduConnect.Repository.TestExerciseRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -47,7 +48,9 @@ public class TestExerciseService {
             throw new RuntimeException("TestExercise id " + id + " doesn't exist");
         }
     }
-
+    public List<TestExercise>  getTestByLesson(Long lessonId) {
+        return this.testExerciseRepository.findByLessonId(lessonId);
+    }
     public TestExercise getTestExerciseById(Long id) {
         return testExerciseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Bài kiểm tra không tồn tại: " + id));
