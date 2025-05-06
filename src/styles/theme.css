@@ -1,0 +1,71 @@
+:root[data-theme="light"] {
+  --background-primary: #F4FAFF;
+  --background-secondary: #ffffff;
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --border-color: #ddd;
+  --hover-color: #f0f0f0;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --title-background: #bee2f5;
+  --scrollbarTrack-background: #f0f0f0;
+  --scrollbarThumb-background: #707070;
+  --li--background: rgba(20, 55, 95, 0.1);
+  --li--background-active: rgba(20, 55, 95, 0.15);
+  --li-border-color: #14375F;
+  --li-text-color: #14375F;
+  --li-nav-icon: #1A1A1A;
+}
+
+:root[data-theme="dark"] {
+  --background-primary: #1a1a1a;
+  --background-secondary: #2d2d2d;
+  --text-primary: #eee;
+  --text-secondary: #b3b3b3;
+  --border-color: #ddd;
+  --hover-color: #3d3d3d;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --title-background: #46575e;
+  --scrollbarTrack-background: #333;
+  --scrollbarThumb-background: #bbbbbb;
+  --li--background: rgba(20, 55, 95, 0.1);
+  --li--background-active: rgba(128, 184, 248, 0.15);
+  --li-border-color: #2c76cc;
+  --li-text-color: #14375F;
+  --li-nav-icon: #ffffff;
+}
+
+/* Áp dụng các biến màu sắc cho các phần tử
+body {
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s, color 0.3s;
+} */
+
+/* Các class tiện ích */
+.bg-primary {
+  background-color: var(--background-primary);
+}
+
+.bg-secondary {
+  background-color: var(--background-secondary);
+}
+
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.border {
+  border-color: var(--border-color);
+}
+
+.hover {
+  background-color: var(--hover-color);
+}
+
+.shadow {
+  box-shadow: 0 2px 4px var(--shadow-color);
+}

@@ -7,14 +7,15 @@
     min-height: 400px;
     cursor: default;
     border-radius: 15px;
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: var(--background-secondary);
+    box-shadow: 0 4px 8px var(--shadow-color);
     overflow: hidden;
     position: relative;
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .home-body:hover {
-    border: 1px solid #333;
+    border: 1px solid var(--border-color);
 }
 
 .home-body__container {
@@ -31,12 +32,14 @@
     width: 100%;
     font-size: 1.25rem;
     font-weight: bold;
-    color: #333;
+    color: var(--text-primary);
     position: relative;
     display: inline-block;
     padding: 5px 10px;
-    border-radius: 10px;
-    background-color: #f8ffbb;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    background-color: var(--title-background);
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .home-body__container-main {
@@ -55,11 +58,13 @@
 }
 
 .home-body__container-main::-webkit-scrollbar-track {
-    background: #f0f0f0;
+    background: var(--scrollbarTrack-background);
     border-radius: 10px;
+    -webkit-transition: background 0.3s
 }
 
 .home-body__container-main::-webkit-scrollbar-thumb {
-    background: #333;
+    background: var(--scrollbarThumb-background);
     border-radius: 10px;
+    -webkit-transition: background 0.3s
 }

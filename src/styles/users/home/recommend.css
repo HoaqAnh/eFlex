@@ -12,12 +12,14 @@
     width: 100%;
     font-size: 1.25rem;
     font-weight: bold;
-    color: #333;
+    color: var(--text-primary);
     position: relative;
     display: inline-block;
     padding: 5px 10px;
-    border-radius: 10px;
-    background-color: #f8ffbb;
+    border-radius: 5px;
+    background-color: var(--title-background);
+    box-shadow: 0 4px 8px var(--shadow-color);
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .home-recommend__container {
@@ -38,11 +40,13 @@
 }
 
 .home-recommend__container::-webkit-scrollbar-track {
-    background: #f0f0f0;
+    background: var(--scrollbarTrack-background);
     border-radius: 10px;
+    -webkit-transition: background 0.3s
 }
 
 .home-recommend__container::-webkit-scrollbar-thumb {
-    background: #333;
+    background: var(--scrollbarThumb-background);
     border-radius: 10px;
+    -webkit-transition: background 0.3s
 }

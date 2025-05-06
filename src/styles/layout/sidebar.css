@@ -1,11 +1,12 @@
 /* Sidebar Styles */
 .sidebar {
   width: 20%; 
-  background-color: #F4FAFF;
+  background-color: var(--background-primary);
   color: #1a1a1a;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05); 
+  box-shadow: 2px 0 10px var(--shadow-color); 
   height: 90vh;
   overflow-y: auto;
+  transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .side-navigation {
@@ -30,16 +31,17 @@
 }
 
 .side-navigation li:hover {
-  background-color: rgba(20, 55, 95, 0.1);
-  border-left-color: #14375F;
+  background-color: var(--li--background);
+  border-left-color: var(--li-border-color);
   transform: translateX(5px);
 }
 
 .side-navigation li.active {
-  background-color: rgba(20, 55, 95, 0.15);
+  background-color: var(--li--background-active);
   border-left-color: #E0312E;
   font-weight: 600;
-  color: #14375F;
+  color: var(--li-text-color);
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .nav-icon {
@@ -49,15 +51,15 @@
   justify-content: center;
   width: 35px;
   height: 35px;
-  background-color: white;
+  background-color: var(--background-secondary);
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px var(--shadow-color);
   transition: all 0.3s ease;
 }
 
 .side-navigation li:hover .nav-icon {
   transform: scale(1.1);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 8px var(--shadow-color);
 }
 
 .side-navigation li.active .nav-icon {
@@ -70,6 +72,7 @@
 
 .side-navigation span {
   font-size: 15px;
+  color: var(--text-primary);
   transition: all 0.3s ease;
 }
 

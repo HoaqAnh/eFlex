@@ -5,6 +5,7 @@ import {
   Route
 } from "react-router-dom";
 import { Toaster } from 'react-hot-toast';
+import { ThemeProvider } from './context/ThemeContext';
 
 //authentication
 import GoogleLogin from "./pages/auth/google";
@@ -72,7 +73,7 @@ function App() {
     "169551551152-d80vo21jesjv7r78qlbn3or3bo0nur08.apps.googleusercontent.com";
 
   return (
-    <>
+    <ThemeProvider>
       <GoogleOAuthProvider clientId={clientId}>
         <Router>
           <Toaster position="top-right" />
@@ -85,7 +86,7 @@ function App() {
           </Routes>
         </Router>
       </GoogleOAuthProvider>
-    </>
+    </ThemeProvider>
   );
 }
 

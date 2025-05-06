@@ -20,8 +20,8 @@ const Course = () => {
                 <div className="home-course__container-left">
                     <img src={courseInfo.courseImage} alt="course" loading="lazy" />
                     <p className="home-course__name">{courseInfo.name}</p>
-                    <p className="home-course__lesson">Tổng số bài học: {courseInfo.lesson}</p>
-                    <p className="home-course__test">Tổng số bài tập: {courseInfo.test}</p>
+                    {/* <p className="home-course__lesson">Tổng số bài học: {courseInfo.lesson}</p>
+                    <p className="home-course__test">Tổng số bài tập: {courseInfo.test}</p> */}
                 </div>
                 <div className="home-course__divider-vertical" />
                 <div className="home-course__container-right">

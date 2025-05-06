@@ -4,7 +4,8 @@
     overflow: hidden;
     min-height: 100vh;
     height: 100vh;
-    background-color: #F4FAFF;
+    background-color: var(--background-primary);
+    transition: background-color 0.3s;
 }
 
 .home__main-content {

@@ -3,14 +3,16 @@ import { useNavigate } from "react-router-dom";
 
 //hooks
 import { useAuth } from "../hooks/useAuth";
+import { useTheme } from "../context/ThemeContext";
 
 //logo
 import eFlexLogo from "../assets/logo/eFlex.png";
 
 //style
 import "../styles/layout/navbar.css";
+import "../styles/theme.css";
 
-function Navbar() {
+const Navbar = () => {
   const [activeButton, setActiveButton] = useState(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
@@ -19,6 +21,7 @@ function Navbar() {
   const navigate = useNavigate();
 
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -86,25 +89,32 @@ function Navbar() {
           </svg>
         </button>
         <button
-          className={`navbar__button ${activeButton === "theme" ? "navbar__button--active" : ""
-            }`}
+          className={`navbar__button ${activeButton === "theme" ? "navbar__button--active" : ""}`}
           onMouseEnter={() => setActiveButton("theme")}
           onMouseLeave={() => setActiveButton(null)}
-          title="Đổi giao diện"
+          onClick={toggleTheme}
+          title={theme === 'light' ? 'Chuyển sang giao diện tối' : 'Chuyển sang giao diện sáng'}
         >
           <svg
             className="navbar__button-icon"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
           >
-            <path
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="1.5"
-              d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0-8 0m-5 0h1m8-9v1m8 8h1m-9 8v1M5.6 5.6l.7.7m12.1-.7l-.7.7m0 11.4l.7.7m-12.1-.7l-.7.7"
-            />
+            {theme === 'light' ? (
+              <path
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.5"
+                d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0-8 0m-5 0h1m8-9v1m8 8h1m-9 8v1M5.6 5.6l.7.7m12.1-.7l-.7.7m0 11.4l.7.7m-12.1-.7l-.7.7"
+              />
+            ) : (
+              <path
+                fill="currentColor"
+                d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9s9-4.03 9-9c0-.46-.04-.92-.1-1.36c-.98 1.37-2.58 2.26-4.4 2.26c-2.98 0-5.4-2.42-5.4-5.4c0-1.81.89-3.42 2.26-4.4c-.44-.06-.9-.1-1.36-.1z"
+              />
+            )}
           </svg>
         </button>
         <button
