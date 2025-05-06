@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-
 //components
 import MultipleChoice from "./multipleChoice"
 
@@ -10,7 +9,6 @@ import "../../../../styles/exercises/body.css"
 const Body = ({ exerciseData, loading, error }) => {
     const [currentQuestion, setCurrentQuestion] = useState(0);
     
-    // Convert exerciseData to array if it's an object
     const questionsArray = exerciseData ? Object.values(exerciseData) : [];
     const question = questionsArray[currentQuestion];
 

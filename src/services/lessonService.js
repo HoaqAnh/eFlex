@@ -100,11 +100,9 @@ export const lessonService = {
 
       // Gọi API tạo lesson
       const lessonResponse = await this.createLesson(lessonPayload);
-      console.log("Bài học đã được thêm thành công:", lessonResponse);
 
       // Lấy lessonId từ kết quả trả về
       const lessonId = lessonResponse.data.id;
-      console.log("lessonId:", lessonId);
 
       // Chuẩn bị dữ liệu các section
       const sectionsData = sectionForms.map(form => ({
@@ -117,7 +115,6 @@ export const lessonService = {
 
       // Gọi API tạo tất cả các section cùng lúc
       const sectionsResponse = await this.createSections(sectionsData);
-      console.log("Các phần học đã được thêm thành công:", sectionsResponse);
 
       return {
         success: true,

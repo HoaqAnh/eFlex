@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 import { CourseApi, getCourseDetails } from '../../services/courseService';
 import { useValidation } from './useValidation';
 
@@ -129,12 +130,10 @@ export const useCourse = () => {
 
             // Gọi API tạo khóa học
             const response = await apiMethod(courseData, imageUrl);
-            console.log('Khóa học đã được thêm thành công:', response);
-
+            toast.success("Tạo khóa học thành công!");
             // Xử lý điều hướng
             if (extractId) {
                 const newCourseId = response.data.id;
-                console.log("newCourseId: ", newCourseId);
                 return newCourseId;
             } else {
                 navigate(redirectPath);
@@ -143,12 +142,6 @@ export const useCourse = () => {
         } catch (err) {
             console.error('Lỗi khi thêm khóa học:', err);
             setError(err.message || 'Không thể thêm khóa học. Vui lòng thử lại sau.');
-
-            // Nếu lỗi là do xác thực, chuyển hướng đến trang đăng nhập
-            if (err.message.includes("đăng nhập lại")) {
-                localStorage.removeItem('token');
-                navigate('/login');
-            }
         } finally {
             setLoading(false);
         }
@@ -191,15 +184,10 @@ export const useCourse = () => {
 
             const message = error?.message || 'Không thể lấy thông tin khóa học. Vui lòng thử lại sau.';
             setError(message);
-
-            if (message.includes("đăng nhập lại") && typeof navigate === 'function') {
-                localStorage.removeItem('token');
-                navigate('/login');
-            }
         } finally {
             setLoading(false);
         }
-    }, [setCourseData, setError, setLoading, navigate]);
+    }, [setCourseData, setError, setLoading]);
 
     return {
         courseData,

@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchCourses, deleteCourse } from '../services/courseService';
-
+import { toast } from 'react-hot-toast';
 export const useCourses = () => {
     const navigate = useNavigate();
     // States
@@ -108,7 +108,7 @@ export const useCourses = () => {
             for (const courseId of selectedCourses) {
                 await deleteCourse(courseId);
             }
-
+            toast.success("Xóa khóa học thành công!");
             // Cập nhật lại danh sách khóa học sau khi xóa
             const { courses: updatedCourses, pagination: updatedPagination } = await fetchCourses();
             setCourses(updatedCourses);
