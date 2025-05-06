@@ -55,7 +55,6 @@ export const useAuth = () => {
       }
 
       return null;
-
     } catch (error) {
       setError(error.message);
       setTimeout(() => {

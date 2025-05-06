@@ -44,6 +44,22 @@
     flex-direction: row;
     height: 100%;
     width: auto;
+    padding: 0.5rem;
     gap: 2rem;
     overflow-x: auto;
+}
+
+.home-body__container-main::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.home-body__container-main::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+.home-body__container-main::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 10px;
 }

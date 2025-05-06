@@ -1,7 +1,7 @@
 .home-header {
     display: flex;
     height: 40%;
-    min-height: 200px;
+    min-height: 300px;
     background-color: transparent;
     overflow: hidden;
     position: relative;
@@ -52,13 +52,13 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    width: 20%;
+    width: 4rem;
     height: 100%;
 }
 
 .home-header__container-left__top-avatar .avatarImage {
-    width: 100px;
-    height: 100px;
+    width:100%;
+    height: 100%;
     border-radius: 10px;
     object-fit: cover;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

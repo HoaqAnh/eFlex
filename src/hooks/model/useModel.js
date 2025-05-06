@@ -22,7 +22,6 @@ export const useModel = () => {
                 return;
             }
 
-            console.log(response.data);
             setRecommendData(response.data);
             return response.data;
         } catch (error) {

@@ -1,29 +1,30 @@
 import React from "react";
 
 //component
-import RecommendItem from "./recommendItem"
+import RecommendItem from "./recommendItem";
 
 //style
-import "../../../styles/users/home/recommend.css"
+import "../../../styles/users/home/recommend.css";
 
-const Recommend = () => {
+const Recommend = ({ recommendData, loading, error }) => {
+    const renderContent = () => {
+        if (loading) return <p>Đang tải dữ liệu...</p>;
+        if (error) return <p>Có lỗi xảy ra: {error}</p>;
+        if (!recommendData?.recommendations?.length) return <p>Chưa có khóa học đề xuất</p>;
+
+        return recommendData.recommendations.map((course, index) => (
+            <RecommendItem key={index} course={course} />
+        ));
+    };
+
     return (
         <div className="home-recommend">
             <p className="home-recommend__title">Môn học đề xuất cho bạn</p>
             <div className="home-recommend__container">
-                <RecommendItem />
-                <RecommendItem />
-                <RecommendItem />
-                <RecommendItem />
-                <RecommendItem />
-                <RecommendItem />
-                <RecommendItem />
-                <RecommendItem />
-                <RecommendItem />
-                <RecommendItem />
+                {renderContent()}
             </div>
         </div>
     );
-}
+};
 
 export default Recommend;

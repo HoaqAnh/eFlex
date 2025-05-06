@@ -80,7 +80,6 @@ export const getCourseRecommend = async (userId) => {
         }
 
         const responseData = await response.json();
-        console.log(responseData.data);
         // Kiểm tra cấu trúc response
         if (!responseData || !responseData.data || !Array.isArray(responseData.data.recommendations)) {
             throw new Error("Dữ liệu trả về không đúng định dạng");

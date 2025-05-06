@@ -13,7 +13,7 @@ import { useAuth } from "../../../hooks/useAuth";
 import "../../../styles/users/home/style.css";
 
 const HomePage = () => {
-  const { checkAuth } = useAuth();
+  const { checkAuth, user } = useAuth();
   const authCheck = checkAuth();
 
   if (!authCheck.shouldRender) {
@@ -26,7 +26,9 @@ const HomePage = () => {
       <div className="home__content-wrapper">
         <Sidebar />
         <div className="home__main-content">
-          <Header />
+          <Header
+            user={user}
+          />
           <Body />
         </div>
       </div>

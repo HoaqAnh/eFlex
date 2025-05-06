@@ -24,7 +24,6 @@ const CourseDetails = () => {
 
     const handleExit = (totalTimeInSeconds) => {
         if (totalTimeInSeconds > 0) {
-            console.log("ID Course: %d - Total Time: %d", id, totalTimeInSeconds);
             userStudyData(id, totalTimeInSeconds);
         }
     };

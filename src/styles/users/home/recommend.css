@@ -23,9 +23,26 @@
 .home-recommend__container {
     display: flex;
     flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0.5rem;
     height: 100%;
     width: 100%;
     gap: 1rem;
     overflow-x: auto;
-    overflow-y: hidden;
+}
+
+.home-recommend__container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.home-recommend__container::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+.home-recommend__container::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 10px;
 }
