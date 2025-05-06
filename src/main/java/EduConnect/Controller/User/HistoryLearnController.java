@@ -42,7 +42,6 @@ public class HistoryLearnController {
             String flaskApiUrl = "http://host.docker.internal:5000/recommend/" + userId;
 
             ResponseEntity<Map> response = restTemplate.getForEntity(flaskApiUrl, Map.class);
-
             if (response.getStatusCode() == HttpStatus.OK) {
                 return ResponseEntity.ok(response.getBody());
             } else {
