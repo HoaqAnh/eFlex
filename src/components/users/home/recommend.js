@@ -1,12 +1,11 @@
 import React from "react";
-
-//component
 import RecommendItem from "./recommendItem";
-
-//style
+import useDraggableScroll from "../../../hooks/ui/useDraggaableScroll";
 import "../../../styles/users/home/recommend.css";
 
 const Recommend = ({ recommendData, loading, error }) => {
+    const containerRef = useDraggableScroll();
+
     const renderContent = () => {
         if (loading) return <p>Đang tải dữ liệu...</p>;
         if (error) return <p>Có lỗi xảy ra: {error}</p>;
@@ -20,7 +19,7 @@ const Recommend = ({ recommendData, loading, error }) => {
     return (
         <div className="home-recommend">
             <p className="home-recommend__title">Môn học đề xuất cho bạn</p>
-            <div className="home-recommend__container">
+            <div className="home-recommend__container" ref={containerRef}>
                 {renderContent()}
             </div>
         </div>

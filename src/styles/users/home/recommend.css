@@ -30,8 +30,12 @@
     padding: 0.5rem;
     height: 100%;
     width: 100%;
-    gap: 1rem;
+    gap: 2rem;
     overflow-x: auto;
+    overflow-y: hidden;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .home-recommend__container::-webkit-scrollbar {

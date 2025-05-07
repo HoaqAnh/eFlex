@@ -1,26 +1,28 @@
 .course {
     display: flex;
     flex-direction: column;
+    overflow: hidden;
     min-height: 100vh;
     height: 100vh;
+    background-color: var(--background-primary);
+    transition: all 0.3s;
 }
 
 .course__content-wrapper {
-    display: flex;
     flex: 1;
-    height: 90vh;
+    display: flex;
+    flex-direction: row;
     overflow: hidden;
-    background-color: #F4FAFF;
 }
 
 .course__main-content {
     flex: 1;
     padding: 20px;
-    overflow-y: auto;
+    padding-bottom: 20px;
+    overflow-y: hidden;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    background-color: #F4FAFF;
+    gap: 0.5rem;
 }
 
 /* Header Styles */
@@ -34,16 +36,18 @@
     position: relative;
     max-height: none;
     height: auto;
-    border-bottom: 1px solid #E5E7EB;
+    border-bottom: 1px solid var(--border-color);
+    transition: all 0.3s;
 }
 
 .course__header .header-left h2 {
     font-size: 24px;
     font-weight: 600;
-    color: #2C3E50;
+    color: var(--text-primary);
     margin: 0;
     position: relative;
     padding-bottom: 8px;
+    transition: all 0.3s;
 }
 
 .course__header .header-left h2::after {
@@ -68,7 +72,8 @@
 
 .course__header .search-input {
     padding: 0.5rem 1rem;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
+    background-color: var(--background-secondary);
     border-radius: 4px;
     font-size: 0.9rem;
     width: 250px;
@@ -77,8 +82,8 @@
 
 .course__header .search-input:focus {
     outline: none;
-    border-color: #4CAF50;
-    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
+    border-color: var(--border-color);
+    box-shadow: 0 0 0 2px var(--shadow-color);
 }
 
 .course__header .filter-box {
@@ -87,18 +92,19 @@
 
 .course__header .filter-select {
     padding: 0.5rem 1rem;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
     border-radius: 4px;
     font-size: 0.9rem;
-    background-color: white;
+    background-color: var(--background-secondary);
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .course__header .filter-select:focus {
     outline: none;
-    border-color: #4CAF50;
-    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
+    border-color: var(--border-color);
+    box-shadow: 0 0 0 2px var(--shadow-color);
 }
 
 /* Responsive adjustments */
@@ -238,7 +244,7 @@
     .course-header {
         margin-bottom: 0;
     }
-    
+
     .course-header input[type="checkbox"] {
         width: 14px;
         height: 14px;
@@ -250,6 +256,7 @@
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -260,6 +267,7 @@
         transform: translateY(-20px);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;

@@ -3,8 +3,7 @@
     flex-direction: column;
     gap: 0.5rem;
     padding: 20px;
-    height: 60%;
-    min-height: 400px;
+    height: 55%;
     cursor: default;
     border-radius: 15px;
     background-color: var(--background-secondary);
@@ -50,6 +49,10 @@
     padding: 0.5rem;
     gap: 2rem;
     overflow-x: auto;
+    overflow-y: hidden;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .home-body__container-main::-webkit-scrollbar {

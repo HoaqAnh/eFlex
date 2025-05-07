@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 import Navbar from "../../../components/navbar";
 import Sidebar from "../../../components/lessonDetails/sidebar";
 import Body from "../../../components/lessonDetails/body";
-import Footer from "../../../components/lessonDetails/footer";
 
 //hooks
 import { useAuth } from "../../../hooks/useAuth";
@@ -22,7 +21,7 @@ const LessonDetails = () => {
     const { checkAuth } = useAuth();
     const authCheck = checkAuth();
 
-    const handleExit = () => {};
+    const handleExit = () => { };
     useCourseStudyTimer(handleExit, courseId);
 
     const handleSectionSelect = (section) => {
@@ -35,13 +34,17 @@ const LessonDetails = () => {
                 const sectionsData = await getLessonSections(lessonId);
                 const sortedSections = [...sectionsData].sort((a, b) => a.viTri - b.viTri);
                 setSections(sortedSections);
+
+                if (sortedSections.length > 0 && !selectedSection) {
+                    setSelectedSection(sortedSections[0]);
+                }
             } catch (err) {
                 console.error('Lỗi khi lấy danh sách phần học:', err);
             }
         };
 
         fetchSections();
-    }, [lessonId]);
+    }, [lessonId, selectedSection]);
 
     if (!authCheck.shouldRender) {
         return authCheck.component;
@@ -51,16 +54,15 @@ const LessonDetails = () => {
         <div className="lesson-details">
             <Navbar />
             <div className="lesson-details__main-content">
-                <div className="lesson-details__content-wrapper">
-                    <Sidebar onSectionSelect={handleSectionSelect} />
-                    <div className="lesson-details__body-container">
-                        <Body selectedSection={selectedSection} />
-                        <Footer
-                            selectedSection={selectedSection}
-                            sections={sections}
-                            onSectionSelect={handleSectionSelect}
-                        />
-                    </div>
+                <div className="lesson-details__content-container">
+                    <Sidebar
+                        onSectionSelect={handleSectionSelect}
+                        selectedSectionId={selectedSection?.id}
+                    />
+                    <Body
+                        selectedSection={selectedSection}
+                        sections={sections}
+                    />
                 </div>
             </div>
         </div>

@@ -1,9 +1,7 @@
-/* Block: navbar */
 .navbar {
   position: relative;
   width: 100%;
   height: 10vh;
-  min-height: 100px;
   background-color: #14375F;
   display: flex;
   justify-content: space-between;

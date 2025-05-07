@@ -24,6 +24,9 @@
     width: 90%;
     border-radius: 5px;
     object-fit: cover;
+    user-select: none;
+    -webkit-user-select: none;
+    pointer-events: none;
 }
 
 .home-RecommendItem__container p {

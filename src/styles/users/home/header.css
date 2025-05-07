@@ -1,7 +1,6 @@
 .home-header {
     display: flex;
-    height: 40%;
-    min-height: 300px;
+    height: 45%;
     background-color: transparent;
     overflow: hidden;
     position: relative;

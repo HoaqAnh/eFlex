@@ -11,12 +11,12 @@ const GoogleLogin = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [error, setError] = useState(null);
-  // const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const authenticateWithGoogle = async () => {
       try {
-        // setIsLoading(true);
+        setIsLoading(true);
         const urlParams = new URLSearchParams(location.search);
         const code = urlParams.get("code");
 
@@ -56,7 +56,7 @@ const GoogleLogin = () => {
         if (roleName === "admin") {
           navigate("/dashboard", { replace: true });
         } else {
-          navigate("/home", { replace: true });
+          navigate("/", { replace: true });
         }
 
         toast.success("Đăng nhập thành công!");
@@ -69,7 +69,7 @@ const GoogleLogin = () => {
           navigate("/login", { replace: true });
         }, 3000);
       } finally {
-        // setIsLoading(false);
+        setIsLoading(false);
       }
     };
 
