@@ -22,13 +22,14 @@ public class ProgressSectionController {
     }
     @PostMapping("/progressSection")
     @ApiMessage("Createe ProgressSction")
-    public ResponseEntity<ProgressSectionDTO> createProgressSection(@RequestBody ProgressSection progressSection) throws IdInValidException {
+    public ResponseEntity<ProgressSectionDTO> createProgressSection(@RequestBody ProgressSection progressSection)   {
         String email = SecurityUtil.getCurrentUserLogin().get();
         User currentUser = userRepository.findByEmail(email);
         progressSection.setUser(currentUser);
-        if(progressService.existsByUser_IdAndSection_Id(currentUser.getId(),progressSection.getSection().getId())==true)
+        ProgressSection progressSection1=this.progressService.findByUserIdAndSectionID(currentUser.getId(), progressSection.getSection().getId());
+        if(progressSection1!=null)
         {
-            throw new IdInValidException("ProgressSection already exists");
+            return ResponseEntity.ok(progressService.DataToDTO(progressSection1));
         }
         return ResponseEntity.ok(progressService.createProgressSection(currentUser,progressSection));
     }

@@ -14,4 +14,5 @@ public interface ProgressSectionRepository extends JpaRepository<ProgressSection
             "AND ps.complete = true")
     long countByUserIdAndSectionLessonIdAndCompleteTrue(Long userId, Long lessonId);
     boolean existsByUser_IdAndSection_Id(long userId, long sectionId);
+    ProgressSection findByUser_IdAndSection_Id(long userId, long sectionId);
 }

@@ -73,6 +73,19 @@ public class ProgressService {
 
         return progressSectionDTO;
     }
+    public ProgressSection findByUserIdAndSectionID(Long idUser,Long idSection)
+    {
+        return this.progressSectionRepository.findByUser_IdAndSection_Id(idUser,idSection);
+    }
+    public ProgressSectionDTO DataToDTO(ProgressSection progressSection) {
+        ProgressSectionDTO progressSectionDTO = new ProgressSectionDTO();
+        progressSectionDTO.setId(progressSection.getId());
+        progressSectionDTO.setComplete(progressSection.isComplete());
+        progressSectionDTO.setUserId(progressSection.getUser().getId());
+        progressSectionDTO.setSectionId(progressSection.getSection().getId());
+
+        return progressSectionDTO;
+    }
     public boolean existsByUser_IdAndSection_Id(long userId, long sectionId) {
         return progressSectionRepository.existsByUser_IdAndSection_Id(userId, sectionId);
     }
