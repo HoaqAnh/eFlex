@@ -7,6 +7,7 @@ import EduConnect.Util.SecurityUtil;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @Service
 public class ProgressService {
@@ -14,21 +15,33 @@ public class ProgressService {
     private final SectionRepository sectionRepository;
     private final ProgressLessonRepository progressLessonRepository;
     private final LessonRepository lessonRepository;
+    private final TienDoService tienDoService;
+    private final CourseRepository courseRepository;
+    private final TienDoRepository tienDoRepository;
+
     public ProgressService(ProgressSectionRepository progressSectionRepository,
                            ProgressLessonRepository progressLessonRepository, SectionRepository sectionRepository
-    , LessonRepository lessonRepository) {
+    , LessonRepository lessonRepository, TienDoService tienDoService, CourseRepository courseRepository, TienDoRepository tienDoRepository) {
         this.progressSectionRepository = progressSectionRepository;
         this.progressLessonRepository = progressLessonRepository;
         this.sectionRepository = sectionRepository;
         this.lessonRepository = lessonRepository;
+        this.tienDoService = tienDoService;
+        this.courseRepository = courseRepository;
+        this.tienDoRepository = tienDoRepository;
     }
+
     public Boolean checkProgressSection(Long idNguoiDung,Long idSection){
         return this.progressSectionRepository.existsByUser_IdAndSection_Id(idNguoiDung,idSection);
     }
     public Boolean checkProgressLesson(Long idNguoiDung,Long Lesson){
         return this.progressLessonRepository.existsByUserIdAndLessonId(idNguoiDung,Lesson);
     }
+
+
+
     public ProgressSectionDTO createProgressSection(User currentUser, ProgressSection progressSection) {
+
         Long sectionId = progressSection.getSection().getId();
         Section section = sectionRepository.findById(sectionId);
 
@@ -71,8 +84,23 @@ public class ProgressService {
             }
         }
 
+        // Tính phần trăm Progress sau khi làm xong 1 section
+        Long idCourse = lesson.getCourse().getId();
+        Optional<Course> monHoc = courseRepository.findById(idCourse);
+        int soSection = 0;
+        for (Lesson ls : monHoc.get().getLessonList()){
+            soSection += ls.getSections().size();
+        }
+        int phanTramProgress = (int) completedSections / soSection ;
+        // + vào tiến độ hiện có
+        TienDo tienDoMonHoc = tienDoRepository.findByIdNguoiDungAndIdCourse(nguoiDungId, idCourse);
+        phanTramProgress += tienDoMonHoc.getPhanTram();
+        tienDoMonHoc.setPhanTram(phanTramProgress);
+        tienDoRepository.save(tienDoMonHoc);
+
         return progressSectionDTO;
     }
+
     public ProgressSection findByUserIdAndSectionID(Long idUser,Long idSection)
     {
         return this.progressSectionRepository.findByUser_IdAndSection_Id(idUser,idSection);
@@ -86,6 +114,8 @@ public class ProgressService {
 
         return progressSectionDTO;
     }
+
+
     public boolean existsByUser_IdAndSection_Id(long userId, long sectionId) {
         return progressSectionRepository.existsByUser_IdAndSection_Id(userId, sectionId);
     }

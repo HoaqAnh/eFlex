@@ -38,6 +38,10 @@ public class TienDoService {
         tienDoRepository.delete(tienDo);
     }
     public void deleteTienDoByCourseId(long courseId){
+    }
 
+    public TienDo updateTienDo(Long idUser, Integer idCourse){
+        TienDo tienDo = tienDoRepository.findByNguoiDung_IdAndCourse_Id(idUser, idCourse);
+        return tienDo;
     }
 }

@@ -16,4 +16,8 @@ public interface TienDoRepository extends JpaRepository<TienDo, Integer> , JpaSp
     void deleteByCourse(Long idCourse);
     @Query("select count(T) from TienDo T where T.course.id = ?1")
     long countByCourse(long idCourse);
+
+    TienDo findByIdNguoiDungAndIdCourse(long idNguoiDung, long idCourse);
+
+
 }
