@@ -8,7 +8,7 @@ const CourseGrid = ({ courses, selectedCourses, onSelectCourse, onPreview }) => 
   
   return (
     <div className="courses-grid">
-      {courses.map(course => (
+      {courses?.map(course => (
         <CourseCard
           key={course.id}
           course={course}

@@ -234,40 +234,8 @@ export const fetchCourses = async () => {
 
     const responseData = await response.json();
 
-    if (responseData.data &&
-      responseData.data.result &&
-      Array.isArray(responseData.data.result.content)) {
-
-      const coursesData = responseData.data.result.content;
-      const pagination = responseData.data.meta ? {
-        page: responseData.data.meta.page,
-        pageSize: responseData.data.meta.pageSize,
-        total: responseData.data.meta.total,
-        pages: responseData.data.meta.pages
-      } : responseData.data.result.page ? {
-        page: responseData.data.result.page.number + 1,
-        pageSize: responseData.data.result.page.size,
-        total: responseData.data.result.page.totalElements,
-        pages: responseData.data.result.page.totalPages
-      } : null;
-
-      const formattedCourses = coursesData.map(course => ({
-        id: course.id,
-        title: course.tenMon,
-        image: course.anhMonHoc,
-        description: course.moTa,
-        status: course.statusCourse,
-        createdAt: course.ngayTao,
-        updatedAt: course.ngayCapNhat,
-        createdBy: course.createdBy,
-        updatedBy: course.updatedBy,
-        category: course.category
-      }));
-
-      return {
-        courses: formattedCourses,
-        pagination
-      };
+    if (responseData.data.result && Array.isArray(responseData.data.result.content)) {
+      return responseData.data.result.content;
     } else {
       throw new Error("Cấu trúc dữ liệu không đúng định dạng");
     }

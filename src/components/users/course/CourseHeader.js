@@ -1,7 +1,7 @@
 import React from 'react';
 import SearchAndFilter from './SearchAndFilter';
 
-const CourseHeader = ({ 
+const CourseHeader = ({
   searchTerm,
   onSearch,
   filterOptions,
@@ -15,11 +15,6 @@ const CourseHeader = ({
       </div>
       <div className="header-right">
         <SearchAndFilter
-          searchTerm={searchTerm}
-          onSearch={onSearch}
-          filterOptions={filterOptions}
-          selectedFilter={selectedFilter}
-          onFilterChange={onFilterChange}
         />
       </div>
     </div>

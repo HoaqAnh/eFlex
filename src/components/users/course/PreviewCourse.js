@@ -6,13 +6,13 @@ const PreviewCourse = ({ course, onClose }) => {
   const [lessonCount, setLessonCount] = useState({ baiHoc: 0, baiTap: 0 });
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchLessonCount = async () => {
-      const count = await getCourseLessonCount(course.id);
-      setLessonCount(count);
-    };
-    fetchLessonCount();
-  }, [course.id]);
+  // useEffect(() => {
+  //   const fetchLessonCount = async () => {
+  //     const count = await getCourseLessonCount(course?.id);
+  //     setLessonCount(count);
+  //   };
+  //   fetchLessonCount();
+  // }, [course?.id]);
 
   const handleViewDetails = () => {
     navigate(`/courses/${course.id}`);

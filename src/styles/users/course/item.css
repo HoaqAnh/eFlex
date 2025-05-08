@@ -1,0 +1,61 @@
+.course-item {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    height: 24em;
+    border-radius: 10px;
+    background-color: var(--background-secondary);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 8px var(--shadow-color);
+    transition: background-color 0.3s, border 0.3s, box-shadow 0.3s;
+}
+
+.course-item:hover {
+    transform: translateY(5px);
+}
+
+.course-item__thumbnail {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 10px 10px 0 0;
+    height: 16em;
+}
+
+.course-item__thumbnail .course-thumbnail {
+    flex: 1;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+}
+
+.course-item__info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    overflow: hidden;
+    gap: 0.5em;
+    padding: 20px;
+    height: 8em;
+    border-radius: 0 0 10px 10px;
+    background-color: var(--background-primary);
+    transition: background-color 0.3s;
+}
+
+.course-item__info h4 {
+    font-size: 1.05rem;
+    font-weight: bold;
+    text-align: justify;
+    text-overflow: ellipsis;
+    color: var(--text-primary);
+    transition: color 0.3s;
+}
+
+.course-item__info p {
+    font-size: 0.85rem;
+    text-align: justify;
+    text-overflow: ellipsis;
+    color: var(--text-secondary);
+    transition: color 0.3s;
+}

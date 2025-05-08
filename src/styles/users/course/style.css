@@ -1,0 +1,26 @@
+.course {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    gap: 0.5rem;
+    height: 100%;
+    background-color: var(--background-primary);
+    transition: background-color 0.3s;
+}
+
+.course::-webkit-scrollbar {
+    width: 2px;
+    height: 8px;
+}
+
+.course::-webkit-scrollbar-track {
+    background: var(--scrollbarTrack-background);
+    border-radius: 10px;
+    -webkit-transition: background 0.3s
+}
+
+.course::-webkit-scrollbar-thumb {
+    background: var(--scrollbarThumb-background);
+    border-radius: 10px;
+    -webkit-transition: background 0.3s
+}

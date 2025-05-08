@@ -158,7 +158,6 @@ export const useCourses = () => {
         searchTerm,
         selectedFilter,
         previewCourse,
-        filteredCourses,
         pagination,
         showDeleteConfirm,
         handleAddCourse,

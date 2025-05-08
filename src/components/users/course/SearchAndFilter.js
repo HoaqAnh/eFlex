@@ -19,7 +19,7 @@ const SearchAndFilter = ({ searchTerm, onSearch, filterOptions, selectedFilter, 
           className="filter-select"
         >
           <option value="">Tất cả</option>
-          {filterOptions.map((option) => (
+          {filterOptions?.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
             </option>

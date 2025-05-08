@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import useDraggableScroll from "../../../hooks/ui/useDraggaableScroll";
 import Course from "./course";
 import "../../../styles/users/home/body.css";
