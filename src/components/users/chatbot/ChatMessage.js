@@ -2,9 +2,11 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { vscDarkPlus, vs } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { useTheme } from "../../../context/ThemeContext";
 
 const ChatMessage = ({ content, sender, time }) => {
+  const { theme } = useTheme();
   return (
     <div className={`message-wrapper ${sender}`}>
       <div className="message">
@@ -15,16 +17,17 @@ const ChatMessage = ({ content, sender, time }) => {
               const match = /language-(\w+)/.exec(className || "");
               return !inline && match ? (
                 <SyntaxHighlighter
-                  style={vscDarkPlus}
+                  style={theme === "light" ? vs : vscDarkPlus}
                   language={match[1]}
-                  PreTag="div"
+                  PreTag="pre"
+                  wrapLongLines={true}
                   {...props}
                 >
-                  {String(children).replace(/\n$/, "")}
+                  {String(children).trim()}
                 </SyntaxHighlighter>
               ) : (
                 <code className={className} {...props}>
-                  {children}
+                  {String(children).trim()}
                 </code>
               );
             },
@@ -34,7 +37,6 @@ const ChatMessage = ({ content, sender, time }) => {
       <span>{time}</span>
       {sender === "bot" && (
         <div className="response-info">
-          Thông tin đưa ra có thể không chính xác.
         </div>
       )}
     </div>

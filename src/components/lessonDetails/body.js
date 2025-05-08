@@ -58,20 +58,18 @@ const Body = ({ selectedSection, sections }) => {
 
     return (
         <div className="lesson-details__body">
-            <div className="lesson-details__body-content">
-                <div className="lesson-details__body-content_header">
-                    <h2>{sectionDetails?.tenBai}</h2>
+            <div className="lesson-details__body-content_header">
+                <h2>{sectionDetails?.tenBai}</h2>
+            </div>
+            <div className="lesson-details__body-content_main">
+                <div className="lesson-details__body-content_body">
+                    <p>{sectionDetails?.moTa}</p>
                 </div>
-                <div className="lesson-details__body-content_main">
-                    <div className="lesson-details__body-content_body">
-                        <p>{sectionDetails?.moTa}</p>
+                {sectionDetails?.video && (
+                    <div className="lesson-details__body-content_footer">
+                        <video src={sectionDetails.video} controls />
                     </div>
-                    {sectionDetails?.video && (
-                        <div className="lesson-details__body-content_footer">
-                            <video src={sectionDetails.video} controls />
-                        </div>
-                    )}
-                </div>
+                )}
             </div>
         </div>
     );

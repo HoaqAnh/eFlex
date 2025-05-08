@@ -1,8 +1,6 @@
 import React from "react";
 
 //components
-import Navbar from "../../../components/navbar";
-import Sidebar from "../../../components/users/layout/sidebar";
 import CourseHeader from "../../../components/users/course/CourseHeader";
 import CourseGrid from "../../../components/users/course/CourseGrid";
 import PreviewCourse from "../../../components/users/course/PreviewCourse";
@@ -42,34 +40,28 @@ const Course = () => {
 
     return (
         <div className="course">
-            <Navbar />
-            <div className="course__content-wrapper">
-                <Sidebar />
-                <div className="course__main-content">
-                    <CourseHeader
-                        searchTerm={searchTerm}
-                        onSearch={handleSearch}
-                        filterOptions={filterOptions}
-                        selectedFilter={selectedFilter}
-                        onFilterChange={handleFilterChange}
-                    />
+            <CourseHeader
+                searchTerm={searchTerm}
+                onSearch={handleSearch}
+                filterOptions={filterOptions}
+                selectedFilter={selectedFilter}
+                onFilterChange={handleFilterChange}
+            />
 
-                    {filteredCourses.length > 0 ? (
-                        <CourseGrid
-                            courses={filteredCourses}
-                            selectedCourses={selectedCourses}
-                            onSelectCourse={handleSelectCourse}
-                            onPreview={handlePreviewCourse}
-                        />
-                    ) : (
-                        <div className="no-courses">
-                            {searchTerm || selectedFilter ?
-                                "Không tìm thấy khóa học phù hợp với điều kiện tìm kiếm." :
-                                "Không có khóa học nào. Hãy thêm khóa học mới."}
-                        </div>
-                    )}
+            {filteredCourses.length > 0 ? (
+                <CourseGrid
+                    courses={filteredCourses}
+                    selectedCourses={selectedCourses}
+                    onSelectCourse={handleSelectCourse}
+                    onPreview={handlePreviewCourse}
+                />
+            ) : (
+                <div className="no-courses">
+                    {searchTerm || selectedFilter ?
+                        "Không tìm thấy khóa học phù hợp với điều kiện tìm kiếm." :
+                        "Không có khóa học nào. Hãy thêm khóa học mới."}
                 </div>
-            </div>
+            )}
 
             {previewCourse && (
                 <PreviewCourse

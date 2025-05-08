@@ -1,7 +1,7 @@
 .exercises__question {
-    background: white;
+    background: var(--background-secondary);
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px var(--shadow-color);
     padding: 2rem;
 }
 
@@ -12,13 +12,13 @@
 }
 
 .exercises__question-form-header {
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--border-color);
     padding-bottom: 1rem;
 }
 
 .exercises__question-form-header h4 {
     margin: 0;
-    color: #333;
+    color: var(--text-primary);
     font-size: 1.2rem;
 }
 
@@ -39,9 +39,9 @@
     align-items: center;
     gap: 1rem;
     padding: 1rem;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     border-radius: 6px;
-    background: white;
+    background: var(--background-secondary);
     cursor: pointer;
     transition: all 0.2s ease;
     width: 100%;
@@ -49,8 +49,8 @@
 }
 
 .button-question:hover {
-    background: #f5f5f5;
-    border-color: #ccc;
+    background: var(--background-primary);
+    border-color: var(--border-color);
 }
 
 .button-question svg {
@@ -60,5 +60,5 @@
 
 .button-question p {
     margin: 0;
-    color: #333;
+    color: var(--text-secondary);
 }

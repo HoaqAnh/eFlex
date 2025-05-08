@@ -24,13 +24,15 @@
 }
 
 .account-security__input:hover {
-    border: 1px solid #333;
+    border: 1px solid var(--border-color);
 }
 
 .account-security__input p {
+    color: var(--text-secondary);
     font-size: 1.05rem;
 }
 
 .account-security__input svg {
+    color: var(--text-primary);
     cursor: pointer;
 }

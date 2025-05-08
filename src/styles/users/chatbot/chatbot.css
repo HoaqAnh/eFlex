@@ -1,28 +1,9 @@
 .chat {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-}
-
-.chat__content {
-  display: flex;
-  flex: 1;
-}
-
-.chat__main {
-  display: flex;
-  flex: 1;
-  height: 90vh;
-  overflow: hidden;
-  background-color: #F4FAFF;
-}
-
-.chat__main-content {
-    flex: 1;
-    padding: 20px;
-    height: 100%;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    background-color: #F4FAFF;
+  overflow-y: auto;
+  gap: 0.5rem;
+  height: 100%;
+  background-color: var(--background-primary);
+  transition: background-color 0.3s;
 }

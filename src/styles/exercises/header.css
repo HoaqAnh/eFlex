@@ -1,6 +1,6 @@
 .exercises__header {
-    background: white;
-    border-bottom: 1px solid #eee;
+    background: var(--background-secondary);
+    border-bottom: 1px solid var(--border-color);
     padding: 1rem 0;
 }
 
@@ -28,12 +28,12 @@
 .exercises__header-right-subcontent h2 {
     margin: 0;
     font-size: 1.5rem;
-    color: #333;
+    color: var(--text-primary);
 }
 
 .exercises__header-right-subcontent p {
     margin: 0;
-    color: #666;
+    color: var(--text-secondary);
 }
 
 .exercises__header-left {
@@ -48,16 +48,14 @@
 }
 
 .exercises__header-left-content h4 {
-    margin: 0;
-    color: #666;
+    color: var(--text-secondary);
     font-size: 0.9rem;
 }
 
 .exercises__timeleft {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #333;
-    margin: 0;
+    color: var(--text-secondary);
 }
 
 .exercises__header-left-actions {

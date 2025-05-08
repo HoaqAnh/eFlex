@@ -7,7 +7,6 @@ import { useTest } from '../../../hooks/admin/useTest';
 import { useAuth } from "../../../hooks/useAuth";
 
 //components
-import Navbar from "../../../components/navbar";
 import Header from "../../../components/admin/course/addTest/header";
 import Body from "../../../components/admin/course/addTest/body";
 import Footer from "../../../components/admin/course/addTest/footer";
@@ -56,7 +55,6 @@ const AddTest = () => {
 
     return (
         <div className="addTest">
-            <Navbar />
             <div className="addTest__main-content">
                 <Header />
                 <div className="addTest__content-wrapper">

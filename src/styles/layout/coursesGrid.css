@@ -12,6 +12,23 @@
     max-height: 70vh;
 }
 
+.courses-grid::-webkit-scrollbar {
+    width: 2px;
+    height: 8px;
+}
+
+.courses-grid::-webkit-scrollbar-track {
+    background: var(--scrollbarTrack-background);
+    border-radius: 10px;
+    -webkit-transition: background 0.3s
+}
+
+.courses-grid::-webkit-scrollbar-thumb {
+    background: var(--scrollbarThumb-background);
+    border-radius: 10px;
+    -webkit-transition: background 0.3s
+}
+
 .courses-grid .course-card {
     background: var(--background-secondary);
     border: 1px solid var(--border-color);

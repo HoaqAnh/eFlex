@@ -28,11 +28,14 @@
 }
 
 .account-header__container_avatar img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 230px;
     height: 230px;
     border-radius: 50%;
     object-fit: cover;
-    background-color: #eee;
+    background-color: var(--background-primary);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 

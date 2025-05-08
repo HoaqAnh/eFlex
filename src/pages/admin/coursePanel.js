@@ -1,8 +1,6 @@
 import React from "react";
 
 //components
-import Navbar from "../../components/navbar";
-import Sidebar from "../../components/admin/layout/sidebar";
 import CourseHeader from "../../components/admin/course/CourseHeader";
 import CourseGrid from "../../components/admin/course/CourseGrid";
 import CourseFooter from "../../components/admin/course/CourseFooter";
@@ -54,9 +52,7 @@ const CoursePanel = () => {
 
     return (
         <div className="course-panel">
-            <Navbar />
             <div className="course-panel__content-wrapper">
-                <Sidebar />
                 <div className="course-panel__main-content">
                     <CourseHeader
                         selectAll={selectAll}

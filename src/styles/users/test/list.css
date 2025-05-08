@@ -1,17 +1,17 @@
 .list-body {
     height: auto;
     min-height: 70px;
-    border: 1px solid #1a1a1a;
+    border: 1px solid var(--border-color);
     border-radius: 6px;
     padding: 15px;
-    transition: all 0.3s ease;
     cursor: pointer;
-    background-color: #fff;
+    background-color: var(--background-primary);
+    transition: all 0.3s ease;
 }
 
 .list-body:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateX(4px);
+    box-shadow: 0 4px 8px var(--shadow-color);
 }
 
 .list-body__container {
@@ -30,14 +30,16 @@
 .list-body__container p:first-child {
     font-weight: 600;
     font-size: 1.1rem;
-    color: #333;
+    color: var(--text-primary);
     flex: 1;
+    transition: color 0.3s;
 }
 
 .divider-vertical {
-    height: 30px;
+    height: 3.2em;
     width: 1px;
-    background-color: #ddd;
+    background-color: var(--border-color);
+    transition: background-color 0.3s;
 }
 
 .test-info {
@@ -48,6 +50,6 @@
 
 .test-info p {
     font-size: 0.9rem;
-    color: #666;
+    color: var(--text-secondary);
     margin: 0;
 }

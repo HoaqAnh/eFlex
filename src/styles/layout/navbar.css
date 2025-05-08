@@ -1,13 +1,16 @@
 .navbar {
-  position: relative;
+  position: sticky;
+  top: 0;
   width: 100%;
   height: 10vh;
+  min-height: 64px;
   background-color: #14375F;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
-  z-index: 10;
+  z-index: 100; /* Higher z-index to stay on top */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .navbar__logo {
@@ -88,6 +91,10 @@
 }
 
 /* Block: user-dropdown */
+.navbar__user-container {
+  position: relative;
+}
+
 .user-dropdown {
   position: absolute;
   top: calc(100% + 10px);
@@ -96,7 +103,7 @@
   min-width: 200px;
   border-radius: 8px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  z-index: 100;
+  z-index: 101; /* Higher than navbar */
   overflow: hidden;
   animation: dropdown-appear 0.3s ease-out;
 }
@@ -133,87 +140,6 @@
   margin: 4px 0;
 }
 
-/* Block: modal */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  animation: fade-in 0.3s ease;
-}
-
-.modal__content {
-  background-color: white;
-  border-radius: 10px;
-  width: 400px;
-  overflow: hidden;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  animation: modal-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.modal__header {
-  padding: 16px 20px;
-  border-bottom: 1px solid #eaeaea;
-}
-
-.modal__title {
-  margin: 0;
-  color: #14375F;
-  font-size: 18px;
-}
-
-.modal__body {
-  padding: 20px;
-}
-
-.modal__text {
-  margin: 0;
-  color: #333;
-  line-height: 1.5;
-}
-
-.modal__footer {
-  padding: 16px 20px;
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  border-top: 1px solid #eaeaea;
-}
-
-.modal__button {
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.modal__button--cancel {
-  border: 1px solid #ddd;
-  background-color: white;
-  color: #333;
-}
-
-.modal__button--cancel:hover {
-  background-color: #f5f5f5;
-}
-
-.modal__button--confirm {
-  border: none;
-  background-color: #E0312E;
-  color: white;
-}
-
-.modal__button--confirm:hover {
-  background-color: #c62828;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
 /* Animations */
 @keyframes dropdown-appear {
   from {
@@ -223,25 +149,5 @@
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes modal-pop {
-  from {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
   }
 }

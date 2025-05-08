@@ -1,7 +1,7 @@
 .exercises__footer {
     display: flex;
-    background: white;
-    border-top: 1px solid #eee;
+    background: var(--background-secondary);
+    border-top: 1px solid var(--border-color);
     padding: 1rem 0;
 }
 
@@ -36,24 +36,24 @@
 
 .button-ZoomIn:hover,
 .button-ZoomOut:hover {
-    background-color: #f5f5f5;
+    background-color: var(--text-primary);
     transform: scale(1.1);
 }
 
 .zoom-icon {
     transition: all 0.2s ease;
-    color: #666;
+    color: var(--text-primary);
 }
 
 .button-ZoomIn:hover .zoom-icon,
 .button-ZoomOut:hover .zoom-icon {
-    color: #333;
+    color: var(--hover-color);
     transform: scale(1.1);
 }
 
 .exercises__footer-actions p {
     margin: 0;
-    color: #666;
+    color: var(--text-primary);
     font-size: 0.9rem;
 }
 
@@ -69,7 +69,7 @@
 }
 
 .exercises__footer-formCheck label {
-    color: #666;
+    color: var(--text-primary);
     font-size: 0.9rem;
     cursor: pointer;
 }

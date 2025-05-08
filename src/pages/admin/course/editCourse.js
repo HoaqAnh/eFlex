@@ -4,7 +4,6 @@ import React from "react";
 import Body from "../../../components/admin/course/editCourse/body";
 import Footer from "../../../components/admin/course/editCourse/footer";
 import Header from "../../../components/admin/course/editCourse/header";
-import Navbar from "../../../components/navbar";
 
 //hooks
 import { useAuth } from "../../../hooks/useAuth";
@@ -22,7 +21,6 @@ const EditCourse = () => {
 
     return (
         <div className="editCourse">
-            <Navbar />
             <div className="editCourse__main-content">
                 <Header />
                 <div className="editCourse__content-wrapper">

@@ -1,7 +1,5 @@
 .lesson-details__body {
-    display: flex;
-    width: 80%;
-    height: 100%;
+    flex: 1;
     background-color: var(--background-secondary);
     border-radius: 8px;
     box-shadow: 0 2px 4px var(--shadow-color);
@@ -39,15 +37,6 @@
     border-radius: 8px;
     box-shadow: 0 2px 4px var(--shadow-color);
     padding: 20px;
-}
-
-.lesson-details__body-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 100%;
-    height: 100%;
-    gap: 20px;
 }
 
 .lesson-details__body-content_header {

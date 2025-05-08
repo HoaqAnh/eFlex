@@ -3,11 +3,13 @@
   flex-direction: column;
   height: 86vh;
   overflow-y: none;
-  background-color: #ffffff;
+  background-color: var(--background-secondary);
   position: relative;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 10px var(--shadow-color);
   border-radius: 24px;
+  transition: background-color 0.3s, box-shadow 0.3s;
 }
+
 .messages-container {
   flex: 1;
   overflow-y: auto;
@@ -18,27 +20,25 @@
 }
 
 .message-wrapper span {
-  display: block;
-  font-size: 0.75em;
-  color: #666;
+  font-size: 1rem;
   text-align: right;
-  margin-top: 4px;
-  font-family: "Arial", sans-serif;
-  opacity: 0.8;
 }
 
 .message-wrapper.user span {
-  color: #242323;
+  color: var(--text-secondary);
+  transition: color 0.3s;
 }
 
 .message-wrapper.bot span {
-  color: #777;
+  color: var(--text-secondary);
+  transition: color 0.3s;
 }
 
 .message-wrapper span:hover {
   opacity: 1;
   transition: opacity 0.2s ease;
 }
+
 .message-wrapper {
   display: flex;
   flex-direction: column;
@@ -65,41 +65,47 @@
   border-radius: 24px;
   word-wrap: break-word;
   text-align: left;
-  background-color: var(--white);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: transparent;
+  box-shadow: 0 2px 5px var(--shadow-color);
   transition: box-shadow 0.3s ease;
 }
 
 .message:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 8px var(--shadow-color);
 }
 
 .message-wrapper.user .message {
   border-radius: 24px 24px 0 24px;
-  background-color: var(--user-message-color);
-  color: var(--white);
+  background-color: transparent;
+  color: var(--text-primary);
+  transition: color 0.3s;
 }
 
 .message-wrapper.bot .message {
-  border-radius: 24px 24px 24px 0;
+  border-radius: 24px 24px 0 24px;
+  background-color: transparent;
+  color: var(--text-primary);
+  transition: color 0.3s;
 }
 
 .response-info {
   margin-top: 5px;
-  color: var(--black);
+  color: var(--text-secondary);
   font-size: 12px;
   opacity: 0.7;
+  transition: color 0.3s;
 }
 
 .chat-footer {
   padding: 20px;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  background-color: #ffffff;
-  box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.05);
+  border-top: 1px solid var(--border-color);
+  background-color: var(--background-secondary);
+  box-shadow: 0 -2px 15px var(--shadow-color);
   border-bottom-left-radius: 24px;
   border-bottom-right-radius: 24px;
   position: sticky;
   bottom: 0;
+  transition: all 0.3s;
 }
 
 .clear-history {
@@ -111,7 +117,7 @@
 .clear-history button {
   background: none;
   border: none;
-  color: var(--primary-red);
+  color: #c13e39;
   cursor: pointer;
   font-size: 14px;
   padding: 0;
@@ -134,18 +140,20 @@
 
 .input-wrapper {
   flex: 1;
-  background-color: #f8f9fa;
+  background-color: var(--background-primary);
   border: 2px solid transparent;
   border-radius: 24px;
   padding: 8px 20px;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 6px var(--shadow-color);
+  transition: all 0.3s;
 }
 
 .input-wrapper:focus-within {
   border-color: #007bff;
-  background-color: #ffffff;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+  background-color: var(--background-primary);
+  box-shadow: 0 0 0 3px var(--shadow-color);
+  transition: all 0.3s;
 }
 
 .input-wrapper input {
@@ -155,12 +163,14 @@
   padding: 12px 0;
   background: transparent;
   font-size: 16px;
-  color: #495057;
+  color: var(--text-primary);
+  transition: all 0.3s;
 }
 
 .input-wrapper input::placeholder {
-  color: #adb5bd;
+  color: var(--text-secondary);
   font-weight: 400;
+  transition: all 0.3s;
 }
 
 .send-button {
@@ -175,13 +185,15 @@
   cursor: pointer;
   color: white;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 123, 255, 0.2);
+  box-shadow: 0 2px 6px var(--shadow-color);
+  transition: all 0.3s;
 }
 
 .send-button:hover {
   transform: scale(1.05);
   background-color: #0056b3;
-  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+  box-shadow: 0 4px 12px var(--shadow-color);
+  transition: all 0.3s;
 }
 
 .send-button:active {
@@ -206,13 +218,14 @@
   cursor: pointer;
   color: white;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(220, 53, 69, 0.2);
+  box-shadow: 0 2px 6px var(--shadow-color);
+  transition: all 0.3s;
 }
 
 .clear-history-button:hover {
   transform: scale(1.05);
   background-color: #c82333;
-  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+  box-shadow: 0 4px 12px var(--shadow-color);
 }
 
 .clear-history-button:active {
@@ -247,37 +260,31 @@
 }
 
 .message pre {
-  background-color: rgba(0, 0, 0, 0.05);
-  border-radius: 4px;
-  padding: 10px;
+  background-color: transparent;
+  height: fit-content;
+  border-radius: 4px; 
   overflow-x: auto;
-  margin: 10px 0;
 }
 
 .message-wrapper.user .message pre {
   background-color: rgba(0, 0, 0, 0.2);
 }
 
-.message code {
-  font-family: "Jura";
-}
-
-/* Scrollbar styling */
 .messages-container::-webkit-scrollbar {
-  width: 6px;
+  width: 2px;
+  height: 8px;
 }
 
 .messages-container::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--scrollbarTrack-background);
+  border-radius: 10px;
+  -webkit-transition: background 0.3s
 }
 
 .messages-container::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: 3px;
-}
-
-.messages-container::-webkit-scrollbar-thumb:hover {
-  background: #1a1a1a;
+  background: var(--scrollbarThumb-background);
+  border-radius: 10px;
+  -webkit-transition: background 0.3s
 }
 
 /* Animation for new messages */
@@ -286,12 +293,13 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
+
 .message-wrapper {
   animation: fadeIn 0.3s ease-out forwards;
 }
-

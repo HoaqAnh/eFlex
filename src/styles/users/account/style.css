@@ -1,27 +1,13 @@
 .account {
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    min-height: 100vh;
-    height: 100vh;
-    background-color: #F4FAFF;
-}
-
-.account__content-wrapper {
-    display: flex;
-    flex-direction: row;
-    overflow: hidden;
-    width: 100%;
-    height: 100%;
-}
-
-.account__main-content {
-    display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 100%;
     overflow-y: auto;
+    gap: 0.5rem;
+    height: 100%;
+    background-color: var(--background-primary);
+    transition: background-color 0.3s;
 }
 
 .account__main-content_card {
@@ -34,8 +20,9 @@
     width: 90%;
     min-width: 800px;
     max-width: 1000px;
-    background-color: white;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    background-color: var(--background-secondary);
+    box-shadow: 0 8px 16px var(--shadow-color);
     border-radius: 15px;
     border: 1px solid #aaa;
+    transition: all 0.3s;
 }

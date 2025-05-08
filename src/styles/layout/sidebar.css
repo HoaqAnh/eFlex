@@ -1,12 +1,14 @@
-/* Sidebar Styles */
 .sidebar {
-  width: 20%; 
+  width: 250px;
+  min-width: 250px;
   background-color: var(--background-primary);
   color: #1a1a1a;
   box-shadow: 2px 0 10px var(--shadow-color); 
-  height: 90vh;
+  height: 100%;
   overflow-y: auto;
   transition: background-color 0.3s, box-shadow 0.3s;
+  position: sticky;
+  top: 0;
 }
 
 .side-navigation {
@@ -74,24 +76,4 @@
   font-size: 15px;
   color: var(--text-primary);
   transition: all 0.3s ease;
-}
-
-@media (max-width: 768px) {
-  .sidebar {
-    width: 80px;
-    height: 100%;
-  }
-  
-  .side-navigation span {
-    display: none;
-  }
-  
-  .nav-icon {
-    margin-right: 0;
-  }
-  
-  .side-navigation li {
-    justify-content: center;
-    padding: 15px 10px;
-  }
 }

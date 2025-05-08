@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 
 //components
-import Navbar from "../../../components/navbar";
 import Sidebar from "../../../components/lessonDetails/sidebar";
 import Body from "../../../components/lessonDetails/body";
 
@@ -52,19 +51,14 @@ const LessonDetails = () => {
 
     return (
         <div className="lesson-details">
-            <Navbar />
-            <div className="lesson-details__main-content">
-                <div className="lesson-details__content-container">
-                    <Sidebar
-                        onSectionSelect={handleSectionSelect}
-                        selectedSectionId={selectedSection?.id}
-                    />
-                    <Body
-                        selectedSection={selectedSection}
-                        sections={sections}
-                    />
-                </div>
-            </div>
+            <Sidebar
+                onSectionSelect={handleSectionSelect}
+                selectedSectionId={selectedSection?.id}
+            />
+            <Body
+                selectedSection={selectedSection}
+                sections={sections}
+            />
         </div>
     );
 }

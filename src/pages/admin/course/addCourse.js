@@ -1,7 +1,6 @@
 import React from "react";
 
 //components
-import Navbar from "../../../components/navbar";
 import Header from "../../../components/admin/course/addCourse/header";
 import Body from "../../../components/admin/course/addCourse/body";
 import Footer from "../../../components/admin/course/addCourse/footer";
@@ -37,7 +36,6 @@ const AddCourse = () => {
 
     return (
         <div className="addCourse">
-            <Navbar />
             <div className="addCourse__main-content">
                 <Header />
                 {addCourseError && <div className="error-message">{addCourseError}</div>}

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
 //services
 import { getCourseLessons } from "../../services/lessonService";
 import { getCourseDetails } from "../../services/courseService";
@@ -9,15 +8,13 @@ import { getCourseDetails } from "../../services/courseService";
 import LessonWithSection from "./lessonWithSection";
 
 //styles
-import "../../styles/courseDetails/body.css";
-
+import "../../styles/courseDetails/body.css"
 const Body = () => {
     const { id } = useParams();
     const [course, setCourse] = useState(null);
     const [lessons, setLessons] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -49,19 +46,9 @@ const Body = () => {
 
     return (
         <div className="course-details__body">
-            <div className="course-details__body-header">
-                <div className="course-details__body-header-action">
-                    <h4>Tiếp tục khóa học</h4>
-                    <button className="btn btn-section-secondary">Học tiếp</button>
-                </div>
-            </div>
-            <div className="course-details__body-content">
-                <div className="course-details__body-content-left">
-                    {lessons.map((lesson) => (
-                        <LessonWithSection key={lesson.id} lesson={lesson} course={course} />
-                    ))}
-                </div>
-            </div>
+            {lessons.map((lesson) => (
+                <LessonWithSection key={lesson.id} lesson={lesson} course={course} />
+            ))}
         </div>
     );
 }

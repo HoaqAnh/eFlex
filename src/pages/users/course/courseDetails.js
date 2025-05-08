@@ -2,7 +2,6 @@ import React from "react";
 import { useParams } from "react-router-dom";
 
 //components
-import Navbar from "../../../components/navbar";
 import Header from "../../../components/courseDetails/header"
 import Body from "../../../components/courseDetails/body"
 import Footer from "../../../components/courseDetails/footer"
@@ -15,10 +14,9 @@ import useCourseStudyTimer from "../../../hooks/model/useCourseStudyTimer"
 import { userStudyData } from "../../../services/modelService"
 //style
 import "../../../styles/courseDetails/style.css"
-import "../../../styles/layout/header.css"
 
 const CourseDetails = () => {
-    const { checkAuth} = useAuth();
+    const { checkAuth } = useAuth();
     const authCheck = checkAuth();
     const { id } = useParams();
 
@@ -35,14 +33,9 @@ const CourseDetails = () => {
 
     return (
         <div className="course-details">
-            <Navbar />
-            <div className="course-details__main-content">
-                <div className="course-details__content-wrapper">
-                    <Header />
-                    <Body />
-                    <Footer />
-                </div>
-            </div>
+            <Header />
+            <Body />
+            <Footer />
         </div>
     );
 }

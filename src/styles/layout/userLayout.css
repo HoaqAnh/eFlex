@@ -1,0 +1,26 @@
+.eflex {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    height: 100vh;
+    background-color: var(--background-primary);
+    transition: background-color 0.3s;
+    overflow: hidden;
+}
+
+.eflex-container {
+    display: flex;
+    flex-direction: row;
+    height: calc(100vh - 10vh);
+    overflow: hidden;
+}
+
+.eflex-main {
+    flex: 1;
+    padding: 20px;
+    background-color: var(--background-primary);
+    transition: background-color 0.3s;
+    overflow-y: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+}

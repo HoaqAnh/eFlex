@@ -2,8 +2,6 @@ import React from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
 //components
-import Navbar from "../../components/navbar";
-import Sidebar from "../../components/admin/layout/sidebar";
 import TopCard from "../../components/admin/dashboard/TopCard";
 import BodyCard from "../../components/admin/dashboard/BodyCard";
 import BottomCard from "../../components/admin/dashboard/BottomCard";
@@ -59,9 +57,7 @@ const Dashboard = () => {
 
     return (
         <div className="home-container">
-            <Navbar />
             <div className="content-wrapper">
-                <Sidebar />
                 <div className="main-content">
                     <div className="top-content">
                         <TopCard />

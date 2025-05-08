@@ -23,6 +23,9 @@ const Body = () => {
             </div>
             <div className="test-body__right">
                 <List />
+                <List />
+                <List />
+                <List />
             </div>
         </div>
     );

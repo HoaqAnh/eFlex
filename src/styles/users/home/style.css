@@ -1,26 +1,26 @@
 .home {
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    min-height: 100vh;
-    height: 100vh;
+    overflow-y: auto;
+    gap: 0.5rem;
+    height: 100%;
     background-color: var(--background-primary);
     transition: background-color 0.3s;
 }
 
-.home__main-content {
-    flex: 1;
-    padding: 20px;
-    padding-bottom: 20px;
-    overflow-y: hidden;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+.home::-webkit-scrollbar {
+    width: 2px;
+    height: 8px;
 }
 
-.home__content-wrapper {
-    flex: 1;
-    display: flex;
-    flex-direction: row;
-    overflow: hidden;
+.home::-webkit-scrollbar-track {
+    background: var(--scrollbarTrack-background);
+    border-radius: 10px;
+    -webkit-transition: background 0.3s
+}
+
+.home::-webkit-scrollbar-thumb {
+    background: var(--scrollbarThumb-background);
+    border-radius: 10px;
+    -webkit-transition: background 0.3s
 }

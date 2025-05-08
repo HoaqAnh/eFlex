@@ -59,9 +59,9 @@
 .btn-section-primary {
     font-weight: 500;
     font-size: 13px;
-    background: var(--btn-primary-bg);
-    color: var(--btn-primary-color);
-    border-color: var(--btn-primary-border);
+    background: var(--btn-secondary-bg);
+    color: var(--btn-secondary-color);
+    border-color: var(--btn-secondary-border);
     transition: all 0.3s;
     padding: 6px 12px;
 }
@@ -69,8 +69,8 @@
 .btn-section-primary:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px var(--btn-shadow);
-    background-color: var(--btn-primary-bg-hover);
-    color: var(--btn-primary-color-hover);
+    background: #1A1A1A;
+    color: #ffffff;
 }
 
 .btn-section-primary:active {
@@ -192,7 +192,7 @@
 .btn-danger {
     font-weight: 500;
     font-size: 16px;
-    background: #ffffff;
+    background: var(--btn-secondary-bg);
     color: #DC2626;
     border-color: #DC2626;
     padding: 8px 16px;
@@ -214,7 +214,7 @@
 .btn-section-danger {
     font-weight: 500;
     font-size: 13px;
-    background: #ffffff;
+    background: var(--btn-secondary-bg);
     color: #DC2626;
     border-color: #DC2626;
     padding: 6px 12px;

@@ -10,7 +10,7 @@ import iconSmile from "../../../assets/icons/iconSmile.png";
 import iconUsers from "../../../assets/icons/iconUsers.png";
 import iconSettings from "../../../assets/icons/iconSettings.png";
 
-function Sidebar() {
+const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 

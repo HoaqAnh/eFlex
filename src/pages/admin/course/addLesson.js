@@ -1,7 +1,6 @@
 import React from "react";
 
 //components
-import Navbar from "../../../components/navbar";
 import Header from "../../../components/admin/course/addLesson/header";
 import Body from "../../../components/admin/course/addLesson/body";
 import Footer from "../../../components/admin/course/addLesson/footer";
@@ -39,7 +38,6 @@ const AddLesson = () => {
 
     return (
         <div className="addLesson">
-            <Navbar />
             <div className="addLesson__main-content">
                 {addLessonError && <div className="error-message">{addLessonError}</div>}
                 {loading ? (

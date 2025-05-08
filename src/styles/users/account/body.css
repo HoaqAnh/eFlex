@@ -39,23 +39,24 @@
     padding: 0;
     padding-left: 10px;
     background-color: transparent;
-    color: #333;
+    color: var(--text-primary);
+    transition: color 0.3s;
 }
 
 .account-body__container_left .overview-btn:hover {
-    background-color: #eee;
+    background-color: var(--background-primary);
     transform: translateY(1px);
 }
 
 .account-body__container_left .overview-btn.active {
-    background-color: #A3B5C9;
+    background-color: var(--li-text-color);
     color: white;
 }
 
 .account-body__container-divider__vertical {
     height: 90%;
     width: 1.5px;
-    background-color: #ddd;
+    background-color: var(--border-color);
 }
 
 .account-body__container_right {

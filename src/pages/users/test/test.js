@@ -7,7 +7,6 @@ import { useAuth } from "../../../hooks/useAuth";
 import Header from "../../../components/users/test/header"
 import Body from "../../../components/users/test/body"
 import Footer from "../../../components/users/test/footer"
-import Navbar from "../../../components/navbar";
 
 //style
 import "../../../styles/users/test/style.css"
@@ -21,13 +20,10 @@ const Test = () => {
     }
     return (
         <div className="test">
-            <Navbar />
-            <div className="test__main-content">
-                <div className="test__content-wrapper">
-                    <Header />
-                    <Body />
-                    <Footer />
-                </div>
+            <div className="test__content-card">
+                <Header />
+                <Body />
+                <Footer />
             </div>
         </div>
     );
