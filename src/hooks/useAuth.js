@@ -128,7 +128,7 @@ export const useAuth = () => {
 
       if (userInfo) {
         if (userInfo.roleName === "admin") {
-          navigate("/dashboard", { replace: true });
+          navigate("/admin", { replace: true });
         } else if (userInfo.roleName === "user") {
           navigate("/", { replace: true });
         } else {
@@ -224,8 +224,7 @@ export const useAuth = () => {
 
   const isAdminRoute = useCallback((path) => {
     const adminRoutes = [
-      '/dashboard',
-      '/coursePanel'
+      '/admin'
     ];
 
     return adminRoutes.some(route => path.startsWith(route));

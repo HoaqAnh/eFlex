@@ -80,17 +80,17 @@ export const useValidation = () => {
             tenMon: "",
             moTa: "",
             category: "",
-            image: ""
+            image: null
         };
 
         // Kiểm tra tenMon
-        if (!courseData.tenMon.trim()) {
+        if (!courseData.tenMon) {
             errors.tenMon = "Vui lòng nhập tên khóa học";
             isValid = false;
         }
 
         // Kiểm tra moTa
-        if (!courseData.moTa.trim()) {
+        if (!courseData.moTa) {
             errors.moTa = "Vui lòng nhập mô tả khóa học";
             isValid = false;
         }

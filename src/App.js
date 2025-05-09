@@ -26,7 +26,7 @@ import Account from "./pages/users/account/account";
 
 // Admin Pages
 import Dashboard from "./pages/admin/dashboard";
-import CoursePanel from "./pages/admin/coursePanel";
+import CoursePanel from "./pages/admin/course/course";
 import AddCourse from "./pages/admin/course/addCourse";
 import AddLesson from "./pages/admin/course/addLesson";
 import EditCourse from "./pages/admin/course/editCourse";
@@ -35,8 +35,8 @@ import AddTest from "./pages/admin/course/addTest";
 // Global Styles
 import "./styles/Global.css";
 
-function App() {
-  const clientId = "169551551152-d80vo21jesjv7r78qlbn3or3bo0nur08.apps.googleusercontent.com";
+const App = () => {
+  const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
   return (
     <ThemeProvider>
@@ -55,10 +55,10 @@ function App() {
                 <Route index element={<HomePage />} />
                 <Route path="account" element={<Account />} />
                 <Route path="chatbot" element={<ChatBot />} />
-                <Route path="courses" element={<CoursePage />} />
-                <Route path="courses/:id" element={<CourseDetails />} />
-                <Route path="courses/:id/lesson/:lessonId" element={<LessonDetails />} />
-                <Route path="courses/:id/lesson/:lessonId/test" element={<Test />} />
+                <Route path="course" element={<CoursePage />} />
+                <Route path="course/:id" element={<CourseDetails />} />
+                <Route path="course/:id/lesson/:lessonId" element={<LessonDetails />} />
+                <Route path="course/:id/lesson/:lessonId/test" element={<Test />} />
               </Route>
 
               {/* Route Exercises không nằm trong Layout */}
@@ -66,12 +66,12 @@ function App() {
 
               {/* Nhóm Admin với Layout */}
               <Route path="/admin" element={<AdminLayout />}>
-                <Route path="dashboard" element={<Dashboard />} />
-                <Route path="coursePanel" element={<CoursePanel />} />
-                <Route path="coursePanel/addCourse" element={<AddCourse />} />
-                <Route path="coursePanel/addCourse/:id/addLesson" element={<AddLesson />} />
-                <Route path="coursePanel/addCourse/:id/addLesson/:lessonId/addTest" element={<AddTest />} />
-                <Route path="coursePanel/editCourse/:id" element={<EditCourse />} />
+                <Route index element={<Dashboard />} />
+                <Route path="course" element={<CoursePanel />} />
+                <Route path="course/addCourse" element={<AddCourse />} />
+                <Route path="course/addCourse/:id/addLesson" element={<AddLesson />} />
+                <Route path="course/addCourse/:id/addLesson/:lessonId/addTest" element={<AddTest />} />
+                <Route path="course/editCourse/:id" element={<EditCourse />} />
               </Route>
             </Routes>
           </Router>

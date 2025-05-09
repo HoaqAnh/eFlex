@@ -2,7 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from './navbar';
 import Sidebar from './sidebar';
-import "../../../styles/layout/userLayout.css"
+import "../../../styles/layout/style.css"
 
 const UserLayout = () => {
     return (

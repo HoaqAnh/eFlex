@@ -1,5 +1,6 @@
-import React from 'react';
-import '../../styles/common/confirmDialog.css';
+import React from "react";
+
+import "../../../styles/admin/course/confirmDialog.css";
 
 const ConfirmDialog = ({ isOpen, onClose, onConfirm, title, message }) => {
     if (!isOpen) return null;
@@ -14,14 +15,14 @@ const ConfirmDialog = ({ isOpen, onClose, onConfirm, title, message }) => {
                     <p>{message}</p>
                 </div>
                 <div className="confirm-dialog-footer">
-                    <button 
-                        className="btn btn-secondary" 
+                    <button
+                        className="btn btn-secondary"
                         onClick={onClose}
                     >
                         Hủy
                     </button>
-                    <button 
-                        className="btn btn-danger" 
+                    <button
+                        className="btn btn-danger"
                         onClick={onConfirm}
                     >
                         Xác nhận

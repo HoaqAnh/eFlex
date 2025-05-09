@@ -1,13 +1,15 @@
 import { useCallback, useState } from "react"
+import { useNavigate } from "react-router-dom";
 import { fetchCourses } from "../../services/courseService";
 export const useCourse = () => {
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
     const fetchCourse = useCallback(async () => {
         try {
             setLoading(true);
-            setError(false);
+            setError(null);
 
             const response = await fetchCourses();
 
@@ -24,9 +26,15 @@ export const useCourse = () => {
             setLoading(false);
         }
     }, [])
+
+    const handleJoinCourse = useCallback((courseId) => {
+        navigate(`/course/${courseId}`);
+    }, [navigate]);
+
     return {
         loading,
         error,
-        fetchCourse
+        fetchCourse,
+        handleJoinCourse
     }
 }

@@ -21,8 +21,8 @@ const Sidebar = () => {
       navigate("/chatbot");
     } else if (menuId === "home") {
       navigate("/");
-    } else if (menuId === "courses") {
-      navigate("/courses");
+    } else if (menuId === "course") {
+      navigate("/course");
     } else if (menuId === "account") {
       navigate("/account");
     } else if (menuId === "settings") {
@@ -45,8 +45,8 @@ const Sidebar = () => {
           </li>
           
           <li 
-            className={activeMenu === "courses" ? "active" : ""}
-            onClick={() => handleMenuClick("courses")}
+            className={activeMenu === "course" ? "active" : ""}
+            onClick={() => handleMenuClick("course")}
           >
             <div className="nav-icon">
               <img src={iconBook} alt="Study" width="24" height="24" />

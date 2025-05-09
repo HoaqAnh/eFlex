@@ -35,7 +35,7 @@ const Body = ({
                         <div className="addCourse-body__form-subgroup-1">
                             <label className="addCourse-body__label">Tên khóa học *</label>
                             <input
-                                className={`addCourse-body__input ${formErrors.tenMon ? 'input-error' : ''}`}
+                                className={`addCourse-body__input ${formErrors?.tenMon ? 'input-error' : ''}`}
                                 type="text"
                                 placeholder="Nhập tên khóa học"
                                 value={courseData.tenMon || ''}
@@ -71,9 +71,9 @@ const Body = ({
                                         </button>
                                     )}
 
-                                    {formErrors.image && (
+                                    {formErrors?.image && (
                                         <div className="addCourse-body__error-message">
-                                            {formErrors.image}
+                                            {formErrors?.image}
                                         </div>
                                     )}
                                 </div>
@@ -81,7 +81,7 @@ const Body = ({
                             <div className="addCourse-body__form-subgroup-2-item">
                                 <label className="addCourse-body__label">Danh mục *</label>
                                 <select
-                                    className={`addCourse-body__select ${formErrors.category ? 'input-error' : ''}`}
+                                    className={`addCourse-body__select ${formErrors?.category ? 'input-error' : ''}`}
                                     value={courseData.category || ''}
                                     onChange={(e) => handleInputChange('category', e.target.value)}
                                 >
@@ -105,7 +105,7 @@ const Body = ({
 
                 <label className="addCourse-body__label">Mô tả *</label>
                 <textarea
-                    className={`addCourse-body__textarea ${formErrors.moTa ? 'input-error' : ''}`}
+                    className={`addCourse-body__textarea ${formErrors?.moTa ? 'input-error' : ''}`}
                     placeholder="Nhập mô tả khóa học"
                     value={courseData.moTa || ''}
                     onChange={(e) => handleInputChange('moTa', e.target.value)}

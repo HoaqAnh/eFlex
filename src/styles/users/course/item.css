@@ -14,6 +14,10 @@
     transform: translateY(5px);
 }
 
+.course-item.selected {
+    border: 1px solid red;
+}
+
 .course-item__thumbnail {
     display: flex;
     justify-content: center;

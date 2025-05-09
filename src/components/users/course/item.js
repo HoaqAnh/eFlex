@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useLesson } from "../../../hooks/course/useLesson";
+import { useCourse } from "../../../hooks/course/useCourse";
 import "../../../styles/users/course/item.css";
 
-const Item = ({ course }) => {
+const Item = ({ course, isSelectingCourse, isSelected, onSelectCourse }) => {
+    const { handleJoinCourse } = useCourse();
     const { loading, error, fetchCountData } = useLesson();
     const [count, setCount] = useState(null);
 
@@ -15,18 +17,29 @@ const Item = ({ course }) => {
         };
 
         getCountData();
-    }, [fetchCountData]);
+    }, [fetchCountData, course.id]);
 
     if (loading) {
-        return <div className="course-body__container">Đang tải khóa học...</div>;
+        return <div className="course-item loading">Đang tải...</div>;
     }
 
     if (error) {
-        return <div className="course-body__container">Lỗi khi tải khóa học: {error}</div>;
+        return <div className="course-item error">Lỗi: {error}</div>;
     }
 
+    const handleItemClick = () => {
+        if (isSelectingCourse) {
+            onSelectCourse(course.id);
+        } else if (!isSelectingCourse && !isSelected) {
+            handleJoinCourse(course.id);
+        }
+    };
+
     return (
-        <div className="course-item">
+        <div
+            className={`course-item ${isSelectingCourse ? 'selectable' : ''} ${isSelected ? 'selected' : ''}`}
+            onClick={handleItemClick}
+        >
             <div className="course-item__thumbnail">
                 <img
                     src={course?.anhMonHoc || "./courseImage"}

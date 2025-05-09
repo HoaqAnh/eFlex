@@ -1,43 +1,55 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { CourseApi, getCourseDetails } from '../../services/courseService';
+import { CourseApi, getCourseDetails, deleteCourse, fetchCourses } from '../../services/courseService';
 import { useValidation } from './useValidation';
+
+// Tạo trạng thái toàn cục cho danh sách khóa học
+let courseListeners = [];
+let globalCourseData = [];
+
+const notifyListeners = (newData) => {
+    globalCourseData = newData;
+    courseListeners.forEach(listener => listener(newData));
+};
 
 export const useCourse = () => {
     const navigate = useNavigate();
-    const { validateCourseForm } = useValidation();
-    // State cho dữ liệu khóa học
-    const [courseData, setCourseData] = useState({
-        tenMon: "",
-        category: "",
-        moTa: "",
-        anhMonHoc: null
-    });
-
-    // State cho trạng thái và validation
-    const [loading, setLoading] = useState(false);
+    const [courseData, setCourseData] = useState(globalCourseData);
     const [uploadingImage, setUploadingImage] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [imagePreview, setImagePreview] = useState(null);
+
+    const { validateCourseForm } = useValidation();
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [formErrors, setFormErrors] = useState({
         tenMon: "",
         moTa: "",
         category: "",
-        image: ""
+        image: null
     });
 
-    // State cho tệp hình ảnh và preview
-    const [selectedImage, setSelectedImage] = useState(null);
-    const [imagePreview, setImagePreview] = useState(null);
+    // Đăng ký listener khi component mount
+    useEffect(() => {
+        const listener = (newData) => {
+            setCourseData(newData);
+        };
+        
+        courseListeners.push(listener);
+        
+        return () => {
+            // Hủy đăng ký listener khi component unmount
+            courseListeners = courseListeners.filter(l => l !== listener);
+        };
+    }, []);
 
-    // Xử lý thay đổi input
     const handleInputChange = (field, value) => {
         setCourseData(prev => ({
             ...prev,
             [field]: value
         }));
 
-        // Xóa thông báo lỗi khi người dùng bắt đầu nhập
         if (formErrors[field]) {
             setFormErrors(prev => ({
                 ...prev,
@@ -46,34 +58,30 @@ export const useCourse = () => {
         }
     };
 
-    // Xử lý chọn hình ảnh
     const handleImageSelect = (event) => {
         const file = event.target.files[0];
         if (!file) return;
 
-        // Kiểm tra định dạng file
         const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
         if (!allowedTypes.includes(file.type)) {
             setFormErrors(prev => ({
                 ...prev,
                 image: 'Chỉ chấp nhận file ảnh có định dạng JPG, JPEG hoặc PNG'
             }));
-            event.target.value = ''; // Reset input file
+            event.target.value = '';
             return;
         }
 
-        // Kiểm tra kích thước file (ví dụ: tối đa 5MB)
         const maxSize = 5 * 1024 * 1024; // 5MB
         if (file.size > maxSize) {
             setFormErrors(prev => ({
                 ...prev,
                 image: 'Kích thước file không được vượt quá 5MB'
             }));
-            event.target.value = ''; // Reset input file
+            event.target.value = '';
             return;
         }
 
-        // Xóa lỗi nếu file hợp lệ
         setFormErrors(prev => ({
             ...prev,
             image: ''
@@ -81,7 +89,6 @@ export const useCourse = () => {
 
         setSelectedImage(file);
 
-        // Tạo preview cho hình ảnh
         const reader = new FileReader();
         reader.onloadend = () => {
             setImagePreview(reader.result);
@@ -89,7 +96,6 @@ export const useCourse = () => {
         reader.readAsDataURL(file);
     };
 
-    // Hàm xóa ảnh đã chọn
     const handleRemoveImage = () => {
         setSelectedImage(null);
         setImagePreview(null);
@@ -99,14 +105,12 @@ export const useCourse = () => {
         }));
     };
 
-    // Validate form
     const validateForm = () => {
         const { isValid, errors } = validateCourseForm(courseData);
         setFormErrors(errors);
         return isValid;
     };
 
-    // Thực hiện gọi API
     const submitCourse = async (apiMethod, redirectPath, extractId = false) => {
         if (!validateForm()) return;
 
@@ -114,7 +118,6 @@ export const useCourse = () => {
             setLoading(true);
             setError(null);
 
-            // Upload hình ảnh nếu có
             let imageUrl = null;
             if (selectedImage) {
                 setUploadingImage(true);
@@ -128,15 +131,17 @@ export const useCourse = () => {
                 }
             }
 
-            // Gọi API tạo khóa học
             const response = await apiMethod(courseData, imageUrl);
             toast.success("Tạo khóa học thành công!");
-            // Xử lý điều hướng
+
+            // Cập nhật danh sách khóa học sau khi thêm mới
+            fetchCourse();
+            
             if (extractId) {
                 const newCourseId = response.data.id;
                 return newCourseId;
-            } else {
-                navigate(redirectPath);
+            } else if (redirectPath) {
+                handleNavigate(redirectPath);
             }
 
         } catch (err) {
@@ -147,21 +152,17 @@ export const useCourse = () => {
         }
     };
 
-    // Các handler gọi API với các phương thức khác nhau
-    const handleSubmit = () => submitCourse(CourseApi.addCourse, '/coursePanel');
+    const handleSubmit = () => submitCourse(CourseApi.addCourse, 'course');
+
     const handleNext = async () => {
         const courseId = await submitCourse(CourseApi.addCourse, null, true);
         if (courseId) {
-            navigate(`/coursePanel/addCourse/${courseId}/addLesson`);
+            handleNavigate(`/course/addCourse/${courseId}/addLesson`);
         }
     };
-    const handleSubmitDraft = () => submitCourse(CourseApi.saveCourseAsDraft, '/coursePanel');
 
-    // Xử lý quay lại
-    const handleBack = () => navigate('/coursePanel');
+    const handleSubmitDraft = () => submitCourse(CourseApi.saveCourseAsDraft, 'course');
 
-
-    // Lấy thông tin khóa học
     const handleGetCourseDetails = useCallback(async (courseId) => {
         if (!courseId) return setError('Không tìm thấy ID khóa học');
 
@@ -173,10 +174,10 @@ export const useCourse = () => {
             if (!course) return setError('Không tìm thấy thông tin khóa học');
 
             setCourseData({
-                tenMon: course?.tenMon ?? "",
-                category: course?.category ?? { id: "", nameCategory: "" },
-                moTa: course?.moTa ?? "",
-                anhMonHoc: course?.anhMonHoc ?? null
+                tenMon: course.tenMon ?? "",
+                category: course.category ?? { id: "", nameCategory: "" },
+                moTa: course.moTa ?? "",
+                anhMonHoc: course.anhMonHoc ?? null
             });
 
         } catch (error) {
@@ -189,6 +190,64 @@ export const useCourse = () => {
         }
     }, [setCourseData, setError, setLoading]);
 
+    const handleNavigate = useCallback((path, options) => {
+        navigate(`/admin/${path}`, options);
+    }, [navigate]);
+
+    const handleDelete = async (courseId) => {
+        try {
+            setLoading(true);
+            setError(null);
+
+            const response = await deleteCourse(courseId);
+            if (response.statusCode === 200) {
+                toast.success("Xóa khóa học thành công!");
+                // Lấy danh sách mới và cập nhật cho tất cả các listeners
+                const updatedCourses = await fetchCourses();
+                notifyListeners(updatedCourses);
+                return true;
+            }
+
+            return false;
+        } catch (err) {
+            console.error('Error deleting courses:', err);
+            setError(err.message || 'Không thể xóa khóa học. Vui lòng thử lại sau.');
+            return false;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchCourse = useCallback(async () => {
+        try {
+            setLoading(true);
+            setError(null);
+
+            const response = await fetchCourses();
+
+            if (!response) {
+                setError('Không tìm thấy thông tin khóa học.');
+                return null;
+            }
+
+            // Cập nhật state toàn cục và thông báo cho tất cả các listeners
+            notifyListeners(response);
+            return response;
+        } catch (err) {
+            console.error(err);
+            setError(err.message || 'Có lỗi xảy ra khi lấy dữ liệu.');
+        } finally {
+            setLoading(false);
+        }
+    }, [setLoading, setError])
+
+    useEffect(() => {
+        // Chỉ fetch khi chưa có dữ liệu
+        if (globalCourseData.length === 0) {
+            fetchCourse();
+        }
+    }, [fetchCourse]);
+
     return {
         courseData,
         loading,
@@ -197,13 +256,15 @@ export const useCourse = () => {
         formErrors,
         imagePreview,
         selectedImage,
+        fetchCourse,
         handleInputChange,
         handleImageSelect,
         handleRemoveImage,
         handleSubmit,
-        handleBack,
         handleNext,
         handleSubmitDraft,
-        handleGetCourseDetails
+        handleGetCourseDetails,
+        handleNavigate,
+        handleDelete
     };
 };
