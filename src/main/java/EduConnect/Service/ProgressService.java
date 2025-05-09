@@ -93,7 +93,7 @@ public class ProgressService {
         }
         int phanTramProgress = (int) completedSections / soSection ;
         // + vào tiến độ hiện có
-        TienDo tienDoMonHoc = tienDoRepository.findByIdNguoiDungAndIdCourse(nguoiDungId, idCourse);
+        TienDo tienDoMonHoc = tienDoService.timTienDoMonHocCuaUser(nguoiDungId, idCourse);
         phanTramProgress += tienDoMonHoc.getPhanTram();
         tienDoMonHoc.setPhanTram(phanTramProgress);
         tienDoRepository.save(tienDoMonHoc);

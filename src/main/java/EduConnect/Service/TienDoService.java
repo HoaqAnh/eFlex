@@ -32,7 +32,7 @@ public class TienDoService {
 
 
     public TienDo save(TienDo tienDo) {
-        return tienDoRepository.save(tienDo);
+        return tienDoRepository.save(tienDo);d .
     }
     public void delete(TienDo tienDo) {
         tienDoRepository.delete(tienDo);
@@ -40,8 +40,7 @@ public class TienDoService {
     public void deleteTienDoByCourseId(long courseId){
     }
 
-    public TienDo updateTienDo(Long idUser, Integer idCourse){
-        TienDo tienDo = tienDoRepository.findByNguoiDung_IdAndCourse_Id(idUser, idCourse);
-        return tienDo;
+    public TienDo timTienDoMonHocCuaUser(Long idUser, Long idCourse){
+        return tienDoRepository.findByNguoiDung_IdAndCourse_Id(idUser, idCourse);
     }
 }
