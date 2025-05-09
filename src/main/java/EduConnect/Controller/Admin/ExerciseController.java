@@ -55,6 +55,7 @@ public class ExerciseController {
         existingExercise.setDapAn4(exercise.getDapAn4());
         existingExercise.setDapAnDung(exercise.getDapAnDung());
         existingExercise.setDificulty(exercise.getDificulty());
+        existingExercise.setId_BaiHoc(exercise.getId_BaiHoc());
         if (exercise.getTestExercise() != null) {
             existingExercise.setTestExercise(exercise.getTestExercise());
         }

@@ -33,6 +33,8 @@ public class Exercise {
     @Enumerated(EnumType.STRING)
     private Dificulty dificulty;
 
+    private long Id_BaiHoc;
+
     @ManyToOne
     @JoinColumn(name = "id_bkt")
     @JsonIgnore

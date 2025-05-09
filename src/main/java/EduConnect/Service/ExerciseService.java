@@ -84,6 +84,10 @@ public class ExerciseService {
                 Optional<TestExercise> lesson1 = testExerciseRepository.findById(idTestExercise);
                 lesson1.ifPresent(exercise::setTestExercise);
 
+                String raw = getCellStringValue(row.getCell(7));
+                long Id_BaiHoc = (long) Double.parseDouble(raw.trim());
+                exercise.setId_BaiHoc(Id_BaiHoc);
+
                 exerciseList.add(exercise);
             }
             workbook.close();
