@@ -1,25 +1,29 @@
 .addCourse-header {
     display: flex;
-    justify-content: left;
-    align-items: center;
+    flex-direction: column;
+    cursor: default;
+    background-color: transparent;
+    overflow: hidden;
+    margin-bottom: auto;
+    gap: 0.5rem;
 }
 
-.addCourse-header__title {
-    font-size: 18px;
-    font-weight: 600;
-    color: #2C3E50;
+.addCourse-header h1 {
+    font-weight: bold;
     margin: 0;
     position: relative;
     padding-bottom: 8px;
+    color: var(--text-primary);
+    transition: color 0.3s;
 }
 
-.addCourse-header__title::after {
+.addCourse-header h1::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 40px;
-    height: 3px;
-    background: linear-gradient(90deg, #3498DB, #2980B9);
-    border-radius: 2px;
+    width: 2em;
+    height: 0.1em;
+    background: linear-gradient(90deg, #2980B9, #27c744);
+    border-radius: 10px;
 }

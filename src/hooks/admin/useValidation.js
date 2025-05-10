@@ -8,7 +8,7 @@ export const useValidation = () => {
         };
 
         // Kiểm tra tenBai
-        if (!lessonData.tenBai.trim()) {
+        if (!lessonData.tenBai?.trim()) {
             errors.tenBai = "Vui lòng nhập tên bài học";
             isValid = false;
         }
@@ -31,13 +31,13 @@ export const useValidation = () => {
         };
 
         // Kiểm tra tenBai
-        if (!sectionForm.tenBai.trim()) {
+        if (!sectionForm.tenBai?.trim()) {
             errors.tenBai = "Vui lòng nhập tên phần học";
             isValid = false;
         }
 
         // Kiểm tra moTa
-        if (!sectionForm.moTa.trim()) {
+        if (!sectionForm.moTa?.trim()) {
             errors.moTa = "Vui lòng nhập mô tả phần học";
             isValid = false;
         }
@@ -84,13 +84,13 @@ export const useValidation = () => {
         };
 
         // Kiểm tra tenMon
-        if (!courseData.tenMon) {
+        if (!courseData.tenMon?.trim()) {
             errors.tenMon = "Vui lòng nhập tên khóa học";
             isValid = false;
         }
 
         // Kiểm tra moTa
-        if (!courseData.moTa) {
+        if (!courseData.moTa?.trim()) {
             errors.moTa = "Vui lòng nhập mô tả khóa học";
             isValid = false;
         }
@@ -115,7 +115,7 @@ export const useValidation = () => {
         };
 
         // Kiểm tra tên bài kiểm tra
-        if (!testData.name.trim()) {
+        if (!testData.name?.trim()) {
             errors.name = "Vui lòng nhập tên bài kiểm tra";
             isValid = false;
         }

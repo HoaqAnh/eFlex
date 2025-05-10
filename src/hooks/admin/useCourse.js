@@ -4,7 +4,6 @@ import { toast } from 'react-hot-toast';
 import { CourseApi, getCourseDetails, deleteCourse, fetchCourses } from '../../services/courseService';
 import { useValidation } from './useValidation';
 
-// Tạo trạng thái toàn cục cho danh sách khóa học
 let courseListeners = [];
 let globalCourseData = [];
 
@@ -30,7 +29,6 @@ export const useCourse = () => {
         image: null
     });
 
-    // Đăng ký listener khi component mount
     useEffect(() => {
         const listener = (newData) => {
             setCourseData(newData);
@@ -39,7 +37,6 @@ export const useCourse = () => {
         courseListeners.push(listener);
         
         return () => {
-            // Hủy đăng ký listener khi component unmount
             courseListeners = courseListeners.filter(l => l !== listener);
         };
     }, []);
@@ -134,7 +131,6 @@ export const useCourse = () => {
             const response = await apiMethod(courseData, imageUrl);
             toast.success("Tạo khóa học thành công!");
 
-            // Cập nhật danh sách khóa học sau khi thêm mới
             fetchCourse();
             
             if (extractId) {
@@ -157,7 +153,7 @@ export const useCourse = () => {
     const handleNext = async () => {
         const courseId = await submitCourse(CourseApi.addCourse, null, true);
         if (courseId) {
-            handleNavigate(`/course/addCourse/${courseId}/addLesson`);
+            handleNavigate(`course/addCourse/${courseId}/addLesson`);
         }
     };
 
@@ -173,12 +169,7 @@ export const useCourse = () => {
             const course = await getCourseDetails(courseId);
             if (!course) return setError('Không tìm thấy thông tin khóa học');
 
-            setCourseData({
-                tenMon: course.tenMon ?? "",
-                category: course.category ?? { id: "", nameCategory: "" },
-                moTa: course.moTa ?? "",
-                anhMonHoc: course.anhMonHoc ?? null
-            });
+            setCourseData(course);
 
         } catch (error) {
             console.error('Lỗi khi lấy thông tin khóa học:', error);
@@ -230,7 +221,6 @@ export const useCourse = () => {
                 return null;
             }
 
-            // Cập nhật state toàn cục và thông báo cho tất cả các listeners
             notifyListeners(response);
             return response;
         } catch (err) {
@@ -242,11 +232,18 @@ export const useCourse = () => {
     }, [setLoading, setError])
 
     useEffect(() => {
-        // Chỉ fetch khi chưa có dữ liệu
         if (globalCourseData.length === 0) {
             fetchCourse();
         }
     }, [fetchCourse]);
+
+    const handleUpdate = () => {
+        return console.log("Update clicked!");
+    }
+
+    const handleUpdateAndNext = () => {
+        return console.log("Update and next clicked!");
+    }
 
     return {
         courseData,
@@ -265,6 +262,8 @@ export const useCourse = () => {
         handleSubmitDraft,
         handleGetCourseDetails,
         handleNavigate,
-        handleDelete
+        handleDelete,
+        handleUpdate, 
+        handleUpdateAndNext
     };
 };

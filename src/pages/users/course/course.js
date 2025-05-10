@@ -1,5 +1,4 @@
-import React from "react";
-import PreviewCourse from "../../../components/users/course/PreviewCourse";
+import React from "react"
 import Header from "../../../components/users/course/header"
 import Body from "../../../components/users/course/body"
 import { useAuth } from "../../../hooks/useAuth";
@@ -16,7 +15,6 @@ const Course = () => {
         <div className="course">
             <Header />
             <Body />
-            <PreviewCourse />
         </div>
     );
 }

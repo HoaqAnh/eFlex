@@ -1,19 +1,44 @@
-import React from "react";
-
-//components
-import Body from "../../../components/admin/course/editCourse/body";
+import React, { useEffect } from "react";
+import Body from "../../../components/admin/course/addCourse/body";
 import Footer from "../../../components/admin/course/editCourse/footer";
-import Header from "../../../components/admin/course/editCourse/header";
-
-//hooks
+import Header from "../../../components/admin/course/addCourse/header";
+import { useParams } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
-
-//styles
+import { useCourse } from "../../../hooks/admin/useCourse";
+import { useCategory } from "../../../hooks/useCategory";
 import "../../../styles/admin/editCourse/style.css";
 
 const EditCourse = () => {
     const { checkAuth } = useAuth();
     const authCheck = checkAuth();
+    const { id } = useParams();
+    const {
+        categories,
+        loading: categoriesLoading,
+        error: categoriesError
+    } = useCategory();
+    const {
+        courseData,
+        loading: addCourseLoading,
+        error: addCourseError,
+        formErrors,
+        imagePreview, selectedImage,
+        handleInputChange,
+        handleImageSelect,
+        handleRemoveImage,
+        handleGetCourseDetails,
+        handleNavigate,
+        handleUpdate,
+        handleUpdateAndNext,
+    } = useCourse();
+
+    useEffect(() => {
+        if (id) {
+            handleGetCourseDetails(id);
+        } else {
+            handleNavigate("course");
+        }
+    }, [id, handleGetCourseDetails, handleNavigate]);
 
     if (!authCheck.shouldRender) {
         return authCheck.component;
@@ -21,13 +46,38 @@ const EditCourse = () => {
 
     return (
         <div className="editCourse">
-            <div className="editCourse__main-content">
-                <Header />
-                <div className="editCourse__content-wrapper">
-                    <Body />
+            {addCourseError && <div className="error-message">{addCourseError}</div>}
+            {addCourseLoading ? (
+                <div className="editCourse-isLoading">
+                    <div className="editCourse-isLoading__title">
+                        Đang lấy thông tin khóa học...
+                    </div>
+                    <div className="editCourse-isLoading__loader"></div>
                 </div>
-                <Footer />
-            </div>
+            ) : (
+                <>
+                    <Header
+                        Title={"Chỉnh sửa khóa học"}
+                    />
+                    <Body
+                        courseData={courseData}
+                        categories={categories}
+                        categoriesLoading={categoriesLoading}
+                        categoriesError={categoriesError}
+                        imagePreview={imagePreview}
+                        selectedImage={selectedImage}
+                        formErrors={formErrors}
+                        handleInputChange={handleInputChange}
+                        handleImageSelect={handleImageSelect}
+                        handleRemoveImage={handleRemoveImage}
+                    />
+                    <Footer
+                        handleBack={() => handleNavigate("course")}
+                        handleUpdate={handleUpdate}
+                        handleUpdateAndNext={handleUpdateAndNext}
+                    />
+                </>
+            )}
         </div>
     );
 }

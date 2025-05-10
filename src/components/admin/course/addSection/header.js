@@ -6,7 +6,7 @@ import "../../../../styles/admin/addSection/header.css";
 const SectionHeader = ({ onToggle, isExpanded, sectionNumber }) => {
     return (
         <div className="addSection-header">
-            <h2>Phần học {sectionNumber}</h2>
+            <h4>Phần {sectionNumber}</h4>
             <button
                 className="btn btn-section-secondary"
                 onClick={onToggle}

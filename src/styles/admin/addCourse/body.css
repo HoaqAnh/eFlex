@@ -1,20 +1,33 @@
 .addCourse-body {
-    background-color: #ffffff;
-    border-radius: 20px;
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
-    padding: 30px 40px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
+    cursor: default;
     overflow: auto;
+    max-height: 80%;
+    gap: 0.5rem;
+    padding: 20px;
+    border-radius: 20px;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 0 8px var(--shadow-color);
+    transition: box-shadow 0.3s, border 0.3s;
 }
 
-.addCourse-body__content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+.addCourse-body::-webkit-scrollbar {
+    width: 2px;
+    height: 8px;
+}
+
+.addCourse-body::-webkit-scrollbar-track {
+    background: var(--scrollbarTrack-background);
+    border-radius: 10px;
+    -webkit-transition: background 0.3s
+}
+
+.addCourse-body::-webkit-scrollbar-thumb {
+    background: var(--scrollbarThumb-background);
+    border-radius: 10px;
+    -webkit-transition: background 0.3s
 }
 
 .addCourse-body__form-group {
@@ -33,16 +46,16 @@
 .addCourse-body__image-placeholder {
     width: 150px;
     height: 150px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     border-radius: 5px;
     justify-content: center;
+    transition: border 0.3s;
 }
 
 .addCourse-body__image-placeholder img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* hoặc "contain" nếu bạn muốn vừa khung mà không bị crop */
     border-radius: 4px;
 }
 
@@ -50,16 +63,20 @@
     display: block;
     font-weight: 400;
     margin-bottom: 8px;
-    color: #333;
+    color: var(--text-primary);
+    transition: color 0.3s;
 }
 
 .addCourse-body__input {
     width: 100%;
     padding: 8px 12px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
+    background-color: var(--background-secondary);
+    color: var(--text-secondary);
     border-radius: 4px;
     font-size: 14px;
     margin-bottom: 16px;
+    transition: border 0.3s, color 0.3s, background-color 0.3s;
 }
 
 .addCourse-body__form-subgroup {
@@ -93,14 +110,15 @@
     text-align: center;
     display: inline-block;
     padding: 8px 16px;
-    background-color: #5a80ac;
-    color: white;
+    background-color: var(--background-secondary);
+    color: var(--text-secondary);
     font-size: 14px;
     font-weight: 500;
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px var(--shadow-color);
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
 }
 
 .addCourse-body__input-file-label::before {
@@ -109,26 +127,23 @@
 }
 
 .addCourse-body__input-file-label:hover {
-    background-color: #4a90e2;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: var(--li-text-color);
+    color: white;
+    box-shadow: 0 4px 8px var(--shadow-color);
     transform: translateY(-1px);
-}
-
-.addCourse-body__input-file:focus + .addCourse-body__input-file-label {
-    outline: 2px solid #4a90e2;
-    outline-offset: 2px;
 }
 
 .addCourse-body__input-file-name {
     padding: 8px 12px;
-    background-color: #f5f5f5;
+    background-color: var(--background-secondary);
     border-radius: 4px;
     font-size: 14px;
-    color: #333;
+    color: var(--text-secondary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 300px;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .addCourse-body__form-subgroup-2-item {
@@ -138,27 +153,33 @@
 .addCourse-body__select {
     width: 100%;
     padding: 8px 12px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
     font-size: 14px;
-    background-color: white;
+    background-color: var(--background-secondary);
+    color: var(--text-secondary);
     margin-bottom: 16px;
     appearance: none;
     background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
     background-repeat: no-repeat;
     background-position: right 8px center;
-    background-size: 16px;  
+    background-size: 16px;
+    transition: border 0.3s, background-color 0.3s, color;
 }
 
 .addCourse-body__textarea {
-    width: 100%;
-    height: 100%;
-    min-height: 100px;
+    height: 420px;
+    min-height: 300px;
+    max-height: 420px;
     padding: 8px 12px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
+    background-color: var(--background-secondary);
+    color: var(--text-secondary);
     border-radius: 4px;
     font-size: 14px;
     resize: vertical;
+    transition: border 0.3s;
+    transition: border 0.3s, background-color 0.3s, color 0.3s;
 }
 
 .input-error {
@@ -171,12 +192,3 @@
     margin-top: 4px;
     font-weight: 500;
 }
-
-
-
-
-
-
-
-
-

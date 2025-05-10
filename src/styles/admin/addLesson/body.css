@@ -1,26 +1,37 @@
 .addLesson-body {
-    background-color: #ffffff;
-    border-radius: 20px;
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
-    padding: 30px 40px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
+    cursor: default;
     overflow: auto;
+    max-height: 80%;
+    gap: 0.5rem;
+    padding: 20px;
+    border-radius: 20px;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 0 8px var(--shadow-color);
+    transition: box-shadow 0.3s, border 0.3s;
 }
 
-.addLesson-body__content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+.addLesson-body::-webkit-scrollbar {
+    width: 2px;
+    height: 8px;
+}
+
+.addLesson-body::-webkit-scrollbar-track {
+    background: var(--scrollbarTrack-background);
+    border-radius: 10px;
+    -webkit-transition: background 0.3s
+}
+
+.addLesson-body::-webkit-scrollbar-thumb {
+    background: var(--scrollbarThumb-background);
+    border-radius: 10px;
+    -webkit-transition: background 0.3s
 }
 
 .addLesson-body__form-group {
-    display: flex;
-    gap: 15px;
-    flex-direction: column;
+    flex: 1;
 }
 
 .addLesson-body__form-subgroup {
@@ -30,37 +41,37 @@
 }
 
 .addLesson-body__form-subgroup label {
-    font-size: 16px;
-    font-weight: 600;
-    color: #333;
+    display: block;
+    font-weight: 400;
+    color: var(--text-primary);
+    transition: color 0.3s;
 }
 
 .add-lesson__input {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 10px;
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    background-color: var(--background-secondary);
+    color: var(--text-secondary);
+    border-radius: 4px;
+    font-size: 14px;
+    margin-bottom: 16px;
+    transition: border 0.3s, color 0.3s, background-color 0.3s;
 }
 
 /* Section */
 .addSection-body__form-group {
-    display: flex;
-    flex-direction: column;
-    border-radius: 10px;
-    height: auto;
-    transition: all 0.3s ease;
-    overflow: hidden;
-    margin-top: 35px;
+    flex: 1;
+    padding: 20px;
+    padding-bottom: 0;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+
 }
 
 .addSection-body__form-subgroup-container {
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    padding: 10px;
-    width: 100%;
-    height: 100%;
-    transition: all 0.3s ease;
-    border-top: 1px solid #ddd;
+    background-color: transparent;
+    margin-top: 1rem;
 }
 
 .addSection-body__form-group.collapsed .addSection-body__form-subgroup-container {

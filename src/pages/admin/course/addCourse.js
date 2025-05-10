@@ -1,30 +1,30 @@
 import React from "react";
-
-//components
 import Header from "../../../components/admin/course/addCourse/header";
 import Body from "../../../components/admin/course/addCourse/body";
 import Footer from "../../../components/admin/course/addCourse/footer";
-
-//hooks
 import { useCourse } from "../../../hooks/admin/useCourse";
 import { useAuth } from "../../../hooks/useAuth";
-
-//styles
+import { useCategory } from "../../../hooks/useCategory";
 import "../../../styles/admin/addCourse/style.css";
 import "../../../styles/button/style.css";
 
 const AddCourse = () => {
     const { checkAuth } = useAuth();
     const {
+        categories,
+        loading: categoriesLoading,
+        error: categoriesError
+    } = useCategory();
+    const {
         courseData,
-        loading, 
-        error: addCourseError, 
+        loading: addCourseLoading,
+        error: addCourseError,
         formErrors,
         imagePreview, selectedImage,
+        handleNavigate,
         handleInputChange,
         handleImageSelect,
         handleRemoveImage,
-        handleBack,
         handleSubmitDraft,
         handleNext
     } = useCourse();
@@ -36,32 +36,38 @@ const AddCourse = () => {
 
     return (
         <div className="addCourse">
-            <div className="addCourse__main-content">
-                <Header />
-                {addCourseError && <div className="error-message">{addCourseError}</div>}
-                {loading ? (
-                    <div className="loading-message">Đang thêm khóa học...</div>
-                ) : (
-                    <>
-                        <div className="addCourse__content-wrapper">
-                            <Body
-                                courseData={courseData}
-                                imagePreview={imagePreview}
-                                selectedImage={selectedImage}
-                                formErrors={formErrors}
-                                handleInputChange={handleInputChange}
-                                handleImageSelect={handleImageSelect}
-                                handleRemoveImage={handleRemoveImage}
-                            />
-                        </div>
-                        <Footer
-                            handleBack={handleBack}
-                            handleSubmitDraft={handleSubmitDraft}
-                            handleNext={handleNext}
-                        />
-                    </>
-                )}
-            </div>
+            {addCourseError && <div className="error-message">{addCourseError}</div>}
+            {addCourseLoading ? (
+                <div className="addCourse-isLoading">
+                    <div className="addCourse-isLoading__title">
+                        Đang tải lên khóa học...
+                    </div>
+                    <div className="addCourse-isLoading__loader"></div>
+                </div>
+            ) : (
+                <>
+                    <Header
+                        Title={"Thêm khóa học"}
+                    />
+                    <Body
+                        courseData={courseData}
+                        categories={categories}
+                        categoriesLoading={categoriesLoading}
+                        categoriesError={categoriesError}
+                        imagePreview={imagePreview}
+                        selectedImage={selectedImage}
+                        formErrors={formErrors}
+                        handleInputChange={handleInputChange}
+                        handleImageSelect={handleImageSelect}
+                        handleRemoveImage={handleRemoveImage}
+                    />
+                    <Footer
+                        handleBack={() => handleNavigate("course")}
+                        handleSubmitDraft={handleSubmitDraft}
+                        handleNext={handleNext}
+                    />
+                </>
+            )}
         </div>
     );
 }

@@ -16,7 +16,6 @@
     justify-content: space-between;
     align-items: center;
     overflow: hidden;
-    /* border-bottom: 1px solid var(--border-color); */
 }
 
 .course-header__container-left {

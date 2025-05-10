@@ -3,11 +3,9 @@ import React from "react";
 //styles
 import "../../../../styles/admin/addCourse/header.css";
 
-const Header = () => (
+const Header = ({ Title }) => (
     <div className="addCourse-header">
-        <div className="addCourse-header__title">
-            <h2>Thêm khóa học</h2>
-        </div>
+        <h1>{Title}</h1>
     </div>
 )
 

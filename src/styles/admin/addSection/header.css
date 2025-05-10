@@ -2,13 +2,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
 }
 
-.addSection-header h2 {
-    color: #333;
-    font-size: 18px;
-    font-weight: 600;
+.addSection-header h4 {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    transition: color 0.3s;
 }
 
 .addSection-header__toggle {

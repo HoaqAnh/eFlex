@@ -5,9 +5,7 @@ import "../../../../styles/admin/addLesson/header.css";
 
 const Header = () => (
     <div className="addLesson-header">
-        <div className="addLesson-header__title">
-                <h2>Thêm bài học</h2>
-            </div>
+        <h1>Thêm bài học</h1>
     </div>
 );
 

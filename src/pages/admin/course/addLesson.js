@@ -38,34 +38,35 @@ const AddLesson = () => {
 
     return (
         <div className="addLesson">
-            <div className="addLesson__main-content">
-                {addLessonError && <div className="error-message">{addLessonError}</div>}
-                {loading ? (
-                    <div className="loading-message">Đang thêm bài học...</div>
-                ) : (
-                    <>
-                        <Header />
-                        <div className="addLesson__content-wrapper">
-                            <Body
-                                lessonData={lessonData}
-                                lessonErrors={lessonErrors}
-                                handleLessonInputChange={handleLessonInputChange}
-                                handleSectionInputChange={handleSectionInputChange}
-                                sectionData={sectionForms}
-                                sectionErrors={sectionErrors}
-                                handleRemoveSection={handleRemoveSection}
-                            />
-                        </div>
-                        <Footer
-                            handleBack={handleBack}
-                            handleAddAndContinue={handleAddAndContinue}
-                            handleSubmit={handleSubmit}
-                            handleAddSection={handleAddSection}
-                            handleAddTest={handleAddTest}
-                        />
-                    </>
-                )}
-            </div>
+            {addLessonError && <div className="error-message">{addLessonError}</div>}
+            {loading ? (
+                <div className="addLesson-isLoading">
+                    <div className="addLesson-isLoading__title">
+                        Đang tải lên khóa học...
+                    </div>
+                    <div className="addLesson-isLoading__loader"></div>
+                </div>
+            ) : (
+                <>
+                    <Header />
+                    <Body
+                        lessonData={lessonData}
+                        lessonErrors={lessonErrors}
+                        handleLessonInputChange={handleLessonInputChange}
+                        handleSectionInputChange={handleSectionInputChange}
+                        sectionData={sectionForms}
+                        sectionErrors={sectionErrors}
+                        handleRemoveSection={handleRemoveSection}
+                    />
+                    <Footer
+                        handleBack={handleBack}
+                        handleAddAndContinue={handleAddAndContinue}
+                        handleSubmit={handleSubmit}
+                        handleAddSection={handleAddSection}
+                        handleAddTest={handleAddTest}
+                    />
+                </>
+            )}
         </div>
     );
 };
