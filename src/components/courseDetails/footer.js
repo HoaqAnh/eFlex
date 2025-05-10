@@ -1,13 +1,11 @@
 import { useNavigate } from "react-router-dom";
-
-//styles
 import "../../styles/button/style.css"
 import "../../styles/courseDetails/footer.css"
 
 const Footer = () => {
     const navigate = useNavigate();
     const handleBack = () => {
-        navigate(`/courses`);
+        navigate(`/course`);
     };
     return (
         <div className="course-details__footer">

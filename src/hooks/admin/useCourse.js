@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { CourseApi, getCourseDetails, deleteCourse, fetchCourses } from '../../services/courseService';
+import { CourseApi, deleteCourse, fetchCourses } from '../../services/courseService';
 import { useValidation } from './useValidation';
 
 let courseListeners = [];
@@ -159,28 +159,6 @@ export const useCourse = () => {
 
     const handleSubmitDraft = () => submitCourse(CourseApi.saveCourseAsDraft, 'course');
 
-    const handleGetCourseDetails = useCallback(async (courseId) => {
-        if (!courseId) return setError('Không tìm thấy ID khóa học');
-
-        try {
-            setLoading(true);
-            setError(null);
-
-            const course = await getCourseDetails(courseId);
-            if (!course) return setError('Không tìm thấy thông tin khóa học');
-
-            setCourseData(course);
-
-        } catch (error) {
-            console.error('Lỗi khi lấy thông tin khóa học:', error);
-
-            const message = error?.message || 'Không thể lấy thông tin khóa học. Vui lòng thử lại sau.';
-            setError(message);
-        } finally {
-            setLoading(false);
-        }
-    }, [setCourseData, setError, setLoading]);
-
     const handleNavigate = useCallback((path, options) => {
         navigate(`/admin/${path}`, options);
     }, [navigate]);
@@ -260,7 +238,6 @@ export const useCourse = () => {
         handleSubmit,
         handleNext,
         handleSubmitDraft,
-        handleGetCourseDetails,
         handleNavigate,
         handleDelete,
         handleUpdate, 

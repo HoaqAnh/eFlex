@@ -6,7 +6,8 @@
     background-color: transparent;
     padding: 32px;
     border-bottom: 1px solid var(--border-color);
-    transition: all 0.3s;
+    color: var(--text-primary);
+    transition: border 0.3s, color 0.3s;
 }
 
 .course-details__header-right {

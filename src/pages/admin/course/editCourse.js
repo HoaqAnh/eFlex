@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import Body from "../../../components/admin/course/addCourse/body";
 import Footer from "../../../components/admin/course/editCourse/footer";
 import Header from "../../../components/admin/course/addCourse/header";
+import getCourseDetail from "../../../hooks/course/useCourse";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 import { useCourse } from "../../../hooks/admin/useCourse";
@@ -12,13 +13,8 @@ const EditCourse = () => {
     const { checkAuth } = useAuth();
     const authCheck = checkAuth();
     const { id } = useParams();
+    const { categories, loading: categoriesLoading, error: categoriesError } = useCategory();
     const {
-        categories,
-        loading: categoriesLoading,
-        error: categoriesError
-    } = useCategory();
-    const {
-        courseData,
         loading: addCourseLoading,
         error: addCourseError,
         formErrors,
@@ -26,19 +22,18 @@ const EditCourse = () => {
         handleInputChange,
         handleImageSelect,
         handleRemoveImage,
-        handleGetCourseDetails,
         handleNavigate,
         handleUpdate,
         handleUpdateAndNext,
     } = useCourse();
 
+    const { courseDetail } = getCourseDetail(id);
+
     useEffect(() => {
-        if (id) {
-            handleGetCourseDetails(id);
-        } else {
+        if (!courseDetail) {
             handleNavigate("course");
         }
-    }, [id, handleGetCourseDetails, handleNavigate]);
+    }, [courseDetail, handleNavigate]);
 
     if (!authCheck.shouldRender) {
         return authCheck.component;
@@ -57,10 +52,10 @@ const EditCourse = () => {
             ) : (
                 <>
                     <Header
-                        Title={"Chỉnh sửa khóa học"}
+                        Title="Chỉnh sửa khóa học"
                     />
                     <Body
-                        courseData={courseData}
+                        courseData={courseDetail}
                         categories={categories}
                         categoriesLoading={categoriesLoading}
                         categoriesError={categoriesError}

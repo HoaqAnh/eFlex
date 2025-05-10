@@ -6,24 +6,14 @@ import "../../../styles/users/course/body.css";
 
 const Body = ({ isSelectingCourse, selectedCourseId, onSelectCourse, hideUnselected }) => {
     const { courseData, loading, error } = useCourse();
-    // const [selectedCourse, setSelectedCourse] = useState(null);
     const [loadingAnimation, setLoadingAnimation] = useState(true);
     const [prevCourseCount, setPrevCourseCount] = useState(2);
-
-    // useEffect(() => {
-    //     if (courseData && selectedCourseId) {
-    //         const course = courseData.find(item => item.id === selectedCourseId);
-    //         setSelectedCourse(course);
-    //     } else {
-    //         setSelectedCourse(null);
-    //     }
-    // }, [selectedCourseId, courseData]);
 
     useEffect(() => {
         const timer = setTimeout(() => {
             setLoadingAnimation(false);
         }, 1000);
-        
+
         return () => clearTimeout(timer);
     }, [courseData]);
 
@@ -46,7 +36,7 @@ const Body = ({ isSelectingCourse, selectedCourseId, onSelectCourse, hideUnselec
     }
 
     if (error) {
-        return <div className="course-body__container">Lỗi khi tải khóa học: {error}</div>;
+        return <div className="course-body__container">Lỗi khi tải khóa học, vui lòng thử lại sau.</div>;
     }
 
     if (!courseData || !Array.isArray(courseData) || courseData.length === 0) {
@@ -73,7 +63,7 @@ const Body = ({ isSelectingCourse, selectedCourseId, onSelectCourse, hideUnselec
                         isSelectingCourse={isSelectingCourse}
                         isSelected={selectedCourseId === courseItem.id}
                         onSelectCourse={onSelectCourse}
-                        animationDelay={index * 25}
+                        animationDelay={index * 150}
                     />
                 ))}
             </div>

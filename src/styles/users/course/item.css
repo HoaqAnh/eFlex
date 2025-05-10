@@ -7,11 +7,11 @@
     background-color: var(--background-secondary);
     border: 1px solid var(--border-color);
     box-shadow: 0 4px 8px var(--shadow-color);
-    transition: background-color 0.3s, border 0.3s, box-shadow 0.3s;
+    transition: background-color 0.3s, border 0.3s, box-shadow 0.3s, transform 0.3s ease;
 }
 
 .course-item:hover {
-    transform: translateY(5px);
+    transform: translateY(5px) !important;
 }
 
 .course-item.selected {

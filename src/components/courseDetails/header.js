@@ -1,54 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
-
-//services
-import {  getCourseLessonCount } from "../../services/lessonService";
-import { getCourseDetails } from "../../services/courseService";
-
-//styles
+import useLesson from "../../hooks/course/useLesson";
+import useCourse from "../../hooks/course/useCourse"
 import "../../styles/courseDetails/header.css"
 
 const Header = () => {
     const { id } = useParams();
-    const [course, setCourse] = useState(null);
-    const [lessonCount, setLessonCount] = useState({ baiHoc: 0, baiTap: 0 });
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const { courseDetail, loading: courseLoading, error: courseError } = useCourse(id);
+    const { countLessonAndTest, loading: countLoading, error: countError } = useLesson(id);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const [courseData, countData] = await Promise.all([
-                    getCourseDetails(id),
-                    getCourseLessonCount(id)
-                ]);
-                setCourse(courseData);
-                setLessonCount(countData);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-    }, [id]);
-
-    if (loading) {
+    if (courseLoading || countLoading) {
         return <div className="header-content">Đang tải...</div>;
     }
 
-    if (error) {
-        return <div className="header-content">Có lỗi xảy ra: {error}</div>;
+    if (courseError || countError) {
+        return <div className="header-content">Có lỗi xảy ra, vui lòng làm mới lại trang hoặc truy cập lại sau ít phút nữa.</div>;
     }
 
     return (
         <div className="header-content">
             <div className="course-details__header-right">
-                <h1 className="header-content__title">{course?.tenMon || 'Khóa học'}</h1>
-                <p>{course?.moTa}</p>
+                <h1 className="header-content__title">{courseDetail?.tenMon || 'Khóa học'}</h1>
+                <p>{courseDetail?.moTa}</p>
                 <div className="course-details__header-bottom">
-                    <p>{lessonCount.baiHoc} bài học - {lessonCount.baiTap} câu hỏi</p>
+                    <p>{countLessonAndTest?.baiHoc} bài học - {countLessonAndTest?.baiTap} câu hỏi</p>
                     <div className="course-details__header-right-button">
                         <button className="btn btn-primary">Đánh giá năng lực</button>
                         <button className="btn btn-favorite">
@@ -61,7 +36,7 @@ const Header = () => {
                 </div>
             </div>
             <div className="course-details__header-left">
-                <img src={course?.anhMonHoc} alt={course?.tenMon} />
+                <img src={courseDetail?.anhMonHoc} alt={courseDetail?.tenMon} />
             </div>
         </div>
     );

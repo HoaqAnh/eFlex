@@ -48,12 +48,10 @@ const Sidebar = ({ onSectionSelect, selectedSectionId }) => {
     }, [id, lessonId, onSectionSelect, selectedSectionId]);
 
     const handleSectionClick = (section) => {
-        // Section được chọn trước đó
         if (selectedSectionId) {
             sendSectionProgress(selectedSectionId);
         }
         
-        // Cập nhật section được chọn
         onSectionSelect(section);
     };
 
@@ -91,14 +89,14 @@ const Sidebar = ({ onSectionSelect, selectedSectionId }) => {
     const handleExitConfirm = (confirmed) => {
         setShowExitConfirm(false);
         if (confirmed) {
-            navigate(`/courses/${id}`);
+            navigate(`/course/${id}`);
         }
     };
 
     const handleTestConfirm = (confirmed) => {
         setShowTestConfirm(false);
         if (confirmed) {
-            navigate(`/courses/${id}/lesson/${lessonId}/test`);
+            navigate(`/course/${id}/lesson/${lessonId}/test`);
         }
     };
 

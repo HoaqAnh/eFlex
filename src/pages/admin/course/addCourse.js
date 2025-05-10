@@ -47,7 +47,7 @@ const AddCourse = () => {
             ) : (
                 <>
                     <Header
-                        Title={"Thêm khóa học"}
+                        Title="Thêm khóa học"
                     />
                     <Body
                         courseData={courseData}
