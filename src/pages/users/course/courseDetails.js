@@ -1,31 +1,26 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-
-//components
 import Header from "../../../components/courseDetails/header"
 import Body from "../../../components/courseDetails/body"
 import Footer from "../../../components/courseDetails/footer"
-
-//hooks
 import { useAuth } from "../../../hooks/useAuth";
-import useCourseStudyTimer from "../../../hooks/model/useCourseStudyTimer"
-
-//service
 import { userStudyData } from "../../../services/modelService"
-//style
+import useCourseStudyTimer from "../../../hooks/model/useCourseStudyTimer"
+import useCourse from "../../../hooks/course/useCourse"
 import "../../../styles/courseDetails/style.css"
 
 const CourseDetails = () => {
+    const { id: courseId } = useParams();
     const { checkAuth } = useAuth();
     const authCheck = checkAuth();
-    const { id } = useParams();
+    const { courseDetail, loading, error} = useCourse(courseId);
 
     const handleExit = (totalTimeInSeconds) => {
         if (totalTimeInSeconds > 0) {
-            userStudyData(id, totalTimeInSeconds);
+            userStudyData(courseId, totalTimeInSeconds);
         }
     };
-    useCourseStudyTimer(handleExit, id);
+    useCourseStudyTimer(handleExit, courseId);
 
     if (!authCheck.shouldRender) {
         return authCheck.component;
@@ -33,7 +28,12 @@ const CourseDetails = () => {
 
     return (
         <div className="course-details">
-            <Header />
+            <Header
+                courseId={courseId}
+                courseDetail={courseDetail}
+                courseLoading={loading}
+                courseError={error}
+            />
             <Body />
             <Footer />
         </div>

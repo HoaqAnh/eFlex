@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-//services
 import { getCourseLessons } from "../../services/lessonService";
 import { getCourseDetails } from "../../services/courseService";
-
-//components
+import useCourse from "../../hooks/course/useCourse";
+import useLesson from "../../hooks/course/useLesson";
 import LessonWithSection from "./lessonWithSection";
-
-//styles
 import "../../styles/courseDetails/body.css"
+
 const Body = () => {
     const { id } = useParams();
     const [course, setCourse] = useState(null);
@@ -23,7 +21,6 @@ const Body = () => {
                     getCourseLessons(id)
                 ]);
                 setCourse(courseData);
-                // Sắp xếp bài học theo viTri
                 const sortedLessons = [...lessonsData].sort((a, b) => a.viTri - b.viTri);
                 setLessons(sortedLessons);
             } catch (err) {

@@ -1,20 +1,17 @@
 import React from "react";
-import { useParams } from "react-router-dom";
 import useLesson from "../../hooks/course/useLesson";
-import useCourse from "../../hooks/course/useCourse"
-import "../../styles/courseDetails/header.css"
+import "../../styles/courseDetails/header.css";
 
-const Header = () => {
-    const { id } = useParams();
-    const { courseDetail, loading: courseLoading, error: courseError } = useCourse(id);
-    const { countLessonAndTest, loading: countLoading, error: countError } = useLesson(id);
+const Header = ({ courseId, courseDetail, courseLoading, courseError }) => {
+
+    const { countLessonAndTest, loading: countLoading, error: countError } = useLesson(courseId);
 
     if (courseLoading || countLoading) {
         return <div className="header-content">Đang tải...</div>;
     }
 
     if (courseError || countError) {
-        return <div className="header-content">Có lỗi xảy ra, vui lòng làm mới lại trang hoặc truy cập lại sau ít phút nữa.</div>;
+        return <div className="header-content">Có lỗi xảy ra, vui lòng thử lại sau.</div>;
     }
 
     return (

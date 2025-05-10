@@ -17,7 +17,6 @@ export const useCourse = (courseId) => {
             try {
                 setLoading(true);
                 setError(null);
-
                 const data = await getCourseDetails(courseId);
 
                 if (!data) {
