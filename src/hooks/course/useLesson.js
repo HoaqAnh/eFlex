@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
-import { getCourseLessonCount } from "../../services/lessonService";
-export const useLesson = (courseId) => {
+import { getCourseLessonCount, getLessonDetails } from "../../services/lessonService";
+
+export const useCountLessonAndTest = (courseId) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [countLessonAndTest, setCountLessonAndTest] = useState(0);
@@ -33,4 +34,37 @@ export const useLesson = (courseId) => {
     return { loading, error, countLessonAndTest }
 }
 
-export default useLesson;
+export const useLessonDetail = (courseId) => {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [listLesson, setListLesson] = useState([]);
+
+    useEffect(() => {
+        const getLessonDetail = async () => {
+            try {
+                setLoading(true);
+                setError(null);
+
+                const data = await getLessonDetails(courseId)
+
+                if (!data) {
+                    setError('Không tìm thấy thông tin chi tiết bài học.');
+                    return;
+                }
+
+                const sortedLessons = [...data].sort((a, b) => a.viTri - b.viTri);
+                setListLesson(sortedLessons);
+            } catch (err) {
+                console.error(err);
+                setError(err.message || 'Có lỗi xảy ra khi lấy dữ liệu.');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        getLessonDetail();
+    }, [courseId]);
+
+    return { loading, error, listLesson }
+}
+

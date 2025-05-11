@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Item from "./item";
 import SkeletonItem from "./skeletonItem";
-import { useCourse } from "../../../hooks/admin/useCourse";
 import "../../../styles/users/course/body.css";
 
-const Body = ({ isSelectingCourse, selectedCourseId, onSelectCourse, hideUnselected }) => {
-    const { courseData, loading, error } = useCourse();
+const Body = ({ courseData, loading, error, isSelectingCourse, selectedCourseId, onSelectCourse, hideUnselected }) => {
     const [loadingAnimation, setLoadingAnimation] = useState(true);
     const [prevCourseCount, setPrevCourseCount] = useState(2);
 

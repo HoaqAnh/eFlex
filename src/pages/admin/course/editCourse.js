@@ -2,10 +2,11 @@ import React, { useEffect } from "react";
 import Body from "../../../components/admin/course/addCourse/body";
 import Footer from "../../../components/admin/course/editCourse/footer";
 import Header from "../../../components/admin/course/addCourse/header";
-import getCourseDetail from "../../../hooks/course/useCourse";
+import Loading from "../../../components/layout/loader/loading"
+import { useCourseDetail } from "../../../hooks/course/useCourse";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
-import { useCourse } from "../../../hooks/admin/useCourse";
+import { useAdminCourse } from "../../../hooks/course/useCourse";
 import { useCategory } from "../../../hooks/useCategory";
 import "../../../styles/admin/editCourse/style.css";
 
@@ -25,9 +26,9 @@ const EditCourse = () => {
         handleNavigate,
         handleUpdate,
         handleUpdateAndNext,
-    } = useCourse();
+    } = useAdminCourse();
 
-    const { courseDetail } = getCourseDetail(id);
+    const { courseDetail, loading: courseLoading, error: courseError } = useCourseDetail(id);
 
     useEffect(() => {
         if (!courseDetail) {
@@ -41,14 +42,9 @@ const EditCourse = () => {
 
     return (
         <div className="editCourse">
-            {addCourseError && <div className="error-message">{addCourseError}</div>}
-            {addCourseLoading ? (
-                <div className="editCourse-isLoading">
-                    <div className="editCourse-isLoading__title">
-                        Đang lấy thông tin khóa học...
-                    </div>
-                    <div className="editCourse-isLoading__loader"></div>
-                </div>
+            {(addCourseError || courseError) && <div className="error-message">{addCourseError}</div>}
+            {(addCourseLoading || courseLoading) ? (
+                <Loading Title="Đang xử lý yêu cầu của bạn..."/>
             ) : (
                 <>
                     <Header
@@ -78,4 +74,3 @@ const EditCourse = () => {
 }
 
 export default EditCourse;
-

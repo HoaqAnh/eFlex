@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "../../../hooks/useAuth";
-import { useCourse } from "../../../hooks/admin/useCourse"
+import { useAdminCourse } from "../../../hooks/course/useCourse"
 import Body from "../../../components/users/course/body";
 import Footer from "../../../components/admin/course/footer";
 import ConfirmDialog from "../../../components/admin/course/confirmDialog";
@@ -8,7 +8,7 @@ import "../../../styles/admin/course/style.css";
 
 const Course = () => {
     const { checkAuth } = useAuth();
-    const { handleNavigate, handleDelete } = useCourse();
+    const { handleNavigate, handleDelete, courseData, loading, error } = useAdminCourse();
     const [isSelectingCourse, setIsSelectingCourse] = useState(false);
     const [selectedCourseId, setSelectedCourseId] = useState(null);
     const [hideUnselected, setHideUnselected] = useState(false);
@@ -65,6 +65,9 @@ const Course = () => {
     return (
         <div className="admin-course">
             <Body
+                courseData={courseData}
+                loading={loading}
+                error={error}
                 isSelectingCourse={isSelectingCourse}
                 selectedCourseId={selectedCourseId}
                 onSelectCourse={handleSelectCourse}

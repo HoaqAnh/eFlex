@@ -2,7 +2,8 @@ import React from "react";
 import Header from "../../../components/admin/course/addCourse/header";
 import Body from "../../../components/admin/course/addCourse/body";
 import Footer from "../../../components/admin/course/addCourse/footer";
-import { useCourse } from "../../../hooks/admin/useCourse";
+import Loading from "../../../components/layout/loader/loading";
+import { useAdminCourse } from "../../../hooks/course/useCourse";
 import { useAuth } from "../../../hooks/useAuth";
 import { useCategory } from "../../../hooks/useCategory";
 import "../../../styles/admin/addCourse/style.css";
@@ -27,7 +28,7 @@ const AddCourse = () => {
         handleRemoveImage,
         handleSubmitDraft,
         handleNext
-    } = useCourse();
+    } = useAdminCourse();
 
     const authCheck = checkAuth();
     if (!authCheck.shouldRender) {
@@ -38,12 +39,7 @@ const AddCourse = () => {
         <div className="addCourse">
             {addCourseError && <div className="error-message">{addCourseError}</div>}
             {addCourseLoading ? (
-                <div className="addCourse-isLoading">
-                    <div className="addCourse-isLoading__title">
-                        Đang tải lên khóa học...
-                    </div>
-                    <div className="addCourse-isLoading__loader"></div>
-                </div>
+                <Loading Title="Đang tải lên khóa học..."/>
             ) : (
                 <>
                     <Header

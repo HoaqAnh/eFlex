@@ -6,14 +6,17 @@ import Footer from "../../../components/courseDetails/footer"
 import { useAuth } from "../../../hooks/useAuth";
 import { userStudyData } from "../../../services/modelService"
 import useCourseStudyTimer from "../../../hooks/model/useCourseStudyTimer"
-import useCourse from "../../../hooks/course/useCourse"
+import { useCourseDetail } from "../../../hooks/course/useCourse"
+import { useLessonDetail, useCountLessonAndTest } from "../../../hooks/course/useLesson";
 import "../../../styles/courseDetails/style.css"
 
 const CourseDetails = () => {
     const { id: courseId } = useParams();
     const { checkAuth } = useAuth();
     const authCheck = checkAuth();
-    const { courseDetail, loading, error} = useCourse(courseId);
+    const { courseDetail, loading: courseLoading, error: courseError } = useCourseDetail(courseId);
+    const { listLesson, loading: lessonLoading, error: lessonError} = useLessonDetail(courseId);
+    const { countLessonAndTest, loading: countLoading, error: countError} = useCountLessonAndTest(courseId);
 
     const handleExit = (totalTimeInSeconds) => {
         if (totalTimeInSeconds > 0) {
@@ -29,12 +32,19 @@ const CourseDetails = () => {
     return (
         <div className="course-details">
             <Header
-                courseId={courseId}
                 courseDetail={courseDetail}
-                courseLoading={loading}
-                courseError={error}
+                countLessonAndTest={countLessonAndTest}
+                courseLoading={courseLoading}
+                courseError={courseError}
+                lessonLoading={Boolean(lessonLoading || countLoading)}
+                lessonError={Boolean(lessonError || countError)}
             />
-            <Body />
+            <Body
+                courseDetail={courseDetail}
+                lessonDetail={listLesson}
+                lessonLoading={lessonLoading}
+                lessonError={lessonError}
+            />
             <Footer />
         </div>
     );

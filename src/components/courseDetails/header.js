@@ -2,15 +2,12 @@ import React from "react";
 import useLesson from "../../hooks/course/useLesson";
 import "../../styles/courseDetails/header.css";
 
-const Header = ({ courseId, courseDetail, courseLoading, courseError }) => {
-
-    const { countLessonAndTest, loading: countLoading, error: countError } = useLesson(courseId);
-
-    if (courseLoading || countLoading) {
+const Header = ({ courseDetail, countLessonAndTest, courseLoading, courseError, lessonLoading, lessonError }) => {
+    if (courseLoading || lessonLoading) {
         return <div className="header-content">Đang tải...</div>;
     }
 
-    if (courseError || countError) {
+    if (courseError || lessonError) {
         return <div className="header-content">Có lỗi xảy ra, vui lòng thử lại sau.</div>;
     }
 

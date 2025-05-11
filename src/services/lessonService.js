@@ -257,7 +257,7 @@ export const getCourseLessons = async (courseId) => {
   }
 };
 
-export const getLessonSections = async (lessonId) => {
+export const getSections = async (lessonId) => {
   try {
     const token = TokenService.getToken();
     if (!token) {
@@ -313,7 +313,7 @@ export const getLessonDetails = async (lessonId) => {
       return null;
     }
 
-    const response = await fetch(`${BASE_URL}/GetLesson/${lessonId}`, {
+    const response = await fetch(`${BASE_URL}/lesson/${lessonId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import useLesson from "../../../hooks/course/useLesson";
-import useCourse from "../../../hooks/course/useCourse";
+import { useNavigate } from "react-router-dom";
+import { useCountLessonAndTest } from "../../../hooks/course/useLesson";
 import "../../../styles/users/course/item.css";
 
 const Item = ({ course, isSelectingCourse, isSelected, onSelectCourse, animationDelay = 0 }) => {
-    const { handleJoinCourse } = useCourse(course.id);
-    const { countLessonAndTest } = useLesson(course.id);
+    const navigate = useNavigate();
+    const { countLessonAndTest } = useCountLessonAndTest(course.id);
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
@@ -20,7 +20,7 @@ const Item = ({ course, isSelectingCourse, isSelected, onSelectCourse, animation
         if (isSelectingCourse) {
             onSelectCourse(course.id);
         } else if (!isSelectingCourse && !isSelected) {
-            handleJoinCourse(course.id);
+            navigate(course.id);
         }
     };
 
@@ -38,15 +38,15 @@ const Item = ({ course, isSelectingCourse, isSelected, onSelectCourse, animation
         >
             <div className="course-item__thumbnail">
                 <img
-                    src={course?.anhMonHoc || "./courseImage"}
-                    alt={course?.tenMon || "course"}
+                    src={course.anhMonHoc || "./courseImage"}
+                    alt={course.tenMon || "course"}
                     className="course-thumbnail"
                 />
             </div>
             <div className="course-item__info">
-                <h4>{course?.tenMon || "loading..."}</h4>
-                <p>{course?.category?.nameCategory || "loading..."}</p>
-                <p>{countLessonAndTest?.baiHoc || "0"} bài học - {countLessonAndTest?.baiTap || "0"} bài tập</p>
+                <h4>{course.tenMon || "loading..."}</h4>
+                <p>{course.category.nameCategory || "loading..."}</p>
+                <p>{countLessonAndTest.baiHoc || "0"} bài học - {countLessonAndTest.baiTap || "0"} bài tập</p>
             </div>
         </div>
     );
