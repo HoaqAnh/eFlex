@@ -20,7 +20,7 @@ const Item = ({ course, isSelectingCourse, isSelected, onSelectCourse, animation
         if (isSelectingCourse) {
             onSelectCourse(course.id);
         } else if (!isSelectingCourse && !isSelected) {
-            navigate(course.id);
+            navigate(`/course/${course.id}`);
         }
     };
 

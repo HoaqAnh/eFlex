@@ -12,7 +12,6 @@ export const lessonService = {
         return null;
       }
 
-      // Kiểm tra token hợp lệ
       if (!TokenService.isTokenValid()) {
         console.error("Token không hợp lệ hoặc đã hết hạn");
         TokenService.clearTokens();
@@ -54,7 +53,6 @@ export const lessonService = {
         return null;
       }
 
-      // Kiểm tra token hợp lệ
       if (!TokenService.isTokenValid()) {
         console.error("Token không hợp lệ hoặc đã hết hạn");
         TokenService.clearTokens();
@@ -90,7 +88,6 @@ export const lessonService = {
   // Tạo lesson kèm các section
   async createLessonWithSections(lessonData, sectionForms) {
     try {
-      // Chuẩn bị dữ liệu lesson
       const lessonPayload = {
         tenBai: lessonData.tenBai.trim(),
         course: {
@@ -104,7 +101,6 @@ export const lessonService = {
       // Lấy lessonId từ kết quả trả về
       const lessonId = lessonResponse.data.id;
 
-      // Chuẩn bị dữ liệu các section
       const sectionsData = sectionForms.map(form => ({
         tenBai: form.tenBai.trim(),
         moTa: form.moTa.trim(),
@@ -175,7 +171,8 @@ export const lessonService = {
   }
 };
 
-export const getCourseLessonCount = async (courseId) => {
+// Fetch tổng số bài học và bài kiểm tra
+export const getTotalLessonAndTest = async (courseId) => {
   try {
     const token = TokenService.getToken();
     if (!token) {
@@ -216,7 +213,8 @@ export const getCourseLessonCount = async (courseId) => {
   }
 };
 
-export const getCourseLessons = async (courseId) => {
+// Fetch danh sách lesson dựa trên course ID
+export const getLessons = async (courseId) => {
   try {
     const token = TokenService.getToken();
     if (!token) {
@@ -257,6 +255,7 @@ export const getCourseLessons = async (courseId) => {
   }
 };
 
+// Fetch danh sách section dựa trên lesson ID
 export const getSections = async (lessonId) => {
   try {
     const token = TokenService.getToken();
@@ -298,6 +297,7 @@ export const getSections = async (lessonId) => {
   }
 };
 
+// Fetch Chi tiết bài học (Tên bài, mô tả, ...) dựa trên lesson ID
 export const getLessonDetails = async (lessonId) => {
   try {
     const token = TokenService.getToken();

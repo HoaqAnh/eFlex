@@ -17,7 +17,7 @@ export const useModel = () => {
             setError(null);
 
             const response = await getCourseRecommend(userId);
-            if(!response || !response.data) {
+            if (!response || !response.data) {
                 setError("Không tìm thấy thông tin đề xuất khóa học");
                 return;
             }
@@ -28,10 +28,12 @@ export const useModel = () => {
             console.log("Error: ", error);
             setError(error.message || "Có lỗi xảy ra khi lấy dữ liệu đề xuất");
         } finally {
-            setLoading(false);
+            setTimeout(() => {
+                setLoading(false);
+            }, Math.random() * 1000);
         }
     }, []);
-    
+
     return {
         courses,
         recommendData,

@@ -1,45 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-//services
-import { getLessonSections } from "../../services/lessonService";
-
-//styles
+import { useSections } from "../../hooks/course/useSection";
 import "../../styles/courseDetails/lessonWithSection.css"
 
 const LessonWithSection = ({ lesson, course }) => {
-    const [sections, setSections] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
     const [collapsed, setCollapsed] = useState(false);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const fetchSections = async () => {
-            try {
-                const sectionsData = await getLessonSections(lesson.id);
-                // Sắp xếp phần học theo viTri
-                const sortedSections = [...sectionsData].sort((a, b) => a.viTri - b.viTri);
-                setSections(sortedSections);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        if (lesson?.id) {
-            fetchSections();
-        }
-    }, [lesson?.id]);
-
-    if (loading) {
-        return <div className="lesson-body__content">Đang tải...</div>;
-    }
-
-    if (error) {
-        return <div className="lesson-body__content">Có lỗi xảy ra: {error}</div>;
-    }
+    const { listSection, loading: sectionLoading, error: sectionError } = useSections(lesson.id);
 
     const handleLessonDetails = () => {
         if (course?.id && lesson?.id) {
@@ -53,6 +20,14 @@ const LessonWithSection = ({ lesson, course }) => {
         }
     };
 
+    if (sectionLoading) {
+        return <div className="lesson-details__sidebar">Đang tải...</div>;
+    }
+
+    if (sectionError) {
+        return <div className="lesson-details__sidebar">Có lỗi xảy ra</div>;
+    }
+
     return (
         <div className="eflex-playlist__lesson">
             <div className={`lesson-body__content ${collapsed ? 'collapsed' : ''}`}>
@@ -61,7 +36,7 @@ const LessonWithSection = ({ lesson, course }) => {
                     <div className="expand-button"></div>
                 </div>
                 <div className="lesson-body__content-content">
-                    {sections.map((section) => (
+                    {listSection.map((section) => (
                         <h4 key={section.id}>{section.tenBai}</h4>
                     ))}
                 </div>
@@ -75,4 +50,3 @@ const LessonWithSection = ({ lesson, course }) => {
 }
 
 export default LessonWithSection;
-
