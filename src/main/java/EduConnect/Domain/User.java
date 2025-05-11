@@ -55,16 +55,19 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<KetQuaBaiKiemTra> ketQuaBaiKiemTraList;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProgressSection> progressSections;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProgressLesson> progressLessons;
 
-    @OneToMany(mappedBy = "nguoiDung")
+    @OneToMany(mappedBy = "nguoiDung",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HistoryLearn> historyLearns;
 
-    @OneToMany(mappedBy = "nguoiDung")
+    @OneToMany(mappedBy = "nguoiDung",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TienDo> tienDoList;
     @PrePersist
     public void BeforeCreate() {

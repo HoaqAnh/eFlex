@@ -27,6 +27,9 @@ public class TestExercise {
     @JoinColumn(name = "id_BaiHoc")
     private Lesson lesson;
 
+    @OneToMany(mappedBy = "testExercise")
+    private List<KetQuaBaiKiemTra> ketQuaBaiKiemTraList;
+
     @OneToMany(mappedBy = "testExercise", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Exercise> exerciseList;

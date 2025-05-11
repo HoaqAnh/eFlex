@@ -32,7 +32,7 @@ public class Section {
     @JsonBackReference
     private Lesson lesson;
 
-    @OneToMany(mappedBy = "section")
+    @OneToMany(mappedBy = "section",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<ProgressSection> progressSections;
 

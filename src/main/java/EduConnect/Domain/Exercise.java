@@ -8,6 +8,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 
 @Getter
 @Setter
@@ -35,6 +37,8 @@ public class Exercise {
 
     private long Id_BaiHoc;
 
+    @OneToMany(mappedBy = "exerciseType")
+    private List<KetQuaBaiKiemTra> ketQuaBaiKiemTra;
     @ManyToOne
     @JoinColumn(name = "id_bkt")
     @JsonIgnore
