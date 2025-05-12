@@ -17,7 +17,6 @@ const AddCourse = () => {
         error: categoriesError
     } = useCategory();
     const {
-        courseData,
         loading: addCourseLoading,
         error: addCourseError,
         formErrors,
@@ -30,6 +29,9 @@ const AddCourse = () => {
         handleNext
     } = useAdminCourse();
 
+    const loading = categoriesLoading || addCourseLoading;
+    const error = categoriesError || addCourseError;
+
     const authCheck = checkAuth();
     if (!authCheck.shouldRender) {
         return authCheck.component;
@@ -37,16 +39,15 @@ const AddCourse = () => {
 
     return (
         <div className="addCourse">
-            {addCourseError && <div className="error-message">{addCourseError}</div>}
-            {addCourseLoading ? (
-                <Loading Title="Đang tải lên khóa học..."/>
+            {error && <div className="error-message">Có lỗi xảy ra vui lòng thử lại sau ít phút.</div>}
+            {loading ? (
+                <Loading Title="Đang tải lên khóa học..." />
             ) : (
                 <>
                     <Header
                         Title="Thêm khóa học"
                     />
                     <Body
-                        courseData={courseData}
                         categories={categories}
                         categoriesLoading={categoriesLoading}
                         categoriesError={categoriesError}

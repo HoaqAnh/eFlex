@@ -54,7 +54,7 @@ export const useLessonManagement = () => {
             toast.success("Tạo bài học thành công!");
             const lessonId = result.lessonData.data.id;
             const courseId = result.lessonData.data.course.id;
-            navigate(`/coursePanel/addCourse/${courseId}/addLesson/${lessonId}/addTest`);
+            navigate(`/admin/course/addCourse/${courseId}/addLesson/${lessonId}/addTest`);
         }
     };
 
@@ -64,7 +64,7 @@ export const useLessonManagement = () => {
 
         if (result.success) {
             toast.success("Tạo bài học thành công!");
-            navigate('/coursePanel');
+            navigate('/course');
         }
     };
 

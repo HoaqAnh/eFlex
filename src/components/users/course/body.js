@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Item from "./item";
 import SkeletonItem from "./skeletonItem";
+import Loading from "../../../components/layout/loader/loading"
 import "../../../styles/users/course/body.css";
 
 const Body = ({ courseData, loading, error, isSelectingCourse, selectedCourseId, onSelectCourse, hideUnselected }) => {
@@ -38,7 +39,7 @@ const Body = ({ courseData, loading, error, isSelectingCourse, selectedCourseId,
     }
 
     if (!courseData || !Array.isArray(courseData) || courseData.length === 0) {
-        return <div className="course-body__container">Không có khóa học nào.</div>;
+        return <Loading Title="Không tìm thấy khóa học nào. Vui lòng thử lại sau ít phút!" />
     }
 
     const displayCourses = hideUnselected && selectedCourseId

@@ -4,11 +4,13 @@ export const useValidation = () => {
         let isValid = true;
         const errors = {
             tenBai: "",
-            course: ""
+            course: {
+                id: null
+            }
         };
 
         // Kiểm tra tenBai
-        if (!lessonData.tenBai?.trim()) {
+        if (!lessonData?.tenBai?.trim()) {
             errors.tenBai = "Vui lòng nhập tên bài học";
             isValid = false;
         }

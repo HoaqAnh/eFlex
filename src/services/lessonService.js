@@ -88,6 +88,7 @@ export const lessonService = {
   // Tạo lesson kèm các section
   async createLessonWithSections(lessonData, sectionForms) {
     try {
+      console.log(lessonData);
       const lessonPayload = {
         tenBai: lessonData.tenBai.trim(),
         course: {
@@ -97,7 +98,7 @@ export const lessonService = {
 
       // Gọi API tạo lesson
       const lessonResponse = await this.createLesson(lessonPayload);
-
+      console.log("2");
       // Lấy lessonId từ kết quả trả về
       const lessonId = lessonResponse.data.id;
 

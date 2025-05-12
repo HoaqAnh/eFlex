@@ -1,16 +1,9 @@
 import React from "react";
-
-//hooks
-import { useCategory } from "../../../../hooks/useCategory";
-
-//styles
 import "../../../../styles/admin/addCourse/body.css"
 
 const Body = ({
-    courseData,
+    courseDetail,
     categories,
-    loading: categoriesLoading,
-    error: categoriesError,
     handleInputChange,
     imagePreview,
     handleImageSelect,
@@ -23,8 +16,8 @@ const Body = ({
             <div className="addCourse-body__form-group">
                 <div className="addCourse-body__image-upload">
                     <div className="addCourse-body__image-placeholder">
-                        {(imagePreview || courseData.anhMonHoc)  ? (
-                            <img src={imagePreview || courseData.anhMonHoc} alt="preview" />
+                        {(imagePreview || courseDetail?.anhMonHoc) ? (
+                            <img src={imagePreview || courseDetail.anhMonHoc} alt="preview" />
                         ) : (
                             <img src="/placeholder.png" alt="placeholder" />
                         )}
@@ -38,7 +31,7 @@ const Body = ({
                             className={`addCourse-body__input ${formErrors?.tenMon ? 'input-error' : ''}`}
                             type="text"
                             placeholder="Nhập tên khóa học"
-                            value={courseData.tenMon || ''}
+                            value={courseDetail?.tenMon}
                             onChange={(e) => handleInputChange('tenMon', e.target.value)}
                         />
                     </div>
@@ -82,21 +75,15 @@ const Body = ({
                             <label className="addCourse-body__label">Danh mục *</label>
                             <select
                                 className={`addCourse-body__select ${formErrors?.category ? 'input-error' : ''}`}
-                                value={courseData.category?.id|| ''}
+                                // value={courseDetail?.category.id}
                                 onChange={(e) => handleInputChange('category', e.target.value)}
                             >
                                 <option value="">Lựa chọn danh mục</option>
-                                {categoriesLoading ? (
-                                    <option value="" disabled>Đang tải danh mục...</option>
-                                ) : categoriesError ? (
-                                    <option value="" disabled>Có lỗi xảy ra khi tải danh mục</option>
-                                ) : (
-                                    categories?.length > 0 && categories.map((category) => (
-                                        <option key={category.id} value={category.id}>
-                                            {category.nameCategory}
-                                        </option>
-                                    ))
-                                )}
+                                {categories?.length > 0 && categories.map((category) => (
+                                    <option key={category.id} value={category.id}>
+                                        {category.nameCategory}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                     </div>
@@ -107,7 +94,7 @@ const Body = ({
             <textarea
                 className={`addCourse-body__textarea ${formErrors?.moTa ? 'input-error' : ''}`}
                 placeholder="Nhập mô tả khóa học"
-                value={courseData.moTa || ''}
+                value={courseDetail?.moTa}
                 onChange={(e) => handleInputChange('moTa', e.target.value)}
             />
         </div>

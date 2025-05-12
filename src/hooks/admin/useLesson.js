@@ -6,15 +6,22 @@ export const useLesson = () => {
     const navigate = useNavigate();
     const { id: courseId } = useParams();
     const validation = useValidation();
-    
-    const [lessonData, setLessonData] = useState(null);
+
+    const [lessonData, setLessonData] = useState({
+        tenBai: "",
+        course: {
+            id: courseId
+        }
+    });
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    
+
     const [lessonErrors, setLessonErrors] = useState({
         tenBai: "",
-        course: ""
+        course: {
+            id: null
+        }
     });
 
     if (!courseId) {
@@ -25,7 +32,7 @@ export const useLesson = () => {
             loading,
             error: 'Không tìm thấy courseId',
             lessonErrors,
-            handleLessonInputChange: () => {},
+            handleLessonInputChange: () => { },
             validateLessonForm: () => false
         };
     }
@@ -35,7 +42,7 @@ export const useLesson = () => {
             ...prev,
             [field]: value
         }));
-        
+
         if (field === 'tenBai') {
             setLessonErrors(prev => ({
                 ...prev,
@@ -57,10 +64,12 @@ export const useLesson = () => {
                 id: courseId
             }
         });
-        
+
         setLessonErrors({
             tenBai: "",
-            course: ""
+            course: {
+                id: null
+            }
         });
     };
 

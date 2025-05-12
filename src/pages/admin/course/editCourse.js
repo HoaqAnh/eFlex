@@ -16,8 +16,8 @@ const EditCourse = () => {
     const { id } = useParams();
     const { categories, loading: categoriesLoading, error: categoriesError } = useCategory();
     const {
-        loading: addCourseLoading,
-        error: addCourseError,
+        loading: editCourseLoading,
+        error: editCourseError,
         formErrors,
         imagePreview, selectedImage,
         handleInputChange,
@@ -36,25 +36,26 @@ const EditCourse = () => {
         }
     }, [courseDetail, handleNavigate]);
 
+    const loading = categoriesLoading || editCourseLoading || courseLoading;
+    const error = categoriesError || editCourseError || courseError;
+
     if (!authCheck.shouldRender) {
         return authCheck.component;
     }
 
     return (
         <div className="editCourse">
-            {(addCourseError || courseError) && <div className="error-message">{addCourseError}</div>}
-            {(addCourseLoading || courseLoading) ? (
-                <Loading Title="Đang xử lý yêu cầu của bạn..."/>
+            {error && <div className="error-message">Có lỗi xảy ra vui lòng thử lại sau ít phút.</div>}
+            {loading ? (
+                <Loading Title="Đang xử lý yêu cầu của bạn..." />
             ) : (
                 <>
                     <Header
                         Title="Chỉnh sửa khóa học"
                     />
                     <Body
-                        courseData={courseDetail}
+                        courseDetail={courseDetail}
                         categories={categories}
-                        categoriesLoading={categoriesLoading}
-                        categoriesError={categoriesError}
                         imagePreview={imagePreview}
                         selectedImage={selectedImage}
                         formErrors={formErrors}
