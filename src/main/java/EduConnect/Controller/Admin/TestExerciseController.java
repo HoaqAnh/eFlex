@@ -48,14 +48,9 @@ public class TestExerciseController {
         return new ResponseEntity<>(testExercise, HttpStatus.OK);
     }
 
-    @GetMapping("/lesson/{id}")
-    public ResponseEntity<List<TestExercise>> getTestExercisesByLesson(@PathVariable Long id) {
-        Lesson lesson = lessonRepository.getLessonById(id);
-
-        return new ResponseEntity<>(lesson.getTestExercise(), HttpStatus.OK);
+    @GetMapping("/{idLesson}")
+    public ResponseEntity<List<TestExercise>> getTestExerciseByLessonn(@PathVariable Long idLesson) {
+        return ResponseEntity.ok(this.testExerciseService.getTestByLesson(idLesson));
     }
-    @GetMapping("/{idLessonn}")
-    public ResponseEntity<List<TestExercise>> getTestExerciseByLessonn(@PathVariable Long idLessonn) {
-        return ResponseEntity.ok(this.testExerciseService.getTestByLesson(idLessonn));
-    }
+    
 }
