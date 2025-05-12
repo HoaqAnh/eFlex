@@ -37,6 +37,9 @@ public class ExerciseService {
     public Page<Exercise> findAll(Pageable pageable) {
         return exerciseRepository.findAll(pageable);
     }
+    public Exercise findById(long id) {
+        return this.exerciseRepository.findById(id).orElse(null);
+    }
     public List<Exercise> excelExercise(MultipartFile file, long idTestExercise) {
         List<Exercise> exerciseList = new ArrayList<>();
         try {
@@ -85,8 +88,23 @@ public class ExerciseService {
                 lesson1.ifPresent(exercise::setTestExercise);
 
                 String raw = getCellStringValue(row.getCell(7));
-                long Id_BaiHoc = (long) Double.parseDouble(raw.trim());
-                exercise.setId_BaiHoc(Id_BaiHoc);
+                Long idBaiHoc;
+
+                if (raw != null && !raw.trim().isEmpty()) {
+                    try {
+                        idBaiHoc = (long) Double.parseDouble(raw.trim());
+                    } catch (NumberFormatException e) {
+                        throw new IllegalArgumentException("Invalid lesson ID at row " + (row.getRowNum() + 1));
+                    }
+                } else {
+                    if (lesson1.isPresent() && lesson1.get().getLesson() != null) {
+                        idBaiHoc = lesson1.get().getLesson().getId();
+                    } else {
+                        throw new IllegalArgumentException("Không tìm thấy bài học liên kết với TestExercise ID: " + idTestExercise);
+                    }
+                }
+
+                exercise.setId_BaiHoc(idBaiHoc);
 
                 exerciseList.add(exercise);
             }
