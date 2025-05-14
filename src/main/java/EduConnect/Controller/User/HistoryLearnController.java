@@ -9,6 +9,7 @@ import EduConnect.Service.HistoryLearnService;
 import EduConnect.Service.LessonService;
 import EduConnect.Service.TestExerciseService;
 import EduConnect.Service.UserService;
+import EduConnect.Util.Error.IdInValidException;
 import EduConnect.Util.SecurityUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -72,10 +73,10 @@ public class HistoryLearnController {
     public ResponseEntity<Map<String, Object>> submitTest(
             @PathVariable("userId") Long userId,
             @PathVariable("testId") Long testId,
-            @RequestBody List<AnswerRequest> answers) {
+            @RequestBody List<AnswerRequest> answers) throws IdInValidException {
         try {
             TestExercise test = testExerciseRepository.findById(testId)
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy bài kiểm tra"));
+                    .orElseThrow(() -> new IdInValidException("Không tìm thấy bài kiểm tra"));
 
             Map<String, Object> recommendation = testExerciseService.submitTestAndRecommend(userId, testId, answers);
 
