@@ -28,4 +28,5 @@ public interface LessonRepository extends JpaRepository<Lesson, Integer> , JpaSp
     Integer findMaxViTriByCourseId(long courseId);
 
 
+    List<Lesson> findByCourseId(Long courseId);
 }

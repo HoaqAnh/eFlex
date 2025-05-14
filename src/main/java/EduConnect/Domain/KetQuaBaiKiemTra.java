@@ -19,6 +19,10 @@ public class KetQuaBaiKiemTra {
     private User user;
 
     @ManyToOne
+    @JoinColumn(name = "id_khoa_hoc")
+    private Course course;
+
+    @ManyToOne
     @JoinColumn(name = "id_bai_kiem_tra")
     private TestExercise testExercise;
 

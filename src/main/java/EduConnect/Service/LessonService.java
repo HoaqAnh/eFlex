@@ -27,12 +27,17 @@ public class LessonService {
     private final TestExerciseRepository testExerciseRepository;
     private LessonRepository lessonRepository;
     private ExerciseService exerciseService;
-    private KetQuaBaiKiemTraRepository ketQuaBaiKiemTraRepository;
-public LessonService(LessonRepository lessonRepository, CourseRepository courseRepository, ExerciseService exerciseService, KetQuaBaiKiemTraRepository ketQuaBaiKiemTraRepository, TestExerciseRepository testExerciseRepository) {
+    private final KetQuaBaiKiemTraRepository ketQuaBaiKiemTraRepository;
+
+    public LessonService(LessonRepository lessonRepository,
+                         CourseRepository courseRepository,
+                         ExerciseService exerciseService,
+                         TestExerciseRepository testExerciseRepository,
+                         KetQuaBaiKiemTraRepository ketQuaBaiKiemTraRepository) {
     this.lessonRepository = lessonRepository;
     this.courseRepository = courseRepository;
     this.exerciseService = exerciseService;
-    this.ketQuaBaiKiemTraRepository=ketQuaBaiKiemTraRepository;
+    this.ketQuaBaiKiemTraRepository = ketQuaBaiKiemTraRepository;
     this.testExerciseRepository = testExerciseRepository;
 }
 
