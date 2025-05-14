@@ -118,13 +118,13 @@ export const useTest = () => {
     };
 
     const handleCancel = () => {
-        navigate(`/coursePanel/addCourse/${courseId}/addLesson`);
+        navigate(`/admin/course/addCourse/${courseId}/addLesson`);
     };
 
     const handleSubmitAndCreateLesson = async () => {
         const result = await handleSubmit();
         if (result.success) {
-            navigate(`/coursePanel/addCourse/${courseId}/addLesson`);
+            navigate(`/admin/course/addCourse/${courseId}/addLesson`);
         }
     };
 

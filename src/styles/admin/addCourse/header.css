@@ -1,4 +1,4 @@
-.addCourse-header {
+.adminCourse-header {
     display: flex;
     flex-direction: column;
     cursor: default;
@@ -8,7 +8,7 @@
     gap: 0.5rem;
 }
 
-.addCourse-header h1 {
+.adminCourse-header h1 {
     font-weight: bold;
     margin: 0;
     position: relative;
@@ -17,7 +17,7 @@
     transition: color 0.3s;
 }
 
-.addCourse-header h1::after {
+.adminCourse-header h1::after {
     content: '';
     position: absolute;
     bottom: 0;

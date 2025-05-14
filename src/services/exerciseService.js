@@ -20,6 +20,8 @@ export const uploadExerciseExcel = async (testId, file) => {
         const formData = new FormData();
         formData.append('file', file);
 
+        console.log("testId: ", testId);
+
         const response = await fetch(`${BASE_URL}/exercise/excel/${testId}`, {
             method: "POST",
             headers: {
@@ -58,13 +60,12 @@ export const getExercisesByTestId = async (testId) => {
             return null;
         }
 
-        // Kiểm tra token hợp lệ
         if (!TokenService.isTokenValid()) {
             console.error("Token không hợp lệ hoặc đã hết hạn");
             TokenService.clearTokens();
             return null;
         }
-        
+
         const response = await fetch(`${BASE_URL}/lesson/${testId}/exercises`, {
             method: "GET",
             headers: {
@@ -83,18 +84,8 @@ export const getExercisesByTestId = async (testId) => {
             }
         }
 
-        const responseData = await response.json(); 
+        return await response.json();
         
-        // Kiểm tra cấu trúc response
-        if (!responseData || !responseData.data || !Array.isArray(responseData.data)) {
-            throw new Error("Dữ liệu trả về không đúng định dạng");
-        }
-
-        return {
-            statusCode: responseData.statusCode,
-            message: responseData.message,
-            data: responseData.data
-        };
     } catch (error) {
         console.error('API request error:', error);
         throw error;

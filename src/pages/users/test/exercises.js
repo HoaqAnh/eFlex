@@ -18,12 +18,8 @@ const Exercises = () => {
     const authCheck = checkAuth();
 
     const { testId } = useParams();
-    const { exercises, exerciseData, loading, error } = useExercise();
+    const { exerciseData, loading, error } = useExercise(testId);
 
-    useEffect(() => {
-        exercises(testId);
-    }, [exercises, testId]);
-    
     if (!authCheck.shouldRender) {
         return authCheck.component;
     }
@@ -32,10 +28,10 @@ const Exercises = () => {
             <div className="exercises__main-content">
                 <Header />
                 <div className="exercises__content-wrapper">
-                    <Body 
-                    exerciseData = {exerciseData}
-                    loading = {loading}
-                    error = {error}
+                    <Body
+                        exerciseData={exerciseData}
+                        loading={loading}
+                        error={error}
                     />
                 </div>
                 <Footer />

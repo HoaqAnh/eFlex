@@ -1,34 +1,37 @@
 import React from "react";
+import List from "./list";
+import "../../../styles/users/test/body.css";
 
-//component
-import List from "./list"
-
-//style
-import "../../../styles/users/test/body.css"
-
-const Body = () => {
-    const testCount = 2;
+const Body = ({ User, Tests }) => {
+    const testCount = Tests && Tests.data ? Tests.data.length : 0;
+    const testsData = Tests && Tests.data ? Tests.data : [];
     return (
         <div className="test-body">
             <div className="test-body__left">
                 <div className="test-body__left-top">
-                    <img src="./avatar" alt="Avatar profile" loading="lazy" />
+                    <img src="/avatar.png" alt="Avatar profile" loading="lazy" />
                 </div>
                 <div className="test-body__left-body">
-                    <p>Nguyễn Văn A</p>
+                    <p>Xin chào, {User.fullname}!</p>
                 </div>
                 <div className="test-body__left-bottom">
                     <p>Bạn có {testCount} bài kiểm tra</p>
                 </div>
             </div>
             <div className="test-body__right">
-                <List />
-                <List />
-                <List />
-                <List />
+                {testsData.length > 0 ? (
+                    testsData.map((testItem) => (
+                        <List
+                            key={testItem.id}
+                            testData={testItem}
+                        />
+                    ))
+                ) : (
+                    <p>Không có bài kiểm tra nào.</p>
+                )}
             </div>
         </div>
     );
-}
+};
 
 export default Body;

@@ -7,9 +7,10 @@ import { useTest } from '../../../hooks/admin/useTest';
 import { useAuth } from "../../../hooks/useAuth";
 
 //components
-import Header from "../../../components/admin/course/addTest/header";
+import Header from "../../../components/admin/course/addCourse/header";
 import Body from "../../../components/admin/course/addTest/body";
 import Footer from "../../../components/admin/course/addTest/footer";
+import Loading from "../../../components/layout/loader/loading";
 
 //styles
 import "../../../styles/admin/addTest/style.css";
@@ -19,6 +20,8 @@ const AddTest = () => {
     const { checkAuth } = useAuth();
     const {
         testData,
+        loading,
+        error,
         testErrors,
         excelFile,
         handleTestInputChange,
@@ -49,16 +52,21 @@ const AddTest = () => {
         }
         if (result.success) {
             toast.success(result.message || 'Bài kiểm tra đã được tạo thành công');
-            navigate(`/coursePanel`);
+            navigate(`/admin/course`);
         }
     };
 
+
+
     return (
         <div className="addTest">
-            <div className="addTest__main-content">
-                <Header />
-                <div className="addTest__content-wrapper">
-                    <Body 
+            {error && <div className="error-message">Có lỗi xảy ra vui lòng thử lại sau ít phút.</div>}
+            {loading ? (
+                <Loading Title="Đang tải lên khóa học..." />
+            ) : (
+                <>
+                    <Header Title="Thêm bài kiểm tra" />
+                    <Body
                         testData={testData}
                         testErrors={testErrors}
                         excelFile={excelFile}
@@ -66,14 +74,14 @@ const AddTest = () => {
                         handleFileChange={handleFileChange}
                         onSubmit={onSubmit}
                     />
-                </div>
-                <Footer 
-                    handleCancel={handleCancel}
-                    handleSubmitAndCreateTest={handleSubmitAndCreateTest}
-                    handleSubmitAndCreateLesson={handleSubmitAndCreateLesson}
-                    onSubmit={onSubmit}
-                />
-            </div>
+                    <Footer
+                        handleCancel={handleCancel}
+                        handleSubmitAndCreateTest={handleSubmitAndCreateTest}
+                        handleSubmitAndCreateLesson={handleSubmitAndCreateLesson}
+                        onSubmit={onSubmit}
+                    />
+                </>
+            )}
         </div>
     );
 };

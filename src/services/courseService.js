@@ -10,7 +10,6 @@ export const getCourseDetails = async (courseId) => {
       return null;
     }
 
-    // Kiểm tra token hợp lệ
     if (!TokenService.isTokenValid()) {
       console.error("Token không hợp lệ hoặc đã hết hạn");
       TokenService.clearTokens();

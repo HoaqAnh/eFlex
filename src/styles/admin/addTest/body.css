@@ -1,20 +1,33 @@
 .addTest-body {
-    background-color: #ffffff;
-    border-radius: 20px;
-    width: 100%;
-    height: 99%;
-    margin: 0 auto;
-    padding: 30px 40px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
+    cursor: default;
     overflow: auto;
+    max-height: 80%;
+    gap: 0.5rem;
+    padding: 20px;
+    border-radius: 20px;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 0 8px var(--shadow-color);
+    transition: box-shadow 0.3s, border 0.3s;
 }
 
-.addTest-body__content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+.addTest-body::-webkit-scrollbar {
+    width: 2px;
+    height: 8px;
+}
+
+.addTest-body::-webkit-scrollbar-track {
+    background: var(--scrollbarTrack-background);
+    border-radius: 10px;
+    -webkit-transition: background 0.3s
+}
+
+.addTest-body::-webkit-scrollbar-thumb {
+    background: var(--scrollbarThumb-background);
+    border-radius: 10px;
+    -webkit-transition: background 0.3s
 }
 
 .addTest-body__form-group {
@@ -29,10 +42,11 @@
 
 .addTest-body__form-group:last-child {
     height: 100%;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid var(--border-color);
     margin-bottom: 0;
     gap: 0;
     flex-direction: column;
+    transition: border-top 0.3s;
 }
 
 .addTest-body__form-subgroup {
@@ -52,21 +66,26 @@
 .addTest-body__label {
     display: block;
     font-weight: 400;
-    color: #333;
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    transition: color 0.3s;
 }
 
 .addTest-body__input {
     width: 100%;
     padding: 8px 12px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
+    background-color: var(--background-secondary);
+    color: var(--text-secondary);
     border-radius: 4px;
     font-size: 14px;
+    transition: border 0.3s, background-color 0.3s, color 0.3s;
 }
 
 /* Bài tập */
 .addExercise-body__form-group {
     display: flex;
-    background-color: #f9f9f9;
+    background-color: var(--background-secondary);
     flex-direction: row;
     align-items: center;
     gap: 15px;
@@ -76,29 +95,30 @@
     min-height: 60px;
     margin-top: 20px;
     border-radius: 12px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    border: 1px solid #eaeaea;
-    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px var(--shadow-color);
+    border: 1px solid var(--border-color);
     overflow: hidden;
+    transition: background-color 0.3s, border 0.3s, box-shadow 0.3s;
 }
 
 .addExercise-body__form-group:hover {
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 5px var(--shadow-color);
 }
 
 .addExercise-body__form-group:last-child {
     display: flex;
     flex-direction: row;
-    justify-content:space-around;
+    justify-content: space-around;
     gap: 20px;
     width: 100%;
     height: 100%;
     padding: 25px;
     margin-top: 20px;
-    background-color: #f9f9f9;
+    background-color: var(--background-secondary);
     border-radius: 12px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    border: 1px solid #eaeaea;
+    box-shadow: 0 1px 3px var(--shadow-color);
+    border: 1px solid var(--border-color);
+    transition: background-color 0.3s, box-shadow 0.3s, border 0.3s;
 }
 
 /* Cải thiện phần label */
@@ -112,10 +132,10 @@
 
 .addExercise-body__label {
     display: block;
-    font-weight: 600;
-    font-size: 16px;
-    color: #333;
+    font-size: 1.15rem;
+    color: var(--text-primary);
     width: 100%;
+    transition: color 0.3s;
 }
 
 
@@ -137,24 +157,26 @@
     width: auto;
     height: 100%;
     cursor: pointer;
-    border-left: 1px solid #ddd;
+    border-left: 1px solid var(--border-color);
     padding: 0 15px;
-    background-color: #ffffff;
+    background-color: transparent;
     border-radius: 5px;
-    transition: all 0.2s ease;
-    color: #333;
     font-weight: 500;
+    transition: border-left 0.3s, background-color 0.3s;
 }
 
 .addExercise-body__option\:enabled p,
 .option-multiplechoice p {
+    font-weight: bold;
     margin: 10px 0;
-    color: #2c7be5;
+    color: var(--text-primary);
+    transition: color 0.3s;
 }
 
 .addExercise-body__option\:enabled:hover,
+.addExercise-body__option\:disabled:hover,
 .option-multiplechoice:hover {
-    background-color: #e8f0fe;
+    transform: translateY(-2px);
 }
 
 /* Style cho option bị vô hiệu hóa */
@@ -165,11 +187,11 @@
     width: auto;
     height: 100%;
     cursor: not-allowed;
-    border-left: 1px solid #eee;
+    border-left: 1px solid var(--border-color);
     padding: 0 15px;
-    background-color: #f8f8f8;
+    background-color: transparent;
     border-radius: 5px;
-    transition: all 0.2s ease;
+    transition: border-left 0.3s;
 }
 
 .addExercise-body__option\:disabled p {
@@ -183,7 +205,7 @@
 
 .addExercise-body__option\:enabled:hover,
 .option-multiplechoice:hover {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px var(--shadow-color);
 }
 
 /* Style cho phần upload file */
@@ -192,10 +214,15 @@
     flex-direction: column;
     max-width: 35%;
     padding: 20px;
-    background-color: #ffffff;
+    background-color: transparent;
     border-radius: 10px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
-    border: 1px solid #f0f0f0;
+    box-shadow: 0 1px 3px var(--shadow-color);
+    border: 1px solid var(--border-color);
+    transition: box-shadow 0.3s, border 0.3s;
+}
+
+.addExercise-upload-file:hover {
+    transform: scale(1.02);
 }
 
 /* Ẩn input file mặc định */
@@ -230,13 +257,14 @@
 /* Style cho hiển thị tên file */
 .addExercise-body__input-file-name {
     padding: 10px 12px;
-    background-color: #f5f5f5;
-    border: 1px dashed #ddd;
+    background-color: transparent;
+    border: 1px dashed var(--border-color);
     border-radius: 6px;
-    color: #777;
+    color: var(--text-secondary);
     font-size: 14px;
     min-height: 20px;
     width: 100%;
+    transition: border 0.3s, color 0.3s;
 }
 
 /* Phần tạo câu hỏi thủ công */
@@ -245,30 +273,36 @@
     flex-direction: column;
     max-width: 35%;
     padding: 20px;
-    background-color: #ffffff;
+    background-color: transparent;
     border-radius: 10px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
-    border: 1px solid #f0f0f0;
+    box-shadow: 0 1px 3px var(--shadow-color);
+    border: 1px solid var(--border-color);
+    transition: box-shadow 0.3s, border 0.3s;
+}
+
+.addExercise-create-question:hover {
+    transform: scale(1.02);
 }
 
 /* Label tạo câu hỏi */
 .addExercise-body__create-question-label {
     display: block;
     font-weight: 500;
-    color: #333;
+    color: var(--text-primary);
     margin: 12px 0;
+    transition: color 0.3s;
 }
 
 /* Container cho phần tạo câu hỏi */
 .addExercise-body__create-question {
     padding: 15px;
-    background-color: #f5f5f5;
-    border: 1px dashed #ddd;
+    background-color: transparent;
+    border: 1px dashed var(--border-color);
     border-radius: 6px;
     min-height: 20px;
     width: 100%;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s;
 }
 
 .addExercise-body__create-question:hover {
@@ -278,9 +312,10 @@
 
 .addExercise-body__create-question p {
     margin: 0;
-    color: #777;
+    color: var(--text-secondary);
     font-size: 14px;
     text-align: center;
+    transition: color 0.3s;
 }
 
 .input-error {
