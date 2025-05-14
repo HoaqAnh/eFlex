@@ -2,7 +2,9 @@ package EduConnect.Controller.User;
 
 import EduConnect.Domain.HistoryLearn;
 import EduConnect.Domain.Request.AnswerRequest;
+import EduConnect.Domain.TestExercise;
 import EduConnect.Domain.User;
+import EduConnect.Repository.TestExerciseRepository;
 import EduConnect.Service.HistoryLearnService;
 import EduConnect.Service.LessonService;
 import EduConnect.Service.TestExerciseService;
@@ -26,12 +28,15 @@ public class HistoryLearnController {
     private final RestTemplate restTemplate;
     private final LessonService lessonService;
     private final TestExerciseService testExerciseService;
-    public HistoryLearnController(HistoryLearnService historyLearnService, UserService userService, RestTemplate restTemplate, LessonService lessonService, TestExerciseService testExerciseService) {
+    private final TestExerciseRepository testExerciseRepository;
+
+    public HistoryLearnController(HistoryLearnService historyLearnService, UserService userService, RestTemplate restTemplate, LessonService lessonService, TestExerciseService testExerciseService, TestExerciseRepository testExerciseRepository) {
         this.historyLearnService = historyLearnService;
         this.userService = userService;
         this.restTemplate = restTemplate;
         this.lessonService = lessonService;
         this.testExerciseService = testExerciseService;
+        this.testExerciseRepository = testExerciseRepository;
     }
 
 
@@ -63,31 +68,25 @@ public class HistoryLearnController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
-    @GetMapping("/recommend-lesson/{userId}/{courseId}")
-    public ResponseEntity<Map<String, Object>> recommendLesson(@PathVariable("userId") Long userId, @PathVariable("courseId") Long courseId) {
-        try {
-            Map<String, Object> recommendation = lessonService.recommendNextLesson(userId, courseId);
-            return ResponseEntity.ok(recommendation);
-        } catch (Exception e) {
-            Map<String, Object> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Lỗi khi gợi ý bài học: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-        }
-    }
     @PostMapping("/submit-test/{userId}/{testId}")
     public ResponseEntity<Map<String, Object>> submitTest(
             @PathVariable("userId") Long userId,
             @PathVariable("testId") Long testId,
             @RequestBody List<AnswerRequest> answers) {
         try {
-            this.testExerciseService.submitTest(userId, testId, answers);
+            TestExercise test = testExerciseRepository.findById(testId)
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy bài kiểm tra"));
+
+            Map<String, Object> recommendation = testExerciseService.submitTestAndRecommend(userId, testId, answers);
+
 
             Map<String, Object> response = new HashMap<>();
-            response.put("message", "Kết quả bài kiểm tra đã được lưu");
+            response.put("message", "Đã xử lý bài kiểm tra");
+            response.put("recommendation", recommendation);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             Map<String, Object> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Lỗi khi lưu kết quả bài kiểm tra: " + e.getMessage());
+            errorResponse.put("error", "Lỗi khi xử lý bài kiểm tra: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
