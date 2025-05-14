@@ -69,7 +69,7 @@ export const getSectionProgress = async (userId, sectionId) => {
             return null;
         }
 
-        const response = await fetch(`${BASE_URL}progressSectionCheck/${userId}/${sectionId}`, {
+        const response = await fetch(`${BASE_URL}/progressSectionCheck/${userId}/${sectionId}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -87,19 +87,14 @@ export const getSectionProgress = async (userId, sectionId) => {
             }
         }
 
-        const responseData = await response.json();
-        return {
-            statusCode: responseData.statusCode,
-            message: responseData.message,
-            data: responseData.data
-        };
+        return await response.json();
     } catch (err) {
         console.error('API request error:', err);
         throw err;
     }
 }
 
-export const getLessonProgress = async (userId, sectionId) => {
+export const getLessonProgress = async (userId, lessonId) => {
     try {
         const token = TokenService.getToken();
         if (!token) {
@@ -112,8 +107,8 @@ export const getLessonProgress = async (userId, sectionId) => {
             TokenService.clearTokens();
             return null;
         }
-
-        const response = await fetch(`${BASE_URL}progressLessonCheck/${userId}/${sectionId}`, {
+        
+        const response = await fetch(`${BASE_URL}/progressLessonCheck/${userId}/${lessonId}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -131,12 +126,7 @@ export const getLessonProgress = async (userId, sectionId) => {
             }
         }
 
-        const responseData = await response.json();
-        return {
-            statusCode: responseData.statusCode,
-            message: responseData.message,
-            data: responseData.data
-        };
+        return await response.json();
     } catch (err) {
         console.error('API request error:', err);
         throw err;

@@ -1,12 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSections } from "../../hooks/course/useSection";
-import "../../styles/courseDetails/lessonWithSection.css"
+import { useGetProgress } from "../../hooks/progress/useProgress";
+import Loading from "../layout/loader/loading";
+import Error from "../layout/loader/error";
+import SectionItem from "./sectionItem";
+import { IconCompleted, IconNotCompleted } from "./icons";
+import "../../styles/courseDetails/lessonWithSection.css";
 
-const LessonWithSection = ({ lesson, course }) => {
-    const [collapsed, setCollapsed] = useState(false);
+const LessonWithSection = ({ user, lesson, course }) => {
+    const [collapsed, setCollapsed] = useState(true);
     const navigate = useNavigate();
-    const { listSection, loading: sectionLoading, error: sectionError } = useSections(lesson.id);
+
+    const {
+        listSection,
+        loading: sectionsListLoading,
+        error: sectionsListError,
+    } = useSections(lesson.id);
+
+    const {
+        isEntityCompleted: isLessonCompleted,
+        isProgressLoading: isLessonProgressLoading,
+    } = useGetProgress(user.id, lesson.id, "lesson");
+
 
     const handleLessonDetails = () => {
         if (course?.id && lesson?.id) {
@@ -20,26 +36,46 @@ const LessonWithSection = ({ lesson, course }) => {
         }
     };
 
-    if (sectionLoading) {
-        return <div className="lesson-details__sidebar">Đang tải...</div>;
-    }
-
-    if (sectionError) {
-        return <div className="lesson-details__sidebar">Có lỗi xảy ra</div>;
-    }
+    const LessonStatusIcon = () => {
+        if (isLessonProgressLoading) return <span className="status-icon loading-icon"></span>;
+        return isLessonCompleted ? <IconCompleted /> : <IconNotCompleted />;
+    };
 
     return (
         <div className="eflex-playlist__lesson">
             <div className={`lesson-body__content ${collapsed ? 'collapsed' : ''}`}>
                 <div className="lesson-body__content-top" onClick={() => setCollapsed(!collapsed)}>
-                    <h3>{lesson?.tenBai}</h3>
-                    <div className="expand-button"></div>
+                    <div className="nzjxcziiaso-2183">
+                        <LessonStatusIcon />
+                        <h3 className="lesson-title">
+                            {lesson?.tenBai || "Tên bài học không xác định"}
+                        </h3>
+                    </div>
+                    <div className={`expand-button ${collapsed ? '' : 'expanded'}`}></div>
                 </div>
-                <div className="lesson-body__content-content">
-                    {listSection.map((section) => (
-                        <h4 key={section.id}>{section.tenBai}</h4>
-                    ))}
-                </div>
+
+                {!collapsed && (
+                    <div className="lesson-body__content-content">
+                        {sectionsListLoading && <Loading Title="Đang tải danh sách mục..." />}
+                        {sectionsListError && <Error Title={`Lỗi tải danh sách mục: ${sectionsListError.message || 'Vui lòng thử lại.'}`} />}
+                        {!sectionsListLoading && !sectionsListError && (
+                            Array.isArray(listSection) && listSection.length > 0 ? (
+                                listSection.map((sectionItem) => (
+                                    <SectionItem
+                                        key={sectionItem.id}
+                                        userId={user.id}
+                                        courseId={course?.id}
+                                        lessonId={lesson?.id}
+                                        section={sectionItem}
+                                    />
+                                ))
+                            ) : (
+                                <p>Bài học này không có mục nào.</p>
+                            )
+                        )}
+                    </div>
+                )}
+
                 <div className="lesson-body__content-actions">
                     <button className="btn btn-section-primary" onClick={handleLessonDetails}>Bắt đầu học</button>
                     <button className="btn btn-section-secondary" onClick={handleExercises}>Làm bài tập</button>
@@ -47,6 +83,6 @@ const LessonWithSection = ({ lesson, course }) => {
             </div>
         </div>
     );
-}
+};
 
 export default LessonWithSection;

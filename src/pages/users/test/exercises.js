@@ -12,6 +12,7 @@ import { useExercise } from "../../../hooks/test/useExercise"
 
 //style
 import "../../../styles/exercises/style.css"
+import Error from "../../../components/layout/loader/error";
 
 const Exercises = () => {
     const { checkAuth } = useAuth();
@@ -23,6 +24,15 @@ const Exercises = () => {
     if (!authCheck.shouldRender) {
         return authCheck.component;
     }
+
+    if (error) {
+        return (
+            <div className="exercises">
+                <Error Title="Có lỗi xảy ra, vui lòng thử lại sau ít phút." />
+            </div>
+        )
+    }
+
     return (
         <div className="exercises">
             <div className="exercises__main-content">
@@ -30,8 +40,6 @@ const Exercises = () => {
                 <div className="exercises__content-wrapper">
                     <Body
                         exerciseData={exerciseData}
-                        loading={loading}
-                        error={error}
                     />
                 </div>
                 <Footer />

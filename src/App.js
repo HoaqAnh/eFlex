@@ -62,7 +62,7 @@ const App = () => {
               </Route>
 
               {/* Route Exercises không nằm trong Layout */}
-              <Route path="courses/:id/lesson/:lessonId/test/:testId" element={<Exercises />} />
+              <Route path="course/:id/lesson/:lessonId/test/:testId" element={<Exercises />} />
 
               {/* Nhóm Admin với Layout */}
               <Route path="/admin" element={<AdminLayout />}>

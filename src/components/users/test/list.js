@@ -13,7 +13,7 @@ const List = ({ testData }) => {
 
     const handleNavigateToTest = () => {
         if (courseId && lessonId && testId) {
-            navigate(`/courses/${courseId}/lesson/${lessonId}/test/${testId}`);
+            navigate(`/course/${courseId}/lesson/${lessonId}/test/${testId}`);
         } else {
             console.error("Missing IDs for navigation: ", { courseId, lessonId, testId });
         }
