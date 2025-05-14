@@ -28,6 +28,7 @@ public class TestExercise {
     private Lesson lesson;
 
     @OneToMany(mappedBy = "testExercise")
+    @JsonIgnore
     private List<KetQuaBaiKiemTra> ketQuaBaiKiemTraList;
 
     @OneToMany(mappedBy = "testExercise", cascade = CascadeType.ALL, orphanRemoval = true)
