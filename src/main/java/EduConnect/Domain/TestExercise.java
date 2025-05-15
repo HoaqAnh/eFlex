@@ -1,5 +1,6 @@
 package EduConnect.Domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,11 +26,8 @@ public class TestExercise {
 
     @ManyToOne
     @JoinColumn(name = "id_BaiHoc")
+    @JsonBackReference
     private Lesson lesson;
-
-    @OneToMany(mappedBy = "testExercise")
-    @JsonIgnore
-    private List<KetQuaBaiKiemTra> ketQuaBaiKiemTraList;
 
     @OneToMany(mappedBy = "testExercise", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore

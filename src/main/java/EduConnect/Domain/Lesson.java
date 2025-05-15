@@ -1,5 +1,6 @@
 package EduConnect.Domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -22,6 +23,7 @@ public class Lesson {
     private int viTri;
     @ManyToOne
     @JoinColumn(name = "id_Course")
+    @JsonBackReference
     private Course course;
 
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -2,6 +2,7 @@ package EduConnect.Domain;
 
 import EduConnect.Util.Enum.StatusCourse;
 import EduConnect.Util.SecurityUtil;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -38,6 +39,7 @@ public class Course {
 
     private String createdBy;
     private String updatedBy;
+
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Lesson> lessonList;
@@ -52,6 +54,7 @@ public class Course {
 
     @ManyToOne
     @JoinColumn(name = "id_category")
+    @JsonBackReference
     private Category category;
 
     @PrePersist

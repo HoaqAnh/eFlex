@@ -56,9 +56,6 @@ public class User {
     private Role role;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<KetQuaBaiKiemTra> ketQuaBaiKiemTraList;
-
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProgressSection> progressSections;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)

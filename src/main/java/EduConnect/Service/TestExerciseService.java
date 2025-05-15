@@ -21,16 +21,13 @@ public class TestExerciseService {
     private static final Logger log = LoggerFactory.getLogger(TestExerciseService.class);
     private final TestExerciseRepository testExerciseRepository;
     private final ExerciseRepository exerciseRepository;
-    private final KetQuaBaiKiemTraRepository ketQuaBaiKiemTraRepository;
     private final UserRepository userRepository;
     private final LessonRepository lessonRepository;
 
     public TestExerciseService(TestExerciseRepository testExerciseRepository, ExerciseRepository exerciseRepository,
-                               KetQuaBaiKiemTraRepository ketQuaBaiKiemTraRepository,
                                UserRepository userRepository, LessonRepository lessonRepository) {
         this.testExerciseRepository = testExerciseRepository;
         this.exerciseRepository = exerciseRepository;
-        this.ketQuaBaiKiemTraRepository = ketQuaBaiKiemTraRepository;
         this.userRepository = userRepository;
         this.lessonRepository = lessonRepository;
     }
