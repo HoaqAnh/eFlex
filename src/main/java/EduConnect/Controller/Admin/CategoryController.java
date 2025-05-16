@@ -19,7 +19,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping("/Category")
+    @GetMapping("/category")
     @ApiMessage("All Category")
     public ResponseEntity<List<Category>> getAllCategories() {
         List<Category> categories = categoryService.getAllCategories();
@@ -29,7 +29,7 @@ public class CategoryController {
         return ResponseEntity.ok(categories);
     }
 
-    @PostMapping("/Category")
+    @PostMapping("/category")
     @ApiMessage("Add a Category")
     public ResponseEntity<Category> addCategory(@RequestBody Category category) throws IdInValidException {
         if (categoryService.findCategoryByNameCategory(category.getNameCategory()) != null) {
@@ -40,7 +40,7 @@ public class CategoryController {
     }
 
 
-    @PutMapping("Category/{id}")
+    @PutMapping("/category/{id}")
     @ApiMessage("Update Category")
     public ResponseEntity<Category> updateCategory(@PathVariable("id") Long id,
                                                    @RequestBody Category category) throws IdInValidException {
