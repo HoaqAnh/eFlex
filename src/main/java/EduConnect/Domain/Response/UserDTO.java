@@ -11,5 +11,5 @@ public class UserDTO {
     private String fullname;
     private String address;
     private String RoleName;
-
+    private String image;
 }

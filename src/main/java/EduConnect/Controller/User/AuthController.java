@@ -274,7 +274,7 @@ public class AuthController {
         userDTO.setFullname(currentUserDB.getFullname());
         userDTO.setAddress(currentUserDB.getAddress());
         userDTO.setRoleName(currentUserDB.getRole() != null ? currentUserDB.getRole().getRoleName() : "");
-
+        userDTO.setImage(currentUserDB.getImage_url());
 
         redisService.addUserDTO(redisKey, userDTO, 3600);
 
