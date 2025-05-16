@@ -14,5 +14,5 @@ public interface CourseRepository extends JpaRepository<Course, Long> , JpaSpeci
     Page<Course> findAll(Pageable pageable);
     Course findByTenMon(String tenMon);
     Optional<Course> findById(long id);
-
+    Page<Course> findAllByCategoryId(Pageable pageable, long categoryId);
 }

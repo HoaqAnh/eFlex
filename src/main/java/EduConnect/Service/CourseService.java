@@ -55,6 +55,23 @@ public class CourseService {
         result.setResult(listCourse);
         return result;
     }
+    public ResultPaginationDTO GetAllCoursesByCategory(Pageable page,long idCategory) {
+        ResultPaginationDTO result = new ResultPaginationDTO();
+        Page<Course> listCourse=this.sourceRepository.findAllByCategoryId(page,idCategory);
+
+        ResultPaginationDTO.Meta meta=new ResultPaginationDTO.Meta();
+
+        meta.setPage(page.getPageNumber()+1);
+        meta.setPageSize(page.getPageSize());
+
+        meta.setPages(listCourse.getTotalPages());
+        meta.setTotal(listCourse.getTotalElements());
+
+        result.setMeta(meta);
+
+        result.setResult(listCourse);
+        return result;
+    }
     @Transactional
     public void RemoveCourse(Course course) {
         if(this.tienDoRepository.countByCourse(course.getId())>0) {

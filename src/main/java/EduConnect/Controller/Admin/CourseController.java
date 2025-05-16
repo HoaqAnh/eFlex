@@ -27,6 +27,12 @@ public class CourseController {
         ResultPaginationDTO result = courseService.GetAllCourses(pageable);
         return ResponseEntity.ok(result);
     }
+    @GetMapping("/courses/filter/{idCategory}")
+    @ApiMessage("Get all courses with pagination")
+    public ResponseEntity<ResultPaginationDTO> getAllCoursesByCategory(Pageable pageable, @PathVariable int idCategory) {
+        ResultPaginationDTO result = courseService.GetAllCoursesByCategory(pageable,idCategory);
+        return ResponseEntity.ok(result);
+    }
     @GetMapping("/courses/{id}")
     @ApiMessage("Get a Course")
     public ResponseEntity<Course> getCourseById(@PathVariable long id) {

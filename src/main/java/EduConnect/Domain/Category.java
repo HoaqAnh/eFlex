@@ -19,5 +19,6 @@ public class Category {
     private String nameCategory;
 
     @OneToMany(mappedBy = "category")
+    @JsonIgnore
     private List<Course> courseList;
 }
