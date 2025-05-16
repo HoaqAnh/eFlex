@@ -54,7 +54,6 @@ public class Course {
 
     @ManyToOne
     @JoinColumn(name = "id_category")
-    @JsonBackReference
     private Category category;
 
     @PrePersist
