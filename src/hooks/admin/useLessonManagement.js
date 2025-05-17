@@ -53,8 +53,7 @@ export const useLessonManagement = () => {
         if (result.success) {
             toast.success("Tạo bài học thành công!");
             const lessonId = result.lessonData.data.id;
-            const courseId = result.lessonData.data.course.id;
-            navigate(`/admin/course/addCourse/${courseId}/addLesson/${lessonId}/addTest`);
+            navigate(`${lessonId}/addTest`);
         }
     };
 

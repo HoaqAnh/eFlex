@@ -1,8 +1,8 @@
-import React from "react";
 import Header from "../../../components/admin/course/addCourse/header";
 import Body from "../../../components/admin/course/addCourse/body";
 import Footer from "../../../components/admin/course/addCourse/footer";
 import Loading from "../../../components/layout/loader/loading";
+import Error from "../../../components/layout/loader/error";
 import { useAdminCourse } from "../../../hooks/course/useCourse";
 import { useAuth } from "../../../hooks/useAuth";
 import { useCategory } from "../../../hooks/useCategory";
@@ -35,6 +35,12 @@ const AddCourse = () => {
     const authCheck = checkAuth();
     if (!authCheck.shouldRender) {
         return authCheck.component;
+    }
+
+    if (error) {
+        return (
+            <Error Title="Có lỗi xảy ra vui lòng thử lại sau ít phút." />
+        );
     }
 
     return (

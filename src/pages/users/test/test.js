@@ -1,4 +1,3 @@
-import React from "react";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 import { useTests } from "../../../hooks/test/useTest";
@@ -14,7 +13,6 @@ const Test = () => {
     const { listTest, loading, error } = useTests(lessonId);
     const { checkAuth, user } = useAuth();
     const authCheck = checkAuth();
-
     if (!authCheck.shouldRender) {
         return authCheck.component;
     }

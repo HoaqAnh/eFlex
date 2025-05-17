@@ -4,34 +4,30 @@ import { getExercisesByTestId } from "../../services/exerciseService"
 export const useExercise = (testId) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [exerciseData, setExerciseData] = useState([]);
+    const [exercises, setExercises] = useState([]);
 
     useEffect(() => {
         const exercises = async () => {
             try {
                 setLoading(true);
                 setError(null);
-
                 const response = await getExercisesByTestId(testId);
-                if (!response || !response.data) {
+                if (!response) {
+                    console.error("Không tìm thấy thông tin bài kiểm tra");
                     setError('Không tìm thấy thông tin bài kiểm tra');
                     return;
                 }
 
-                setExerciseData(response);
+                setExercises(response.data);
                 return response;
             } catch (error) {
                 console.error('Error:', error);
                 setError(error.message || 'Có lỗi xảy ra khi lấy dữ liệu bài kiểm tra');
             } finally {
-                setTimeout(() => {
-                    setLoading(false);
-                }, Math.random() * 1000);
+                setLoading(false);
             }
         }
-
         exercises();
     }, [testId])
-
-    return { exerciseData, loading, error }
+    return { exercises, loading, error }
 }

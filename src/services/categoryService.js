@@ -17,7 +17,7 @@ export const getAllCategory = async () => {
             return null;
         }
 
-        const response = await fetch(`${BASE_URL}/Category`, {
+        const response = await fetch(`${BASE_URL}/category`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,

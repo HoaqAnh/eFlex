@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { getTests, submitTest } from "../../services/testService";
+import { useState, useEffect } from "react";
+import { getTests, submitTest as submitTestService } from "../../services/testService";
 
 // Fetch list test
 export const useTests = (lessonId) => {
@@ -9,63 +9,63 @@ export const useTests = (lessonId) => {
 
     useEffect(() => {
         const getListTest = async () => {
+            if (!lessonId) {
+                setListTest([]);
+                setLoading(false);
+                return;
+            }
             try {
                 setLoading(true);
                 setError(null);
+                const result = await getTests(lessonId);
 
-                const data = await getTests(lessonId);
-
-                if (!data) {
-                    setError("Không tìm thấy danh sách bài kiểm");
-                    return;
+                if (!result || !result.data) {
+                    setError("Không tìm thấy danh sách bài kiểm tra.");
+                    setListTest([]);
+                } else {
+                    setListTest(result.data);
                 }
-
-                setListTest(data);
             } catch (err) {
                 console.error(err);
                 setError(err.message || "Có lỗi xảy khi lấy dữ liệu.");
+                setListTest([]);
             } finally {
                 setTimeout(() => {
                     setLoading(false);
-                }, Math.random() * 1000);
+                }, 300);
             }
         }
-
         getListTest();
-    }, [lessonId])
-    return { loading, error, listTest }
-}
+    }, [lessonId]);
+    return { loading, error, listTest };
+};
 
-// Submit Test
-export const useSubmitTest = async (userId, testId, testData) => {
+// Submit Test Hook
+export const useSubmitTest = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    if (!userId || !testId || !testData) {
-        setError('Không tìm thấy thông tin bắt buộc.');
-        return;
-    }
-
-    try {
-        setLoading(true);
-        setError(null);
-
-        const response = await submitTest(userId, testId, testData);
-
-        if (!response.ok) {
-            setError("Gửi kết quả bài kiểm tra thất bại.");
-            return;
+    const executeSubmit = async (userId, testId, answers) => {
+        if (!userId || !testId || !answers) {
+            const errMsg = 'Thông tin userId, testId, hoặc answers không được để trống khi nộp bài.';
+            console.error(errMsg);
+            setError(errMsg);
+            return { statusCode: 400, message: errMsg, data: null };
         }
 
-        return await response.json();
-    } catch (err) {
-        console.err(err);
-        setError(err.message || "Có lỗi trong quá trình gửi dữ liệu.");
-    } finally {
-        setTimeout(() => {
+        try {
+            setLoading(true);
+            setError(null);
+            const responseData = await submitTestService(userId, testId, answers);
             setLoading(false);
-        }, Math.random() * 1000);
-    }
+            return responseData;
+        } catch (err) {
+            console.error("Lỗi khi thực hiện submit bài:", err);
+            setError(err.message || "Có lỗi trong quá trình gửi dữ liệu.");
+            setLoading(false);
+            return { statusCode: err.statusCode || 500, message: err.message || "Có lỗi trong quá trình gửi dữ liệu.", data: null };
+        }
+    };
 
-    return { loading, error }
-}
+    return { executeSubmit, loading, error };
+};

@@ -3,8 +3,8 @@ import List from "./list";
 import "../../../styles/users/test/body.css";
 
 const Body = ({ User, Tests }) => {
-    const testCount = Tests && Tests.data ? Tests.data.length : 0;
-    const testsData = Tests && Tests.data ? Tests.data : [];
+    const testCount = Tests ? Tests.length : 0;
+    const testsData = Tests ? Tests : [];
     return (
         <div className="test-body">
             <div className="test-body__left">

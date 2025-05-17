@@ -45,7 +45,6 @@ const Item = ({ course, isSelectingCourse, isSelected, onSelectCourse, animation
             </div>
             <div className="course-item__info">
                 <h4>{course.tenMon || "loading..."}</h4>
-                <p>{course.category.nameCategory || "loading..."}</p>
                 <p>{countLessonAndTest.baiHoc || "0"} bài học - {countLessonAndTest.baiTap || "0"} bài tập</p>
             </div>
         </div>

@@ -1,6 +1,3 @@
-import React from "react";
-
-//components
 import Header from "../../../components/admin/course/addLesson/header";
 import Body from "../../../components/admin/course/addLesson/body";
 import Footer from "../../../components/admin/course/addLesson/footer";

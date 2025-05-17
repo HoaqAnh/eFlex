@@ -67,7 +67,7 @@
 
 .course-details__header-left {
     width: 280px;
-    height: 280px;
+    height: 100%;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 8px 20px var(--shadow-color);

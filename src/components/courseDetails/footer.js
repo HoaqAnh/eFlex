@@ -5,7 +5,7 @@ import "../../styles/courseDetails/footer.css"
 const Footer = () => {
     const navigate = useNavigate();
     const handleBack = () => {
-        navigate(`/course`);
+        navigate(-1);
     };
     return (
         <div className="course-details__footer">

@@ -1,46 +1,66 @@
-import React, { useState } from "react";
-import MultipleChoice from "./multipleChoice"
-import "../../../../styles/exercises/body.css"
+import { useState, useEffect } from "react";
+import MultipleChoice from "./multipleChoice";
+import "../../../../styles/exercises/body.css";
 
-const Body = ({ exerciseData }) => {
-    const [currentQuestion, setCurrentQuestion] = useState(0);
-    const questionsArray = exerciseData ? Object.values(exerciseData) : [];
-    const question = questionsArray[currentQuestion];
+const Body = ({ questions, fontSize, autoNextQuestionEnabled, onAnswerSelected, userAnswers }) => {
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+
+    useEffect(() => {
+        setCurrentQuestionIndex(0);
+    }, [questions]);
+
+    if (!questions || questions.length === 0) {
+        return <div className="exercises__body-content"><p>Không có câu hỏi nào để hiển thị.</p></div>;
+    }
 
     const handleNextQuestion = () => {
-        if (currentQuestion < questionsArray.length - 1) {
-            setCurrentQuestion(currentQuestion + 1);
+        if (currentQuestionIndex < questions.length - 1) {
+            setCurrentQuestionIndex(currentQuestionIndex + 1);
         }
-    }
+    };
 
     const handlePreQuestion = () => {
-        if (currentQuestion > 0) {
-            setCurrentQuestion(currentQuestion - 1);
+        if (currentQuestionIndex > 0) {
+            setCurrentQuestionIndex(currentQuestionIndex - 1);
         }
-    }
+    };
 
-    if (!questionsArray.length) return <div>No questions available</div>;
+    const handleAnswerSelectionInBody = (selectedAnswerKey) => {
+        const questionId = questions[currentQuestionIndex].id;
+        onAnswerSelected(questionId, selectedAnswerKey);
+
+        if (autoNextQuestionEnabled) {
+            setTimeout(() => {
+                handleNextQuestion();
+            }, 300);
+        }
+    };
+
+    const currentQuestion = questions[currentQuestionIndex];
+    const currentQuestionUserAnswer = userAnswers[currentQuestion?.id];
 
     return (
         <div className="exercises__body">
             <div className="exercises__body-content">
                 <MultipleChoice
-                    currentQuestion={currentQuestion}
-                    question={question}
-                    totalQuestions={questionsArray.length}
+                    currentQuestionDisplayIndex={currentQuestionIndex}
+                    question={currentQuestion}
+                    fontSize={fontSize}
+                    onAnswerSelect={handleAnswerSelectionInBody}
+                    selectedAnswerKey={currentQuestionUserAnswer}
                 />
                 <div className="exercises__body-content-actions">
                     <button
                         className="btn btn-secondary"
                         onClick={handlePreQuestion}
-                        disabled={currentQuestion === 0}
+                        disabled={currentQuestionIndex === 0}
                     >
                         Câu hỏi trước đó
                     </button>
                     <button
                         className="btn btn-secondary"
                         onClick={handleNextQuestion}
-                        disabled={currentQuestion === questionsArray.length - 1}
+                        disabled={!questions.length || currentQuestionIndex === questions.length - 1}
                     >
                         Câu hỏi tiếp theo
                     </button>

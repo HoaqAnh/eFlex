@@ -10,7 +10,6 @@ export const uploadExerciseExcel = async (testId, file) => {
             return null;
         }
 
-        // Kiểm tra token hợp lệ
         if (!TokenService.isTokenValid()) {
             console.error("Token không hợp lệ hoặc đã hết hạn");
             TokenService.clearTokens();
@@ -66,7 +65,7 @@ export const getExercisesByTestId = async (testId) => {
             return null;
         }
 
-        const response = await fetch(`${BASE_URL}/lesson/${testId}/exercises`, {
+        const response = await fetch(`${BASE_URL}/test-exercises/${testId}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -85,7 +84,6 @@ export const getExercisesByTestId = async (testId) => {
         }
 
         return await response.json();
-        
     } catch (error) {
         console.error('API request error:', error);
         throw error;

@@ -49,15 +49,17 @@ const CourseDetails = () => {
                 <Loading Title="Đang tải nội dung khoá học..." />
             ) : (
                 <>
-                    <Header
-                        courseDetail={courseDetail}
-                        countLessonAndTest={countLessonAndTest}
-                    />
-                    <Body
-                        user={user}
-                        courseDetail={courseDetail}
-                        lessons={listLesson}
-                    />
+                    <div className="course-details__container">
+                        <Header
+                            courseDetail={courseDetail}
+                            countLessonAndTest={countLessonAndTest}
+                        />
+                        <Body
+                            user={user}
+                            courseDetail={courseDetail}
+                            lessons={listLesson}
+                        />
+                    </div>
                     <Footer />
                 </>
             )}
