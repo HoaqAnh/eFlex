@@ -63,7 +63,7 @@ public EmailService(UserRepository userRepository,
     {
         User user=this.userRepository.findByEmail(email);
         String token=this.securityUtil.generateResetPasswordLink(user.getEmail(), 9000000);
-        String resetLink="http://localhost:5173/forgot/reset?token="+token;
+        String resetLink="http://localhost:3000/register/verify?token="+token;
 
         this.sendEmailFromTemplateSync(user.getEmail(), "Forget Password", "forgetpassword", user.getFullname(), resetLink);
     }
@@ -71,7 +71,7 @@ public EmailService(UserRepository userRepository,
     public void sendLinkVerify(String email,String fullName)
     {
         String token=this.securityUtil.generateResetPasswordLink(email, 9000000);
-        String resetLink="http://localhost:5173/verify?token="+token;
+        String resetLink="http://localhost:3000/register/verify?token="+token;
         this.sendEmailFromTemplateSync(email, "Verify Email", "verify", fullName, resetLink);
     }
 }
