@@ -1,14 +1,9 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
-//hooks
 import { useAuth } from "../../../hooks/useAuth";
 import { useTheme } from "../../../context/ThemeContext";
-
-//logo
 import eFlexLogo from "../../../assets/logo/eFlex.png";
-
-//style
+import DialogPopup from "../../../components/users/test/dialogPopup";
 import "../../../styles/layout/navbar.css";
 import "../../../styles/theme.css";
 
@@ -139,8 +134,8 @@ const Navbar = () => {
           <button
             ref={userBtnRef}
             className={`navbar__button ${activeButton === "user" || showUserMenu
-                ? "navbar__button--active"
-                : ""
+              ? "navbar__button--active"
+              : ""
               }`}
             onMouseEnter={() => setActiveButton("user")}
             onMouseLeave={() => setActiveButton(null)}
@@ -203,37 +198,14 @@ const Navbar = () => {
         </div>
       </div>
       <div className="navbar__bottom-line"></div>
-
-      {/* Logout confirmation modal */}
-      {showLogoutConfirm && (
-        <div className="modal">
-          <div className="modal__content">
-            <div className="modal__header">
-              <h3 className="modal__title">Xác nhận đăng xuất</h3>
-            </div>
-            <div className="modal__body">
-              <p className="modal__text">
-                Bạn có chắc chắn muốn đăng xuất khỏi hệ thống?
-              </p>
-            </div>
-            <div className="modal__footer">
-              <button
-                className="modal__button modal__button--cancel"
-                onClick={cancelLogout}
-              >
-                Hủy
-              </button>
-              <button
-                className="modal__button modal__button--confirm"
-                onClick={confirmLogout}
-              >
-                Đăng xuất
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+      <DialogPopup
+        isOpen={showLogoutConfirm}
+        onClose={cancelLogout}
+        onConfirm={confirmLogout}
+        title="Xác nhận đăng xuất"
+        message="Bạn có chắc chắn muốn đăng xuất khỏi hệ thống không?"
+      />
+    </div >
   );
 }
 

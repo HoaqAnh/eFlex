@@ -5,12 +5,10 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    /* Màu nền mờ */
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    /* Đảm bảo hiển thị trên các phần tử khác */
 }
 
 .modal-content {
@@ -19,7 +17,6 @@
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     width: 400px;
-    /* Điều chỉnh độ rộng tùy ý */
 }
 
 .modal-header {
