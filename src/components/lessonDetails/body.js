@@ -1,4 +1,3 @@
-import React from 'react';
 import "../../styles/lessonDetails/body.css";
 
 const Body = ({ selectedSection }) => {

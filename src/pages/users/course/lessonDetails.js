@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import Sidebar from "../../../components/lessonDetails/sidebar";
 import Body from "../../../components/lessonDetails/body";
-import ConfirmDialog from '../../../components/lessonDetails/confirmDialog';
+import ConfirmDialog from '../../../components/users/test/dialogPopup';
 import Loading from "../../../components/layout/loader/loading"
+import Error from "../../../components/layout/loader/error"
 import useCourseStudyTimer from "../../../hooks/model/useCourseStudyTimer";
 import { useProgress } from '../../../hooks/progress/useProgress';
 import { useLessonDetail } from '../../../hooks/course/useLesson';
@@ -18,14 +19,13 @@ const LessonDetails = () => {
     const [selectedSection, setSelectedSection] = useState(null);
     const [showExitConfirm, setShowExitConfirm] = useState(false);
     const [showTestConfirm, setShowTestConfirm] = useState(false);
-    
+
     const { lessonData, loading: lessonLoading, error: lessonError } = useLessonDetail(lessonId);
     const { listSection, loading: sectionsLoading, error: sectionsError } = useSections(lessonId);
-    
+
     const { checkAuth } = useAuth();
     const authCheck = checkAuth();
 
-    // Khởi tạo section đầu tiên khi dữ liệu được tải xong
     useEffect(() => {
 
         if (listSection && listSection.length > 0 && !selectedSection) {
@@ -33,10 +33,16 @@ const LessonDetails = () => {
         }
     }, [listSection, selectedSection]);
 
-    const handleExit = () => {
-        navigate(`/course/${courseId}`);
+    const handleExit = (TestConfirm, confirmed) => {
+        if (TestConfirm) {
+            setShowTestConfirm(false);
+            if (confirmed) navigate("test");
+        } else {
+            setShowExitConfirm(false);
+            if (confirmed) navigate(`/course/${courseId}`);
+        }
     };
-    
+
     useCourseStudyTimer(handleExit, courseId);
 
     const onSectionSelect = (section) => {
@@ -68,7 +74,6 @@ const LessonDetails = () => {
 
         const currentIndex = listSection.findIndex(s => s.id === selectedSection.id);
 
-        // Gửi tiến trình cho section hiện tại
         if (selectedSection) {
             sendSectionProgress(selectedSection.id);
         }
@@ -81,20 +86,6 @@ const LessonDetails = () => {
         }
     };
 
-    const handleExitConfirm = (confirmed) => {
-        setShowExitConfirm(false);
-        if (confirmed) {
-            navigate(`/course/${courseId}`);
-        }
-    };
-
-    const handleTestConfirm = (confirmed) => {
-        setShowTestConfirm(false);
-        if (confirmed) {
-            navigate(`/course/${courseId}/lesson/${lessonId}/test`);
-        }
-    };
-
     if (!authCheck.shouldRender) {
         return authCheck.component;
     }
@@ -102,9 +93,16 @@ const LessonDetails = () => {
     const loading = lessonLoading || sectionsLoading;
     const error = lessonError || sectionsError;
 
+    if (error) {
+        return (
+            <div className="lesson-details">
+                <Error Title="Có lỗi xảy ra vui lòng thử lại sau ít phút." />
+            </div>
+        );
+    }
+
     return (
         <div className="lesson-details">
-            {error && <div className='error-message'>Có lỗi xảy ra vui lòng thử lại sau.</div>}
             {loading ? (
                 <Loading Title="Đang tải nội dung bài học..." />
             ) : (
@@ -124,16 +122,16 @@ const LessonDetails = () => {
                         isOpen={showExitConfirm}
                         title="Xác nhận thoát"
                         message="Bạn có chắc chắn muốn thoát khỏi bài học này?"
-                        onConfirm={() => handleExitConfirm(true)}
-                        onCancel={() => handleExitConfirm(false)}
+                        onConfirm={() => handleExit(false, true)}
+                        onClose={() => handleExit(false, false)}
                     />
 
                     <ConfirmDialog
                         isOpen={showTestConfirm}
                         title="Xác nhận làm bài kiểm tra"
-                        message="Bạn có muốn làm bài kiểm tra để chuyển sang bài học tiếp theo không?"
-                        onConfirm={() => handleTestConfirm(true)}
-                        onCancel={() => handleTestConfirm(false)}
+                        message="Bạn có muốn làm bài kiểm tra để đánh giá năng lực của mình không?"
+                        onConfirm={() => handleExit(true, true)}
+                        onClose={() => handleExit(true, false)}
                     />
                 </>
             )}

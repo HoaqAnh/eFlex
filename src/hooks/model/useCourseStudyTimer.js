@@ -156,8 +156,8 @@ const useCourseStudyTimer = (onExit, courseId) => {
     return () => {
       // Chỉ gọi collectTotalTime nếu người dùng thực sự rời khỏi khóa học
       const currentPath = window.location.pathname;
-      const isStillInCourse = currentPath.includes(`/courses/${courseIdRef.current}`);
-      const isInLessonOfSameCourse = currentPath.includes(`/courses/${courseIdRef.current}/lesson/`);
+      const isStillInCourse = currentPath.includes(`/course/${courseIdRef.current}`);
+      const isInLessonOfSameCourse = currentPath.includes(`/course/${courseIdRef.current}/lesson/`);
       
       if (!isStillInCourse && !isInLessonOfSameCourse) {
         collectTotalTime();

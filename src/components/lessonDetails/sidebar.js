@@ -1,4 +1,3 @@
-import React from "react";
 import "../../styles/lessonDetails/sidebar.css"
 
 const Sidebar = ({ selectedSection, currentLesson, sections, handleSectionClick, handlePrevious, handleNext }) => {
