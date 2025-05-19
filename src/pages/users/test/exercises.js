@@ -34,6 +34,38 @@ const Exercises = () => {
     const [isAbandonedConfirmPopupOpen, setIsAbandonedConfirmPopupOpen] = useState(false);
     const [testInstanceKey, setTestInstanceKey] = useState(Date.now());
 
+    // Helper function để lấy testId từ localStorage
+    const getStoredEndTime = (testId) => {
+        const storedEndTimeString = localStorage.getItem(`testEndTime_${testId}`);
+        return storedEndTimeString ? parseInt(storedEndTimeString, 10) : null;
+    };
+
+    // Helper function để lưu testId vào localStorage
+    const storeEndTime = (testId, endTime) => {
+        localStorage.setItem(`testEndTime_${testId}`, endTime.toString());
+    };
+
+    // Helper function để xóa testId khỏi localStorage
+    const clearStoredEndTime = (testId) => {
+        localStorage.removeItem(`testEndTime_${testId}`);
+    };
+
+    // Helper functions cho cờ 'testAbandoned'
+    const getTestAbandonedFlag = (testId) => {
+        if (!testId) return false;
+        return localStorage.getItem(`testAbandoned_${testId}`) === 'true';
+    };
+
+    const setTestAbandonedFlag = (testId) => {
+        if (!testId) return;
+        localStorage.setItem(`testAbandoned_${testId}`, 'true');
+    };
+
+    const clearTestAbandonedFlag = (testId) => {
+        if (!testId) return;
+        localStorage.removeItem(`testAbandoned_${testId}`);
+    };
+
     // Effect 1: Khởi tạo timeLeft và userAnswers DỰA TRÊN exercises và localStorage
     useEffect(() => {
         if (exercises && testId) {
@@ -41,47 +73,33 @@ const Exercises = () => {
             const storedEndTime = getStoredEndTime(testId);
             const now = Date.now();
 
+            // 1. Bị bỏ dở, còn hạn, còn thời gian -> hiển thị popup
             if (isAbandoned && storedEndTime && storedEndTime > now) {
-                // 1. Bị bỏ dở, còn hạn, còn thời gian -> hiển thị popup
                 setIsAbandonedConfirmPopupOpen(true);
-                setTimeLeft(0); // Tạm dừng timer
-                // Không xóa cờ 'isAbandoned' ở đây. Chờ người dùng quyết định.
-                return; // Dừng ở đây, chờ popup xử lý
+                return;
             }
 
-            // Nếu không rơi vào trường hợp 'isAbandoned' ở trên (ví dụ: không bị bỏ dở,
-            // hoặc storedEndTime đã qua, hoặc người dùng đã xử lý popup trước đó
-            // và testInstanceKey đã trigger useEffect này chạy lại)
-            // thì mới tiến hành logic khởi tạo/tiếp tục bình thường.
-
-            // Nếu cờ 'isAbandoned' vẫn còn (ví dụ, do storedEndTime đã qua khi kiểm tra ở trên),
-            // nhưng chúng ta không hiển thị popup, thì nên xóa nó đi.
             if (isAbandoned) {
                 clearTestAbandonedFlag(testId);
             }
 
+            // 2. Không bị bỏ dở (hoặc đã xử lý), còn hạn, còn thời gian -> Tiếp tục
             if (storedEndTime && storedEndTime > now) {
-                // 2. Không bị bỏ dở (hoặc đã xử lý), còn hạn, còn thời gian -> Tiếp tục
                 const remainingSeconds = Math.max(0, Math.floor((storedEndTime - now) / 1000));
                 setTimeLeft(remainingSeconds);
                 setUserAnswers({}); // Hoặc khôi phục userAnswers từ localStorage nếu bạn muốn
             } else {
                 // 3. Hết hạn hoặc bắt đầu mới
                 if (storedEndTime && storedEndTime <= now) {
-                    clearStoredEndTime(testId); // Xóa endTime đã hết hạn
+                    clearStoredEndTime(testId);
                 }
-                // Bắt đầu bài thi mới hoàn toàn
-                // Kiểm tra exercises.duration có phải là số hợp lệ không
-                if (exercises && typeof exercises.duration === 'number' && exercises.duration > 0) {
+                if (exercises && exercises.duration > 0) {
                     const durationInSeconds = exercises.duration * 60;
                     const newEndTime = now + durationInSeconds * 1000;
                     storeEndTime(testId, newEndTime);
                     setTimeLeft(durationInSeconds);
-                } else {
-                    // Nếu không có duration hoặc duration không hợp lệ, đặt timeLeft là 0
-                    setTimeLeft(0);
                 }
-                setUserAnswers({}); // Reset câu trả lời cho bài mới
+                setUserAnswers({});
             }
         }
     }, [exercises, testId, testInstanceKey]);
@@ -104,13 +122,13 @@ const Exercises = () => {
             answer: answer,
         }));
 
-        // Sau khi nộp bài (thành công hay thất bại đều nên xóa timer)
-        if (testId) { // Đảm bảo testId tồn tại
+        if (testId) {
             clearStoredEndTime(testId);
             clearTestAbandonedFlag(testId);
         }
 
         const result = await executeSubmit(user.id, exercises.id, answersToSubmit);
+        console.log("[handleConfirmSubmit] Submit result:", result);
 
         if (result && result.statusCode === 200 && result.data) {
             if (result.data.recommendation && result.data.recommendation.lesson_id) {
@@ -134,48 +152,43 @@ const Exercises = () => {
 
         // Điều kiện 2: Xử lý khi thời gian còn lại <= 0
         if (timeLeft <= 0) {
-            // Chỉ tự động nộp bài khi timeLeft CHÍNH XÁC bằng 0
-            // và CÓ exercises (để đảm bảo có exercises.id cho handleConfirmSubmit)
-            // và không có popup nào đang mở cản trở việc nộp bài
             if (timeLeft === 0 && exercises && exercises.id && !submitLoading && !isRecommendationPopupOpen && !isCancelConfirmPopupOpen && !isSubmitConfirmPopupOpen) {
-                console.log("Time is up! Auto-submitting...");
                 if (testId) {
                     clearTestAbandonedFlag(testId);
                 }
                 handleConfirmSubmit();
             }
-            return; // Dừng ở đây nếu thời gian đã hết hoặc bằng 0
+            return;
         }
 
         // Điều kiện 3: Nếu thời gian vẫn còn (timeLeft > 0) VÀ CÓ exercises, bắt đầu đếm ngược
         if (exercises) {
             const timerId = setInterval(() => {
-                setTimeLeft(prevTime => {
-                    const newTime = prevTime - 1;
-                    return newTime;
-                });
+                setTimeLeft(prevTime => prevTime - 1);
             }, 1000);
-            return () => clearInterval(timerId); // Cleanup interval khi component unmount hoặc dependencies thay đổi
+            return () => clearInterval(timerId);
         }
 
     }, [timeLeft, exercises, testId, submitLoading, isRecommendationPopupOpen, isCancelConfirmPopupOpen, isSubmitConfirmPopupOpen, handleConfirmSubmit]);
 
     // Effect để phát hiện rời khỏi trang bài thi
     useEffect(() => {
-        const previousPath = prevLocationPathRef.current;
-        const currentPath = location.pathname;
+        const currentPathWhenEffectRuns = location.pathname;
         const currentTestUrl = `/course/${courseId}/lesson/${lessonId}/test/${testId}`;
 
-        // Kiểm tra xem người dùng có phải đã rời từ trang bài thi này không
-        if (previousPath === currentTestUrl && currentPath !== currentTestUrl) {
-            // Chỉ đặt cờ nếu còn thời gian làm bài đã lưu (nghĩa là họ đang làm dở)
-            if (getStoredEndTime(testId)) {
-                setTestAbandonedFlag(testId);
-            }
+        const previousPath = prevLocationPathRef.current;
+        if (previousPath === currentTestUrl && currentPathWhenEffectRuns !== currentTestUrl) {
+            if (getStoredEndTime(testId)) setTestAbandonedFlag(testId);
         }
 
-        // Cập nhật ref cho lần thay đổi location tiếp theo
-        prevLocationPathRef.current = currentPath;
+        prevLocationPathRef.current = currentPathWhenEffectRuns;
+
+        return () => {
+            const pathBeforeUnmount = prevLocationPathRef.current;
+            if (pathBeforeUnmount === currentTestUrl) {
+                if (getStoredEndTime(testId)) setTestAbandonedFlag(testId);
+            }
+        };
     }, [location.pathname, courseId, lessonId, testId]);
 
     const handleAnswerSelected = useCallback((questionId, answerKey) => {
@@ -184,7 +197,6 @@ const Exercises = () => {
             [questionId]: answerKey
         }));
     }, []);
-
 
     const handleSubmitButtonPressed = () => {
         setIsSubmitConfirmPopupOpen(true);
@@ -228,14 +240,9 @@ const Exercises = () => {
     // Khi người dùng chọn "Làm lại bài" từ popup bỏ dở
     const handleRestartAbandonedTest = useCallback(() => {
         clearTestAbandonedFlag(testId);
-        clearStoredEndTime(testId); // Xóa thông tin thời gian cũ
+        clearStoredEndTime(testId);
         setIsAbandonedConfirmPopupOpen(false);
-        setUserAnswers({}); // Reset câu trả lời
-        // Trigger useEffect chính chạy lại để khởi tạo bài mới
-        // bằng cách thay đổi một key mà useEffect đó phụ thuộc vào,
-        // hoặc reload component bằng cách thay đổi key của nó ở cấp cha.
-        // Đơn giản nhất ở đây là thay đổi một state để useEffect chạy lại.
-        // Chúng ta sẽ thêm testInstanceKey vào dependencies của useEffect chính.
+        setUserAnswers({});
         setTestInstanceKey(Date.now());
     }, [testId]);
 
@@ -244,40 +251,8 @@ const Exercises = () => {
         clearTestAbandonedFlag(testId);
         clearStoredEndTime(testId);
         setIsAbandonedConfirmPopupOpen(false);
-        navigate(`/course/<span class="math-inline">\{courseId\}/lesson/</span>{lessonId}/test`);
+        navigate(`/course/${courseId}/lesson/${lessonId}/test`);
     }, [testId, navigate, courseId, lessonId]);
-
-    // Helper function để lấy testId từ localStorage
-    const getStoredEndTime = (testId) => {
-        const storedEndTimeString = localStorage.getItem(`testEndTime_${testId}`);
-        return storedEndTimeString ? parseInt(storedEndTimeString, 10) : null;
-    };
-
-    // Helper function để lưu testId vào localStorage
-    const storeEndTime = (testId, endTime) => {
-        localStorage.setItem(`testEndTime_${testId}`, endTime.toString());
-    };
-
-    // Helper function để xóa testId khỏi localStorage
-    const clearStoredEndTime = (testId) => {
-        localStorage.removeItem(`testEndTime_${testId}`);
-    };
-
-    // Helper functions cho cờ 'testAbandoned'
-    const getTestAbandonedFlag = (testId) => {
-        if (!testId) return false;
-        return localStorage.getItem(`testAbandoned_${testId}`) === 'true';
-    };
-
-    const setTestAbandonedFlag = (testId) => {
-        if (!testId) return;
-        localStorage.setItem(`testAbandoned_${testId}`, 'true');
-    };
-
-    const clearTestAbandonedFlag = (testId) => {
-        if (!testId) return;
-        localStorage.removeItem(`testAbandoned_${testId}`);
-    };
 
     const handleZoomIn = useCallback(() => setFontSize(prevSize => Math.min(prevSize + 2, 28)), []);
     const handleZoomOut = useCallback(() => setFontSize(prevSize => Math.max(prevSize - 2, 12)), []);
@@ -292,9 +267,7 @@ const Exercises = () => {
 
     if (!authCheck.shouldRender) return authCheck.component;
     if (exerciseLoading) return <div className="exercises"><Loader text="Đang tải dữ liệu bài tập..." /></div>;
-    // Xử lý lỗi khi fetch exercises
     if (exerciseError) return <div className="exercises"><Error Title={`Lỗi tải bài tập: ${exerciseError.message || String(exerciseError)}`} /></div>;
-    // Xử lý khi exercises đã fetch xong nhưng không có dữ liệu hoặc không có câu hỏi
     if (!exercises || !exercises.exerciseList || exercises.exerciseList.length === 0) {
         return <div className="exercises"><Error Title="Không tìm thấy dữ liệu bài tập hoặc bài tập không có câu hỏi." /></div>;
     }
