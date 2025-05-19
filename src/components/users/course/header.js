@@ -1,7 +1,10 @@
 import React from "react";
 import "../../../styles/users/course/header.css";
 
-const Header = () => {
+
+
+const Header = ({ categoryData }) => {
+    console.log("1---------------------Data Category:", categoryData);
     return (
         <div className="course-header">
             <div className="course-header__container">
@@ -21,6 +24,11 @@ const Header = () => {
                             className="filter-select"
                         >
                             <option value="">Tất cả</option>
+                            {categoryData && Array.isArray(categoryData) && categoryData.map(category => (
+                                <option key={category.id} value={category.id}>
+                                    {category.nameCategory}
+                                </option>
+                            ))}
                         </select>
                     </div>
                 </div>
