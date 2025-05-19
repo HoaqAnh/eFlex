@@ -56,11 +56,9 @@ export const useSubmitTest = () => {
         try {
             setLoading(true);
             setError(null);
-            const responseData = await submitTestService(userId, testId, answers);
             setLoading(false);
-            return responseData;
+            return await submitTestService(userId, testId, answers);
         } catch (err) {
-            console.error("Lỗi khi thực hiện submit bài:", err);
             setError(err.message || "Có lỗi trong quá trình gửi dữ liệu.");
             setLoading(false);
             return { statusCode: err.statusCode || 500, message: err.message || "Có lỗi trong quá trình gửi dữ liệu.", data: null };

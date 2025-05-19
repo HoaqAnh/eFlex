@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback, useRef } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useState, useEffect, useCallback } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import Header from "../../../components/users/test/exercises/header";
 import Body from "../../../components/users/test/exercises/body";
 import Footer from "../../../components/users/test/exercises/footer";
@@ -11,98 +11,30 @@ import "../../../styles/exercises/style.css";
 import Error from "../../../components/layout/loader/error";
 import Loader from "../../../components/layout/loader/loading";
 import toast from "react-hot-toast";
+import useTestLifecycle from "../../../hooks/test/useTestLifecycle";
+import { clearStoredEndTime, clearTestAbandonedFlag } from "../../../components/users/test/testStorage"
+import useExerciseInteraction from "../../../hooks/test/useExerciseInteraction"
 
 const Exercises = () => {
     const { checkAuth, user } = useAuth();
     const authCheck = checkAuth();
     const navigate = useNavigate();
-    const location = useLocation();
-    const prevLocationPathRef = useRef(location.pathname);
     const { id: courseId, lessonId, testId } = useParams();
     const { exercises, loading: exerciseLoading, error: exerciseError } = useExercise(testId);
     const { executeSubmit, loading: submitLoading, error: submitError } = useSubmitTest();
-
-    const [fontSize, setFontSize] = useState(16);
-    const [autoNextQuestion, setAutoNextQuestion] = useState(false);
-    const [userAnswers, setUserAnswers] = useState({});
-    const [timeLeft, setTimeLeft] = useState(null);
 
     const [recommendationDetails, setRecommendationDetails] = useState(null);
     const [isRecommendationPopupOpen, setIsRecommendationPopupOpen] = useState(false);
     const [isCancelConfirmPopupOpen, setIsCancelConfirmPopupOpen] = useState(false);
     const [isSubmitConfirmPopupOpen, setIsSubmitConfirmPopupOpen] = useState(false);
-    const [isAbandonedConfirmPopupOpen, setIsAbandonedConfirmPopupOpen] = useState(false);
-    const [testInstanceKey, setTestInstanceKey] = useState(Date.now());
 
-    // Helper function để lấy testId từ localStorage
-    const getStoredEndTime = (testId) => {
-        const storedEndTimeString = localStorage.getItem(`testEndTime_${testId}`);
-        return storedEndTimeString ? parseInt(storedEndTimeString, 10) : null;
-    };
+    const { timeLeft, setTimeLeft, isAbandonedConfirmPopupOpen, setIsAbandonedConfirmPopupOpen, handleRestartAbandonedTest } = useTestLifecycle(exercises, testId);
 
-    // Helper function để lưu testId vào localStorage
-    const storeEndTime = (testId, endTime) => {
-        localStorage.setItem(`testEndTime_${testId}`, endTime.toString());
-    };
-
-    // Helper function để xóa testId khỏi localStorage
-    const clearStoredEndTime = (testId) => {
-        localStorage.removeItem(`testEndTime_${testId}`);
-    };
-
-    // Helper functions cho cờ 'testAbandoned'
-    const getTestAbandonedFlag = (testId) => {
-        if (!testId) return false;
-        return localStorage.getItem(`testAbandoned_${testId}`) === 'true';
-    };
-
-    const setTestAbandonedFlag = (testId) => {
-        if (!testId) return;
-        localStorage.setItem(`testAbandoned_${testId}`, 'true');
-    };
-
-    const clearTestAbandonedFlag = (testId) => {
-        if (!testId) return;
-        localStorage.removeItem(`testAbandoned_${testId}`);
-    };
-
-    // Effect 1: Khởi tạo timeLeft và userAnswers DỰA TRÊN exercises và localStorage
-    useEffect(() => {
-        if (exercises && testId) {
-            const isAbandoned = getTestAbandonedFlag(testId);
-            const storedEndTime = getStoredEndTime(testId);
-            const now = Date.now();
-
-            // 1. Bị bỏ dở, còn hạn, còn thời gian -> hiển thị popup
-            if (isAbandoned && storedEndTime && storedEndTime > now) {
-                setIsAbandonedConfirmPopupOpen(true);
-                return;
-            }
-
-            if (isAbandoned) {
-                clearTestAbandonedFlag(testId);
-            }
-
-            // 2. Không bị bỏ dở (hoặc đã xử lý), còn hạn, còn thời gian -> Tiếp tục
-            if (storedEndTime && storedEndTime > now) {
-                const remainingSeconds = Math.max(0, Math.floor((storedEndTime - now) / 1000));
-                setTimeLeft(remainingSeconds);
-                setUserAnswers({}); // Hoặc khôi phục userAnswers từ localStorage nếu bạn muốn
-            } else {
-                // 3. Hết hạn hoặc bắt đầu mới
-                if (storedEndTime && storedEndTime <= now) {
-                    clearStoredEndTime(testId);
-                }
-                if (exercises && exercises.duration > 0) {
-                    const durationInSeconds = exercises.duration * 60;
-                    const newEndTime = now + durationInSeconds * 1000;
-                    storeEndTime(testId, newEndTime);
-                    setTimeLeft(durationInSeconds);
-                }
-                setUserAnswers({});
-            }
-        }
-    }, [exercises, testId, testInstanceKey]);
+    const {
+        userAnswers, handleAnswerSelected, fontSize, autoNextQuestion,
+        handleZoomIn, handleZoomOut, handleToggleAutoNext,
+        //  resetUserAnswers
+    } = useExerciseInteraction();
 
     const handleConfirmSubmit = useCallback(async () => {
         setIsSubmitConfirmPopupOpen(false);
@@ -138,65 +70,20 @@ const Exercises = () => {
                 toast.success(result.data.message || "Nộp bài thành công! Không có gợi ý bài học.");
                 navigate(`/course/${courseId}/lesson/${lessonId}/test`);
             }
+            setTimeLeft(0);
         } else {
             toast.error(`Nộp bài thất bại: ${submitError || (result && result.message) || "Vui lòng thử lại."}`);
         }
-    }, [user, exercises, userAnswers, executeSubmit, navigate, courseId, lessonId, submitError, testId]);
+    }, [user, exercises, userAnswers, executeSubmit, navigate, courseId, lessonId, submitError, testId, setTimeLeft]);
 
-    // Effect 2: Quản lý Timer
     useEffect(() => {
-        // Điều kiện 1: Nếu timeLeft chưa được khởi tạo (vẫn là null), không làm gì cả.
-        if (timeLeft === null) {
-            return;
-        }
-
-        // Điều kiện 2: Xử lý khi thời gian còn lại <= 0
-        if (timeLeft <= 0) {
-            if (timeLeft === 0 && exercises && exercises.id && !submitLoading && !isRecommendationPopupOpen && !isCancelConfirmPopupOpen && !isSubmitConfirmPopupOpen) {
-                if (testId) {
-                    clearTestAbandonedFlag(testId);
-                }
-                handleConfirmSubmit();
+        if (timeLeft === 0 && exercises && !submitLoading && !isRecommendationPopupOpen && !isCancelConfirmPopupOpen && !isSubmitConfirmPopupOpen) {
+            if (testId) {
+                clearTestAbandonedFlag(testId);
             }
-            return;
+            handleConfirmSubmit();
         }
-
-        // Điều kiện 3: Nếu thời gian vẫn còn (timeLeft > 0) VÀ CÓ exercises, bắt đầu đếm ngược
-        if (exercises) {
-            const timerId = setInterval(() => {
-                setTimeLeft(prevTime => prevTime - 1);
-            }, 1000);
-            return () => clearInterval(timerId);
-        }
-
     }, [timeLeft, exercises, testId, submitLoading, isRecommendationPopupOpen, isCancelConfirmPopupOpen, isSubmitConfirmPopupOpen, handleConfirmSubmit]);
-
-    // Effect để phát hiện rời khỏi trang bài thi
-    useEffect(() => {
-        const currentPathWhenEffectRuns = location.pathname;
-        const currentTestUrl = `/course/${courseId}/lesson/${lessonId}/test/${testId}`;
-
-        const previousPath = prevLocationPathRef.current;
-        if (previousPath === currentTestUrl && currentPathWhenEffectRuns !== currentTestUrl) {
-            if (getStoredEndTime(testId)) setTestAbandonedFlag(testId);
-        }
-
-        prevLocationPathRef.current = currentPathWhenEffectRuns;
-
-        return () => {
-            const pathBeforeUnmount = prevLocationPathRef.current;
-            if (pathBeforeUnmount === currentTestUrl) {
-                if (getStoredEndTime(testId)) setTestAbandonedFlag(testId);
-            }
-        };
-    }, [location.pathname, courseId, lessonId, testId]);
-
-    const handleAnswerSelected = useCallback((questionId, answerKey) => {
-        setUserAnswers(prevAnswers => ({
-            ...prevAnswers,
-            [questionId]: answerKey
-        }));
-    }, []);
 
     const handleSubmitButtonPressed = () => {
         setIsSubmitConfirmPopupOpen(true);
@@ -237,26 +124,13 @@ const Exercises = () => {
         navigate(`/course/${courseId}/lesson/${lessonId}/test`);
     }, [navigate, courseId, lessonId]);
 
-    // Khi người dùng chọn "Làm lại bài" từ popup bỏ dở
-    const handleRestartAbandonedTest = useCallback(() => {
-        clearTestAbandonedFlag(testId);
-        clearStoredEndTime(testId);
-        setIsAbandonedConfirmPopupOpen(false);
-        setUserAnswers({});
-        setTestInstanceKey(Date.now());
-    }, [testId]);
-
     // Khi người dùng chọn "Không làm lại" (thoát) từ popup bỏ dở
     const handleLeaveAbandonedTest = useCallback(() => {
         clearTestAbandonedFlag(testId);
         clearStoredEndTime(testId);
         setIsAbandonedConfirmPopupOpen(false);
         navigate(`/course/${courseId}/lesson/${lessonId}/test`);
-    }, [testId, navigate, courseId, lessonId]);
-
-    const handleZoomIn = useCallback(() => setFontSize(prevSize => Math.min(prevSize + 2, 28)), []);
-    const handleZoomOut = useCallback(() => setFontSize(prevSize => Math.max(prevSize - 2, 12)), []);
-    const handleToggleAutoNext = useCallback(() => setAutoNextQuestion(prev => !prev), []);
+    }, [testId, navigate, courseId, lessonId, setIsAbandonedConfirmPopupOpen]);
 
     const formatTime = (seconds) => {
         if (seconds === null || seconds < 0) return "00:00";
@@ -276,11 +150,14 @@ const Exercises = () => {
     const totalQuestions = exercises.exerciseList.length;
 
     const recommendationPopupMessage = recommendationDetails
-        ? `${recommendationDetails.message}. Bài học được đề xuất: ${recommendationDetails.ten_bai_hoc}.`
+        // ? `${recommendationDetails.message}. Bài học được đề xuất cho bạn: ${recommendationDetails.ten_bai_hoc}. Bấm xác nhận để chuyển đến bài học ngay.`
+        // : "";
+        ? `${recommendationDetails.message}. Bấm xác nhận để chuyển đến bài học ngay.`
         : "";
 
     return (
         <div className="exercises">
+            {submitLoading && <Loader text="Đang nộp bài..." />}
             <div className="exercises__main-content">
                 <Header
                     testName={exercises.name}
@@ -342,12 +219,10 @@ const Exercises = () => {
                     isOpen={isRecommendationPopupOpen}
                     onClose={closeRecommendationPopup}
                     onConfirm={confirmRecommendationNavigation}
-                    title="Gợi ý bài học"
+                    title="Gợi ý bài học cho bạn"
                     message={recommendationPopupMessage}
                 />
             )}
-
-            {submitLoading && <Loader text="Đang nộp bài..." />}
         </div>
     );
 };
