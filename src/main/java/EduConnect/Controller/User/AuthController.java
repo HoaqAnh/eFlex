@@ -156,7 +156,9 @@ public class AuthController {
         {
             throw new IdInValidException("User hasn't exists!");
         }
-
+        if(currentUserDB.getEnable()==null){
+            throw new IdInValidException("User hasn't verify");
+        }
         UsernamePasswordAuthenticationToken token=new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
         //xac thuc
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(token);
