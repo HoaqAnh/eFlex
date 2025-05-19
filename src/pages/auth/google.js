@@ -28,7 +28,7 @@ const GoogleLogin = () => {
           "http://localhost:8080/api/v1/login/oauth2/code/google?code=" +
           encodeURIComponent(code)
         );
-        
+
         if (!response.ok) {
           const errorData = await response.json();
           throw new Error(errorData.data?.error || "Đăng nhập thất bại");

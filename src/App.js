@@ -13,6 +13,7 @@ import AdminLayout from "./components/layout/admin/admin";
 import GoogleLogin from "./pages/auth/google";
 import LoginPage from "./pages/auth/login";
 import RegisterPage from "./pages/auth/register";
+import EmailVerify from "./pages/auth/emailVerify";
 
 // User Pages
 import HomePage from "./pages/users/home/home";
@@ -49,6 +50,7 @@ const App = () => {
               <Route path="/login/google" element={<GoogleLogin />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
+              <Route path="/register/verify" element={<EmailVerify />} />
 
               {/* Nhóm User với Layout */}
               <Route path="/" element={<UserLayout />}>
