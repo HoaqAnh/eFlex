@@ -7,6 +7,7 @@ import EduConnect.Util.SecurityUtil;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,10 +19,12 @@ public class ProgressService {
     private final TienDoService tienDoService;
     private final CourseRepository courseRepository;
     private final TienDoRepository tienDoRepository;
+    private final NguoiDung_BaiKiemTraService nguoiDung_BaiKiemTraService;
 
     public ProgressService(ProgressSectionRepository progressSectionRepository,
                            ProgressLessonRepository progressLessonRepository, SectionRepository sectionRepository
-    , LessonRepository lessonRepository, TienDoService tienDoService, CourseRepository courseRepository, TienDoRepository tienDoRepository) {
+    , LessonRepository lessonRepository, TienDoService tienDoService, CourseRepository courseRepository, TienDoRepository tienDoRepository,
+                           NguoiDung_BaiKiemTraService nguoiDung_BaiKiemTraService) {
         this.progressSectionRepository = progressSectionRepository;
         this.progressLessonRepository = progressLessonRepository;
         this.sectionRepository = sectionRepository;
@@ -29,6 +32,7 @@ public class ProgressService {
         this.tienDoService = tienDoService;
         this.courseRepository = courseRepository;
         this.tienDoRepository = tienDoRepository;
+        this.nguoiDung_BaiKiemTraService = nguoiDung_BaiKiemTraService;
     }
 
     public Boolean checkProgressSection(Long idNguoiDung,Long idSection){
@@ -71,8 +75,18 @@ public class ProgressService {
         long completedSections = progressSectionRepository.countByUserIdAndSectionLessonIdAndCompleteTrue(nguoiDungId, baiHocId);
         System.out.println("completedSections: " + completedSections);
 
-        if (totalSections > 0 && totalSections == completedSections) {
+        //Kiểm tra xem Người dùng đã làm bài kiểm tra của lesson này chưa
+        List<TestExercise> danhSachBaiKiemTra = lesson.getTestExercise();
+        long idBaiKiemTra = 0;
+        //Tìm bài kiểm tra của Lesson
+        for (TestExercise testExercise : danhSachBaiKiemTra) {
+            if (testExercise.getLesson().getId() == lesson.getId()) {
+                idBaiKiemTra = testExercise.getId();
+            }
+        }
+        NguoiDung_BaiKiemTra lichSuLamBaiKiemTra = nguoiDung_BaiKiemTraService.findByUserIdAndTestExerciseId(nguoiDungId, idBaiKiemTra);
 
+        if (totalSections > 0 && totalSections == completedSections && lichSuLamBaiKiemTra != null) {
             boolean exists = progressLessonRepository.existsByUserIdAndLessonId(nguoiDungId, baiHocId);
             if (!exists) {
                 ProgressLesson progressLesson = new ProgressLesson();

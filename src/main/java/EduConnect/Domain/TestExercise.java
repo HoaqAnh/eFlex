@@ -33,6 +33,10 @@ public class TestExercise {
     @JsonIgnore
     private List<Exercise> exerciseList;
 
+    @OneToMany(mappedBy = "testExercise", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<NguoiDung_BaiKiemTra> nguoiDungBaiKiemTraList;
+
     @PrePersist
     protected void onCreate() {
         createdAt = Instant.now();

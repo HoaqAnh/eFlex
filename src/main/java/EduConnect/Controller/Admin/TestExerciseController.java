@@ -1,16 +1,16 @@
 package EduConnect.Controller.Admin;
 
-import EduConnect.Domain.Lesson;
+
 import EduConnect.Domain.TestExercise;
 import EduConnect.Repository.LessonRepository;
-import EduConnect.Service.LessonService;
+
 import EduConnect.Service.TestExerciseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 @RestController
