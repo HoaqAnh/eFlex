@@ -91,7 +91,9 @@ export const useFilterCategory = (idCategory, paginationParams) => {
             setHasMore(false);
             toast.error(err.message || 'Lỗi tải dữ liệu lọc.');
         } finally {
-            setLoading(false);
+            setTimeout(() => {
+                setLoading(false);
+            }, Math.random() * 1000);
         }
     }, []);
 

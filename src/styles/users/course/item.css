@@ -11,7 +11,7 @@
 }
 
 .course-item:hover {
-    transform: translateY(5px) !important;
+    transform: translateY(6px) !important;
 }
 
 .course-item.selected {

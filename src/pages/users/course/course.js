@@ -1,10 +1,12 @@
-import React, { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo } from "react";
 import Header from "../../../components/users/course/header";
 import Body from "../../../components/users/course/body";
 import { useAdminCourse } from "../../../hooks/course/useCourse";
 import { useAuth } from "../../../hooks/useAuth";
 import "../../../styles/users/course/style.css";
 import { useCategory, useFilterCategory } from "../../../hooks/course/useCategory.js";
+import Loading from "../../../components/layout/loader/loading.js";
+import Error from "../../../components/layout/loader/error.js";
 
 const debounce = (func, delay) => {
     let timeoutId;
@@ -69,6 +71,14 @@ const Course = () => {
 
     if (!authCheck.shouldRender) {
         return authCheck.component;
+    }
+
+    if (categoryLoading) {
+        return <div className="course"><Loading Title="Hệ thống đang chuẩn bị danh mục khóa học..." /></div>
+    }
+
+    if (categoryError) {
+        return <div className="course"><Error Title="Có lỗi xảy khi trong quá trình lấy danh mục. Vui lòng thử lại sau ít phút!" /></div>
     }
 
     const displayLoading = selectedCategoryId ? filterLoading : allCoursesLoading;

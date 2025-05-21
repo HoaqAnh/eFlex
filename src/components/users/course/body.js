@@ -1,12 +1,12 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import Item from "./item";
-import SkeletonItem from "./skeletonItem"; 
+import SkeletonItem from "./skeletonItem";
 import Loading from "../../../components/layout/loader/loading";
-import "../../../styles/users/course/body.css"; 
+import "../../../styles/users/course/body.css";
 
 const Body = ({ courseData, loading, error, isSelectingCourse, selectedCourseId, onSelectCourse, hideUnselected, onLoadMore, hasMore, isFiltering }) => {
-    const [loadingAnimation, setLoadingAnimation] = useState(true); 
-    const [prevCourseCount, setPrevCourseCount] = useState(6);
+    const [loadingAnimation, setLoadingAnimation] = useState(true);
+    const [prevCourseCount, setPrevCourseCount] = useState(2);
 
     const observer = useRef();
     const lastCourseElementRef = useCallback(node => {
@@ -23,35 +23,23 @@ const Body = ({ courseData, loading, error, isSelectingCourse, selectedCourseId,
     useEffect(() => {
         const timer = setTimeout(() => {
             setLoadingAnimation(false);
-        }, 700);
+        }, 1000);
 
-        return () => clearTimeout(timer); 
-    }, []);
-
-    useEffect(() => {
-        if (loading) {
-            setLoadingAnimation(true);
-        } else if (!loading && courseData && courseData.length > 0) {
-            const timer = setTimeout(() => setLoadingAnimation(false), 300);
-            return () => clearTimeout(timer);
-        } else if (!loading && (!courseData || courseData.length === 0)) {
-            setLoadingAnimation(false);
-        }
-    }, [loading, courseData]);
+        return () => clearTimeout(timer);
+    }, [courseData]);
 
     useEffect(() => {
-        if (loading && (!courseData || courseData.length === 0)) {
-            setPrevCourseCount(6);
+        if (courseData && Array.isArray(courseData) && courseData.length > 0) {
+            setPrevCourseCount(courseData.length);
         }
-    }, [loading, courseData]);
+    }, [courseData]);
 
-
-    if (loadingAnimation && (!courseData || courseData.length === 0)) {
+    if (loading || loadingAnimation) {
         return (
             <div className="course-body">
                 <div className="course-body__container">
                     {Array.from({ length: prevCourseCount }).map((_, index) => (
-                        <SkeletonItem key={`skeleton-${index}`} />
+                        <SkeletonItem key={index} />
                     ))}
                 </div>
             </div>
@@ -59,48 +47,48 @@ const Body = ({ courseData, loading, error, isSelectingCourse, selectedCourseId,
     }
 
     if (error) {
-        return <div className="course-body__container">Lỗi khi tải khóa học: {error}. Vui lòng thử lại sau.</div>; 
+        return <div className="course-body__container">Lỗi khi tải khóa học: {error}. Vui lòng thử lại sau.</div>;
     }
 
     if (!courseData || !Array.isArray(courseData) || courseData.length === 0) {
-        return <Loading Title={isFiltering ? "Không tìm thấy khóa học cho danh mục này." : "Không tìm thấy khóa học nào. Vui lòng thử lại sau ít phút!"} />; 
+        return <Loading Title={isFiltering ? "Không tìm thấy khóa học cho danh mục này." : "Không tìm thấy khóa học nào. Vui lòng thử lại sau!"} />;
     }
 
-    const displayCourses = hideUnselected && selectedCourseId 
-        ? courseData.filter(course => course.id === selectedCourseId) 
-        : courseData; 
+    const displayCourses = hideUnselected && selectedCourseId
+        ? courseData.filter(course => course.id === selectedCourseId)
+        : courseData;
 
     return (
-        <div className="course-body">  
-            {isSelectingCourse && ( 
-                <div className="course-selection-mode">  
-                    <p>Chọn một khóa học để bắt đầu</p>  
+        <div className="course-body">
+            {isSelectingCourse && (
+                <div className="course-selection-mode">
+                    <p>Chọn một khóa học để bắt đầu</p>
                 </div>
             )}
 
-            <div className="course-body__container">  
-                {displayCourses.map((courseItem, index) => { 
+            <div className="course-body__container">
+                {displayCourses.map((courseItem, index) => {
                     if (isFiltering && displayCourses.length === index + 1) {
                         return (
                             <div ref={lastCourseElementRef} key={courseItem.id}>
                                 <Item
-                                    course={courseItem} 
-                                    isSelectingCourse={isSelectingCourse} 
-                                    isSelected={selectedCourseId === courseItem.id} 
-                                    onSelectCourse={onSelectCourse} 
-                                    animationDelay={index * 150} 
+                                    course={courseItem}
+                                    isSelectingCourse={isSelectingCourse}
+                                    isSelected={selectedCourseId === courseItem.id}
+                                    onSelectCourse={onSelectCourse}
+                                    animationDelay={index * 150}
                                 />
                             </div>
                         );
                     } else {
                         return (
                             <Item
-                                key={courseItem.id} 
-                                course={courseItem} 
-                                isSelectingCourse={isSelectingCourse} 
-                                isSelected={selectedCourseId === courseItem.id} 
-                                onSelectCourse={onSelectCourse} 
-                                animationDelay={index * 150} 
+                                key={courseItem.id}
+                                course={courseItem}
+                                isSelectingCourse={isSelectingCourse}
+                                isSelected={selectedCourseId === courseItem.id}
+                                onSelectCourse={onSelectCourse}
+                                animationDelay={index * 150}
                             />
                         );
                     }

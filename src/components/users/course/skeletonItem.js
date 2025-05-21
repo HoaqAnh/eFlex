@@ -1,4 +1,3 @@
-import React from "react";
 import "../../../styles/users/course/skeleton.css";
 
 const SkeletonItem = () => {
