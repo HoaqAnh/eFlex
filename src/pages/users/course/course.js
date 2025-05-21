@@ -22,18 +22,23 @@ const debounce = (func, delay) => {
 
 const Course = () => {
     const { checkAuth } = useAuth();
-    const { courseData: allCoursesData, loading: allCoursesLoading, error: allCoursesError } = useAdminCourse();
     const authCheck = checkAuth();
+
+    const [paginationParamsForAll, setPaginationParamsForAll] = useState({ page: 0 });
+    const { courseData: allCoursesDataFromHook, loading: allCoursesLoading, error: allCoursesError, hasMore: hasMoreAllCourses,
+    } = useAdminCourse(paginationParamsForAll);
+
     const { categoryData, loading: categoryLoading, error: categoryError } = useCategory();
 
     const [selectedCategoryId, setSelectedCategoryId] = useState(null);
-    const [paginationParams, setPaginationParams] = useState({ page: 0 });
-    const { filterData, loading: filterLoading, error: filterError, hasMore,
-    } = useFilterCategory(selectedCategoryId, paginationParams);
+    const [paginationParamsForFilter, setPaginationParamsForFilter] = useState({ page: 0 });
+    const { filterData, loading: filterLoading, error: filterError, hasMore: hasMoreFiltered,
+    } = useFilterCategory(selectedCategoryId, paginationParamsForFilter);
 
     const [searchTerm, setSearchTerm] = useState("");
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
-    const debouncedSetSearch = useCallback(debounce(setDebouncedSearchTerm, 300), []);
+    const debouncedSetSearch = useMemo(() => debounce(setDebouncedSearchTerm, 300), []);
+
     const handleSearchChange = useCallback((newSearchTerm) => {
         setSearchTerm(newSearchTerm);
         debouncedSetSearch(newSearchTerm);
@@ -45,25 +50,31 @@ const Course = () => {
         } else {
             setSelectedCategoryId(categoryId);
         }
-        setPaginationParams({ page: 0 });
+        setPaginationParamsForAll({ page: 0 });
+        setPaginationParamsForFilter({ page: 0 });
     }, []);
 
     const loadMoreItems = useCallback(() => {
-        if (selectedCategoryId && !filterLoading && hasMore) {
-            setPaginationParams(prevParams => ({ ...prevParams, page: prevParams.page + 1 })); //
+        if (selectedCategoryId) {
+            if (!filterLoading && hasMoreFiltered) {
+                setPaginationParamsForFilter(prevParams => ({ ...prevParams, page: prevParams.page + 1 }));
+            }
+        } else {
+            if (!allCoursesLoading && hasMoreAllCourses) {
+                setPaginationParamsForAll(prevParams => ({ ...prevParams, page: prevParams.page + 1 }));
+            }
         }
-    }, [selectedCategoryId, filterLoading, hasMore]);
+    }, [selectedCategoryId, filterLoading, hasMoreFiltered, allCoursesLoading, hasMoreAllCourses]);
 
     const baseDataForSearch = useMemo(() => {
-        return selectedCategoryId ? filterData : allCoursesData;
-    }, [selectedCategoryId, filterData, allCoursesData]);
+        return selectedCategoryId ? filterData : allCoursesDataFromHook;
+    }, [selectedCategoryId, filterData, allCoursesDataFromHook]);
 
     const finalDisplayCourseData = useMemo(() => {
         if (!baseDataForSearch) return [];
         if (!debouncedSearchTerm.trim()) {
             return baseDataForSearch;
         }
-
         return baseDataForSearch.filter(course =>
             course.tenMon && course.tenMon.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
         );
@@ -83,7 +94,7 @@ const Course = () => {
 
     const displayLoading = selectedCategoryId ? filterLoading : allCoursesLoading;
     const displayError = selectedCategoryId ? filterError : allCoursesError;
-    const displayHasMore = selectedCategoryId ? hasMore : false;
+    const displayHasMore = selectedCategoryId ? hasMoreFiltered : hasMoreAllCourses;
 
     return (
         <div className="course">

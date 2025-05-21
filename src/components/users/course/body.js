@@ -2,9 +2,10 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import Item from "./item";
 import SkeletonItem from "./skeletonItem";
 import Loading from "../../../components/layout/loader/loading";
+import Error from "../../../components/layout/loader/error";
 import "../../../styles/users/course/body.css";
 
-const Body = ({ courseData, loading, error, isSelectingCourse, selectedCourseId, onSelectCourse, hideUnselected, onLoadMore, hasMore, isFiltering }) => {
+const Body = ({ courseData, loading, error, isSelectingCourse, selectedCourseId, onSelectCourse, hideUnselected, onLoadMore, hasMore, isFiltering, isSearching }) => {
     const [loadingAnimation, setLoadingAnimation] = useState(true);
     const [prevCourseCount, setPrevCourseCount] = useState(2);
 
@@ -13,20 +14,19 @@ const Body = ({ courseData, loading, error, isSelectingCourse, selectedCourseId,
         if (loading) return;
         if (observer.current) observer.current.disconnect();
         observer.current = new IntersectionObserver(entries => {
-            if (entries[0].isIntersecting && hasMore && isFiltering) {
+            if (entries[0].isIntersecting && hasMore) {
                 onLoadMore();
             }
         });
         if (node) observer.current.observe(node);
-    }, [loading, hasMore, onLoadMore, isFiltering]);
+    }, [loading, hasMore, onLoadMore]);
 
     useEffect(() => {
         const timer = setTimeout(() => {
             setLoadingAnimation(false);
-        }, 1000);
-
+        }, 500);
         return () => clearTimeout(timer);
-    }, [courseData]);
+    }, []);
 
     useEffect(() => {
         if (courseData && Array.isArray(courseData) && courseData.length > 0) {
@@ -34,7 +34,7 @@ const Body = ({ courseData, loading, error, isSelectingCourse, selectedCourseId,
         }
     }, [courseData]);
 
-    if (loading || loadingAnimation) {
+    if (loadingAnimation) {
         return (
             <div className="course-body">
                 <div className="course-body__container">
@@ -47,11 +47,17 @@ const Body = ({ courseData, loading, error, isSelectingCourse, selectedCourseId,
     }
 
     if (error) {
-        return <div className="course-body__container">Lỗi khi tải khóa học: {error}. Vui lòng thử lại sau.</div>;
+        return <div className="course-body"><Error Title="Có lỗi khi tải khóa học. Vui lòng thử lại sau ít phút!" /></div>
     }
 
     if (!courseData || !Array.isArray(courseData) || courseData.length === 0) {
-        return <Loading Title={isFiltering ? "Không tìm thấy khóa học cho danh mục này." : "Không tìm thấy khóa học nào. Vui lòng thử lại sau!"} />;
+        if (isSearching) {
+            return <div className="course-body"><Loading Title="Không tìm thấy khóa học nào phù hợp với tìm kiếm của bạn." /></div>
+        }
+        if (isFiltering) {
+            return <div className="course-body"><Loading Title="Không tìm thấy khóa học cho danh mục này." /></div>
+        }
+        return <div className="course-body"><Loading Title="Không tìm thấy khóa học nào. Vui lòng thử lại sau ít phút!" /></div>
     }
 
     const displayCourses = hideUnselected && selectedCourseId
@@ -68,7 +74,7 @@ const Body = ({ courseData, loading, error, isSelectingCourse, selectedCourseId,
 
             <div className="course-body__container">
                 {displayCourses.map((courseItem, index) => {
-                    if (isFiltering && displayCourses.length === index + 1) {
+                    if (displayCourses.length === index + 1) {
                         return (
                             <div ref={lastCourseElementRef} key={courseItem.id}>
                                 <Item
@@ -94,8 +100,17 @@ const Body = ({ courseData, loading, error, isSelectingCourse, selectedCourseId,
                     }
                 })}
             </div>
-            {isFiltering && loading && courseData.length > 0 && <Loading Title="Đang tải thêm khóa học..." />}
-            {isFiltering && !hasMore && courseData.length > 0 && <div className="course-body__no-more">Đã hiển thị tất cả khóa học.</div>}
+            {/* {loading && courseData.length > 0 && <Loading Title="Đang tải thêm khóa học..." />}
+            {!hasMore && courseData.length > 0 && !isSearching && isFiltering && (
+                <div className="course-body__no-more">
+                    Đã hiển thị tất cả khóa học cho danh mục này.
+                </div>
+            )}
+            {!hasMore && courseData.length > 0 && isSearching && (
+                <div className="course-body__no-more">
+                    Đã hiển thị tất cả kết quả tìm kiếm.
+                </div>
+            )} */}
         </div>
     );
 };

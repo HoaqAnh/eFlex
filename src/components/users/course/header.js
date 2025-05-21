@@ -1,4 +1,3 @@
-import React from "react";
 import "../../../styles/users/course/header.css";
 
 const Header = ({ categoryData, onCategoryChange, selectedCategoryId, searchTerm, onSearchChange }) => {
@@ -32,12 +31,12 @@ const Header = ({ categoryData, onCategoryChange, selectedCategoryId, searchTerm
                     </div>
                     <div className="filter-box"> 
                         <select
-                            className="filter-select" /* */
+                            className="filter-select"
                             onChange={handleSelectChange}
                             value={selectedCategoryId === null ? "" : selectedCategoryId}
                         >
                             <option value="">Tất cả</option> 
-                            {categoryData && Array.isArray(categoryData) && categoryData.map(category => ( //
+                            {categoryData && Array.isArray(categoryData) && categoryData.map(category => (
                                 <option key={category.id} value={category.id}> 
                                     {category.nameCategory} 
                                 </option>

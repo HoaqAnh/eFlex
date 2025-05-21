@@ -60,7 +60,6 @@ const Exercises = () => {
         }
 
         const result = await executeSubmit(user.id, exercises.id, answersToSubmit);
-        console.log("[handleConfirmSubmit] Submit result:", result);
 
         if (result && result.statusCode === 200 && result.data) {
             if (result.data.recommendation && result.data.recommendation.lesson_id) {

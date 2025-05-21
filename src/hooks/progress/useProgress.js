@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { progress, getSectionProgress, getLessonProgress } from "../../services/progressService"
+import toast from "react-hot-toast";
 
 export const useProgress = () => {
     const [loading, setLoading] = useState(false);
@@ -19,9 +20,10 @@ export const useProgress = () => {
             if (!result.ok) {
                 throw new Error(result.error?.message || 'Lỗi không xác định từ API progress');
             }
+            toast.success('Cập nhật tiến độ học tập thành công.')
             return;
         } catch (err) {
-            console.error('Lỗi khi gửi thông tin tiến độ:', err);
+            toast.error('Tiến độ của bạn chưa được lưu, vui lòng thử lại.')
             setError(err.message || 'Không thể gửi thông tin tiến độ. Vui lòng thử lại sau.');
             return;
         } finally {

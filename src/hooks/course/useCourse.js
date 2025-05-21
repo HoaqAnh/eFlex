@@ -6,22 +6,31 @@ import { useValidation } from '../admin/useValidation';
 
 let courseListeners = [];
 let globalCourseData = [];
+let globalCourseMeta = {};
 
-const notifyListeners = (newData) => {
+const notifyListeners = (newData, newMeta) => {
     globalCourseData = newData;
-    courseListeners.forEach(listener => listener(newData));
+    globalCourseMeta = newMeta;
+    courseListeners.forEach(listener => listener(newData, newMeta));
 };
 
-export const useAdminCourse = () => {
+export const useAdminCourse = (currentPaginationParams) => {
     const navigate = useNavigate();
     const [courseData, setCourseData] = useState(globalCourseData);
+    const [hasMore, setHasMore] = useState(() => {
+        if (globalCourseMeta.page !== undefined && globalCourseMeta.pages !== undefined) {
+            return globalCourseMeta.page < globalCourseMeta.pages;
+        }
+        return true;
+    });
+
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
     const [uploadingImage, setUploadingImage] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
-
     const { validateCourseForm } = useValidation();
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
     const [formErrors, setFormErrors] = useState({
         tenMon: "",
         moTa: "",
@@ -30,16 +39,78 @@ export const useAdminCourse = () => {
     });
 
     useEffect(() => {
-        const listener = (newData) => {
+        const listener = (newData, newMeta) => {
             setCourseData(newData);
+            if (newMeta && newMeta.page !== undefined && newMeta.pages !== undefined) {
+                setHasMore(newMeta.page < newMeta.pages);
+            } else {
+                setHasMore(false);
+            }
         };
 
         courseListeners.push(listener);
+        setCourseData(globalCourseData);
+
+        if (globalCourseMeta.page !== undefined && globalCourseMeta.pages !== undefined) {
+            setHasMore(globalCourseMeta.page < globalCourseMeta.pages);
+        }
 
         return () => {
             courseListeners = courseListeners.filter(l => l !== listener);
         };
     }, []);
+
+    const fetchCourse = useCallback(async (paramsForThisFetch) => {
+        setLoading(true);
+        setError(null);
+        const pageToFetch = paramsForThisFetch && paramsForThisFetch.page !== undefined
+            ? paramsForThisFetch.page
+            : 0;
+
+        try {
+            const response = await fetchCourses({ page: pageToFetch, size: 10 });
+
+            if (!response || !response.result || !response.meta || !response.result.content) {
+                throw new Error('Không tìm thấy thông tin khóa học hoặc cấu trúc dữ liệu không đúng.');
+            }
+
+            const newContent = response.result.content;
+            const meta = response.meta;
+
+            let finalContentForGlobal;
+            if (pageToFetch === 0) {
+                finalContentForGlobal = newContent;
+            } else {
+                finalContentForGlobal = [...globalCourseData, ...newContent];
+            }
+
+            notifyListeners(finalContentForGlobal, meta);
+
+        } catch (err) {
+            console.error('Lỗi khi fetchCourse trong useAdminCourse:', err);
+            setError(err.message || 'Có lỗi xảy ra khi lấy dữ liệu.');
+            if (pageToFetch === 0) {
+                notifyListeners([], { page: 1, pages: 1 });
+            } else {
+                notifyListeners(globalCourseData, { ...globalCourseMeta, page: globalCourseMeta.pages || 1 });
+            }
+        } finally {
+            setLoading(false);
+        }
+    }, [])
+
+    useEffect(() => {
+        const globalPageFetched = globalCourseMeta.page ? globalCourseMeta.page - 1 : -1;
+        const requestedPage = currentPaginationParams ? currentPaginationParams.page : 0;
+
+        if (requestedPage === 0 && globalCourseData.length === 0) {
+            fetchCourse({ page: 0 });
+        } else if (requestedPage > globalPageFetched) {
+            fetchCourse({ page: requestedPage });
+        } else if (requestedPage === 0 && globalCourseData.length > 0 && requestedPage !== globalPageFetched) {
+            fetchCourse({ page: 0 });
+        }
+    }, [currentPaginationParams, fetchCourse]);
 
     const handleInputChange = (field, value) => {
         setCourseData(prev => ({
@@ -48,10 +119,67 @@ export const useAdminCourse = () => {
         }));
 
         if (formErrors[field]) {
-            setFormErrors(prev => ({
-                ...prev,
-                [field]: ""
-            }));
+            setFormErrors(prev => ({ ...prev, [field]: "" }));
+        }
+    };
+
+    const submitCourse = async (apiMethod, redirectPath, extractId = false) => {
+        if (!validateForm()) return;
+        try {
+            setLoading(true);
+            setError(null);
+
+            let imageUrl = null;
+            if (selectedImage) {
+                setUploadingImage(true);
+                try {
+                    imageUrl = await CourseApi.uploadCourseImage(selectedImage);
+                } catch (err) {
+                    setError('Không thể upload hình ảnh. Vui lòng thử lại.');
+                    return;
+                } finally {
+                    setUploadingImage(false);
+                }
+            }
+
+            const response = await apiMethod(courseData, imageUrl);
+            toast.success("Tạo khóa học thành công!");
+            fetchCourse({ page: 0 })
+
+            if (extractId) {
+                const newCourseId = response.data.id;
+                return newCourseId;
+            } else if (redirectPath) {
+                handleNavigate(redirectPath);
+            }
+
+        } catch (err) {
+            console.error('Lỗi khi thêm khóa học:', err);
+            setError(err.message || 'Không thể thêm khóa học. Vui lòng thử lại sau.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleDelete = async (courseId) => {
+        try {
+            setLoading(true);
+            setError(null);
+
+            const response = await deleteCourse(courseId);
+            if (response.statusCode === 200) {
+                toast.success("Xóa khóa học thành công!");
+                fetchCourse({ page: 0 });
+                return true;
+            }
+
+            return false;
+        } catch (err) {
+            console.error('Error deleting courses:', err);
+            setError(err.message || 'Không thể xóa khóa học. Vui lòng thử lại sau.');
+            return false;
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -108,46 +236,6 @@ export const useAdminCourse = () => {
         return isValid;
     };
 
-    const submitCourse = async (apiMethod, redirectPath, extractId = false) => {
-        if (!validateForm()) return;
-
-        try {
-            setLoading(true);
-            setError(null);
-
-            let imageUrl = null;
-            if (selectedImage) {
-                setUploadingImage(true);
-                try {
-                    imageUrl = await CourseApi.uploadCourseImage(selectedImage);
-                } catch (err) {
-                    setError('Không thể upload hình ảnh. Vui lòng thử lại.');
-                    return;
-                } finally {
-                    setUploadingImage(false);
-                }
-            }
-
-            const response = await apiMethod(courseData, imageUrl);
-            toast.success("Tạo khóa học thành công!");
-
-            fetchCourse();
-
-            if (extractId) {
-                const newCourseId = response.data.id;
-                return newCourseId;
-            } else if (redirectPath) {
-                handleNavigate(redirectPath);
-            }
-
-        } catch (err) {
-            console.error('Lỗi khi thêm khóa học:', err);
-            setError(err.message || 'Không thể thêm khóa học. Vui lòng thử lại sau.');
-        } finally {
-            setLoading(false);
-        }
-    };
-
     const handleSubmit = () => submitCourse(CourseApi.addCourse, 'course');
 
     const handleNext = async () => {
@@ -163,75 +251,17 @@ export const useAdminCourse = () => {
         navigate(`/admin/${path}`, options);
     }, [navigate]);
 
-    const handleDelete = async (courseId) => {
-        try {
-            setLoading(true);
-            setError(null);
-
-            const response = await deleteCourse(courseId);
-            if (response.statusCode === 200) {
-                toast.success("Xóa khóa học thành công!");
-                // Lấy danh sách mới và cập nhật cho tất cả các listeners
-                const updatedCourses = await fetchCourses();
-                notifyListeners(updatedCourses);
-                return true;
-            }
-
-            return false;
-        } catch (err) {
-            console.error('Error deleting courses:', err);
-            setError(err.message || 'Không thể xóa khóa học. Vui lòng thử lại sau.');
-            return false;
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const fetchCourse = useCallback(async () => {
-        try {
-            setLoading(true);
-            setError(null);
-
-            const response = await fetchCourses();
-
-            if (!response) {
-                setError('Không tìm thấy thông tin khóa học.');
-                return null;
-            }
-
-            notifyListeners(response);
-            return response;
-        } catch (err) {
-            console.error(err);
-            setError(err.message || 'Có lỗi xảy ra khi lấy dữ liệu.');
-        } finally {
-            setLoading(false);
-        }
-    }, [setLoading, setError])
-
-    useEffect(() => {
-        if (globalCourseData.length === 0) {
-            fetchCourse();
-        }
-    }, [fetchCourse]);
-
-    const handleUpdate = () => {
-        return console.log("Update clicked!");
-    }
-
-    const handleUpdateAndNext = () => {
-        return console.log("Update and next clicked!");
-    }
-
     return {
         courseData,
         loading,
-        uploadingImage,
         error,
-        formErrors,
-        imagePreview,
-        selectedImage,
+        hasMore,
         fetchCourse,
+
+        uploadingImage,
+        selectedImage,
+        imagePreview,
+        formErrors,
         handleInputChange,
         handleImageSelect,
         handleRemoveImage,
@@ -240,8 +270,8 @@ export const useAdminCourse = () => {
         handleSubmitDraft,
         handleNavigate,
         handleDelete,
-        handleUpdate,
-        handleUpdateAndNext
+        handleUpdate: () => console.log("Update clicked!"),
+        handleUpdateAndNext: () => console.log("Update and next clicked!")
     };
 };
 
@@ -273,5 +303,5 @@ export const useCourseDetail = (courseId) => {
         fetchCourseDetail();
     }, [courseId]);
 
-    return { loading, error, courseDetail}
+    return { loading, error, courseDetail }
 };
