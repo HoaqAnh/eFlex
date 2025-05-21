@@ -198,7 +198,7 @@ export const deleteCourse = async (courseId) => {
 };
 
 // Hàm lấy danh sách khóa học
-export const fetchCourses = async () => {
+export const fetchCourses = async (paginationParams = { page: 0, size: 10 }) => {
   try {
     const token = TokenService.getToken();
     if (!token) {
@@ -206,14 +206,25 @@ export const fetchCourses = async () => {
       return null;
     }
 
-    // Kiểm tra token hợp lệ
     if (!TokenService.isTokenValid()) {
       console.error("Token không hợp lệ hoặc đã hết hạn");
       TokenService.clearTokens();
       return null;
     }
 
-    const response = await fetch(`${BASE_URL}/courses`, {
+    const queryParams = new URLSearchParams();
+
+    if (paginationParams.page !== undefined) {
+      queryParams.append('page', paginationParams.page);
+    }
+
+    if (paginationParams.size !== undefined) {
+      queryParams.append('size', paginationParams.size);
+    }
+
+    const url = `${BASE_URL}/courses?${queryParams.toString()}`
+
+    const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -233,8 +244,8 @@ export const fetchCourses = async () => {
 
     const responseData = await response.json();
 
-    if (responseData.data.result && Array.isArray(responseData.data.result.content)) {
-      return responseData.data.result.content;
+    if (responseData.data.meta && Array.isArray(responseData.data.result.content)) {
+      return responseData.data;
     } else {
       throw new Error("Cấu trúc dữ liệu không đúng định dạng");
     }

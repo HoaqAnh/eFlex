@@ -31,12 +31,12 @@ export const filterService = async (paginationParams = { page: 0, size: 10 }, id
         const response = await fetch(url, {
             method: 'GET',
             headers: {
-                Authorization: `Bearer ${token}`,
-
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             credentials: 'include'
-
         });
+
         if (!response.ok) {
             if (response.status === 401 || response.status === 403) {
                 TokenService.clearTokens();
