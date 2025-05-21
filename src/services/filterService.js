@@ -2,7 +2,7 @@ import TokenService from './tokenService';
 
 const BASE_URL = "http://localhost:8080/api/v1";
 
-export const filterService = async (paginationParams = { page: 0, size: 10, sort: 'id,asc' }, idCategory) => {
+export const filterService = async (paginationParams = { page: 0, size: 10 }, idCategory) => {
     try {
         const token = TokenService.getToken();
         if (!token) {
@@ -17,27 +17,25 @@ export const filterService = async (paginationParams = { page: 0, size: 10, sort
         }
 
         const queryParams = new URLSearchParams();
+
         if (paginationParams.page !== undefined) {
             queryParams.append('page', paginationParams.page);
         }
+
         if (paginationParams.size !== undefined) {
             queryParams.append('size', paginationParams.size);
         }
-        if (paginationParams.sort) {
-            if (Array.isArray(paginationParams.sort)) {
-                paginationParams.sort.forEach(s => queryParams.append('sort', s));
-            } else {
-                queryParams.append('sort', paginationParams.sort);
-            }
-        }
+
         const url = `${BASE_URL}/courses/filter/${idCategory}?${queryParams.toString()}`;
 
-        const response = await fetch(`${BASE_URL}/courses/filter/${idCategory}`, {
+        const response = await fetch(url, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
+
             },
             credentials: 'include'
+
         });
         if (!response.ok) {
             if (response.status === 401 || response.status === 403) {

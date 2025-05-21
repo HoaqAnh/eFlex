@@ -8,7 +8,7 @@ const RecommendItem = ({ course }) => {
     const navigate = useNavigate();
 
     const handleCourseClick = () => {
-        navigate(`/courses/${course.monhoc_id}`);
+        navigate(`/course/${course.monhoc_id}`);
     };
 
     return (

@@ -1,17 +1,13 @@
 import React from "react";
-
 import Header from "../../../components/users/home/header";
 import Body from "../../../components/users/home/body";
-
-//hooks
 import { useAuth } from "../../../hooks/useAuth";
-
-//style
 import "../../../styles/users/home/style.css";
 
 const HomePage = () => {
   const { checkAuth, user } = useAuth();
   const authCheck = checkAuth();
+
 
   if (!authCheck.shouldRender) {
     return authCheck.component;
