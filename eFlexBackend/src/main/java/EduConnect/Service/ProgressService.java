@@ -98,7 +98,6 @@ public class ProgressService {
         if(tienDoMonHoc==null)
         {
             TienDo tienDo =new TienDo();
-            phanTramProgress = (int) completedSections / soSection ;
             tienDo.setPhanTram(phanTramProgress);
             tienDoService.save(tienDo);
         }else{
