@@ -7,33 +7,42 @@ export const useLesson = () => {
     const { id: courseId } = useParams();
     const validation = useValidation();
 
-    const [lessonData, setLessonData] = useState({
+    const initialLessonState = {
         tenBai: "",
         course: {
             id: courseId
         }
-    });
+    };
 
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-
-    const [lessonErrors, setLessonErrors] = useState({
+    const initialLessonErrorState = {
         tenBai: "",
         course: {
             id: null
         }
-    });
+    };
+
+    const [lessonData, setLessonData] = useState({ ...initialLessonState });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [lessonErrors, setLessonErrors] = useState({ ...initialLessonErrorState });
 
     if (!courseId) {
         console.error('Không tìm thấy courseId');
         navigate('/admin/course');
         return {
-            lessonData,
-            loading,
+            lessonData: { ...initialLessonState, course: { id: null } },
+            setLessonData: () => { },
+            loading: false,
+            setLoading: () => { },
             error: 'Không tìm thấy courseId',
-            lessonErrors,
+            setError: () => { },
+            lessonErrors: { ...initialLessonErrorState },
+            setLessonErrors: () => { },
+            courseId: null,
             handleLessonInputChange: () => { },
-            validateLessonForm: () => false
+            validateLessonForm: () => false,
+            resetLessonForm: () => { },
+            handleBack: () => navigate('/admin/course')
         };
     }
 
@@ -58,19 +67,8 @@ export const useLesson = () => {
     };
 
     const resetLessonForm = () => {
-        setLessonData({
-            tenBai: "",
-            course: {
-                id: courseId
-            }
-        });
-
-        setLessonErrors({
-            tenBai: "",
-            course: {
-                id: null
-            }
-        });
+        setLessonData({ ...initialLessonState, course: { id: courseId } });
+        setLessonErrors({ ...initialLessonErrorState });
     };
 
     const handleBack = () => {

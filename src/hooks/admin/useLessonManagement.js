@@ -62,7 +62,7 @@ export const useLessonManagement = () => {
                         sectionForm.videoUrl = videoUrl;
                         sectionForm.videoFile = null;
                     } else {
-                        toast.error(`Không thể tải lên video cho phần học ${i + 1}. Phần học này sẽ được tạo mà không có video mới.`);
+                        // toast.error(`Không thể tải lên video cho phần học ${i + 1}. Phần học này sẽ được tạo mà không có video mới.`);
                         sectionForm.videoUrl = currentSectionForms[i].videoUrl || null;
                         sectionForm.videoFile = null;
                     }
@@ -107,7 +107,7 @@ export const useLessonManagement = () => {
 
         if (result.success) {
             toast.success("Tạo bài học thành công!");
-            navigate('/course');
+            navigate('/admin/course');
         }
     };
 

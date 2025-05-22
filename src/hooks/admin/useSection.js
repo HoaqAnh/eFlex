@@ -146,7 +146,7 @@ export const useSection = () => {
                 return videoUrl;
             } catch (error) {
                 console.error(`Lỗi khi tải video cho phần học ${formIndex + 1}:`, error);
-                toast.error(`Lỗi tải lên video cho phần học ${formIndex + 1}. Vui lòng thử lại.`, { id: `upload-${formIndex}` });
+                toast.error(`Lỗi tải lên video cho phần học ${formIndex + 1}. Vui lòng thử lại sau.`, { id: `upload-${formIndex}` });
                 // Optionally, keep the videoFile in state to allow for a retry without re-selecting the file
                 // Or clear it if preferred:
                 // setSectionForms(prevForms => {

@@ -124,7 +124,11 @@ export const useAdminCourse = (currentPaginationParams) => {
     };
 
     const submitCourse = async (apiMethod, redirectPath, extractId = false) => {
-        if (!validateForm()) return;
+        if (!validateForm()) {
+            toast.error("Vui lòng điền đầy đủ thông tin bắt buộc.");
+            return;
+        }
+        
         try {
             setLoading(true);
             setError(null);

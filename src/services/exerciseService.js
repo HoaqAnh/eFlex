@@ -19,8 +19,6 @@ export const uploadExerciseExcel = async (testId, file) => {
         const formData = new FormData();
         formData.append('file', file);
 
-        console.log("testId: ", testId);
-
         const response = await fetch(`${BASE_URL}/exercise/excel/${testId}`, {
             method: "POST",
             headers: {

@@ -47,9 +47,7 @@ const AddTest = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
         const result = await handleSubmit();
-        if (!result.success) {
-            toast.error(result.error || 'Có lỗi xảy ra khi tạo bài kiểm tra');
-        }
+        
         if (result.success) {
             toast.success(result.message || 'Bài kiểm tra đã được tạo thành công');
             navigate(`/admin/course`);
