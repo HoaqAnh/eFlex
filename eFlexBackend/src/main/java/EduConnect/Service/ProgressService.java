@@ -92,16 +92,18 @@ public class ProgressService {
             soSection += ls.getSections().size();
         }
 
-        int phanTramProgress = (int) completedSections / soSection ;
+        int phanTramProgress = (int) (((double) completedSections / soSection) * 100);
+
         // + vào tiến độ hiện có
         TienDo tienDoMonHoc = tienDoService.timTienDoMonHocCuaUser(nguoiDungId, idCourse);
         if(tienDoMonHoc==null)
         {
             TienDo tienDo =new TienDo();
+            tienDo.setNguoiDung(currentUser);
+            tienDo.setCourse(monHoc.get());
             tienDo.setPhanTram(phanTramProgress);
             tienDoService.save(tienDo);
         }else{
-            phanTramProgress += tienDoMonHoc.getPhanTram();
             tienDoMonHoc.setPhanTram(phanTramProgress);
             tienDoRepository.save(tienDoMonHoc);
         }
