@@ -11,6 +11,7 @@ import { useLessonDetail } from '../../../hooks/course/useLesson';
 import { useSections } from '../../../hooks/course/useSection';
 import { useAuth } from "../../../hooks/useAuth";
 import "../../../styles/lessonDetails/style.css"
+import toast from "react-hot-toast";
 
 const LessonDetails = () => {
     const { id: courseId, lessonId } = useParams();
@@ -51,7 +52,14 @@ const LessonDetails = () => {
 
     const handleSectionClick = (section) => {
         if (selectedSection && selectedSection.id) {
-            sendSectionProgress(selectedSection.id);
+            toast.promise(
+                sendSectionProgress(selectedSection.id),
+                {
+                    loading: 'Saving...',
+                    success: <b>Cập nhật tiến dộ thành công!</b>,
+                    error: <b>Tiến độ chưa được lưu, vui lòng thử lại.</b>,
+                }
+            );
         }
 
         onSectionSelect(section);
@@ -75,7 +83,14 @@ const LessonDetails = () => {
         const currentIndex = listSection.findIndex(s => s.id === selectedSection.id);
 
         if (selectedSection) {
-            sendSectionProgress(selectedSection.id);
+            toast.promise(
+                sendSectionProgress(selectedSection.id),
+                {
+                    loading: 'Saving...',
+                    success: <b>Cập nhật tiến dộ thành công!</b>,
+                    error: <b>Tiến độ chưa được lưu, vui lòng thử lại.</b>,
+                }
+            );
         }
 
         if (currentIndex < listSection.length - 1) {

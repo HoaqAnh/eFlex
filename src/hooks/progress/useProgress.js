@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { progress, getSectionProgress, getLessonProgress } from "../../services/progressService"
-import toast from "react-hot-toast";
 
 export const useProgress = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(false);
 
     const sendSectionProgress = async (sectionId) => {
         if (!sectionId) {
             setError("Không tìm thấy ID section");
-            return;
+            throw new Error;
         }
 
         try {
@@ -20,18 +20,17 @@ export const useProgress = () => {
             if (!result.ok) {
                 throw new Error(result.error?.message || 'Lỗi không xác định từ API progress');
             }
-            toast.success('Cập nhật tiến độ học tập thành công.')
-            return;
+
+            setSuccess(true);
         } catch (err) {
-            toast.error('Tiến độ của bạn chưa được lưu, vui lòng thử lại.')
             setError(err.message || 'Không thể gửi thông tin tiến độ. Vui lòng thử lại sau.');
-            return;
+            throw new Error;
         } finally {
             setLoading(false);
         }
     };
 
-    return { sendSectionProgress, loading, error }
+    return { sendSectionProgress, loading, error, success }
 };
 
 export const useGetProgress = (userId, entityId, entityType = "lesson") => {
@@ -53,7 +52,7 @@ export const useGetProgress = (userId, entityId, entityType = "lesson") => {
                 let responseData;
                 if (entityType === "lesson") {
                     responseData = await getLessonProgress(userId, entityId);
-                    
+
                 } else if (entityType === "section") {
                     responseData = await getSectionProgress(userId, entityId);
                 } else {
@@ -68,7 +67,7 @@ export const useGetProgress = (userId, entityId, entityType = "lesson") => {
                     console.warn(`Dữ liệu tiến độ không hợp lệ hoặc không tìm thấy cho ${entityType} ID: ${entityId}. Mặc định là false.`);
                     setIsCompleted(false);
                 }
-                
+
             } catch (err) {
                 console.error(`Lỗi khi lấy tiến độ ${entityType} (ID: ${entityId}):`, err);
                 setError(err.message || `Có lỗi xảy ra khi lấy thông tin tiến độ ${entityType}.`);

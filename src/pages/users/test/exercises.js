@@ -59,6 +59,11 @@ const Exercises = () => {
             clearTestAbandonedFlag(testId);
         }
 
+        if (answersToSubmit.length < exercises.exerciseList.length) {
+            toast.error("Vui lòng hoàn thành tất cả câu hỏi trước khi nộp.")
+            return;
+        }
+
         const result = await executeSubmit(user.id, exercises.id, answersToSubmit);
 
         if (result && result.statusCode === 200 && result.data) {
