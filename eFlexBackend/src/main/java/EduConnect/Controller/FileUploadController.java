@@ -74,8 +74,7 @@ public class FileUploadController {
     }
 
     @PostMapping("/upload/course-video")
-    public ResponseEntity<VideoResponse> uploadVideo(@RequestParam("file") MultipartFile file,
-                                         @RequestParam("folder") String folderName) throws IOException, IdInValidException {
+    public ResponseEntity<VideoResponse> uploadVideo(@RequestParam("file") MultipartFile file  /*,@RequestParam("folder") String folderName*/) throws IOException, IdInValidException {
         try {
             // 1. Upload ảnh lên Cloudinary
             String videoUrl = (String)cloudinaryService.uploadVideo(file, "courses").get("secure_url");
