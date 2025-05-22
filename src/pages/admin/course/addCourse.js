@@ -5,17 +5,13 @@ import Loading from "../../../components/layout/loader/loading";
 import Error from "../../../components/layout/loader/error";
 import { useAdminCourse } from "../../../hooks/course/useCourse";
 import { useAuth } from "../../../hooks/useAuth";
-import { useCategory } from "../../../hooks/useCategory";
+import { useCategory } from "../../../hooks/course/useCategory";
 import "../../../styles/admin/addCourse/style.css";
 import "../../../styles/button/style.css";
 
 const AddCourse = () => {
     const { checkAuth } = useAuth();
-    const {
-        categories,
-        loading: categoriesLoading,
-        error: categoriesError
-    } = useCategory();
+    const { categoryData, loading: categoriesLoading, error: categoriesError } = useCategory();
     const {
         loading: addCourseLoading,
         error: addCourseError,
@@ -54,7 +50,7 @@ const AddCourse = () => {
                         Title="Thêm khóa học"
                     />
                     <Body
-                        categories={categories}
+                        categories={categoryData}
                         categoriesLoading={categoriesLoading}
                         categoriesError={categoriesError}
                         imagePreview={imagePreview}

@@ -9,7 +9,7 @@ export const useProgress = () => {
     const sendSectionProgress = async (sectionId) => {
         if (!sectionId) {
             setError("Không tìm thấy ID section");
-            throw new Error;
+            throw new Error();
         }
 
         try {
@@ -24,7 +24,7 @@ export const useProgress = () => {
             setSuccess(true);
         } catch (err) {
             setError(err.message || 'Không thể gửi thông tin tiến độ. Vui lòng thử lại sau.');
-            throw new Error;
+            throw new Error();
         } finally {
             setLoading(false);
         }

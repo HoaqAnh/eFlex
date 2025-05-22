@@ -17,15 +17,58 @@ export const useLessonManagement = () => {
         return lessonValid && sectionsValid;
     };
 
+    const triggerSectionVideoUpload = (sectionIndex) => {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'video/*';
+        input.onchange = (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                section.handleSectionVideoFileSelect(sectionIndex, file);
+            }
+        };
+        input.click();
+    };
+
     // Thêm lesson và các section
     const submitLessonWithSections = async () => {
         if (!validateAllForms()) {
+            toast.error("Vui lòng điền đầy đủ thông tin bắt buộc.");
             return { success: false };
         }
 
+        lesson.setLoading(true);
+        lesson.setError(null);
+
         try {
-            lesson.setLoading(true);
-            lesson.setError(null);
+            // Xử lý upload video cho các phần học có file video được chọn.
+            const currentSectionForms = [...section.sectionForms]; // Lấy form hiện tại
+            const updatedSectionForms = [];
+
+            // const result = await lessonService.createLessonWithSections(
+            //     lesson.lessonData,
+            //     section.sectionForms
+            // );
+
+            // if (!result.success) {
+            //     throw result.error;
+            // }
+
+            for (let i = 0; i < currentSectionForms.length; i++) {
+                let sectionForm = { ...currentSectionForms[i] };
+                if (sectionForm.videoFile) {
+                    const videoUrl = await section.handleUploadVideo(i);
+                    if (videoUrl) {
+                        sectionForm.videoUrl = videoUrl;
+                        sectionForm.videoFile = null;
+                    } else {
+                        toast.error(`Không thể tải lên video cho phần học ${i + 1}. Phần học này sẽ được tạo mà không có video mới.`);
+                        sectionForm.videoUrl = currentSectionForms[i].videoUrl || null;
+                        sectionForm.videoFile = null;
+                    }
+                }
+                updatedSectionForms.push(sectionForm);
+            }
 
             const result = await lessonService.createLessonWithSections(
                 lesson.lessonData,
@@ -33,13 +76,14 @@ export const useLessonManagement = () => {
             );
 
             if (!result.success) {
-                throw result.error;
+                throw result.error || new Error('Lỗi không xác định khi tạo bài học.');
             }
 
             return result;
         } catch (err) {
             console.error('Lỗi khi thêm bài học và các phần học:', err);
             lesson.setError(err.message || 'Không thể thêm bài học và các phần học. Vui lòng thử lại sau.');
+            toast.error(err.message || 'Không thể thêm bài học và các phần học. Vui lòng thử lại sau.');
             return { success: false, error: err };
         } finally {
             lesson.setLoading(false);
@@ -91,6 +135,7 @@ export const useLessonManagement = () => {
         sectionErrors: section.sectionErrors,
         handleAddSection: section.handleAddSection,
         handleRemoveSection: section.handleRemoveSection,
+        triggerSectionVideoUpload,
 
         // Submission
         loading: lesson.loading,

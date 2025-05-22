@@ -14,7 +14,7 @@ const AddLesson = () => {
     const {
         lessonData,
         loading,
-        error: addLessonError,
+        error,
         lessonErrors,
         sectionForms,
         sectionErrors,
@@ -25,7 +25,8 @@ const AddLesson = () => {
         handleSubmit,
         handleAddAndContinue,
         handleBack,
-        handleAddTest
+        handleAddTest,
+        triggerSectionVideoUpload,
     } = useLessonManagement();
 
     const authCheck = checkAuth();
@@ -35,7 +36,7 @@ const AddLesson = () => {
 
     return (
         <div className="addLesson">
-            {addLessonError && <div className="error-message">{addLessonError}</div>}
+            {error && <div className="error-message">{error}</div>}
             {loading ? (
                 <div className="addLesson-isLoading">
                     <div className="addLesson-isLoading__title">
@@ -53,6 +54,7 @@ const AddLesson = () => {
                         handleSectionInputChange={handleSectionInputChange}
                         sectionData={sectionForms}
                         sectionErrors={sectionErrors}
+                        handleUploadVideo={triggerSectionVideoUpload}
                         handleRemoveSection={handleRemoveSection}
                     />
                     <Footer

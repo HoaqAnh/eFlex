@@ -1,11 +1,7 @@
 import React, { useState } from "react";
-
-//components
 import SectionHeader from "../addSection/header";
 import SectionBody from "../addSection/body";
 import SectionFooter from "../addSection/footer";
-
-//styles
 import "../../../../styles/admin/addLesson/body.css";
 
 const Body = ({
@@ -59,7 +55,6 @@ const Body = ({
                             sectionData={section}
                             formErrors={sectionErrors[index]}
                             handleInputChange={handleSectionInputChange}
-                            handleUploadVideo={handleUploadVideo}
                             index={index}
                         />
                     </div>

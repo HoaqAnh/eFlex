@@ -51,7 +51,6 @@ export const CourseApi = {
         return null;
       }
 
-      // Kiểm tra token hợp lệ
       if (!TokenService.isTokenValid()) {
         console.error("Token không hợp lệ hoặc đã hết hạn");
         TokenService.clearTokens();
@@ -101,7 +100,7 @@ export const CourseApi = {
   }
 };
 
-// Helper function để gửi request tạo/cập nhật khóa học
+// Helper function để gửi request tạo khóa học
 const sendCourseRequest = async (courseData, imageUrl, endpoint) => {
   try {
     const token = TokenService.getToken();

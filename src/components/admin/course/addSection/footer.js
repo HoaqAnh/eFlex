@@ -1,6 +1,3 @@
-import React from "react";
-
-//styles
 import "../../../../styles/admin/addSection/footer.css";
 
 const SectionFooter = ({ handleRemoveSection, handleUploadVideo, isFirstSection = false }) => {

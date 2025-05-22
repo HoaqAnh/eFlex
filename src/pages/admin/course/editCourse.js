@@ -7,14 +7,14 @@ import { useCourseDetail } from "../../../hooks/course/useCourse";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 import { useAdminCourse } from "../../../hooks/course/useCourse";
-import { useCategory } from "../../../hooks/useCategory";
+import { useCategory } from "../../../hooks/course/useCategory";
 import "../../../styles/admin/editCourse/style.css";
 
 const EditCourse = () => {
     const { checkAuth } = useAuth();
     const authCheck = checkAuth();
     const { id } = useParams();
-    const { categories, loading: categoriesLoading, error: categoriesError } = useCategory();
+    const { categoryData, loading: categoriesLoading, error: categoriesError } = useCategory();
     const {
         loading: editCourseLoading,
         error: editCourseError,
@@ -55,7 +55,7 @@ const EditCourse = () => {
                     />
                     <Body
                         courseDetail={courseDetail}
-                        categories={categories}
+                        categories={categoryData}
                         imagePreview={imagePreview}
                         selectedImage={selectedImage}
                         formErrors={formErrors}
