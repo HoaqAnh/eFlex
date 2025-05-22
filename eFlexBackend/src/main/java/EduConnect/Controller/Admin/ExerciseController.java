@@ -38,7 +38,7 @@ public class ExerciseController {
         return ResponseEntity.ok(this.exerciseService.excelExercise(file,idTestExercise));
     }
     @PostMapping("/exercise")
-    public ResponseEntity<Exercise> createExercise(@RequestBody  Exercise exercise) {
+    public ResponseEntity<Exercise> createExercise(@RequestBody Exercise exercise) {
         return ResponseEntity.ok(exerciseService.save(exercise));
     }
     @PutMapping("/exercise/{id}")

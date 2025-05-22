@@ -3,6 +3,7 @@ package EduConnect.Controller.Admin;
 import EduConnect.Domain.Course;
 import EduConnect.Domain.Response.ResultPaginationDTO;
 import EduConnect.Service.CourseService;
+import EduConnect.Service.TienDoService;
 import EduConnect.Util.ApiMessage;
 import EduConnect.Util.Enum.StatusCourse;
 import EduConnect.Util.Error.IdInValidException;
@@ -11,14 +12,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1")
 public class CourseController {
 
     private final CourseService courseService;
+    private final TienDoService tienDoService;
 
-    public CourseController(CourseService courseService) {
+    public CourseController(CourseService courseService, TienDoService tienDoService) {
         this.courseService = courseService;
+        this.tienDoService = tienDoService;
     }
 
     @GetMapping("/courses")
@@ -62,12 +67,20 @@ public class CourseController {
     @ApiMessage("Delete a course by ID")
     public ResponseEntity<Void> deleteCourse(@PathVariable("id") long id) throws IdInValidException {
         Course course = courseService.GetCourseById(id);
-        if (course==null) {
+        if (course == null) {
             throw new IdInValidException("Course with ID " + id + " does not exist.");
         }
         this.courseService.RemoveCourse(course);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-
+    @GetMapping("/courses/studying/{userId}")
+    @ApiMessage("Get List Course User Studying and studied")
+    public ResponseEntity<List<Course>> getListCourseUserStudying(@PathVariable long userId) {
+        List<Course> listCourse = tienDoService.findListCourseByUserId(userId);
+        if (listCourse.size() == 0) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(listCourse);
+    }
 
 }

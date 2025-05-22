@@ -7,9 +7,7 @@ import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import lombok.extern.slf4j.Slf4j;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -186,5 +184,8 @@ public class TestExerciseService {
         recommendation.put("vi_tri", lesson.getViTri());
         recommendation.put("message", message);
         return recommendation;
+    }
+    public TestExercise save(TestExercise testExercise) {
+        return this.testExerciseRepository.save(testExercise);
     }
 }

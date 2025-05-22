@@ -20,10 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -215,4 +212,17 @@ public class ExerciseService {
         String correctAnswer = exercise.getDapAnDung().name();
         return correctAnswer.equalsIgnoreCase(userAnswer);
     }
+
+    public List<Exercise> findExerciseListRandomByLessonId(long idLesson, int randomNumber) {
+        List<Exercise> exerciseList =  exerciseRepository.findAllByLessonId(idLesson);
+        List<Exercise> exerciseListRandom = new ArrayList<Exercise>();
+        if (exerciseList.size() > randomNumber) {
+            Collections.shuffle(exerciseList);
+            for (int i = 0; i < randomNumber; i++) {
+                exerciseListRandom.add(exerciseList.get(i));
+            }
+        }
+        return exerciseListRandom;
+    }
+
 }

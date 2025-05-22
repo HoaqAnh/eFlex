@@ -2,45 +2,53 @@ package EduConnect.Service;
 
 
 import EduConnect.Domain.Course;
+import EduConnect.Domain.Exercise;
+import EduConnect.Domain.Lesson;
 import EduConnect.Domain.Response.ResultPaginationDTO;
 import EduConnect.Repository.CourseRepository;
+import EduConnect.Repository.ExerciseRepository;
 import EduConnect.Repository.TienDoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
 @Service
 public class CourseService {
 
-    private final CourseRepository sourceRepository;
+    private final CourseRepository courseRepository;
     private final TienDoRepository tienDoRepository;
+    private final ExerciseService exerciseService;
 
-    public CourseService(CourseRepository subjectRepository, TienDoRepository tienDoRepository) {
-        this.sourceRepository = subjectRepository;
+    public CourseService(CourseRepository courseRepository, TienDoRepository tienDoRepository,
+                         ExerciseService exerciseService) {
+        this.courseRepository = courseRepository;
         this.tienDoRepository = tienDoRepository;
+        this.exerciseService = exerciseService;
     }
     public Course findByTenMon(String tenMon) {
-        return sourceRepository.findByTenMon(tenMon);
+        return courseRepository.findByTenMon(tenMon);
     }
     public Course findById(long id) {
-        if(sourceRepository.findById(id).isPresent()) {
-            return sourceRepository.findById(id).get();
+        if(courseRepository.findById(id).isPresent()) {
+            return courseRepository.findById(id).get();
         }
         else {
             return null;
         }
     }
     public Course CreateCourse(Course course) {
-        return this.sourceRepository.save(course);
+        return this.courseRepository.save(course);
     }
 
     public ResultPaginationDTO GetAllCourses(Pageable page) {
         ResultPaginationDTO result = new ResultPaginationDTO();
-        Page<Course> listCourse=this.sourceRepository.findAll(page);
+        Page<Course> listCourse=this.courseRepository.findAll(page);
 
         ResultPaginationDTO.Meta meta=new ResultPaginationDTO.Meta();
 
@@ -57,7 +65,7 @@ public class CourseService {
     }
     public ResultPaginationDTO GetAllCoursesByCategory(Pageable page,long idCategory) {
         ResultPaginationDTO result = new ResultPaginationDTO();
-        Page<Course> listCourse=this.sourceRepository.findAllByCategoryId(page,idCategory);
+        Page<Course> listCourse=this.courseRepository.findAllByCategoryId(page,idCategory);
 
         ResultPaginationDTO.Meta meta=new ResultPaginationDTO.Meta();
 
@@ -77,11 +85,11 @@ public class CourseService {
         if(this.tienDoRepository.countByCourse(course.getId())>0) {
             this.tienDoRepository.deleteByCourse(course.getId());
         }
-        sourceRepository.deleteById(course.getId());
+        courseRepository.deleteById(course.getId());
     }
 
     public Course GetCourseById(Long id) {
-        Optional<Course> course = this.sourceRepository.findById(id);
+        Optional<Course> course = this.courseRepository.findById(id);
         if(course.isPresent()) {
             return course.get();
         }else
@@ -89,7 +97,14 @@ public class CourseService {
             return null;
         }
     }
-
-
+    public List<Exercise> createExerciseListByCourseId(long courseId, int randomNumber){
+        List<Exercise> listRandomExerciseByIdCourse = new ArrayList<Exercise>();
+        Course course = this.courseRepository.findById(courseId).get();
+        for (Lesson lesson : course.getLessonList()){
+            List<Exercise> listRandom = exerciseService.findExerciseListRandomByLessonId(lesson.getId(),randomNumber);
+            listRandomExerciseByIdCourse.addAll(listRandom);
+        }
+        return listRandomExerciseByIdCourse;
+    }
 
 }

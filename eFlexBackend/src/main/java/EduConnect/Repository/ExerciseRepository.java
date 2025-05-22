@@ -23,4 +23,7 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
     boolean existsById(Long id);
     Page<Exercise> findAll(Pageable pageable);
 
+    @Query("select e from Exercise e where e.testExercise.lesson.id = ?1")
+    List<Exercise> findAllByLessonId(long lessonId);
+
 }

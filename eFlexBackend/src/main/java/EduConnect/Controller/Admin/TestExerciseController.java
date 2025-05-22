@@ -1,8 +1,12 @@
 package EduConnect.Controller.Admin;
 
+import EduConnect.Domain.Exercise;
 import EduConnect.Domain.Lesson;
 import EduConnect.Domain.TestExercise;
+import EduConnect.Repository.ExerciseRepository;
 import EduConnect.Repository.LessonRepository;
+import EduConnect.Service.CourseService;
+import EduConnect.Service.ExerciseService;
 import EduConnect.Service.LessonService;
 import EduConnect.Service.TestExerciseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +23,18 @@ public class TestExerciseController {
 
     private final TestExerciseService testExerciseService;
     private final LessonRepository lessonRepository;
+    private final ExerciseService exerciseService;
+    private final CourseService courseService;
 
     @Autowired
-    public TestExerciseController(TestExerciseService testExerciseService, LessonRepository lessonRepository) {
+    public TestExerciseController(TestExerciseService testExerciseService,
+                                  LessonRepository lessonRepository,
+                                  ExerciseService exerciseService,
+                                  CourseService courseService) {
         this.testExerciseService = testExerciseService;
         this.lessonRepository = lessonRepository;
+        this.exerciseService = exerciseService;
+        this.courseService = courseService;
     }
     @PostMapping
     public ResponseEntity<TestExercise> createTestExercise(@RequestBody TestExercise testExercise) {
@@ -52,6 +63,20 @@ public class TestExerciseController {
     public ResponseEntity<List<TestExercise>> getTestExerciseByLessonn(@PathVariable Long idLesson) {
         List<TestExercise> testExerciseList = this.testExerciseService.getTestByLesson(idLesson);
         return ResponseEntity.ok(testExerciseList);
+    }
+    @GetMapping("/assessmentTest/{courseId}")
+    public ResponseEntity<TestExercise> getRandomTestExerciseByCourseId(@PathVariable Long courseId) {
+        TestExercise testExercise = new TestExercise();
+        testExercise.setName("Level Assessment Test");
+        List<Exercise> exerciseList = courseService.createExerciseListByCourseId(courseId,1);
+        testExercise.setExerciseList(exerciseList);
+        testExerciseService.save(testExercise);
+        if (exerciseList.size() != 0) {
+            return ResponseEntity.ok(testExercise);
+        }
+        else{
+            return ResponseEntity.badRequest().build();
+        }
     }
     
 }

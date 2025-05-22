@@ -1,10 +1,12 @@
 package EduConnect.Service;
 
+import EduConnect.Domain.Course;
 import EduConnect.Domain.Response.SubcriberCourseDTO;
 import EduConnect.Domain.TienDo;
 import EduConnect.Repository.TienDoRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -42,5 +44,8 @@ public class TienDoService {
 
     public TienDo timTienDoMonHocCuaUser(Long idUser, Long idCourse){
         return tienDoRepository.findByNguoiDung_IdAndCourse_Id(idUser, idCourse);
+    }
+    public List<Course> findListCourseByUserId(long userId){
+        return tienDoRepository.findListCourseByUserId(userId);
     }
 }
