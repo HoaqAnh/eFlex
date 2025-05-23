@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSections } from "../../hooks/course/useSection";
 import { useGetProgress } from "../../hooks/progress/useProgress";

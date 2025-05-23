@@ -1,20 +1,19 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from 'react-hot-toast';
 import TokenService from "../../services/tokenService";
-import { getCurrentUser } from "../../services/authService";
 import "../../styles/authentication/google-login.css";
 
 const EmailVerify = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [error, setError] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+    // const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const authenticateWithGoogle = async () => {
             try {
-                setIsLoading(true);
+                // setIsLoading(true);
                 const urlParams = new URLSearchParams(location.search);
                 const code = urlParams.get("token");
 
@@ -31,8 +30,6 @@ const EmailVerify = () => {
                     throw new Error(errorData.data?.error || "Đăng nhập thất bại");
                 }
 
-                const responseData = await response.json();
-
                 toast.success("Xác thực thành công, vui lòng đăng nhập lại!");
                 setTimeout(() => {
                     navigate("/login");
@@ -45,9 +42,10 @@ const EmailVerify = () => {
                 setTimeout(() => {
                     navigate("/login", { replace: true });
                 }, 3000);
-            } finally {
-                setIsLoading(false);
             }
+            // } finally {
+            //     setIsLoading(false);
+            // }
         };
 
         authenticateWithGoogle();

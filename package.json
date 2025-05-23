@@ -4,12 +4,12 @@
    "proxy": "http://localhost:8080",
    "private": true,
    "dependencies": {
-      "@react-oauth/google": "^0.12.1",
+      "@react-oauth/google": "^0.12.2",
       "@stomp/stompjs": "^7.1.0",
       "@testing-library/dom": "^10.4.0",
       "@testing-library/jest-dom": "^6.6.3",
       "@testing-library/react": "^16.2.0",
-      "@testing-library/user-event": "^13.5.0",
+      "@testing-library/user-event": "^14.6.1",
       "chart.js": "^4.4.8",
       "crypto-js": "^4.2.0",
       "eflex": "file:",
@@ -18,12 +18,12 @@
       "react-dom": "^19.0.0",
       "react-hot-toast": "^2.5.2",
       "react-markdown": "^10.1.0",
-      "react-router-dom": "^7.3.0",
+      "react-router-dom": "^7.6.0",
       "react-scripts": "5.0.1",
       "react-syntax-highlighter": "^15.6.1",
       "sockjs-client": "^1.6.1",
       "stompjs": "^2.3.3",
-      "web-vitals": "^2.1.4"
+      "web-vitals": "^5.0.1"
    },
    "scripts": {
       "start": "react-scripts start",

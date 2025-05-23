@@ -11,12 +11,12 @@ const GoogleLogin = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const authenticateWithGoogle = async () => {
       try {
-        setIsLoading(true);
+        // setIsLoading(true);
         const urlParams = new URLSearchParams(location.search);
         const code = urlParams.get("code");
 
@@ -54,7 +54,7 @@ const GoogleLogin = () => {
         // Điều hướng dựa trên role
         const roleName = userData.data.roleName;
         if (roleName === "admin") {
-          navigate("/dashboard", { replace: true });
+          navigate("/admin", { replace: true });
         } else {
           navigate("/", { replace: true });
         }
@@ -68,9 +68,10 @@ const GoogleLogin = () => {
         setTimeout(() => {
           navigate("/login", { replace: true });
         }, 3000);
-      } finally {
-        setIsLoading(false);
       }
+      // } finally {
+      //   setIsLoading(false);
+      // }
     };
 
     authenticateWithGoogle();
