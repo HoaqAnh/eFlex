@@ -2,6 +2,7 @@ package EduConnect.Domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,7 +36,6 @@ public class Lesson {
     private List<ProgressLesson> progressLessons;
 
     @OneToMany(mappedBy = "lesson",cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
     private List<TestExercise> testExercise;
 
 

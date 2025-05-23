@@ -29,11 +29,10 @@ public class Section {
     private int viTri;
     @ManyToOne
     @JoinColumn(name = "id_BaiHoc")
-    @JsonBackReference
+    @JsonIgnore
     private Lesson lesson;
 
     @OneToMany(mappedBy = "section",cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
     private List<ProgressSection> progressSections;
 
 

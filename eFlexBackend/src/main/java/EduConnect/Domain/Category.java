@@ -1,5 +1,6 @@
 package EduConnect.Domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -19,6 +20,6 @@ public class Category {
     private String nameCategory;
 
     @OneToMany(mappedBy = "category")
-    @JsonIgnore
+    @JsonBackReference(value = "course-category")
     private List<Course> courseList;
 }

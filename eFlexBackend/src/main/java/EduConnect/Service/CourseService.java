@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -98,11 +99,18 @@ public class CourseService {
         }
     }
     public List<Exercise> createExerciseListByCourseId(long courseId, int randomNumber){
-        List<Exercise> listRandomExerciseByIdCourse = new ArrayList<Exercise>();
-        Course course = this.courseRepository.findById(courseId).get();
-        for (Lesson lesson : course.getLessonList()){
-            List<Exercise> listRandom = exerciseService.findExerciseListRandomByLessonId(lesson.getId(),randomNumber);
-            listRandomExerciseByIdCourse.addAll(listRandom);
+        List<Exercise> listRandomExerciseByIdCourse = new ArrayList<>();
+
+        Optional<Course> optionalCourse = courseRepository.findById(courseId);
+
+        if (optionalCourse.isEmpty()) return listRandomExerciseByIdCourse;
+
+        Course course = optionalCourse.get();
+
+
+        for (Lesson lesson : course.getLessonList()) {
+            List<Exercise> allExercises = exerciseService.findExerciseListRandomByLessonId(lesson.getId(),randomNumber);
+            listRandomExerciseByIdCourse.addAll(allExercises);
         }
         return listRandomExerciseByIdCourse;
     }

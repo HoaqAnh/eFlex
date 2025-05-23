@@ -1,6 +1,7 @@
 package EduConnect.Domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,12 +22,12 @@ public class HistoryTestExercise {
 
     @ManyToOne
     @JoinColumn(name = "id_User")
-    @JsonBackReference
+    @JsonIgnore
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "id_bkt")
-    @JsonBackReference
+    @JsonIgnore
     private TestExercise testExercise;
 
     @PrePersist

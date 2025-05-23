@@ -58,7 +58,6 @@ public class TestExerciseController {
         TestExercise testExercise = testExerciseService.getTestExerciseById(id);
         return new ResponseEntity<>(testExercise, HttpStatus.OK);
     }
-
     @GetMapping("/lesson/{idLesson}")
     public ResponseEntity<List<TestExercise>> getTestExerciseByLessonn(@PathVariable Long idLesson) {
         List<TestExercise> testExerciseList = this.testExerciseService.getTestByLesson(idLesson);
@@ -66,17 +65,9 @@ public class TestExerciseController {
     }
     @GetMapping("/assessmentTest/{courseId}")
     public ResponseEntity<TestExercise> getRandomTestExerciseByCourseId(@PathVariable Long courseId) {
-        TestExercise testExercise = new TestExercise();
-        testExercise.setName("Level Assessment Test");
-        List<Exercise> exerciseList = courseService.createExerciseListByCourseId(courseId,1);
-        testExercise.setExerciseList(exerciseList);
-        testExerciseService.save(testExercise);
-        if (exerciseList.size() != 0) {
-            return ResponseEntity.ok(testExercise);
-        }
-        else{
-            return ResponseEntity.badRequest().build();
-        }
+        TestExercise testExercise = testExerciseService.findByName("Level Assessment Test");
+        testExercise.setExerciseList(courseService.createExerciseListByCourseId(courseId,3));
+        return new ResponseEntity<>(testExercise, HttpStatus.OK);
     }
-    
+
 }

@@ -188,4 +188,7 @@ public class TestExerciseService {
     public TestExercise save(TestExercise testExercise) {
         return this.testExerciseRepository.save(testExercise);
     }
+    public TestExercise findByName(String name){
+        return this.testExerciseRepository.findByName(name);
+    }
 }

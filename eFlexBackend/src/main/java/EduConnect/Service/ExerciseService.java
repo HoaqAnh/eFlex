@@ -214,15 +214,14 @@ public class ExerciseService {
     }
 
     public List<Exercise> findExerciseListRandomByLessonId(long idLesson, int randomNumber) {
-        List<Exercise> exerciseList =  exerciseRepository.findAllByLessonId(idLesson);
-        List<Exercise> exerciseListRandom = new ArrayList<Exercise>();
-        if (exerciseList.size() > randomNumber) {
-            Collections.shuffle(exerciseList);
-            for (int i = 0; i < randomNumber; i++) {
-                exerciseListRandom.add(exerciseList.get(i));
-            }
+        List<Exercise> exerciseList = exerciseRepository.findAllByLessonId(idLesson);
+        Collections.shuffle(exerciseList);
+
+        if (exerciseList.size() >= randomNumber) {
+            return new ArrayList<>(exerciseList.subList(0, randomNumber));
+        } else {
+            return new ArrayList<>(exerciseList);
         }
-        return exerciseListRandom;
     }
 
 }
