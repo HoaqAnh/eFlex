@@ -66,6 +66,10 @@ public class User {
 
     @OneToMany(mappedBy = "nguoiDung",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TienDo> tienDoList;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HistoryTestExercise> historyTestExercises;
+
     @PrePersist
     public void BeforeCreate() {
         this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
