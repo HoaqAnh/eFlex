@@ -34,8 +34,6 @@
     gap: 2rem;
     overflow-x: auto;
     overflow-y: hidden;
-    cursor: grab;
-    user-select: none;
     -webkit-user-select: none;
 }
 

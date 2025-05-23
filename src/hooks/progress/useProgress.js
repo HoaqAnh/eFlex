@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { progress, getSectionProgress, getLessonProgress } from "../../services/progressService"
+import { progress, getSectionProgress, getLessonProgress, getCourseStudying } from "../../services/progressService"
 
 export const useProgress = () => {
     const [loading, setLoading] = useState(false);
@@ -49,20 +49,20 @@ export const useGetProgress = (userId, entityId, entityType = "lesson") => {
             setError(null);
             setIsCompleted(false);
             try {
-                let responseData;
+                let result;
                 if (entityType === "lesson") {
-                    responseData = await getLessonProgress(userId, entityId);
+                    result = await getLessonProgress(userId, entityId);
 
                 } else if (entityType === "section") {
-                    responseData = await getSectionProgress(userId, entityId);
+                    result = await getSectionProgress(userId, entityId);
                 } else {
                     console.warn("Loại thực thể không hợp lệ:", entityType);
                     setLoading(false);
                     return;
                 }
 
-                if (responseData && typeof responseData.data === 'boolean') {
-                    setIsCompleted(responseData.data);
+                if (result && typeof result.data === 'boolean') {
+                    setIsCompleted(result.data);
                 } else {
                     console.warn(`Dữ liệu tiến độ không hợp lệ hoặc không tìm thấy cho ${entityType} ID: ${entityId}. Mặc định là false.`);
                     setIsCompleted(false);
@@ -85,4 +85,39 @@ export const useGetProgress = (userId, entityId, entityType = "lesson") => {
         isProgressLoading: loading,
         progressFetchError: error
     };
+};
+
+export const useGetCourseStudying = (userId) => {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [courseStudying, setCourseStudying] = useState([]);
+
+    useEffect(() => {
+        if (!userId) {
+            throw new Error('Không tìm thấy userId: ', userId);
+        }
+
+        const fetchCourseStudying = async () => {
+            setLoading(true);
+            setError(null);
+
+            try {
+                const result = await getCourseStudying(userId);
+                if (!result) {
+                    throw new Error(result.error?.message || 'Lỗi không xác định từ API getCourseStudying');
+                }
+
+                setCourseStudying(result.data);
+            } catch (err) {
+                setError(err.message || 'Không thể lấy thông tin bài đã học. Vui lòng thử lại sau.');
+                throw new Error();
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchCourseStudying();
+    }, [userId])
+
+    return { loading, error, courseStudying };
 };

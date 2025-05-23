@@ -79,13 +79,12 @@ export const getCurrentUser = async () => {
       return null;
     }
 
-    // Kiểm tra token hợp lệ
     if (!TokenService.isTokenValid()) {
       console.error("Token không hợp lệ hoặc đã hết hạn");
       TokenService.clearTokens();
       return null;
     }
-
+    
     const response = await fetch(`${BASE_URL}/auth/account`, {
       method: "GET",
       headers: {
@@ -104,8 +103,7 @@ export const getCurrentUser = async () => {
       }
     }
 
-    const responseData = await response.json();
-    return responseData;
+    return await response.json();
   } catch (error) {
     throw error;
   }

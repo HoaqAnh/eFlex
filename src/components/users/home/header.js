@@ -1,19 +1,13 @@
 import React, { useEffect } from "react";
-
-//hooks
 import { useModel } from "../../../hooks/model/useModel"
-
-//component
 import Recommend from "./recommend"
-
-//style
 import "../../../styles/users/home/header.css"
 
-const Header = (user) => {
-    const { courses, recommendData, loading, error } = useModel();
+const Header = ({ UserData }) => {
+    const { courses, recommendData, loading: recommendDataLoading, error: recommendDataError } = useModel();
     const userInfo = {
-        name: user.user.fullname,
-        id: user.user.id,
+        name: UserData.fullname,
+        id: UserData.id,
         avatar: "./avatar",
         news: "Doanh nghiệp ba thành viên mỗi người trúng 20 tỷ. Xin chúc mừng !"
     }
@@ -27,7 +21,7 @@ const Header = (user) => {
     useEffect(() => {
         courses(userInfo.id);
     }, [courses, userInfo.id]);
-    
+
     return (
         <div className="home-header">
             <div className="home-header__container">
@@ -54,8 +48,8 @@ const Header = (user) => {
                 <div className="home-header__container-right">
                     <Recommend
                         recommendData={recommendData}
-                        loading={loading}
-                        error={error}
+                        loading={recommendDataLoading}
+                        error={recommendDataError}
                     />
                 </div>
             </div>

@@ -57,7 +57,7 @@ const LessonWithSection = ({ user, lesson, course }) => {
                 {!collapsed && (
                     <div className="lesson-body__content-content">
                         {sectionsListLoading && <Loading Title="Đang tải danh sách mục..." />}
-                        {sectionsListError && <Error Title={`Lỗi tải danh sách mục: ${sectionsListError.message || 'Vui lòng thử lại.'}`} />}
+                        {sectionsListError && <Error Title='Lỗi tải danh sách mục. Vui lòng thử lại sau!' />}
                         {!sectionsListLoading && !sectionsListError && (
                             Array.isArray(listSection) && listSection.length > 0 ? (
                                 listSection.map((sectionItem) => (
@@ -70,7 +70,7 @@ const LessonWithSection = ({ user, lesson, course }) => {
                                     />
                                 ))
                             ) : (
-                                <p>Bài học này không có mục nào.</p>
+                                <p className="sectionNull">Bài học này không có mục nào.</p>
                             )
                         )}
                     </div>

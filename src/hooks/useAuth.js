@@ -70,13 +70,6 @@ export const useAuth = () => {
   }, [isConnected, setUser, hasFetchedUser]);
 
   useEffect(() => {
-    if (shouldRedirect.current) {
-      navigate(redirectPath.current, { replace: true });
-      shouldRedirect.current = false;
-    }
-  }, [navigate, location.pathname, isLoading]);
-
-  useEffect(() => {
     let isMounted = true;
     const fetchAuth = async () => {
       if (TokenService.getToken() && location.pathname !== '/login') {
@@ -84,7 +77,7 @@ export const useAuth = () => {
           try {
             await fetchUser();
           } catch (error) {
-            console.error("Fetch user failed:", error);
+            console.error("Fetch user failed: ", error);
           }
         }
       } else {
@@ -102,6 +95,13 @@ export const useAuth = () => {
       isMounted = false;
     };
   }, [fetchUser, hasFetchedUser, location.pathname]);
+
+  useEffect(() => {
+    if (shouldRedirect.current) {
+      navigate(redirectPath.current, { replace: true });
+      shouldRedirect.current = false;
+    }
+  }, [navigate, location.pathname, isLoading]);
 
   const handleLogin = useCallback(async (email, password) => {
     try {
@@ -260,7 +260,7 @@ export const useAuth = () => {
     if (isAdminRoute(currentPath) && !isAdmin) {
       setTimeout(() => {
         toast.error("Bạn không có quyền truy cập trang này");
-      }, 0);
+      }, 200);
       shouldRedirect.current = true;
       redirectPath.current = "/";
       return {
@@ -307,4 +307,36 @@ export const useAuth = () => {
     requireAdmin,
     isAdminRoute
   };
+};
+
+export const useGetUserData = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const result = await getCurrentUser();
+
+        if (!result) {
+          throw new Error("No content user data");
+        }
+
+        setUserData(result.data);
+      } catch (err) {
+        setError("Fetch user failed");
+        throw new Error();
+      } finally {
+        setLoading(false)
+      }
+    };
+
+    fetchUserData();
+  }, [])
+
+  return { loading, error, userData };
 };

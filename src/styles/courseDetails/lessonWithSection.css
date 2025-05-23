@@ -68,6 +68,13 @@
     will-change: max-height, opacity, padding;
 }
 
+.sectionNull {
+    padding: 18px 24px;
+    color: var(--text-secondary);
+    font-style: italic;
+    transition: color 0.3s;
+}
+
 .expand-button {
     width: 32px;
     height: 32px;
