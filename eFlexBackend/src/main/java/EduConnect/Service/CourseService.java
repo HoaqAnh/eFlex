@@ -4,9 +4,11 @@ package EduConnect.Service;
 import EduConnect.Domain.Course;
 import EduConnect.Domain.Exercise;
 import EduConnect.Domain.Lesson;
+import EduConnect.Domain.Response.Course_LessonResponse;
 import EduConnect.Domain.Response.ResultPaginationDTO;
 import EduConnect.Repository.CourseRepository;
 import EduConnect.Repository.ExerciseRepository;
+import EduConnect.Repository.ProgressLessonRepository;
 import EduConnect.Repository.TienDoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
@@ -25,12 +27,15 @@ public class CourseService {
     private final CourseRepository courseRepository;
     private final TienDoRepository tienDoRepository;
     private final ExerciseService exerciseService;
+    private final ProgressLessonRepository progressLessonRepository;
 
     public CourseService(CourseRepository courseRepository, TienDoRepository tienDoRepository,
-                         ExerciseService exerciseService) {
+                         ExerciseService exerciseService,
+                         ProgressLessonRepository progressLessonRepository) {
         this.courseRepository = courseRepository;
         this.tienDoRepository = tienDoRepository;
         this.exerciseService = exerciseService;
+        this.progressLessonRepository = progressLessonRepository;
     }
     public Course findByTenMon(String tenMon) {
         return courseRepository.findByTenMon(tenMon);
@@ -115,4 +120,11 @@ public class CourseService {
         return listRandomExerciseByIdCourse;
     }
 
+    public Course_LessonResponse.Course convertToCourse_LessonResponse(Course course) {
+        Course_LessonResponse.Course result = new Course_LessonResponse.Course();
+        result.setId(course.getId());
+        result.setName(course.getTenMon());
+
+        return result;
+    }
 }

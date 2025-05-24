@@ -63,6 +63,7 @@ public class ProgressService {
             throw new IllegalStateException("Section with ID " + sectionId + " is not associated with any Lesson");
         }
 
+
         long baiHocId = lesson.getId();
         long nguoiDungId = currentUser.getId();
 
@@ -71,23 +72,20 @@ public class ProgressService {
         long completedSections = progressSectionRepository.countByUserIdAndSectionLessonIdAndCompleteTrue(nguoiDungId, baiHocId);
         System.out.println("completedSections: " + completedSections);
 
-        if (totalSections > 0 && totalSections == completedSections) {
 
-            boolean exists = progressLessonRepository.existsByUserIdAndLessonId(nguoiDungId, baiHocId);
-            if (!exists) {
-                ProgressLesson progressLesson = new ProgressLesson();
-                progressLesson.setUser(currentUser);
-                progressLesson.setLesson(lesson);
-                progressLesson.setComplete(true);
+        boolean exists = progressLessonRepository.existsByUserIdAndLessonId(nguoiDungId, baiHocId);
+        if (!exists) {
+            ProgressLesson progressLesson = new ProgressLesson();
+            progressLesson.setUser(currentUser);
+            progressLesson.setLesson(lesson);
+            progressLesson.setComplete(true);
 
-                progressLessonRepository.save(progressLesson);
-            }
+            progressLessonRepository.save(progressLesson);
         }
-        //Tao ProgressLesson
-        ProgressLesson progressLesson = new ProgressLesson();
-        progressLesson.setUser(currentUser);
-        progressLesson.setLesson(lesson);
-        progressLessonRepository.save(progressLesson);
+//        if (totalSections > 0 || totalSections == completedSections) {
+//
+//        }
+
 
         // Tính phần trăm Progress sau khi làm xong 1 section
         Long idCourse = lesson.getCourse().getId();

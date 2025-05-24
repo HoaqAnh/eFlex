@@ -15,7 +15,10 @@ public interface ProgressLessonRepository extends CrudRepository<ProgressLesson,
     long countByUserIdAndSectionLessonIdAndCompleteTrue(Long userId, Long lessonId);
     boolean existsByUserIdAndLessonId(long userId, long lessonId);
 
-    @Query("select pr.lesson from ProgressLesson pr where pr.user.id = ?1")
-    List<Lesson> findAllByUserId(long userId);
+    @Query("select pr.lesson " +
+            "from ProgressLesson pr " +
+            "where pr.user.id = :userId " +
+            "and pr.lesson.course.id = :courseId")
+    List<Lesson> findAllByUserIdAndCourseId(long userId, long courseId);
 
 }

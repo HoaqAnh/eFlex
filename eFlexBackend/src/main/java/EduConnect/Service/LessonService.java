@@ -2,6 +2,7 @@ package EduConnect.Service;
 
 import EduConnect.Domain.*;
 import EduConnect.Domain.Response.CountCourseDTO;
+import EduConnect.Domain.Response.Course_LessonResponse;
 import EduConnect.Domain.Response.LessonDTO;
 import EduConnect.Domain.Response.ResultPaginationDTO;
 import EduConnect.Repository.CourseRepository;
@@ -112,9 +113,8 @@ public class LessonService {
                 .toList();
     }
 
-    public List<Lesson> findLessonByUserId(long id) {
-        return this.progressLessonRepository.findAllByUserId(id);
+    public List<Lesson> findLessonByUserId(long userId, long courseId) {
+        return this.progressLessonRepository.findAllByUserIdAndCourseId(userId, courseId);
     }
-
 
 }
