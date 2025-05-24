@@ -1,18 +1,25 @@
 .sidebar {
-  width: 250px;
-  min-width: 250px;
+  width: 80px;
+  min-width: 80px;
   background-color: var(--background-primary);
-  color: #1a1a1a;
-  box-shadow: 2px 0 10px var(--shadow-color); 
+  color: var(--text-primary);
+  box-shadow: 2px 0 10px var(--shadow-color);
   height: 100%;
   overflow-y: auto;
-  transition: background-color 0.3s, box-shadow 0.3s;
+  overflow-x: hidden;
+  transition: width 0.2s ease, min-width 0.2s ease, background-color 0.3s, box-shadow 0.3s;
   position: sticky;
   top: 0;
 }
 
+.sidebar.expanded {
+  width: 250px;
+  min-width: 250px;
+}
+
 .side-navigation {
-  padding: 20px 10px 0 0;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .side-navigation ul {
@@ -24,17 +31,45 @@
 .side-navigation li {
   display: flex;
   align-items: center;
-  padding: 15px 20px;
+  padding-top: 15px;
+  padding-bottom: 15px;
   cursor: pointer;
   transition: all 0.3s ease;
   border-left: 3px solid transparent;
   margin-bottom: 10px;
-  border-radius: 0 20px 20px 0;
+  overflow: hidden;
+  white-space: nowrap;
 }
+
+.sidebar.collapsed .side-navigation li {
+  padding-left: 0;
+  padding-right: 0;
+  justify-content: center;
+  border-radius: 0;
+}
+
+.sidebar.collapsed .side-navigation li .nav-icon {
+  margin-right: 0;
+}
+
+
+.sidebar.expanded .side-navigation li {
+  padding-left: 20px;
+  padding-right: 10px;
+  justify-content: flex-start;
+}
+
+.sidebar.expanded .side-navigation li .nav-icon {
+  margin-right: 15px;
+}
+
 
 .side-navigation li:hover {
   background-color: var(--li--background);
   border-left-color: var(--li-border-color);
+}
+
+.sidebar.expanded .side-navigation li:hover {
   transform: translateX(5px);
 }
 
@@ -42,12 +77,9 @@
   background-color: var(--li--background-active);
   border-left-color: #E0312E;
   font-weight: 600;
-  color: var(--li-text-color);
-  transition: background-color 0.3s, color 0.3s;
 }
 
 .nav-icon {
-  margin-right: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -57,6 +89,8 @@
   border-radius: 8px;
   box-shadow: 0 2px 5px var(--shadow-color);
   transition: all 0.3s ease;
+  flex-shrink: 0;
+  color: var(--text-primary);
 }
 
 .side-navigation li:hover .nav-icon {
@@ -66,14 +100,31 @@
 
 .side-navigation li.active .nav-icon {
   background-color: #14375F;
-}
-
-.side-navigation li.active .nav-icon img {
-  filter: brightness(0) invert(1);
+  color: #FFFFFF;
 }
 
 .side-navigation span {
   font-size: 15px;
   color: var(--text-primary);
-  transition: all 0.3s ease;
+  transition: opacity 0.2s ease-in-out, max-width 0.3s ease-in-out;
+  opacity: 0;
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-left: 0;
+}
+
+.sidebar.expanded .side-navigation span {
+  opacity: 1;
+  max-width: 150px;
+}
+
+.sidebar.expanded .side-navigation li.active span {
+  color: var(--text-primary);
+}
+
+.nav-icon svg {
+  width: 24px;
+  height: 24px;
+  transition: fill 0.3s ease;
 }

@@ -1,12 +1,12 @@
 :root[data-theme="light"] {
   --background-primary: #F4FAFF;
   --background-secondary: #ffffff;
-  --text-primary: #333333;
+  --text-primary: #444;
   --text-secondary: #666666;
   --border-color: #eaeaea;
   --hover-color: #f0f0f0;
   --shadow-color: rgba(0, 0, 0, 0.1);
-  --title-background: #bee2f5;
+  --title-background: #ebf8ff;
   --scrollbarTrack-background: #f0f0f0;
   --scrollbarThumb-background: #707070;
   --li--background: rgba(20, 55, 95, 0.1);

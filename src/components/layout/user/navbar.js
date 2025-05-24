@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 import { useTheme } from "../../../context/ThemeContext";
-import eFlexLogo from "../../../assets/logo/eFlex.png";
 import DialogPopup from "../../../components/users/test/dialogPopup";
 import "../../../styles/layout/navbar.css";
 import "../../../styles/theme.css";
@@ -59,30 +58,21 @@ const Navbar = () => {
     setShowLogoutConfirm(false);
   };
 
+  const handleLogoClick = () => {
+    navigate("/");
+  };
+
   return (
     <div className="navbar">
-      <div className="navbar__logo">
-        <img src={eFlexLogo} alt="eFlex Logo" className="navbar__logo-image" />
+      <div 
+        className="navbar__logo" 
+        onClick={handleLogoClick} 
+        title="Về trang chủ eFlex"
+      >
+        <span className="navbar__logo-text-e">E-</span>
+        <span className="navbar__logo-text-flex">Flex</span>
       </div>
       <div className="navbar__actions">
-        <button
-          className={`navbar__button ${activeButton === "help" ? "navbar__button--active" : ""
-            }`}
-          onMouseEnter={() => setActiveButton("help")}
-          onMouseLeave={() => setActiveButton(null)}
-          title="Trợ giúp"
-        >
-          <svg
-            className="navbar__button-icon"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-          >
-            <path
-              fill="currentColor"
-              d="M11.5 16.5h1V11h-1zm.5-6.923q.262 0 .439-.177t.176-.439t-.177-.438T12 8.346t-.438.177t-.177.439t.177.438t.438.177M12.003 21q-1.867 0-3.51-.708q-1.643-.709-2.859-1.924t-1.925-2.856T3 12.003t.709-3.51Q4.417 6.85 5.63 5.634t2.857-1.925T11.997 3t3.51.709q1.643.708 2.859 1.922t1.925 2.857t.709 3.509t-.708 3.51t-1.924 2.859t-2.856 1.925t-3.509.709M12 20q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"
-            />
-          </svg>
-        </button>
         <button
           className={`navbar__button ${activeButton === "theme" ? "navbar__button--active" : ""}`}
           onMouseEnter={() => setActiveButton("theme")}
@@ -110,24 +100,6 @@ const Navbar = () => {
                 d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9s9-4.03 9-9c0-.46-.04-.92-.1-1.36c-.98 1.37-2.58 2.26-4.4 2.26c-2.98 0-5.4-2.42-5.4-5.4c0-1.81.89-3.42 2.26-4.4c-.44-.06-.9-.1-1.36-.1z"
               />
             )}
-          </svg>
-        </button>
-        <button
-          className={`navbar__button ${activeButton === "notifications" ? "navbar__button--active" : ""
-            }`}
-          onMouseEnter={() => setActiveButton("notifications")}
-          onMouseLeave={() => setActiveButton(null)}
-          title="Thông báo"
-        >
-          <svg
-            className="navbar__button-icon"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-          >
-            <g fill="none" stroke="currentColor">
-              <path d="M18.934 14.98a3 3 0 0 1-.457-1.59V9.226a6.477 6.477 0 0 0-12.954 0v4.162a3 3 0 0 1-.457 1.592l-1.088 1.74a1 1 0 0 0 .848 1.53h14.348a1 1 0 0 0 .848-1.53z" />
-              <path d="M10 21.25h4" />
-            </g>
           </svg>
         </button>
         <div className="navbar__user-container">

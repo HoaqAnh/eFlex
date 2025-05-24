@@ -9,7 +9,7 @@ const Recommend = ({ recommendData, loading, error }) => {
     const renderContent = () => {
         if (loading) return <p>Đang tải dữ liệu...</p>;
         if (error) return <p>Có lỗi xảy ra: {error}</p>;
-        if (!recommendData?.recommendations?.length) return <p>Chưa có khóa học đề xuất</p>;
+        if (!recommendData?.recommendations?.length) return <p className="NoContentRecommend">Chưa có khóa học đề xuất nào cho bạn</p>;
 
         return recommendData.recommendations.map((course, index) => (
             <RecommendItem key={index} course={course} />
@@ -18,7 +18,7 @@ const Recommend = ({ recommendData, loading, error }) => {
 
     return (
         <div className="home-recommend">
-            <p className="home-recommend__title">Môn học đề xuất cho bạn</p>
+            <p className="home-recommend__title">Một số khóa học có thể phù hợp với bạn</p>
             <div className="home-recommend__container" ref={containerRef}>
                 {renderContent()}
             </div>

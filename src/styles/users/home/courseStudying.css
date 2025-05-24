@@ -28,3 +28,11 @@
     border-radius: 10px;
     -webkit-transition: background 0.3s
 }
+
+.NoContentCourseStudying {
+    flex: 1;
+    color: var(--text-primary);
+    font-style: italic;
+    text-align: center;
+    transition: color 0.3s;
+}

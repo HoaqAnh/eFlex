@@ -9,7 +9,7 @@ const Header = ({ UserData }) => {
         name: UserData.fullname,
         id: UserData.id,
         avatar: "./avatar",
-        news: "Doanh nghiệp ba thành viên mỗi người trúng 20 tỷ. Xin chúc mừng !"
+        news: "Chào mừng bạn đến với eFlex, chúc bạn có một trải nghiệm và học tập tốt trên ứng dụng của chúng tôi!"
     }
     const today = new Date().toLocaleDateString('vi-VN', {
         weekday: 'long',
@@ -38,7 +38,7 @@ const Header = ({ UserData }) => {
                     </div>
                     <div className="home-header__container-left__bottom">
                         <p className="home-header__container-left__bottom-title">
-                            Tin tức
+                            Thông báo
                         </p>
                         <p className="home-header__container-left__bottom-content">
                             {userInfo.news}

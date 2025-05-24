@@ -16,8 +16,8 @@
     color: var(--text-primary);
     position: relative;
     display: inline-block;
-    padding: 5px 10px;
-    border-radius: 5px;
+    padding: 10px 20px;
+    margin-top: 15px;
     background-color: var(--title-background);
     box-shadow: 0 4px 8px var(--shadow-color);
     transition: background-color 0.3s, color 0.3s;
@@ -28,7 +28,7 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    padding: 0.5rem;
+    padding: 1rem;
     height: 100%;
     width: 100%;
     gap: 2rem;
@@ -52,4 +52,12 @@
     background: var(--scrollbarThumb-background);
     border-radius: 10px;
     -webkit-transition: background 0.3s
+}
+
+.NoContentRecommend {
+    flex: 1;
+    color: var(--text-primary);
+    font-style: italic;
+    text-align: center;
+    transition: color 0.3s;
 }
