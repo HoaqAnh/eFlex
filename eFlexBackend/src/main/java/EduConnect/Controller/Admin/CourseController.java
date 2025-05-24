@@ -77,9 +77,7 @@ public class CourseController {
     @ApiMessage("Get List Course User Studying and studied")
     public ResponseEntity<List<Course>> getListCourseUserStudying(@PathVariable long userId) {
         List<Course> listCourse = tienDoService.findListCourseByUserId(userId);
-        if (listCourse.size() == 0) {
-            return ResponseEntity.noContent().build();
-        }
+
         return ResponseEntity.ok(listCourse);
     }
 

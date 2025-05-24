@@ -20,12 +20,12 @@ public class ProgressLesson {
 
     @ManyToOne
     @JoinColumn(name = "id_NguoiDung",referencedColumnName = "id")
-    @JsonBackReference
+    @JsonBackReference(value = "progressLesson_user")
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "id_BaiHoc",referencedColumnName = "id")
-    @JsonBackReference
+    @JsonBackReference(value = "progressLesson_lesson")
     private Lesson lesson;
 
     @PrePersist

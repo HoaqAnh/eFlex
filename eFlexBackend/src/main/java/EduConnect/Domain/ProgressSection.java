@@ -24,12 +24,12 @@ public class ProgressSection {
 
     @ManyToOne
     @JoinColumn(name = "id_NguoiDung",referencedColumnName = "id")
-    @JsonBackReference
+    @JsonBackReference(value = "progressSection_user")
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "id_PhanHoc",referencedColumnName = "id")
-    @JsonBackReference
+    @JsonBackReference(value = "progressSection_section")
     private Section section;
 
 
