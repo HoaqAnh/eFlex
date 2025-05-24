@@ -67,6 +67,9 @@ public class TestExerciseController {
     public ResponseEntity<TestExercise> getRandomTestExerciseByCourseId(@PathVariable Long courseId) {
         TestExercise testExercise = testExerciseService.findByName("Level Assessment Test");
         testExercise.setExerciseList(courseService.createExerciseListByCourseId(courseId,3));
+
+        testExercise.setDuration(testExercise.getExerciseList().size() + 15);
+
         return new ResponseEntity<>(testExercise, HttpStatus.OK);
     }
 

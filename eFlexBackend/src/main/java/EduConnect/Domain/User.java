@@ -5,6 +5,8 @@ import EduConnect.Util.Enum.Education;
 import EduConnect.Util.Enum.Enable;
 
 import EduConnect.Util.SecurityUtil;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -56,18 +58,23 @@ public class User {
     private Role role;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<ProgressSection> progressSections;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<ProgressLesson> progressLessons;
 
     @OneToMany(mappedBy = "nguoiDung",cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<HistoryLearn> historyLearns;
 
     @OneToMany(mappedBy = "nguoiDung",cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<TienDo> tienDoList;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<HistoryTestExercise> historyTestExercises;
 
     @PrePersist

@@ -1,6 +1,7 @@
 package EduConnect.Controller.Admin;
 
 import EduConnect.Domain.Lesson;
+import EduConnect.Domain.Request.SectionRequest;
 import EduConnect.Domain.Section;
 import EduConnect.Repository.LessonRepository;
 import EduConnect.Service.SectionService;
@@ -25,13 +26,15 @@ public class SectionController {
     }
     @PostMapping("/section")
     @ApiMessage("Create a Section")
-    public ResponseEntity<Section> createSection(@RequestBody Section section) {
+    public ResponseEntity<Section> createSection(@RequestBody SectionRequest section) {
+
         return ResponseEntity.ok(this.sectionService.save(section));
     }
 
     @PostMapping("/Listsection")
     @ApiMessage("Create List Section")
-    public ResponseEntity<List<Section>> createListSection(@RequestBody List<Section> section) {
+    public ResponseEntity<List<Section>> createListSection(@RequestBody List<SectionRequest> section) {
+
         return ResponseEntity.ok(this.sectionService.saveList(section));
     }
 

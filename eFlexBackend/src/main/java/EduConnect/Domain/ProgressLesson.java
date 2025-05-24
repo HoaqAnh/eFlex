@@ -1,5 +1,6 @@
 package EduConnect.Domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,10 +20,12 @@ public class ProgressLesson {
 
     @ManyToOne
     @JoinColumn(name = "id_NguoiDung",referencedColumnName = "id")
+    @JsonBackReference
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "id_BaiHoc",referencedColumnName = "id")
+    @JsonBackReference
     private Lesson lesson;
 
     @PrePersist

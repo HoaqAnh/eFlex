@@ -33,6 +33,7 @@ public class Section {
     private Lesson lesson;
 
     @OneToMany(mappedBy = "section",cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<ProgressSection> progressSections;
 
 
