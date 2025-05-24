@@ -128,7 +128,6 @@ export const lessonService = {
 
       const res = await response.json();
       const videoUrlWithTimestamp = res.data.videoUrl;
-
       return removeTimestampFromUrl(videoUrlWithTimestamp);
     } catch (err) {
       console.error('Upload video error:', err);
@@ -152,16 +151,10 @@ export const lessonService = {
       // Lấy lessonId từ kết quả trả về
       const lessonId = lessonResponse.data.id;
 
-      // // Kiểm tra người dùng có tải lên file video không
-      // const videoResponse = null;
-      // if (videoFile) {
-      //   videoResponse = await this.uploadSectionVideo(videoFile);
-      // }
-
       const sectionsData = sectionForms.map(form => ({
         tenBai: form.tenBai.trim(),
         moTa: form.moTa.trim(),
-        video: form.videoUrl || null,
+        video: form.video || null,
         lesson: {
           id: lessonId
         }
@@ -169,6 +162,7 @@ export const lessonService = {
 
       // Gọi API tạo tất cả các section cùng lúc
       const sectionsResponse = await this.createSections(sectionsData);
+      console.log("Response API Create Section: ", sectionsResponse);
 
       return {
         success: true,
@@ -183,50 +177,6 @@ export const lessonService = {
       };
     }
   },
-
-  // // Hàm tải lên file Excel cho bài tập trắc nghiệm
-  // async uploadExerciseExcel(lessonId, file) {
-  //   try {
-  //     const token = TokenService.getToken();
-  //     if (!token) {
-  //       console.error("Không tìm thấy token, người dùng chưa đăng nhập");
-  //       return null;
-  //     }
-
-  //     // Kiểm tra token hợp lệ
-  //     if (!TokenService.isTokenValid()) {
-  //       console.error("Token không hợp lệ hoặc đã hết hạn");
-  //       TokenService.clearTokens();
-  //       return null;
-  //     }
-
-  //     const formData = new FormData();
-  //     formData.append('file', file);
-
-  //     const response = await fetch(`${BASE_URL}/exercise/excel/${lessonId}`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Authorization': `Bearer ${token}`
-  //       },
-  //       body: formData,
-  //       credentials: 'include'
-  //     });
-
-  //     if (!response.ok) {
-  //       if (response.status === 401 || response.status === 403) {
-  //         TokenService.clearTokens();
-  //         throw new Error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
-  //       } else {
-  //         throw new Error(`Error: ${response.status}. ${response.statusText}`);
-  //       }
-  //     }
-
-  //     return await response.json();
-  //   } catch (error) {
-  //     console.error('Lỗi khi tải lên file Excel bài tập:', error);
-  //     throw error;
-  //   }
-  // },
 };
 
 // Fetch tổng số bài học và bài kiểm tra

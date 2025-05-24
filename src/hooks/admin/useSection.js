@@ -11,7 +11,7 @@ export const useSection = () => {
         tenBai: "",
         moTa: "",
         videoFile: null,
-        videoUrl: null
+        video: null
     };
 
     const initialSectionErrorState = {
@@ -58,7 +58,7 @@ export const useSection = () => {
                 newForms[formIndex] = {
                     ...newForms[formIndex],
                     videoFile: file,
-                    videoUrl: null
+                    video: null
                 };
             }
             return newForms;
@@ -136,7 +136,7 @@ export const useSection = () => {
                     if (newForms[formIndex]) {
                         newForms[formIndex] = {
                             ...newForms[formIndex],
-                            videoUrl: videoUrl,
+                            video: videoUrl,
                             videoFile: null
                         };
                     }
@@ -147,20 +147,11 @@ export const useSection = () => {
             } catch (error) {
                 console.error(`Lỗi khi tải video cho phần học ${formIndex + 1}:`, error);
                 toast.error(`Lỗi tải lên video cho phần học ${formIndex + 1}. Vui lòng thử lại sau.`, { id: `upload-${formIndex}` });
-                // Optionally, keep the videoFile in state to allow for a retry without re-selecting the file
-                // Or clear it if preferred:
-                // setSectionForms(prevForms => {
-                //     const newForms = [...prevForms];
-                //     if (newForms[formIndex]) {
-                //         newForms[formIndex] = { ...newForms[formIndex], videoFile: null };
-                //     }
-                //     return newForms;
-                // });
                 return null;
             }
         }
-        
-        return sectionToUpdate ? sectionToUpdate.videoUrl : null;
+
+        return sectionToUpdate ? sectionToUpdate.video : null;
     };
 
     return {

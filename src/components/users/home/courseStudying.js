@@ -7,7 +7,7 @@ const CourseStudying = ({ courseStudying, loading, error }) => {
     const renderContent = () => {
         if (loading) return <p>Đang tải dữ liệu...</p>;
         if (error) return <p>Có lỗi xảy ra: {error}</p>;
-        if (!courseStudying?.length) return <p>Chưa có khóa học đề xuất</p>;
+        if (!courseStudying?.length) return <p>Bạn chưa tham gia khóa học nào</p>;
 
         return courseStudying.map((course, index) => (
             <Course key={index} CourseData={course} />

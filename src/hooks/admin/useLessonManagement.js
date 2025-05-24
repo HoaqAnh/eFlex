@@ -42,28 +42,15 @@ export const useLessonManagement = () => {
 
         try {
             // Xử lý upload video cho các phần học có file video được chọn.
-            const currentSectionForms = [...section.sectionForms]; // Lấy form hiện tại
+            const currentSectionForms = [...section.sectionForms];
             const updatedSectionForms = [];
-
-            // const result = await lessonService.createLessonWithSections(
-            //     lesson.lessonData,
-            //     section.sectionForms
-            // );
-
-            // if (!result.success) {
-            //     throw result.error;
-            // }
 
             for (let i = 0; i < currentSectionForms.length; i++) {
                 let sectionForm = { ...currentSectionForms[i] };
                 if (sectionForm.videoFile) {
                     const videoUrl = await section.handleUploadVideo(i);
                     if (videoUrl) {
-                        sectionForm.videoUrl = videoUrl;
-                        sectionForm.videoFile = null;
-                    } else {
-                        // toast.error(`Không thể tải lên video cho phần học ${i + 1}. Phần học này sẽ được tạo mà không có video mới.`);
-                        sectionForm.videoUrl = currentSectionForms[i].videoUrl || null;
+                        sectionForm.video = videoUrl;
                         sectionForm.videoFile = null;
                     }
                 }
@@ -72,7 +59,7 @@ export const useLessonManagement = () => {
 
             const result = await lessonService.createLessonWithSections(
                 lesson.lessonData,
-                section.sectionForms
+                updatedSectionForms
             );
 
             if (!result.success) {
