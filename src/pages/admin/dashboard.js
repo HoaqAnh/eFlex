@@ -1,15 +1,9 @@
 import React from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-
-//components
 import TopCard from "../../components/admin/dashboard/TopCard";
 import BodyCard from "../../components/admin/dashboard/BodyCard";
 import BottomCard from "../../components/admin/dashboard/BottomCard";
-
-//hooks
 import { useAuth } from "../../hooks/useAuth";
-
-//Style
 import "../../styles/admin/dashboard.css";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -65,10 +59,6 @@ const Dashboard = () => {
 
                     <div className="body-content">
                         <BodyCard chartData={chartData} chartOptions={chartOptions} />
-                    </div>
-
-                    <div className="bottom-content">
-                        <BottomCard />
                     </div>
                 </div>
             </div>

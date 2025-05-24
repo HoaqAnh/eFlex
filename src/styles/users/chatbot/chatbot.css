@@ -4,6 +4,5 @@
   overflow-y: auto;
   gap: 0.5rem;
   height: 100%;
-  background-color: var(--background-primary);
-  transition: background-color 0.3s;
+  background-color: transparent;
 }

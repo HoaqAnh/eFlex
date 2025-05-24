@@ -2,7 +2,7 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus, vs } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { oneDark, oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { useTheme } from "../../../context/ThemeContext";
 
 const ChatMessage = ({ content, sender, time }) => {
@@ -17,7 +17,7 @@ const ChatMessage = ({ content, sender, time }) => {
               const match = /language-(\w+)/.exec(className || "");
               return !inline && match ? (
                 <SyntaxHighlighter
-                  style={theme === "light" ? vs : vscDarkPlus}
+                  style={theme === "light" ? oneLight : oneDark}
                   language={match[1]}
                   PreTag="pre"
                   wrapLongLines={true}

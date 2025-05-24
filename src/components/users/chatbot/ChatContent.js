@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Message from "./ChatMessage";
 import { ChatBot } from "../../../services/ChatService";
-
-//style
 import "../../../styles/users/chatbot/chat-content.css";
 
 const ChatContent = () => {

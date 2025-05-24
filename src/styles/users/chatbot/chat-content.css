@@ -5,9 +5,9 @@
   overflow-y: none;
   background-color: var(--background-secondary);
   position: relative;
-  box-shadow: 0 2px 10px var(--shadow-color);
-  border-radius: 24px;
-  transition: background-color 0.3s, box-shadow 0.3s;
+  border-radius: 14px;
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s;
 }
 
 .messages-container {
@@ -22,6 +22,7 @@
 .message-wrapper span {
   font-size: 1rem;
   text-align: right;
+  padding: 0;
 }
 
 .message-wrapper.user span {
@@ -43,7 +44,9 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  max-width: 80%;
+  max-width: 100%;
+  gap: .5em;
+  animation: fadeIn 0.3s ease-out forwards;
   transition: transform 0.2s ease-in-out;
 }
 
@@ -58,11 +61,15 @@
 
 .message-wrapper.bot {
   align-self: flex-start;
+
 }
 
 .message {
+  display: flex;
+  flex-direction: column;
   padding: 15px;
   border-radius: 24px;
+  gap: 1rem;
   word-wrap: break-word;
   text-align: left;
   background-color: transparent;
@@ -76,13 +83,13 @@
 
 .message-wrapper.user .message {
   border-radius: 24px 24px 0 24px;
-  background-color: transparent;
+  background-color: var(--message-user);
   color: var(--text-primary);
   transition: color 0.3s;
 }
 
 .message-wrapper.bot .message {
-  border-radius: 24px 24px 0 24px;
+  border-radius: 24px 24px 24px 0;
   background-color: transparent;
   color: var(--text-primary);
   transition: color 0.3s;
@@ -100,9 +107,8 @@
   padding: 20px;
   border-top: 1px solid var(--border-color);
   background-color: var(--background-secondary);
-  box-shadow: 0 -2px 15px var(--shadow-color);
-  border-bottom-left-radius: 24px;
-  border-bottom-right-radius: 24px;
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
   position: sticky;
   bottom: 0;
   transition: all 0.3s;
@@ -250,9 +256,8 @@
   transform: scale(1.1);
 }
 
-/* Style for markdown content */
 .message p {
-  margin: 0 0 10px 0;
+  margin: 0;
 }
 
 .message p:last-child {
@@ -262,7 +267,7 @@
 .message pre {
   background-color: transparent;
   height: fit-content;
-  border-radius: 4px; 
+  border-radius: 4px;
   overflow-x: auto;
 }
 
@@ -298,8 +303,4 @@
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-.message-wrapper {
-  animation: fadeIn 0.3s ease-out forwards;
 }

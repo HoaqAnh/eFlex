@@ -1,8 +1,9 @@
 .home-container {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
 
 .content-wrapper {
@@ -20,57 +21,59 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    background-color: #F4FAFF;
+    background-color: var(--background-primary);
+    transition: background-color 0.3s;
 }
 
 /* Top Content Styles */
 .top-content {
     display: flex;
-    background-color: white;
+    background-color: var(--background-secondary);
     border-radius: 12px;
     padding: 20px;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 2px 15px var(--shadow-color);
     min-width: 50%;
     min-height: 80px;
     height: 10%;
+    transition: all 0.3s;
 }
 
 .top-card {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     width: 100%;
 }
 
-.top-card-left h2 {
-    font-size: 28px;
-    font-weight: 600;
-    color: #2C3E50;
-    margin: 0;
-}
-
-.top-card-right {
-    text-align: right;
-}
-
-.top-card-right h4 {
+.counter-user .counter-row span{
     margin: 8px 0;
-    color: #5D6D7E;
+    color: var(--text-primary);
     font-size: 16px;
+    transition: all 0.3s;
+}
+
+.counter-user {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2em;
 }
 
 /* Body Content Styles */
 .body-content {
     display: flex;
-    background-color: white;
+    background-color: var(--background-secondary);
     border-radius: 12px;
     padding: 20px;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 2px 15px var(--shadow-color);
     min-width: 50%;
     min-height: 300px;
-    height: 70%;
+    height: 100%;
     flex-direction: column;
     overflow: hidden;
+    transition: all 0.3s;
 }
 
 .body-card {
@@ -87,8 +90,9 @@
 .body-card-header h2 {
     font-size: 24px;
     font-weight: 600;
-    color: #2C3E50;
+    color: var(--text-primary);
     margin: 0;
+    transition: all 0.3s;
 }
 
 .body-card-body {
@@ -117,7 +121,7 @@
     align-items: center;
     gap: 16px;
     padding: 20px;
-    background-color: #F8FAFC;
+    background-color: var(--background-primary);
     border-radius: 12px;
     transition: all 0.3s ease;
     min-height: 300px;
@@ -126,14 +130,15 @@
 
 .chart-item:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 20px var(--shadow-color);
 }
 
 .chart-item h4 {
     margin: 0;
     font-size: 18px;
-    color: #34495E;
+    color: var(--text-secondary);
     font-weight: 600;
+    transition: all 0.3s;
 }
 
 .chart-wrapper {
@@ -153,10 +158,11 @@
 .bottom-card {
     width: 100%;
     height: 100%;
-    background-color: white;
+    background-color: var(--background-secondary);
     border-radius: 12px;
     padding: 24px;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 2px 15px var(--shadow-color);
+    transition: all 0.3s;
 }
 
 .bottom-card-header {
@@ -169,45 +175,43 @@
 .bottom-card-header h2 {
     font-size: 24px;
     font-weight: 600;
-    color: #2C3E50;
+    color: var(--text-primary);
     margin: 0;
+    transition: all 0.3s;
 }
 
-/* Scrollbar Styling */
 .main-content::-webkit-scrollbar {
-    width: 8px;
+    width: 2px;
+    height: 8px;
 }
 
 .main-content::-webkit-scrollbar-track {
-    background: #F5F7FA;
+    background: var(--scrollbarTrack-background);
+    border-radius: 10px;
+    -webkit-transition: background 0.3s
 }
 
 .main-content::-webkit-scrollbar-thumb {
-    background: #CBD5E1;
-    border-radius: 4px;
+    background: var(--scrollbarThumb-background);
+    border-radius: 10px;
+    -webkit-transition: background 0.3s
 }
 
-.main-content::-webkit-scrollbar-thumb:hover {
-    background: #94A3B8;
-}
-
-/* Tùy chỉnh scrollbar cho charts-container */
 .charts-container::-webkit-scrollbar {
-    width: 8px;
+    width: 2px;
+    height: 8px;
 }
 
 .charts-container::-webkit-scrollbar-track {
-    background: #F5F7FA;
-    border-radius: 4px;
+    background: var(--scrollbarTrack-background);
+    border-radius: 10px;
+    -webkit-transition: background 0.3s
 }
 
 .charts-container::-webkit-scrollbar-thumb {
-    background: #CBD5E1;
-    border-radius: 4px;
-}
-
-.charts-container::-webkit-scrollbar-thumb:hover {
-    background: #94A3B8;
+    background: var(--scrollbarThumb-background);
+    border-radius: 10px;
+    -webkit-transition: background 0.3s
 }
 
 @media screen and (max-width: 768px) {

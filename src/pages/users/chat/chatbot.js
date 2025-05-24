@@ -1,12 +1,5 @@
-import React from "react";
-
-//hooks
 import { useAuth } from "../../../hooks/useAuth";
-
-//components
 import ChatContent from "../../../components/users/chatbot/ChatContent";
-
-//style
 import "../../../styles/users/chatbot/chatbot.css";
 
 const ChatPage = () => {
