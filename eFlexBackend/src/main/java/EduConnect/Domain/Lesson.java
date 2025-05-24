@@ -36,6 +36,7 @@ public class Lesson {
     private List<ProgressLesson> progressLessons;
 
     @OneToMany(mappedBy = "lesson",cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<TestExercise> testExercise;
 
 

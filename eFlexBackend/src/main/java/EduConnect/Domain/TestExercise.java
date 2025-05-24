@@ -26,7 +26,7 @@ public class TestExercise {
 
     @ManyToOne
     @JoinColumn(name = "id_BaiHoc")
-    @JsonIgnore
+    @JsonBackReference(value = "lesson_testExercise")
     private Lesson lesson;
 
     @OneToMany(mappedBy = "testExercise", cascade = CascadeType.ALL, orphanRemoval = true)

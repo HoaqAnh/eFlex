@@ -83,6 +83,11 @@ public class ProgressService {
                 progressLessonRepository.save(progressLesson);
             }
         }
+        //Tao ProgressLesson
+        ProgressLesson progressLesson = new ProgressLesson();
+        progressLesson.setUser(currentUser);
+        progressLesson.setLesson(lesson);
+        progressLessonRepository.save(progressLesson);
 
         // Tính phần trăm Progress sau khi làm xong 1 section
         Long idCourse = lesson.getCourse().getId();

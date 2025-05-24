@@ -6,6 +6,7 @@ import EduConnect.Domain.Response.LessonDTO;
 import EduConnect.Domain.Response.ResultPaginationDTO;
 import EduConnect.Repository.CourseRepository;
 import EduConnect.Repository.LessonRepository;
+import EduConnect.Repository.ProgressLessonRepository;
 import EduConnect.Repository.TestExerciseRepository;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -25,16 +26,19 @@ public class LessonService {
     private final TestExerciseRepository testExerciseRepository;
     private LessonRepository lessonRepository;
     private ExerciseService exerciseService;
+    private final ProgressLessonRepository progressLessonRepository;
 
 
     public LessonService(LessonRepository lessonRepository,
                          CourseRepository courseRepository,
                          ExerciseService exerciseService,
-                         TestExerciseRepository testExerciseRepository) {
+                         TestExerciseRepository testExerciseRepository,
+                         ProgressLessonRepository progressLessonRepository) {
     this.lessonRepository = lessonRepository;
     this.courseRepository = courseRepository;
     this.exerciseService = exerciseService;
     this.testExerciseRepository = testExerciseRepository;
+    this.progressLessonRepository = progressLessonRepository;
 }
 
     public Lesson createLesson(Lesson lesson) {
@@ -108,6 +112,9 @@ public class LessonService {
                 .toList();
     }
 
+    public List<Lesson> findLessonByUserId(long id) {
+        return this.progressLessonRepository.findAllByUserId(id);
+    }
 
 
 }

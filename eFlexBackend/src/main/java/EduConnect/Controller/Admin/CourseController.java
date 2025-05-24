@@ -1,6 +1,7 @@
 package EduConnect.Controller.Admin;
 
 import EduConnect.Domain.Course;
+import EduConnect.Domain.Response.Course_LessonResponse;
 import EduConnect.Domain.Response.ResultPaginationDTO;
 import EduConnect.Service.CourseService;
 import EduConnect.Service.TienDoService;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -73,12 +75,17 @@ public class CourseController {
         this.courseService.RemoveCourse(course);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-    @GetMapping("/courses/studying/{userId}")
-    @ApiMessage("Get List Course User Studying and studied")
-    public ResponseEntity<List<Course>> getListCourseUserStudying(@PathVariable long userId) {
-        List<Course> listCourse = tienDoService.findListCourseByUserId(userId);
-
-        return ResponseEntity.ok(listCourse);
-    }
+//    @GetMapping("/courses/studying/{userId}")
+//    @ApiMessage("Get List Course User Studying and studied")
+//    public ResponseEntity<List<Course_LessonResponse>> getListCourseUserStudying(@PathVariable long userId) {
+//        List<Course> listCourse = tienDoService.findListCourseByUserId(userId);
+//        List<Course_LessonResponse> course_lessonResponseList = new ArrayList<Course_LessonResponse>();
+//        for (Course_LessonResponse element : course_lessonResponseList){
+//            element.setCourse();
+//        }
+//
+//
+//        return ResponseEntity.ok(listCourse);
+//    }
 
 }
