@@ -1,16 +1,8 @@
 import React, { useState } from "react";
-
-//hooks
 import { useAuth } from "../../hooks/useAuth"
-
-//components
 import Header from "../../components/auth/login/header"
 import Body from "../../components/auth/login/body"
-
-//style
 import "../../styles/authentication/style.css"
-
-//Image
 import Image from "./../../assets/images/login-image.png";
 
 const Login = () => {

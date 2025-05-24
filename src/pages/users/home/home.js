@@ -2,7 +2,8 @@ import Header from "../../../components/users/home/header";
 import Body from "../../../components/users/home/body";
 import Loading from "../../../components/layout/loader/loading"
 import Error from "../../../components/layout/loader/error"
-import { useAuth, useGetUserData } from "../../../hooks/useAuth";
+import { useAuth } from "../../../hooks/useAuth";
+import useGetUserData from "../../../hooks/useUserData.js";
 import "../../../styles/users/home/style.css";
 
 const HomePage = () => {

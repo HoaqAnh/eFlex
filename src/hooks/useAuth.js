@@ -308,35 +308,3 @@ export const useAuth = () => {
     isAdminRoute
   };
 };
-
-export const useGetUserData = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [userData, setUserData] = useState(null);
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const result = await getCurrentUser();
-
-        if (!result) {
-          throw new Error("No content user data");
-        }
-
-        setUserData(result.data);
-      } catch (err) {
-        setError("Fetch user failed");
-        throw new Error();
-      } finally {
-        setLoading(false)
-      }
-    };
-
-    fetchUserData();
-  }, [])
-
-  return { loading, error, userData };
-};
