@@ -1,6 +1,7 @@
 package EduConnect.Repository;
 
 import EduConnect.Domain.Exercise;
+import EduConnect.Domain.TestExercise;
 import EduConnect.Util.Enum.Dificulty;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,5 +26,7 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
 
     @Query("select e from Exercise e where e.testExercise.lesson.id = ?1")
     List<Exercise> findAllByLessonId(long lessonId);
+    @Query("select t.testExercise from Exercise t where t.id = :exerciseId")
+    TestExercise findExerciseById(Long exerciseId);
 
 }

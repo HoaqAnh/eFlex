@@ -1,5 +1,6 @@
 package EduConnect.Repository;
 
+import EduConnect.Domain.Lesson;
 import EduConnect.Domain.TestExercise;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -18,4 +19,6 @@ public interface TestExerciseRepository extends JpaRepository<TestExercise, Inte
     void deleteById(long id);
     List<TestExercise> findByLessonId(long lessonId);
     TestExercise findByName(String name);
+    @Query("select t.lesson from TestExercise t where t.id = :testExerciseId")
+    Lesson findByTestExerciseId(long testExerciseId);
 }

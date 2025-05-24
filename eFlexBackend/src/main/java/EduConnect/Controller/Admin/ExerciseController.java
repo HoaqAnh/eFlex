@@ -1,6 +1,7 @@
 package EduConnect.Controller.Admin;
 
 import EduConnect.Domain.Exercise;
+import EduConnect.Domain.Lesson;
 import EduConnect.Domain.Request.AnswerRequest;
 import EduConnect.Domain.Response.ScoreRes;
 import EduConnect.Domain.TestExercise;
@@ -39,6 +40,11 @@ public class ExerciseController {
     }
     @PostMapping("/exercise")
     public ResponseEntity<Exercise> createExercise(@RequestBody Exercise exercise) {
+        TestExercise testExercise = exerciseService.findByTestExerciseId(exercise.getId());
+
+        Lesson baiHoc = testExerciseRepository.findByTestExerciseId(testExercise.getId());
+        long idBaiHoc = baiHoc.getId();
+        exercise.setId(idBaiHoc);
         return ResponseEntity.ok(exerciseService.save(exercise));
     }
     @PutMapping("/exercise/{id}")

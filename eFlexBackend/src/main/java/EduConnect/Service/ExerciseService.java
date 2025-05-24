@@ -37,6 +37,7 @@ public class ExerciseService {
     public Exercise findById(long id) {
         return this.exerciseRepository.findById(id).orElse(null);
     }
+
     public List<Exercise> excelExercise(MultipartFile file, long idTestExercise) {
         List<Exercise> exerciseList = new ArrayList<>();
         try {
@@ -84,22 +85,22 @@ public class ExerciseService {
                 Optional<TestExercise> lesson1 = testExerciseRepository.findById(idTestExercise);
                 lesson1.ifPresent(exercise::setTestExercise);
 
-                String raw = getCellStringValue(row.getCell(7));
+                //String raw = getCellStringValue(row.getCell(7));
                 Long idBaiHoc;
-
-                if (raw != null && !raw.trim().isEmpty()) {
-                    try {
-                        idBaiHoc = (long) Double.parseDouble(raw.trim());
-                    } catch (NumberFormatException e) {
-                        throw new IllegalArgumentException("Invalid lesson ID at row " + (row.getRowNum() + 1));
-                    }
-                } else {
-                    if (lesson1.isPresent() && lesson1.get().getLesson() != null) {
-                        idBaiHoc = lesson1.get().getLesson().getId();
-                    } else {
-                        throw new IllegalArgumentException("Không tìm thấy bài học liên kết với TestExercise ID: " + idTestExercise);
-                    }
-                }
+                idBaiHoc = lesson1.get().getLesson().getId();
+//                if (raw != null && !raw.trim().isEmpty()) {
+//                    try {
+//                        idBaiHoc = (long) Double.parseDouble(raw.trim());
+//                    } catch (NumberFormatException e) {
+//                        throw new IllegalArgumentException("Invalid lesson ID at row " + (row.getRowNum() + 1));
+//                    }
+//                } else {
+//                    if (lesson1.isPresent() && lesson1.get().getLesson() != null) {
+//                        idBaiHoc = lesson1.get().getLesson().getId();
+//                    } else {
+//                        throw new IllegalArgumentException("Không tìm thấy bài học liên kết với TestExercise ID: " + idTestExercise);
+//                    }
+//                }
 
                 exercise.setId_BaiHoc(idBaiHoc);
 
@@ -126,6 +127,10 @@ public class ExerciseService {
 
     public long countExerciseByCourse(long idCourse) {
         return this.exerciseRepository.countExerciseByCourseId(idCourse);
+    }
+
+    public TestExercise findByTestExerciseId(long exerciseId){
+        return this.exerciseRepository.findExerciseById(exerciseId);
     }
 
     @Transactional
