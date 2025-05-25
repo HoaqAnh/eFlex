@@ -69,8 +69,8 @@ public class TestExerciseController {
         testExercise.setExerciseList(courseService.createExerciseListByCourseId(courseId,3));
 
         testExercise.setDuration(testExercise.getExerciseList().size() + 15);
+        this.testExerciseService.save(testExercise);
 
         return new ResponseEntity<>(testExercise, HttpStatus.OK);
     }
-
 }

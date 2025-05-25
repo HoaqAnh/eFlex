@@ -124,6 +124,7 @@ public class CourseService {
         Course_LessonResponse.Course result = new Course_LessonResponse.Course();
         result.setId(course.getId());
         result.setName(course.getTenMon());
+        result.setImage(course.getAnhMonHoc());
 
         return result;
     }

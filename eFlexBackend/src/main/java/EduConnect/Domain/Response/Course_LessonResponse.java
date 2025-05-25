@@ -19,6 +19,7 @@ public class Course_LessonResponse {
     public static class Course{
         private String name;
         private long id;
+        private String image;
         private List<Lesson> lessonList;
 
         @Getter

@@ -29,7 +29,7 @@ public class TestExercise {
     @JsonBackReference(value = "lesson_testExercise")
     private Lesson lesson;
 
-    @OneToMany(mappedBy = "testExercise", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "testExercise", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Exercise> exerciseList;
 
