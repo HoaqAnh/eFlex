@@ -5,7 +5,7 @@ import Body from "../../../components/users/test/exercises/body";
 import Footer from "../../../components/users/test/exercises/footer";
 import DialogPopup from "../../../components/users/test/dialogPopup";
 import { useAuth } from "../../../hooks/useAuth";
-import { useExercise } from "../../../hooks/test/useExercise";
+import { useLevelAssessmentTest } from "../../../hooks/test/useExercise";
 import { useSubmitTest } from "../../../hooks/test/useTest";
 import "../../../styles/exercises/style.css";
 import Error from "../../../components/layout/loader/error";
@@ -15,12 +15,13 @@ import useTestLifecycle from "../../../hooks/test/useTestLifecycle";
 import { clearStoredEndTime, clearTestAbandonedFlag } from "../../../components/users/test/testStorage"
 import useExerciseInteraction from "../../../hooks/test/useExerciseInteraction"
 
-const Exercises = () => {
+const LevelAssessmentTest = () => {
     const { checkAuth, user } = useAuth();
     const authCheck = checkAuth();
     const navigate = useNavigate();
+
     const { id: courseId, lessonId, testId } = useParams();
-    const { exercises, loading: exerciseLoading, error: exerciseError } = useExercise(testId);
+    const { testExercise, loading: exerciseLoading, error: exerciseError } = useLevelAssessmentTest(courseId);
     const { executeSubmit, loading: submitLoading, error: submitError } = useSubmitTest();
 
     const [recommendationDetails, setRecommendationDetails] = useState(null);
@@ -28,8 +29,8 @@ const Exercises = () => {
     const [isCancelConfirmPopupOpen, setIsCancelConfirmPopupOpen] = useState(false);
     const [isSubmitConfirmPopupOpen, setIsSubmitConfirmPopupOpen] = useState(false);
 
-    const { timeLeft, setTimeLeft, isAbandonedConfirmPopupOpen, setIsAbandonedConfirmPopupOpen, handleRestartAbandonedTest } = useTestLifecycle(exercises, testId);
-    console.log("Data:---------->", exercises);
+    const { timeLeft, setTimeLeft, isAbandonedConfirmPopupOpen, setIsAbandonedConfirmPopupOpen, handleRestartAbandonedTest } = useTestLifecycle(testExercise, testId);
+    console.log("testExercise: -----> ", testExercise);
     const {
         userAnswers, handleAnswerSelected, fontSize, autoNextQuestion,
         handleZoomIn, handleZoomOut, handleToggleAutoNext,
@@ -44,7 +45,7 @@ const Exercises = () => {
             return navigate(`/login?redirect=/course/${courseId}/lesson/${lessonId}/test`);
         }
 
-        if (!exercises || !exercises.id) {
+        if (!testExercise || !testExercise.id) {
             toast.error("Không tìm thấy thông tin bài thi để nộp bài.");
             return navigate(`/course/${courseId}/lesson/${lessonId}/test`);
         }
@@ -59,12 +60,12 @@ const Exercises = () => {
             clearTestAbandonedFlag(testId);
         }
 
-        if (answersToSubmit.length < exercises.exerciseList.length) {
+        if (answersToSubmit.length < testExercise.exerciseList.length) {
             toast.error("Vui lòng hoàn thành tất cả câu hỏi trước khi nộp.")
             return;
         }
 
-        const result = await executeSubmit(user.id, exercises.id, answersToSubmit);
+        const result = await executeSubmit(user.id, testExercise.id, answersToSubmit);
 
         if (result && result.statusCode === 200 && result.data) {
             if (result.data.recommendation && result.data.recommendation.lesson_id) {
@@ -78,16 +79,16 @@ const Exercises = () => {
         } else {
             toast.error(`Nộp bài thất bại: ${submitError || (result && result.message) || "Vui lòng thử lại."}`);
         }
-    }, [user, exercises, userAnswers, executeSubmit, navigate, courseId, lessonId, submitError, testId, setTimeLeft]);
+    }, [user, testExercise, userAnswers, executeSubmit, navigate, courseId, lessonId, submitError, testId, setTimeLeft]);
 
     useEffect(() => {
-        if (timeLeft === 0 && exercises && !submitLoading && !isRecommendationPopupOpen && !isCancelConfirmPopupOpen && !isSubmitConfirmPopupOpen) {
+        if (timeLeft === 0 && testExercise && !submitLoading && !isRecommendationPopupOpen && !isCancelConfirmPopupOpen && !isSubmitConfirmPopupOpen) {
             if (testId) {
                 clearTestAbandonedFlag(testId);
             }
             handleConfirmSubmit();
         }
-    }, [timeLeft, exercises, testId, submitLoading, isRecommendationPopupOpen, isCancelConfirmPopupOpen, isSubmitConfirmPopupOpen, handleConfirmSubmit]);
+    }, [timeLeft, testExercise, testId, submitLoading, isRecommendationPopupOpen, isCancelConfirmPopupOpen, isSubmitConfirmPopupOpen, handleConfirmSubmit]);
 
     const handleSubmitButtonPressed = () => {
         setIsSubmitConfirmPopupOpen(true);
@@ -144,14 +145,14 @@ const Exercises = () => {
     };
 
     if (!authCheck.shouldRender) return authCheck.component;
-    if (exerciseLoading) return <div className="exercises"><Loader text="Đang tải dữ liệu bài tập..." /></div>;
-    if (exerciseError) return <div className="exercises"><Error Title={`Lỗi tải bài tập: ${exerciseError.message || String(exerciseError)}`} /></div>;
-    if (!exercises || !exercises.exerciseList || exercises.exerciseList.length === 0) {
-        return <div className="exercises"><Error Title="Không tìm thấy dữ liệu bài tập hoặc bài tập không có câu hỏi." /></div>;
+    if (exerciseLoading) return <div className="testExercise"><Loader text="Đang tải dữ liệu bài tập..." /></div>;
+    if (exerciseError) return <div className="testExercise"><Error Title={`Lỗi tải bài tập: ${exerciseError.message || String(exerciseError)}`} /></div>;
+    if (!testExercise || !testExercise.exerciseList || testExercise.exerciseList.length === 0) {
+        return <div className="testExercise"><Error Title="Không tìm thấy dữ liệu bài tập hoặc bài tập không có câu hỏi." /></div>;
     }
 
     const answeredQuestionsCount = Object.keys(userAnswers).length;
-    const totalQuestions = exercises.exerciseList.length;
+    const totalQuestions = testExercise.exerciseList.length;
 
     const recommendationPopupMessage = recommendationDetails
         // ? `${recommendationDetails.message}. Bài học được đề xuất cho bạn: ${recommendationDetails.ten_bai_hoc}. Bấm xác nhận để chuyển đến bài học ngay.`
@@ -160,22 +161,22 @@ const Exercises = () => {
         : "";
 
     return (
-        <div className="exercises">
+        <div className="testExercise">
             {submitLoading && <Loader text="Đang nộp bài..." />}
-            <div className="exercises__main-content">
+            <div className="testExercise__main-content">
                 <Header
-                    testName={exercises.name}
+                    testName={testExercise.name}
                     totalQuestions={totalQuestions}
-                    duration={exercises.duration}
+                    duration={testExercise.duration}
                     timeLeft={formatTime(timeLeft)}
                     answeredQuestionsCount={answeredQuestionsCount}
                     onSubmitTest={handleSubmitButtonPressed}
                     onCancelTest={handleCancelTestRequest}
                     isSubmitting={submitLoading}
                 />
-                <div className="exercises__content-wrapper">
+                <div className="testExercise__content-wrapper">
                     <Body
-                        questions={exercises.exerciseList}
+                        questions={testExercise.exerciseList}
                         fontSize={fontSize}
                         autoNextQuestionEnabled={autoNextQuestion}
                         onAnswerSelected={handleAnswerSelected}
@@ -231,4 +232,4 @@ const Exercises = () => {
     );
 };
 
-export default Exercises;
+export default LevelAssessmentTest;
