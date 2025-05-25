@@ -11,11 +11,17 @@ import useCourseStudyTimer from "../../../hooks/model/useCourseStudyTimer";
 import { useCourseDetail } from "../../../hooks/course/useCourse";
 import { useLessons, useCountLessonAndTest } from "../../../hooks/course/useLesson";
 import "../../../styles/courseDetails/style.css";
+import { useNavigate } from "react-router-dom";
+
 
 const CourseDetails = () => {
     const { id: courseId } = useParams();
     const { checkAuth, user } = useAuth();
     const authCheck = checkAuth();
+    const navigator = useNavigate();
+    const assessmentTest = () => {
+        navigator(`/course/${courseId}/level-assessment`);
+    };
 
     const { courseDetail, loading: courseLoading, error: courseError } = useCourseDetail(courseId);
     const { listLesson, loading: lessonLoading, error: lessonError } = useLessons(courseId);
@@ -51,6 +57,7 @@ const CourseDetails = () => {
                 <>
                     <div className="course-details__container">
                         <Header
+                            levelAssessmentTest={assessmentTest}
                             courseDetail={courseDetail}
                             countLessonAndTest={countLessonAndTest}
                         />

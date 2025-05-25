@@ -24,6 +24,7 @@ import LessonDetails from "./pages/users/course/lessonDetails";
 import Exercises from "./pages/users/test/exercises";
 import Test from "./pages/users/test/test";
 import Account from "./pages/users/account/account";
+import LevelAssessmentTest from "./pages/users/test/levelAssessmentTest";
 
 // Admin Pages
 import Dashboard from "./pages/admin/dashboard";
@@ -32,6 +33,7 @@ import AddCourse from "./pages/admin/course/addCourse";
 import AddLesson from "./pages/admin/course/addLesson";
 import EditCourse from "./pages/admin/course/editCourse";
 import AddTest from "./pages/admin/course/addTest";
+
 
 // Global Styles
 import "./styles/Global.css";
@@ -61,6 +63,7 @@ const App = () => {
                 <Route path="course/:id" element={<CourseDetails />} />
                 <Route path="course/:id/lesson/:lessonId" element={<LessonDetails />} />
                 <Route path="course/:id/lesson/:lessonId/test" element={<Test />} />
+                <Route path="course/:id/level-assessment" element={<LevelAssessmentTest />} />
               </Route>
 
               {/* Route Exercises không nằm trong Layout */}
