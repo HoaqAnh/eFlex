@@ -67,6 +67,8 @@ public class TestExerciseController {
     @GetMapping("/assessmentTest/{courseId}")
     public ResponseEntity<TestExercise> getRandomTestExerciseByCourseId(@PathVariable Long courseId) {
         Course course = courseService.findById(courseId);
+        long lessonId = course.getLessonList().get(0).getId();
+        Lesson lesson = lessonRepository.findById(lessonId).get();
         String nameTest = "Level Assessment Test " + course.getTenMon();
         // 1. Tạo bài kiểm tra mới
         TestExercise newTestExercise = new TestExercise();
@@ -82,10 +84,9 @@ public class TestExerciseController {
 
         // 4. Gán danh sách bài tập cho bài kiểm tra
         newTestExercise.setExerciseList(exerciseList);
-
+        newTestExercise.setLesson(lesson);
         // 5. Thiết lập thời lượng
         newTestExercise.setDuration(exerciseList.size() + 15);
-
         // 6. Lưu vào DB
         testExerciseService.save(newTestExercise);
 
