@@ -1,6 +1,7 @@
 package EduConnect.Domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,7 +31,7 @@ public class TestExercise {
     private Lesson lesson;
 
     @OneToMany(mappedBy = "testExercise", cascade = CascadeType.ALL)
-    @JsonIgnore
+    @JsonManagedReference(value = "testExercise_exercise")
     private List<Exercise> exerciseList;
 
     @OneToMany(mappedBy = "testExercise", cascade = CascadeType.ALL, orphanRemoval = true)

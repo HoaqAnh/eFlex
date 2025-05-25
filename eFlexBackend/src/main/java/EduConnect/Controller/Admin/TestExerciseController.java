@@ -1,5 +1,6 @@
 package EduConnect.Controller.Admin;
 
+import EduConnect.Domain.Course;
 import EduConnect.Domain.Exercise;
 import EduConnect.Domain.Lesson;
 import EduConnect.Domain.TestExercise;
@@ -65,12 +66,30 @@ public class TestExerciseController {
     }
     @GetMapping("/assessmentTest/{courseId}")
     public ResponseEntity<TestExercise> getRandomTestExerciseByCourseId(@PathVariable Long courseId) {
-        TestExercise testExercise = testExerciseService.findByName("Level Assessment Test");
-        testExercise.setExerciseList(courseService.createExerciseListByCourseId(courseId,3));
+        Course course = courseService.findById(courseId);
+        String nameTest = "Level Assessment Test " + course.getTenMon();
+        // 1. Tạo bài kiểm tra mới
+        TestExercise newTestExercise = new TestExercise();
+        newTestExercise.setName(nameTest);
 
-        testExercise.setDuration(testExercise.getExerciseList().size() + 15);
-        this.testExerciseService.save(testExercise);
+        // 2. Random danh sách bài tập từ courseId
+        List<Exercise> exerciseList = courseService.createExerciseListByCourseId(courseId, 2);
 
-        return new ResponseEntity<>(testExercise, HttpStatus.OK);
+        // 3. Gán testExercise cho từng Exercise
+        for (Exercise exercise : exerciseList) {
+            exercise.setTestExercise(newTestExercise);
+        }
+
+        // 4. Gán danh sách bài tập cho bài kiểm tra
+        newTestExercise.setExerciseList(exerciseList);
+
+        // 5. Thiết lập thời lượng
+        newTestExercise.setDuration(exerciseList.size() + 15);
+
+        // 6. Lưu vào DB
+        testExerciseService.save(newTestExercise);
+
+        // 7. Trả về client
+        return new ResponseEntity<>(newTestExercise, HttpStatus.OK);
     }
 }

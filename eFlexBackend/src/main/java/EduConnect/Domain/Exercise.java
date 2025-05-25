@@ -41,7 +41,7 @@ public class Exercise {
 
     @ManyToOne
     @JoinColumn(name = "id_bkt")
-    @JsonIgnore
+    @JsonBackReference(value = "testExercise_exercise")
     private TestExercise testExercise;
 
 }
