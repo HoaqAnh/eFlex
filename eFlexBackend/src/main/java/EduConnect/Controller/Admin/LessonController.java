@@ -35,8 +35,7 @@ public class LessonController {
     }
     @GetMapping("/lesson")
     @ApiMessage("Get all Lesson")
-    public ResponseEntity<ResultPaginationDTO> getAllLesson(
-                                                              Pageable pageable) {
+    public ResponseEntity<ResultPaginationDTO> getAllLesson(Pageable pageable) {
         return ResponseEntity.ok(this.lessonService.getAll(pageable));
     }
     @GetMapping("/lesson/{idCourse}")
@@ -48,5 +47,10 @@ public class LessonController {
     @ApiMessage("Count Lesson By Course")
     public ResponseEntity<CountCourseDTO> countLessonByCourse(@PathVariable("idCourse") long idCourse) {
         return ResponseEntity.ok(this.lessonService.CountLessonByCourse(idCourse));
+    }
+    @GetMapping("/getLesson/{idLesson}")
+    @ApiMessage("Get Lesson By Id")
+    public ResponseEntity<Lesson> fetchLessonById(@PathVariable long idLesson) {
+        return ResponseEntity.ok(this.lessonService.fetchLessonById(idLesson));
     }
 }

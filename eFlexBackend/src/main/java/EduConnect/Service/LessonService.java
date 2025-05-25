@@ -117,4 +117,8 @@ public class LessonService {
         return this.progressLessonRepository.findAllByUserIdAndCourseId(userId, courseId);
     }
 
+    public Lesson fetchLessonById(long idLesson){
+        return this.lessonRepository.findById(idLesson).get();
+    }
+
 }
