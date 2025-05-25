@@ -320,7 +320,7 @@ export const getLessonDetails = async (lessonId) => {
       return null;
     }
 
-    const response = await fetch(`${BASE_URL}/lesson/${lessonId}`, {
+    const response = await fetch(`${BASE_URL}/getLesson/${lessonId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

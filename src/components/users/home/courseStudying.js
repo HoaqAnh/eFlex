@@ -10,7 +10,7 @@ const CourseStudying = ({ courseStudying, loading, error }) => {
         if (!courseStudying?.length) return <p className="NoContentCourseStudying">Bạn chưa tham gia khóa học nào</p>;
 
         return courseStudying.map((course, index) => (
-            <Course key={index} CourseData={course} />
+            <Course key={index} CourseData={course.course} />
         ));
     };
 

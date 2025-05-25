@@ -21,7 +21,7 @@ const LessonDetails = () => {
     const [showExitConfirm, setShowExitConfirm] = useState(false);
     const [showTestConfirm, setShowTestConfirm] = useState(false);
 
-    const { lessonData, loading: lessonLoading, error: lessonError } = useLessonDetail(lessonId);
+    const { lessonData, loading: lessonLoading, error: lessonError } = useLessonDetail(lessonId, courseId);
     const { listSection, loading: sectionsLoading, error: sectionsError } = useSections(lessonId);
 
     const { checkAuth } = useAuth();
