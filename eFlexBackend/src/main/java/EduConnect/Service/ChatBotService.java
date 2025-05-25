@@ -6,16 +6,15 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,13 +22,13 @@ public class ChatBotService {
 
     private static final String BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
     private static final Logger logger = LoggerFactory.getLogger(ChatBotService.class);
-    private final HttpClient httpClient;
+    private final RestTemplate restTemplate;
 
     public ChatBotService() {
-        this.httpClient = HttpClient.newHttpClient();
+        this.restTemplate = new RestTemplate();
     }
 
-    public CompletableFuture<ChatResponse> generateAnswer(
+    public ChatResponse generateAnswer(
             String API_KEY, String prompt, String username, String age, List<ReqChatBot.History> chatHistory) {
         String processedPrompt = prompt != null ? prompt.replace("\n", " ").replace("\r", " ") : "";
         processedPrompt = isCodeSnippet(processedPrompt) ? "Hãy phân tích hoặc giải thích đoạn mã sau: " + processedPrompt : processedPrompt;
@@ -56,28 +55,24 @@ public class ChatBotService {
         String jsonPayload = payload.toString(2);
         logger.info("Sending JSON Payload: {}", jsonPayload);
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "?key=" + API_KEY))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(jsonPayload, StandardCharsets.UTF_8))
-                .build();
+        // Tạo header
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
-        return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                .thenApply(response -> {
-                    logger.info("API Response Status: {}", response.statusCode());
-                    logger.info("API Response Body: {}", response.body());
-                    if (response.statusCode() == 200) {
-                        String body = response.body();
-                        String generatedText = extractTextFromResponse(body);
-                        return new ChatResponse(generatedText);
-                    } else {
-                        return new ChatResponse("Error: Received status " + response.statusCode() + " - " + response.body());
-                    }
-                })
-                .exceptionally(throwable -> {
-                    logger.error("Exception occurred: ", throwable);
-                    return new ChatResponse("Error: " + throwable.getMessage());
-                });
+        // Tạo request entity
+        HttpEntity<String> request = new HttpEntity<>(jsonPayload, headers);
+
+        try {
+            // Gửi yêu cầu POST blocking bằng RestTemplate
+            String response = restTemplate.postForObject(BASE_URL + "?key=" + API_KEY, request, String.class);
+
+            logger.info("API Response Body: {}", response);
+            String generatedText = extractTextFromResponse(response);
+            return new ChatResponse(generatedText);
+        } catch (Exception e) {
+            logger.error("Exception occurred: ", e);
+            return new ChatResponse("Error: " + e.getMessage());
+        }
     }
 
     private boolean isCodeSnippet(String prompt) {

@@ -24,12 +24,12 @@ public class ChatBotController {
             this.userService = userService;
         }
     @PostMapping("/chatbot")
-    public ResponseEntity<CompletableFuture<ChatResponse>> chatResponse(@RequestBody ReqChatBot reqChatBot, @RequestParam(name = "apiKey") String apiKey){
+    public ResponseEntity<ChatResponse> chatResponse(@RequestBody ReqChatBot reqChatBot, @RequestParam(name = "apiKey") String apiKey){
             if(reqChatBot.getQuestion().isEmpty())
             {
                 ChatResponse chatResponse=new ChatResponse(" Gửi vội vậy người đẹp, chưa nhập gì kìa ");
 
-                return ResponseEntity.ok(CompletableFuture.completedFuture(chatResponse));
+                return ResponseEntity.ok(chatResponse);
             }
             Optional<String> email=SecurityUtil.getCurrentUserLogin();
             User user=this.userService.getUserByEmail(email.get());

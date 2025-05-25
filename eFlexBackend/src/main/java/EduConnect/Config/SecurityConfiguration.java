@@ -53,7 +53,7 @@ public class SecurityConfiguration
             "/","/api/v1/auth/login","/api/v1/login","/api/v1/auth/register","/login",
             "/home","/oauth2/**","/access-token","/api/v1/forget/pass"
             ,"/api/v1/reset-password","/api/v1/auth/verify","/api/v1/restaurants/approved","/api/v1/login/oauth2/code/google","/api/v1/upload/image","/api/v1/restaurant/load/{id}",
-            "/api/v1/auth/refresh","/swagger-ui/**","/v3/**","/ws/**","/api/v1/course/count/**"
+            "/api/v1/auth/refresh","/swagger-ui/**","/v3/**","/ws/**","/api/v1/course/count/**","/swagger-ui.html","/v3/api-docs"
 
     };
         http.
