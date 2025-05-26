@@ -17,7 +17,8 @@ public interface TestExerciseRepository extends JpaRepository<TestExercise, Inte
     @Modifying
     @Query("delete from TestExercise T where T.id = ?1")
     void deleteById(long id);
-    List<TestExercise> findByLessonId(long lessonId);
+    @Query("select t from TestExercise t where t.lesson.id=?1 and t.name<>?2")
+    List<TestExercise> findByLessonIdExcepName(long lessonId,String name);
     TestExercise findByName(String name);
     @Query("select t.lesson from TestExercise t where t.id = :testExerciseId")
     Lesson findByTestExerciseId(long testExerciseId);

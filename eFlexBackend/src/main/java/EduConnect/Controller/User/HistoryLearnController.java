@@ -75,7 +75,7 @@ public class HistoryLearnController {
             @PathVariable("testId") Long testId,
             @RequestBody List<AnswerRequest> answers) throws IdInValidException {
         try {
-            TestExercise test = testExerciseRepository.findById(testId)
+         testExerciseRepository.findById(testId)
                     .orElseThrow(() -> new IdInValidException("Không tìm thấy bài kiểm tra"));
 
             Map<String, Object> recommendation = testExerciseService.submitTestAndRecommend(userId, testId, answers);

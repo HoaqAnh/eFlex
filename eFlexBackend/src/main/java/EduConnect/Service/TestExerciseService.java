@@ -59,8 +59,8 @@ public class TestExerciseService {
             throw new RuntimeException("TestExercise id " + id + " doesn't exist");
         }
     }
-    public List<TestExercise>  getTestByLesson(Long lessonId) {
-        return this.testExerciseRepository.findByLessonId(lessonId);
+    public List<TestExercise>  getTestByLesson(Long lessonId,String nameCourse) {
+        return this.testExerciseRepository.findByLessonIdExcepName(lessonId,"Level Assessment Test "+nameCourse);
     }
     public TestExercise getTestExerciseById(Long id) {
         return testExerciseRepository.findById(id)

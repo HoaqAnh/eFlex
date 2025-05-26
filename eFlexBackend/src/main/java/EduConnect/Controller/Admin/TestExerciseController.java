@@ -61,7 +61,8 @@ public class TestExerciseController {
     }
     @GetMapping("/lesson/{idLesson}")
     public ResponseEntity<List<TestExercise>> getTestExerciseByLessonn(@PathVariable Long idLesson) {
-        List<TestExercise> testExerciseList = this.testExerciseService.getTestByLesson(idLesson);
+        Lesson lesson=lessonRepository.getLessonById(idLesson);
+        List<TestExercise> testExerciseList = this.testExerciseService.getTestByLesson(idLesson,lesson.getCourse().getTenMon());
         return ResponseEntity.ok(testExerciseList);
     }
     @GetMapping("/assessmentTest/{courseId}")
@@ -70,27 +71,24 @@ public class TestExerciseController {
         long lessonId = course.getLessonList().get(0).getId();
         Lesson lesson = lessonRepository.findById(lessonId).get();
         String nameTest = "Level Assessment Test " + course.getTenMon();
-        // 1. Tạo bài kiểm tra mới
-        TestExercise newTestExercise = new TestExercise();
-        newTestExercise.setName(nameTest);
+        TestExercise testExercise=this.testExerciseService.findByName(nameTest);
+        if(this.testExerciseService.findByName(nameTest)==null)
+        {
+            TestExercise newTestExercise = new TestExercise();
+            newTestExercise.setName(nameTest);
 
-        // 2. Random danh sách bài tập từ courseId
-        List<Exercise> exerciseList = courseService.createExerciseListByCourseId(courseId, 2);
-
-        // 3. Gán testExercise cho từng Exercise
-        for (Exercise exercise : exerciseList) {
-            exercise.setTestExercise(newTestExercise);
+            List<Exercise> exerciseList = courseService.createExerciseListByCourseId(courseId, 2);
+            newTestExercise.setExerciseList(exerciseList);
+            newTestExercise.setLesson(lesson);
+            newTestExercise.setDuration(exerciseList.size() + 15);
+            testExerciseService.save(newTestExercise);
+            return new ResponseEntity<>(newTestExercise, HttpStatus.CREATED);
         }
-
-        // 4. Gán danh sách bài tập cho bài kiểm tra
-        newTestExercise.setExerciseList(exerciseList);
-        newTestExercise.setLesson(lesson);
-        // 5. Thiết lập thời lượng
-        newTestExercise.setDuration(exerciseList.size() + 15);
-        // 6. Lưu vào DB
-        testExerciseService.save(newTestExercise);
-
-        // 7. Trả về client
-        return new ResponseEntity<>(newTestExercise, HttpStatus.OK);
+        List<Exercise> exerciseList = courseService.createExerciseListByCourseId(courseId, 2);
+        testExercise.setExerciseList(exerciseList);
+        testExercise.setDuration(exerciseList.size() + 15);
+        testExerciseService.save(testExercise);
+        return new ResponseEntity<>(testExercise, HttpStatus.OK);
     }
+
 }
