@@ -5,7 +5,7 @@ import "../../../styles/users/test/footer.css";
 const Footer = () => {
     const navigate = useNavigate();
     const handleReturn = () => {
-        navigate("..", { relative: "path"});
+        navigate(-1);
     };
 
     return (

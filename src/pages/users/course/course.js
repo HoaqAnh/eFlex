@@ -2,7 +2,6 @@ import { useState, useCallback, useMemo } from "react";
 import Header from "../../../components/users/course/header";
 import Body from "../../../components/users/course/body";
 import { useAdminCourse } from "../../../hooks/course/useCourse";
-import { useAuth } from "../../../hooks/useAuth";
 import "../../../styles/users/course/style.css";
 import { useCategory, useFilterCategory } from "../../../hooks/course/useCategory.js";
 import Loading from "../../../components/layout/loader/loading.js";
@@ -21,9 +20,6 @@ const debounce = (func, delay) => {
 };
 
 const Course = () => {
-    const { checkAuth } = useAuth();
-    const authCheck = checkAuth();
-
     const [paginationParamsForAll, setPaginationParamsForAll] = useState({ page: 0 });
     const { courseData: allCoursesDataFromHook, loading: allCoursesLoading, error: allCoursesError, hasMore: hasMoreAllCourses,
     } = useAdminCourse(paginationParamsForAll);
@@ -79,10 +75,6 @@ const Course = () => {
             course.tenMon && course.tenMon.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
         );
     }, [baseDataForSearch, debouncedSearchTerm]);
-
-    if (!authCheck.shouldRender) {
-        return authCheck.component;
-    }
 
     if (categoryLoading) {
         return <div className="course"><Loading Title="Hệ thống đang chuẩn bị danh mục khóa học..." /></div>

@@ -1,18 +1,15 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import Body from "../../../components/admin/course/addCourse/body";
 import Footer from "../../../components/admin/course/editCourse/footer";
 import Header from "../../../components/admin/course/addCourse/header";
 import Loading from "../../../components/layout/loader/loading"
 import { useCourseDetail } from "../../../hooks/course/useCourse";
 import { useParams } from "react-router-dom";
-import { useAuth } from "../../../hooks/useAuth";
 import { useAdminCourse } from "../../../hooks/course/useCourse";
 import { useCategory } from "../../../hooks/course/useCategory";
 import "../../../styles/admin/editCourse/style.css";
 
 const EditCourse = () => {
-    const { checkAuth } = useAuth();
-    const authCheck = checkAuth();
     const { id } = useParams();
     const { categoryData, loading: categoriesLoading, error: categoriesError } = useCategory();
     const {
@@ -38,10 +35,6 @@ const EditCourse = () => {
 
     const loading = categoriesLoading || editCourseLoading || courseLoading;
     const error = categoriesError || editCourseError || courseError;
-
-    if (!authCheck.shouldRender) {
-        return authCheck.component;
-    }
 
     return (
         <div className="editCourse">

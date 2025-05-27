@@ -4,13 +4,11 @@ import Footer from "../../../components/admin/course/addCourse/footer";
 import Loading from "../../../components/layout/loader/loading";
 import Error from "../../../components/layout/loader/error";
 import { useAdminCourse } from "../../../hooks/course/useCourse";
-import { useAuth } from "../../../hooks/useAuth";
 import { useCategory } from "../../../hooks/course/useCategory";
 import "../../../styles/admin/addCourse/style.css";
 import "../../../styles/button/style.css";
 
 const AddCourse = () => {
-    const { checkAuth } = useAuth();
     const { categoryData, loading: categoriesLoading, error: categoriesError } = useCategory();
     const {
         loading: addCourseLoading,
@@ -27,11 +25,6 @@ const AddCourse = () => {
 
     const loading = categoriesLoading || addCourseLoading;
     const error = categoriesError || addCourseError;
-
-    const authCheck = checkAuth();
-    if (!authCheck.shouldRender) {
-        return authCheck.component;
-    }
 
     if (error) {
         return (

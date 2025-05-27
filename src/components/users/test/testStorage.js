@@ -1,33 +1,63 @@
-// Helper function để lấy testId từ localStorage
+// --- Helpers cho thời gian kết thúc (End Time) ---
 export const getStoredEndTime = (testId) => {
-    const storedEndTimeString = localStorage.getItem(`testEndTime_${testId}`);
+    if (!testId) return null;
+    const storedEndTimeString = sessionStorage.getItem(`testEndTime_${testId}`);
     return storedEndTimeString ? parseInt(storedEndTimeString, 10) : null;
 };
 
-// Helper function để lưu testId vào localStorage
 export const storeEndTime = (testId, endTime) => {
-    localStorage.setItem(`testEndTime_${testId}`, endTime.toString());
+    if (!testId) return;
+    sessionStorage.setItem(`testEndTime_${testId}`, endTime.toString());
 };
 
-// Helper function để xóa testId khỏi localStorage
 export const clearStoredEndTime = (testId) => {
-    localStorage.removeItem(`testEndTime_${testId}`);
+    if (!testId) return;
+    sessionStorage.removeItem(`testEndTime_${testId}`);
 };
 
-// Helper functions để lấy flag 'testAbandoned'
+// --- Helpers cho cờ 'testAbandoned' ---
 export const getTestAbandonedFlag = (testId) => {
     if (!testId) return false;
-    return localStorage.getItem(`testAbandoned_${testId}`) === 'true';
+    return sessionStorage.getItem(`testAbandoned_${testId}`) === 'true';
 };
 
-// Helper function để lưu flag 'testAbandoned'
 export const setTestAbandonedFlag = (testId) => {
     if (!testId) return;
-    localStorage.setItem(`testAbandoned_${testId}`, 'true');
+    sessionStorage.setItem(`testAbandoned_${testId}`, 'true');
 };
 
-// Helper function để xóa flag 'testAbandoned'
 export const clearTestAbandonedFlag = (testId) => {
     if (!testId) return;
-    localStorage.removeItem(`testAbandoned_${testId}`);
+    sessionStorage.removeItem(`testAbandoned_${testId}`);
+};
+
+// --- Helpers cho câu trả lời của người dùng (User Answers) ---
+export const getStoredUserAnswers = (testId) => {
+    if (!testId) return null;
+    const answersString = sessionStorage.getItem(`userAnswers_${testId}`);
+    try {
+        return answersString ? JSON.parse(answersString) : null;
+    } catch (e) {
+        console.error("Lỗi phân tích câu trả lời đã lưu từ sessionStorage:", e);
+        sessionStorage.removeItem(`userAnswers_${testId}`);
+        return null;
+    }
+};
+
+export const storeUserAnswers = (testId, answers) => {
+    if (!testId) return;
+    try {
+        if (answers && Object.keys(answers).length > 0) {
+            sessionStorage.setItem(`userAnswers_${testId}`, JSON.stringify(answers));
+        } else {
+            sessionStorage.removeItem(`userAnswers_${testId}`);
+        }
+    } catch (e) {
+        console.error("Lỗi lưu câu trả lời vào sessionStorage:", e);
+    }
+};
+
+export const clearStoredUserAnswers = (testId) => {
+    if (!testId) return;
+    sessionStorage.removeItem(`userAnswers_${testId}`);
 };

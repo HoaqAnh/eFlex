@@ -9,7 +9,6 @@ import useCourseStudyTimer from "../../../hooks/model/useCourseStudyTimer";
 import { useProgress } from '../../../hooks/progress/useProgress';
 import { useLessonDetail } from '../../../hooks/course/useLesson';
 import { useSections } from '../../../hooks/course/useSection';
-import { useAuth } from "../../../hooks/useAuth";
 import "../../../styles/lessonDetails/style.css"
 import toast from "react-hot-toast";
 
@@ -23,9 +22,6 @@ const LessonDetails = () => {
 
     const { lessonData, loading: lessonLoading, error: lessonError } = useLessonDetail(lessonId, courseId);
     const { listSection, loading: sectionsLoading, error: sectionsError } = useSections(lessonId);
-
-    const { checkAuth } = useAuth();
-    const authCheck = checkAuth();
 
     useEffect(() => {
 
@@ -100,10 +96,6 @@ const LessonDetails = () => {
             setShowTestConfirm(true);
         }
     };
-
-    if (!authCheck.shouldRender) {
-        return authCheck.component;
-    }
 
     const loading = lessonLoading || sectionsLoading;
     const error = lessonError || sectionsError;

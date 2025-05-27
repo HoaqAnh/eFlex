@@ -25,7 +25,6 @@ const Sidebar = () => {
 
   const handleMenuClick = (menuId) => {
     if (menuId === "Dashboard") {
-      console.log("dashboard")
       navigate("/admin");
     } else if (menuId === "courses") {
       navigate("/admin/course");

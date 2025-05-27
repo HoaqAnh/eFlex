@@ -1,16 +1,10 @@
 import Header from "../../../components/admin/course/addLesson/header";
 import Body from "../../../components/admin/course/addLesson/body";
 import Footer from "../../../components/admin/course/addLesson/footer";
-
-//hooks
 import { useLessonManagement } from "../../../hooks/admin/useLessonManagement";
-import { useAuth } from "../../../hooks/useAuth";
-
-//styles
 import "../../../styles/admin/addLesson/style.css";
 
 const AddLesson = () => {
-    const { checkAuth } = useAuth();
     const {
         lessonData,
         loading,
@@ -28,11 +22,6 @@ const AddLesson = () => {
         handleAddTest,
         triggerSectionVideoUpload,
     } = useLessonManagement();
-
-    const authCheck = checkAuth();
-    if (!authCheck.shouldRender) {
-        return authCheck.component;
-    }
 
     return (
         <div className="addLesson">

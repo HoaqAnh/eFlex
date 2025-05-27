@@ -47,8 +47,9 @@ export const useAuth = () => {
         } else {
           setIsAdmin(false);
         }
-        if (isConnected && userData?.data?.email) {
-          setUser(userData.data.email, roleName === "admin");
+
+        if (isConnected && userData?.data?.fullname) {
+          setUser(userData.data.fullname, roleName === "admin");
         }
         setIsLoading(false);
         return { roleName };
@@ -208,6 +209,7 @@ export const useAuth = () => {
 
   const logout = useCallback(async () => {
     try {
+      setUser(null, false);
       await logoutService();
       setUserData(null);
       setIsAdmin(false);

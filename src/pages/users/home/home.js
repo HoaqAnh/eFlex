@@ -2,13 +2,10 @@ import Header from "../../../components/users/home/header";
 import Body from "../../../components/users/home/body";
 import Loading from "../../../components/layout/loader/loading"
 import Error from "../../../components/layout/loader/error"
-import { useAuth } from "../../../hooks/useAuth";
 import useGetUserData from "../../../hooks/useUserData.js";
 import "../../../styles/users/home/style.css";
 
 const HomePage = () => {
-  const { checkAuth } = useAuth();
-  const authCheck = checkAuth();
   const { loading, error, userData } = useGetUserData();
 
   if (loading) {
@@ -19,10 +16,7 @@ const HomePage = () => {
     return <div className="home"><Error Title="Lỗi tải dữ liệu người dùng, vui lòng thử lại sau ít phút!" /></div>
   }
 
-  if (!authCheck.shouldRender) {
-    return authCheck.component;
-  }
-
+  console.log("User data loaded:", userData);
   return (
     <div className="home">
       <Header UserData={userData} />

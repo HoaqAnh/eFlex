@@ -1,28 +1,20 @@
-import React from "react";
 import { useParams } from "react-router-dom";
 import Header from "../../../components/courseDetails/header";
 import Body from "../../../components/courseDetails/body";
 import Footer from "../../../components/courseDetails/footer";
 import Loading from "../../../components/layout/loader/loading";
 import Error from "../../../components/layout/loader/error";
-import { useAuth } from "../../../hooks/useAuth";
 import { userStudyData } from "../../../services/modelService";
 import useCourseStudyTimer from "../../../hooks/model/useCourseStudyTimer";
 import { useCourseDetail } from "../../../hooks/course/useCourse";
 import { useLessons, useCountLessonAndTest } from "../../../hooks/course/useLesson";
 import "../../../styles/courseDetails/style.css";
-import { useNavigate } from "react-router-dom";
-
+import useGetUserData from "../../../hooks/useUserData";
 
 const CourseDetails = () => {
     const { id: courseId } = useParams();
-    const { checkAuth, user } = useAuth();
-    const authCheck = checkAuth();
-    const navigator = useNavigate();
-    const assessmentTest = () => {
-        navigator(`/course/${courseId}/level-assessment`);
-    };
 
+    const { userData, loading: userDataLoading, error: userDataError } = useGetUserData();
     const { courseDetail, loading: courseLoading, error: courseError } = useCourseDetail(courseId);
     const { listLesson, loading: lessonLoading, error: lessonError } = useLessons(courseId);
     const { countLessonAndTest, loading: countLoading, error: countError } = useCountLessonAndTest(courseId);
@@ -34,12 +26,8 @@ const CourseDetails = () => {
     };
     useCourseStudyTimer(handleExit, courseId);
 
-    if (!authCheck.shouldRender) {
-        return authCheck.component;
-    }
-
-    const pageLoading = courseLoading || lessonLoading || countLoading;
-    const pageError = courseError || lessonError || countError;
+    const pageLoading = courseLoading || lessonLoading || countLoading || userDataLoading;
+    const pageError = courseError || lessonError || countError || userDataError;
 
     if (pageError) {
         let errorMessage = "Bài học đã chạy mất! Vui lòng quay lại sau ít phút nữa.";
@@ -57,12 +45,11 @@ const CourseDetails = () => {
                 <>
                     <div className="course-details__container">
                         <Header
-                            levelAssessmentTest={assessmentTest}
                             courseDetail={courseDetail}
                             countLessonAndTest={countLessonAndTest}
                         />
                         <Body
-                            user={user}
+                            user={userData}
                             courseDetail={courseDetail}
                             lessons={listLesson}
                         />

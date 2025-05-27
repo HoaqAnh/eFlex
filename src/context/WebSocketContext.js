@@ -119,6 +119,7 @@ export const WebSocketProvider = ({ children }) => {
 
   // Gửi JOIN khi userInfo thay đổi
   useEffect(() => {
+    // console.log("[WebSocketContext JOIN Effect] Running. UserInfo:", userInfo, "IsConnected:", isConnected, "HasSentJoin:", hasSentJoinMessage.current);
     if (
       userInfo &&
       isConnected &&
@@ -134,7 +135,7 @@ export const WebSocketProvider = ({ children }) => {
           isAdmin: userInfo.isAdmin,
         }),
       });
-      // console.log("User JOIN message sent successfully:", userInfo);
+      console.log("User JOIN message sent successfully");
       hasSentJoinMessage.current = true;
     }
   }, [userInfo, isConnected]);

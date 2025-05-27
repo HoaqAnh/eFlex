@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "./context/ThemeContext";
@@ -24,7 +23,6 @@ import LessonDetails from "./pages/users/course/lessonDetails";
 import Exercises from "./pages/users/test/exercises";
 import Test from "./pages/users/test/test";
 import Account from "./pages/users/account/account";
-import LevelAssessmentTest from "./pages/users/test/levelAssessmentTest";
 
 // Admin Pages
 import Dashboard from "./pages/admin/dashboard";
@@ -66,8 +64,8 @@ const App = () => {
 
               {/* Route Exercises không nằm trong Layout */}
               <Route path="course/:id/lesson/:lessonId/test/:testId" element={<Exercises />} />
-              <Route path="course/:id/level-assessment" element={<LevelAssessmentTest />} />
-              
+              <Route path="course/:id/level-assessment" element={<Exercises />} />
+
               {/* Nhóm Admin với Layout */}
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<Dashboard />} />

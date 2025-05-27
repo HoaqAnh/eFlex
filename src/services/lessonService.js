@@ -162,7 +162,6 @@ export const lessonService = {
 
       // Gọi API tạo tất cả các section cùng lúc
       const sectionsResponse = await this.createSections(sectionsData);
-      console.log("Response API Create Section: ", sectionsResponse);
 
       return {
         success: true,

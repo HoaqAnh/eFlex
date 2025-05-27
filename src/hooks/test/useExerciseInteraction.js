@@ -18,9 +18,9 @@ export const useExerciseInteraction = (initialFontSize = 16, initialAutoNext = f
 
     const resetUserAnswers = useCallback(() => setUserAnswers({}), []);
 
-
     return {
         userAnswers,
+        setUserAnswers,
         handleAnswerSelected,
         fontSize,
         autoNextQuestion,

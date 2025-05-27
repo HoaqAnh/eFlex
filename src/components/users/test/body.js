@@ -1,4 +1,3 @@
-import React from "react";
 import List from "./list";
 import "../../../styles/users/test/body.css";
 import AvatarDefault from "../../../assets/images/defaultAvatar.png";

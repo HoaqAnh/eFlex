@@ -3,7 +3,6 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import TopCard from "../../components/admin/dashboard/TopCard";
 import BodyCard from "../../components/admin/dashboard/BodyCard";
 import BottomCard from "../../components/admin/dashboard/BottomCard";
-import { useAuth } from "../../hooks/useAuth";
 import "../../styles/admin/dashboard.css";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -41,13 +40,6 @@ const Dashboard = () => {
             }
         }
     };
-
-    const { checkAuth } = useAuth();
-    const authCheck = checkAuth();
-
-    if (!authCheck.shouldRender) {
-        return authCheck.component;
-    }
 
     return (
         <div className="home-container">

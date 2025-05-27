@@ -3,13 +3,12 @@ import { getCurrentUser } from "../services/authService";
 import TokenService from '../services/tokenService';
 
 export const useGetUserData = () => {
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [userData, setUserData] = useState(null);
 
     useEffect(() => {
         const fetchUserData = async () => {
-            setLoading(true);
             setError(null);
 
             try {
