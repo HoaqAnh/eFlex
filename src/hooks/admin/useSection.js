@@ -6,18 +6,9 @@ import toast from 'react-hot-toast';
 export const useSection = () => {
     const validation = useValidation();
 
-    const initialSectionState = {
-        id: 1,
-        tenBai: "",
-        moTa: "",
-        videoFile: null,
-        video: null
-    };
+    const initialSectionState = { id: 1, tenBai: "", moTa: "", videoFile: null, video: null };
 
-    const initialSectionErrorState = {
-        tenBai: "",
-        moTa: ""
-    };
+    const initialSectionErrorState = { tenBai: "", moTa: "" };
 
     // State for sections (bắt đầu với một section mặc định)
     const [sectionForms, setSectionForms] = useState([{ ...initialSectionState }]);
@@ -68,6 +59,18 @@ export const useSection = () => {
         }
     };
 
+    const removeSelectedVideo = (sectionIndex) => {
+        setSectionForms(prevForms => {
+            const updatedForms = [...prevForms];
+            if (updatedForms[sectionIndex]) {
+                updatedForms[sectionIndex].videoFile = null;
+                // Bạn cũng có thể muốn reset trường 'video' (URL đã upload) nếu có
+                // updatedForms[sectionIndex].video = ''; 
+            }
+            return updatedForms;
+        });
+    };
+
     // Validate một section form cụ thể sử dụng useValidation
     const validateSectionForm = (formIndex) => {
         const currentForm = sectionForms[formIndex];
@@ -91,7 +94,6 @@ export const useSection = () => {
 
     // Hàm thêm một section form mới
     const handleAddSection = () => {
-        // const newFormId = sectionForms.length + 1;
         const newFormId = sectionForms.length > 0 ? sectionForms[sectionForms.length - 1].id + 1 : 1;
         setSectionForms(prevForms => [
             ...prevForms,
@@ -164,6 +166,7 @@ export const useSection = () => {
         handleRemoveSection,
         resetSectionForms,
         handleUploadVideo,
-        handleSectionVideoFileSelect
+        handleSectionVideoFileSelect,
+        removeSelectedVideo
     };
 };

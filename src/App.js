@@ -25,7 +25,7 @@ import Test from "./pages/users/test/test";
 import Account from "./pages/users/account/account";
 
 // Admin Pages
-import Dashboard from "./pages/admin/dashboard";
+import Dashboard from "./pages/admin/dashboard/dashboard";
 import CoursePanel from "./pages/admin/course/course";
 import AddCourse from "./pages/admin/course/addCourse";
 import AddLesson from "./pages/admin/course/addLesson";

@@ -1,6 +1,3 @@
-import React from "react";
-
-//styles
 import "../../../../styles/admin/addLesson/footer.css";
 
 const Footer = ({ handleBack, handleAddAndContinue, handleSubmit, handleAddSection, handleAddTest }) => {

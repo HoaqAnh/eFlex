@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import SectionHeader from "../addSection/header";
 import SectionBody from "../addSection/body";
 import SectionFooter from "../addSection/footer";
@@ -11,10 +11,54 @@ const Body = ({
     handleSectionInputChange,
     sectionData,
     sectionErrors,
-    handleUploadVideo,
-    handleRemoveSection,
+    onTriggerUpload,
+    onRemoveSelectedVideo,
+    onRemoveWholeSection
 }) => {
-    const [expandedSections, setExpandedSections] = useState(sectionData.map(() => true));
+    const [expandedSections, setExpandedSections] = useState(() => sectionData.map(() => true));
+    const prevSectionCountRef = useRef(sectionData.length);
+    const sectionElementRefs = useRef([]);
+
+    useEffect(() => {
+        const currentSectionCount = sectionData.length;
+        const previousSectionCount = prevSectionCountRef.current;
+
+        if (sectionElementRefs.current.length !== currentSectionCount) {
+            sectionElementRefs.current = Array(currentSectionCount).fill(null).map(
+                (_, i) => sectionElementRefs.current[i] || React.createRef()
+            );
+        }
+
+        if (expandedSections.length !== currentSectionCount && previousSectionCount === currentSectionCount) {
+            setExpandedSections(Array(currentSectionCount).fill(true));
+        }
+
+
+        if (currentSectionCount > previousSectionCount) {
+            setExpandedSections(() => {
+                const newExpandedState = Array(currentSectionCount).fill(false);
+                if (currentSectionCount > 0) {
+                    newExpandedState[currentSectionCount - 1] = true;
+                }
+                return newExpandedState;
+            });
+
+            setTimeout(() => {
+                const newSectionIndex = currentSectionCount - 1;
+                if (newSectionIndex >= 0 && sectionElementRefs.current[newSectionIndex] && sectionElementRefs.current[newSectionIndex].current) {
+                    sectionElementRefs.current[newSectionIndex].current.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }, 100);
+        } else if (currentSectionCount < previousSectionCount) {
+            setExpandedSections(currentExpanded => currentExpanded.slice(0, currentSectionCount));
+        }
+
+        prevSectionCountRef.current = currentSectionCount;
+
+    }, [sectionData]);
 
     const toggleExpand = (index) => {
         setExpandedSections(prev => {
@@ -37,35 +81,40 @@ const Body = ({
                         onChange={(e) => handleLessonInputChange('tenBai', e.target.value)}
                     />
                 </div>
-                <div className="addLesson-body__form-subgroup">
-                    <label className="add-lesson__label">Từ khóa bài học</label>
-                    <input
-                        className="add-lesson__input"
-                        type="text"
-                        placeholder="Nhập từ khóa"
-                    />
-                </div>
             </div>
 
-            {sectionData.map((section, index) => (
-                <div key={index} className={`addSection-body__form-group ${!expandedSections[index] ? 'collapsed' : ''}`}>
-                    <SectionHeader onToggle={() => toggleExpand(index)} isExpanded={expandedSections[index]} sectionNumber={index + 1} />
-                    <div className="addSection-body__form-subgroup-container">
-                        <SectionBody
-                            sectionData={section}
-                            formErrors={sectionErrors[index]}
-                            handleInputChange={handleSectionInputChange}
-                            index={index}
+            {sectionData.map((section, index) => {
+                const currentSectionSpecificErrors = sectionErrors && sectionErrors[index] ? sectionErrors[index] : {};
+                const hasErrorInThisSection = Object.values(currentSectionSpecificErrors).some(errorMessage => errorMessage && errorMessage.length > 0);
+                return (
+                    <div key={section.id || index}
+                        ref={sectionElementRefs.current[index]}
+                        className={`addSection-body__form-group ${expandedSections[index] === false ? 'collapsed' : ''} ${hasErrorInThisSection ? 'section-with-errors' : ''}`}
+                    >
+                        <SectionHeader
+                            onToggle={() => toggleExpand(index)}
+                            isExpanded={expandedSections[index] === undefined ? true : expandedSections[index]}
+                            sectionNumber={index + 1}
+                        />
+                        <div className="addSection-body__form-subgroup-container">
+                            <SectionBody
+                                sectionData={section}
+                                formErrors={currentSectionSpecificErrors}
+                                handleInputChange={handleSectionInputChange}
+                                index={index}
+                            />
+                        </div>
+                        <SectionFooter
+                            onRemoveWholeSection={() => onRemoveWholeSection(index)}
+                            onTriggerUpload={() => onTriggerUpload(index)}
+                            isFirstSection={index === 0}
+                            currentVideoFile={section.videoFile}
+                            onRemoveVideoFile={() => onRemoveSelectedVideo(index)}
                         />
                     </div>
-                    <SectionFooter
-                        handleRemoveSection={() => handleRemoveSection(index)}
-                        handleUploadVideo={() => handleUploadVideo(index)}
-                        isFirstSection={index === 0}
-                    />
-                </div>
-            ))}
-        </div>
+                );
+            })}
+        </div >
     );
 };
 

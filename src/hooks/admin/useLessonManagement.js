@@ -24,11 +24,17 @@ export const useLessonManagement = () => {
         input.onchange = (event) => {
             const file = event.target.files[0];
             if (file) {
+                if (!file.type.startsWith('video/')) {
+                    toast.error('Định dạng tệp không hợp lệ. Vui lòng chọn một tệp video.');
+                    return;
+                }
                 section.handleSectionVideoFileSelect(sectionIndex, file);
             }
         };
         input.click();
     };
+
+    const removeSelectedVideo = section.removeSelectedVideo;
 
     // Thêm lesson và các section
     const submitLessonWithSections = async () => {
@@ -123,6 +129,7 @@ export const useLessonManagement = () => {
         handleAddSection: section.handleAddSection,
         handleRemoveSection: section.handleRemoveSection,
         triggerSectionVideoUpload,
+        removeSelectedVideo: section.removeSelectedVideo,
 
         // Submission
         loading: lesson.loading,

@@ -1,6 +1,3 @@
-import React from "react";
-
-//styles
 import "../../../../styles/admin/addSection/header.css";
 
 const SectionHeader = ({ onToggle, isExpanded, sectionNumber }) => {

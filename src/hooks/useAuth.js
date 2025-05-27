@@ -24,10 +24,9 @@ export const useAuth = () => {
       console.log("hasFetchedUser");
       return null;
     }
+    setIsLoading(true);
+    setError(null);
     try {
-      setIsLoading(true);
-      setError(null);
-
       const userData = await getCurrentUser();
       if (!userData) {
         console.error("Invalid user data received");
@@ -222,7 +221,7 @@ export const useAuth = () => {
       console.error("Logout error:", error);
       toast.error("Đã có lỗi xảy ra khi đăng xuất");
     }
-  }, [navigate]);
+  }, [navigate, setUser]);
 
   const isAdminRoute = useCallback((path) => {
     const adminRoutes = [

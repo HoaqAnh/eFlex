@@ -122,12 +122,7 @@ export const useAdminCourse = (currentPaginationParams) => {
     };
 
     const setInitialCourseDataForEdit = useCallback((data) => {
-        setCourseData({
-            tenMon: data.tenMon || "",
-            moTa: data.moTa || "",
-            category: data.category?.id?.toString() || "",
-            anhMonHoc: data.anhMonHoc || null
-        });
+        setCourseData({ ...initialCourseState, ...data });
         setImagePreview(data.anhMonHoc || null);
         setSelectedImage(null);
         setFormErrors({ ...initialCourseState });
@@ -206,10 +201,6 @@ export const useAdminCourse = (currentPaginationParams) => {
             toast.success("Cập nhật khóa học thành công!");
 
             setSelectedImage(null);
-            // Giữ lại imagePreview nếu không có selectedImage mới, hoặc xóa nếu muốn
-            // Nếu payload.anhMonHoc là URL mới, có thể cập nhật imagePreview ở đây
-            // setImagePreview(payload.anhMonHoc);
-
 
             fetchCourse({ page: 0 });
 

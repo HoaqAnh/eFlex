@@ -77,3 +77,7 @@
 .addSection-body__form-group.collapsed .addSection-body__form-subgroup-container {
     display: none;
 }
+
+.addSection-body__form-group.section-with-errors {
+    border-left: 4px solid #ffa39e;
+}

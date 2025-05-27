@@ -1,6 +1,3 @@
-import React from "react";
-
-//styles
 import "../../../../styles/admin/addSection/body.css";
 
 const SectionBody = ({ sectionData, handleInputChange, formErrors, index }) => {
