@@ -1,18 +1,17 @@
 package EduConnect.Service;
 
-import EduConnect.Domain.Course;
-import EduConnect.Domain.Exercise;
-import EduConnect.Domain.Lesson;
+import EduConnect.Domain.*;
 import EduConnect.Domain.Request.AnswerRequest;
 import EduConnect.Domain.Response.ScoreRes;
-import EduConnect.Domain.TestExercise;
 import EduConnect.Repository.ExerciseRepository;
 import EduConnect.Repository.LessonRepository;
+import EduConnect.Repository.ListeningGroupRepository;
 import EduConnect.Repository.TestExerciseRepository;
 import EduConnect.Util.Enum.AnswerCorrect;
 import EduConnect.Util.Enum.Dificulty;
 import EduConnect.Util.Enum.QuestionType;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,9 +27,12 @@ import java.util.stream.Collectors;
 public class ExerciseService {
     private final ExerciseRepository exerciseRepository;
     private final TestExerciseRepository testExerciseRepository;
-    public ExerciseService(ExerciseRepository exerciseRepository, TestExerciseRepository testExerciseRepository) {
+    private final ListeningGroupRepository listeningGroupRepository;
+    public ExerciseService(ExerciseRepository exerciseRepository, TestExerciseRepository testExerciseRepository
+    , ListeningGroupRepository listeningGroupRepository) {
         this.exerciseRepository = exerciseRepository;
         this.testExerciseRepository = testExerciseRepository;
+        this.listeningGroupRepository = listeningGroupRepository;
     }
     public Page<Exercise> findAll(Pageable pageable) {
         return exerciseRepository.findAll(pageable);
@@ -86,22 +88,9 @@ public class ExerciseService {
                 Optional<TestExercise> lesson1 = testExerciseRepository.findById(idTestExercise);
                 lesson1.ifPresent(exercise::setTestExercise);
 
-                //String raw = getCellStringValue(row.getCell(7));
                 Long idBaiHoc;
                 idBaiHoc = lesson1.get().getLesson().getId();
-//                if (raw != null && !raw.trim().isEmpty()) {
-//                    try {
-//                        idBaiHoc = (long) Double.parseDouble(raw.trim());
-//                    } catch (NumberFormatException e) {
-//                        throw new IllegalArgumentException("Invalid lesson ID at row " + (row.getRowNum() + 1));
-//                    }
-//                } else {
-//                    if (lesson1.isPresent() && lesson1.get().getLesson() != null) {
-//                        idBaiHoc = lesson1.get().getLesson().getId();
-//                    } else {
-//                        throw new IllegalArgumentException("Không tìm thấy bài học liên kết với TestExercise ID: " + idTestExercise);
-//                    }
-//                }
+
 
                 exercise.setId_BaiHoc(idBaiHoc);
 
@@ -113,8 +102,87 @@ public class ExerciseService {
             throw new RuntimeException("Error processing Excel file: " + e.getMessage());
         }
         return exerciseRepository.saveAll(exerciseList);
-    }
+    }@Transactional
+    public List<Exercise> uploadQuestionsForListening(MultipartFile file, Long testId, Long listeningGroupId) {
+        List<Exercise> questionList = new ArrayList<>();
 
+        // Kiểm tra file Excel
+        if (file == null || file.isEmpty()) {
+            throw new IllegalArgumentException("Excel file cannot be empty");
+        }
+        if (!file.getContentType().equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
+            throw new IllegalArgumentException("File must be in Excel format (.xlsx)");
+        }
+
+        // Tìm Test và ListeningGroup
+        TestExercise test = testExerciseRepository.findById(testId)
+                .orElseThrow(() -> new IllegalArgumentException("Test not found with ID: " + testId));
+        ListeningGroup listeningGroup = listeningGroupRepository.findById(listeningGroupId)
+                .orElseThrow(() -> new IllegalArgumentException("ListeningGroup not found with ID: " + listeningGroupId));
+
+        try (InputStream is = file.getInputStream(); Workbook workbook = new XSSFWorkbook(is)) {
+            Sheet sheet = workbook.getSheetAt(0);
+
+            for (Row row : sheet) {
+                // Bỏ qua hàng tiêu đề (hàng đầu tiên)
+                if (row.getRowNum() == 0) {
+                    continue;
+                }
+
+                // Kiểm tra cột câu hỏi (cột 0)
+                Cell questionCell = row.getCell(0);
+                if (questionCell == null || questionCell.getCellType() == CellType.BLANK ||
+                        (questionCell.getCellType() == CellType.STRING && questionCell.getStringCellValue().trim().isEmpty())) {
+                    continue; // Bỏ qua hàng nếu câu hỏi trống
+                }
+
+                Exercise question = new Exercise();
+                question.setCauHoi(questionCell.getStringCellValue());
+                question.setQuestionType(QuestionType.LISTENING); // Đặt loại câu hỏi là LISTENING
+
+                // Lấy các đáp án (cột 1-4)
+                question.setDapAn1(getCellStringValue(row.getCell(1)));
+                question.setDapAn2(getCellStringValue(row.getCell(2)));
+                question.setDapAn3(getCellStringValue(row.getCell(3)));
+                question.setDapAn4(getCellStringValue(row.getCell(4)));
+
+                // Lấy đáp án đúng (cột 5)
+                String correctAnswer = getCellStringValue(row.getCell(5));
+                if (correctAnswer == null || correctAnswer.trim().isEmpty()) {
+                    throw new IllegalArgumentException("Correct answer is required in row " + (row.getRowNum() + 1));
+                }
+                try {
+                    question.setDapAnDung(AnswerCorrect.valueOf(correctAnswer.toUpperCase()));
+                } catch (IllegalArgumentException e) {
+                    throw new IllegalArgumentException("Invalid Correct Answer value in row " + (row.getRowNum() + 1) + ": " + correctAnswer);
+                }
+
+                // Lấy độ khó (cột 6)
+                String difficultyValue = getCellStringValue(row.getCell(6));
+                if (difficultyValue != null && !difficultyValue.isEmpty()) {
+                    try {
+                        question.setDificulty(Dificulty.valueOf(difficultyValue.toUpperCase()));
+                    } catch (IllegalArgumentException e) {
+                        throw new IllegalArgumentException("Invalid Difficulty value in row " + (row.getRowNum() + 1) + ": " + difficultyValue);
+                    }
+                } else {
+                    question.setDificulty(Dificulty.EASY); // Mặc định là EASY
+                }
+
+                // Liên kết với Test và ListeningGroup
+                question.setTestExercise(test);
+                question.setListeningGroup(listeningGroup);
+
+                questionList.add(question);
+            }
+
+            // Lưu tất cả câu hỏi vào database
+            return exerciseRepository.saveAll(questionList);
+
+        } catch (IOException e) {
+            throw new RuntimeException("Error processing Excel file: " + e.getMessage(), e);
+        }
+    }
     private String getCellStringValue(Cell cell) {
         if (cell == null || cell.getCellType() == CellType.BLANK) {
             return null;

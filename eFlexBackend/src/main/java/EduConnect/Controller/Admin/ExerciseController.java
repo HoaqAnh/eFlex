@@ -38,6 +38,12 @@ public class ExerciseController {
     public  ResponseEntity<List<Exercise>> getExercise(@PathVariable long idTestExercise,@RequestParam("file") MultipartFile file) {
         return ResponseEntity.ok(this.exerciseService.excelExercise(file,idTestExercise));
     }
+    @PostMapping("/exercise/excel")
+    @ApiMessage("Excel for Exercise")
+    public  ResponseEntity<List<Exercise>> createExerciseForListening(@RequestParam(name = "id_TestExercise") Long idTestExercise
+            ,@RequestParam("id_Listening") Long idListening,@RequestParam("file") MultipartFile file) {
+        return ResponseEntity.ok(this.exerciseService.excelforListening(file,idListening,idListening));
+    }
     @PostMapping("/exercise")
     public ResponseEntity<Exercise> createExercise(@RequestBody Exercise exercise) {
 
