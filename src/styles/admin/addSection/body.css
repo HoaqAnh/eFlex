@@ -1,0 +1,45 @@
+.addSection-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.addSection-body__form-subgroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    height: auto;
+}
+
+.add-section__label {
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--text-secondary);
+    transition: color 0.3s;
+}
+
+.add-section__input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    background-color: var(--background-secondary);
+    color: var(--text-secondary);
+    border-radius: 4px;
+    font-size: 14px;
+    margin-bottom: 16px;
+    transition: border 0.3s, color 0.3s, background-color 0.3s;
+}
+
+.add-section__textarea {
+    height: 420px;
+    min-height: 300px;
+    max-height: 420px;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    background-color: var(--background-secondary);
+    color: var(--text-secondary);
+    border-radius: 4px;
+    font-size: 14px;
+    resize: vertical;
+    transition: border 0.3s;
+    transition: border 0.3s, background-color 0.3s, color 0.3s;
+}

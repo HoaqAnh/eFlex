@@ -1,0 +1,73 @@
+.home-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    height: 55%;
+    cursor: default;
+    border-radius: 15px;
+    background-color: var(--background-secondary);
+    box-shadow: 0 4px 8px var(--shadow-color);
+    overflow: hidden;
+    position: relative;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.home-body:hover {
+    border: 1px solid var(--border-color);
+}
+
+.getCourseStudyingError {
+    color: var(--text-primary);
+}
+
+.home-body__container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.home-body__container-title {
+    width: 100%;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: var(--text-primary);
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 15px;
+    background-color: var(--title-background);
+    box-shadow: 0 4px 8px var(--shadow-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.home-body__container-main {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: auto;
+    padding: 0.5rem;
+    gap: 2rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-user-select: none;
+}
+
+.home-body__container-main::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.home-body__container-main::-webkit-scrollbar-track {
+    background: var(--scrollbarTrack-background);
+    border-radius: 10px;
+    -webkit-transition: background 0.3s
+}
+
+.home-body__container-main::-webkit-scrollbar-thumb {
+    background: var(--scrollbarThumb-background);
+    border-radius: 10px;
+    -webkit-transition: background 0.3s
+}

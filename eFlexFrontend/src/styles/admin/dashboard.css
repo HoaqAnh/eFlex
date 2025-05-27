@@ -1,0 +1,232 @@
+.home-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.content-wrapper {
+    display: flex;
+    flex: 1;
+    height: calc(100vh - 60px);
+    overflow: hidden;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: var(--background-primary);
+    transition: background-color 0.3s;
+}
+
+/* Top Content Styles */
+.top-content {
+    display: flex;
+    background-color: var(--background-secondary);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 15px var(--shadow-color);
+    min-width: 50%;
+    min-height: 80px;
+    height: 10%;
+    transition: all 0.3s;
+}
+
+.top-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.counter-user .counter-row span{
+    margin: 8px 0;
+    color: var(--text-primary);
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.counter-user {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2em;
+}
+
+/* Body Content Styles */
+.body-content {
+    display: flex;
+    background-color: var(--background-secondary);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 15px var(--shadow-color);
+    min-width: 50%;
+    min-height: 300px;
+    height: 100%;
+    flex-direction: column;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.body-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.body-card-header {
+    margin-bottom: 24px;
+}
+
+.body-card-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    transition: all 0.3s;
+}
+
+.body-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.charts-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    padding: 16px;
+    overflow-y: auto;
+    height: 100%;
+    align-content: flex-start;
+    min-height: 0;
+}
+
+.chart-item {
+    flex: 1 1 calc(50% - 12px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    background-color: var(--background-primary);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    min-height: 300px;
+    max-width: calc(50% - 12px);
+}
+
+.chart-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px var(--shadow-color);
+}
+
+.chart-item h4 {
+    margin: 0;
+    font-size: 18px;
+    color: var(--text-secondary);
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.chart-wrapper {
+    width: 100%;
+    height: 220px;
+    position: relative;
+}
+
+/* Bottom Content Styles */
+.bottom-content {
+    flex: 1;
+    width: 100%;
+    min-height: 300px;
+    height: 20%;
+}
+
+.bottom-card {
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-secondary);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 15px var(--shadow-color);
+    transition: all 0.3s;
+}
+
+.bottom-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.bottom-card-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    transition: all 0.3s;
+}
+
+.main-content::-webkit-scrollbar {
+    width: 2px;
+    height: 8px;
+}
+
+.main-content::-webkit-scrollbar-track {
+    background: var(--scrollbarTrack-background);
+    border-radius: 10px;
+    -webkit-transition: background 0.3s
+}
+
+.main-content::-webkit-scrollbar-thumb {
+    background: var(--scrollbarThumb-background);
+    border-radius: 10px;
+    -webkit-transition: background 0.3s
+}
+
+.charts-container::-webkit-scrollbar {
+    width: 2px;
+    height: 8px;
+}
+
+.charts-container::-webkit-scrollbar-track {
+    background: var(--scrollbarTrack-background);
+    border-radius: 10px;
+    -webkit-transition: background 0.3s
+}
+
+.charts-container::-webkit-scrollbar-thumb {
+    background: var(--scrollbarThumb-background);
+    border-radius: 10px;
+    -webkit-transition: background 0.3s
+}
+
+@media screen and (max-width: 768px) {
+    .chart-item {
+        flex: 1 1 100%;
+        max-width: 100%;
+        min-height: 250px;
+    }
+
+    .charts-container {
+        padding: 12px;
+        gap: 16px;
+    }
+
+    .chart-wrapper {
+        height: 180px;
+    }
+}

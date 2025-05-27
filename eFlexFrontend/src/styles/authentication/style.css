@@ -1,0 +1,25 @@
+/* Login page */
+.login,
+.register {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    height: 100vh;
+    background: #F4FAFF;
+    justify-content: center;
+    align-items: center;
+}
+
+.login__main-content,
+.register__main-content {
+    height: auto;
+    width: 90%;
+    max-width: 900px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    border: 1px solid #aaa;
+}

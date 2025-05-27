@@ -1,0 +1,24 @@
+.addSection-footer {
+    background-color: transparent;
+    display: flex;
+    flex-direction: row;
+    cursor: default;
+    overflow: hidden;
+    height: auto;
+    width: 100%;
+    padding: 20px 0;
+    gap: 1.2em
+}
+
+.upload-videofile-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+}
+
+.video-file-name-display {
+    color: var(--text-secondary);
+    font-style: italic;
+}

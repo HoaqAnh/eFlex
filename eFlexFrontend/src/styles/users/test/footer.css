@@ -1,0 +1,13 @@
+.test-footer {
+    margin-top: auto;
+    display: flex;
+    gap: 18px;
+    padding: 20px 0;
+    padding-left: 10px;
+    height: 8vh;
+    max-height: 10vh;
+    justify-content: left;
+    align-items: center;
+    border-top: 1px solid var(--border-color);
+    transition: border-top 0.3s;
+}

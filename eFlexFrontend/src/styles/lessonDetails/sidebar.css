@@ -1,0 +1,96 @@
+.lesson-details__sidebar {
+    width: 20%;
+    height: 100%;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.lesson-details__sidebar-content {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 1rem;
+    width: 100%;
+    height: 100%;
+}
+
+.lesson-details__sidebar-content-header {
+    width: 100%;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+    transition: all 0.3s;
+}
+
+.lesson-details__sidebar-content-header h2 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    transition: all 0.3s;
+}
+
+.lesson-details__sidebar-content-body {
+    flex: 1;
+    width: 100%;
+}
+
+.lesson-details__sidebar-content-body-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    width: 100%;
+    padding: 5px 20px;
+    height: 3rem;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px var(--shadow-color);
+    transition: all 0.3s;
+}
+
+.lesson-details__sidebar-content-body-item.active {
+    background-color: var(--background-secondary);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s;
+}
+
+.lesson-details__sidebar-content-body-item:hover {
+    transform: translateX(8px);
+    border: 1px solid var(--border-color);
+}
+
+.lesson-details__sidebar-content-body-item p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    transition: color 0.3s;
+}
+
+.lesson-details__sidebar-content-body-item .check-circle {
+    color: var(--circle-check-color);
+    transition: all 0.3s;
+}
+
+.lesson-details__sidebar-content-body-item .circle {
+    color: var(--circle-color);
+    transition: all 0.3s;
+}
+
+.lesson-details__sidebar-content-footer {
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    transition: all 0.3s;
+}
+
+.lesson-details__sidebar-content-footer {
+    flex: 1;
+    width: 100%;
+    max-height: 5em;
+
+}
+
+.lesson-details__sidebar-action-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
