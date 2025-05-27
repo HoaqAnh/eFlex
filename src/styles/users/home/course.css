@@ -90,3 +90,10 @@
     padding: 20px;
     gap: 0.5rem;
 }
+
+.home-course__container-right > p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin: 0;
+    padding: 0;
+}

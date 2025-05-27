@@ -34,7 +34,6 @@ import AddLesson from "./pages/admin/course/addLesson";
 import EditCourse from "./pages/admin/course/editCourse";
 import AddTest from "./pages/admin/course/addTest";
 
-
 // Global Styles
 import "./styles/Global.css";
 
@@ -63,12 +62,12 @@ const App = () => {
                 <Route path="course/:id" element={<CourseDetails />} />
                 <Route path="course/:id/lesson/:lessonId" element={<LessonDetails />} />
                 <Route path="course/:id/lesson/:lessonId/test" element={<Test />} />
-                <Route path="course/:id/level-assessment" element={<LevelAssessmentTest />} />
               </Route>
 
               {/* Route Exercises không nằm trong Layout */}
               <Route path="course/:id/lesson/:lessonId/test/:testId" element={<Exercises />} />
-
+              <Route path="course/:id/level-assessment" element={<LevelAssessmentTest />} />
+              
               {/* Nhóm Admin với Layout */}
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<Dashboard />} />

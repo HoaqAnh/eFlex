@@ -8,7 +8,7 @@
     color: var(--text-secondary);
     border: 1px solid var(--border-color);
     border-radius: 5px;
-    cursor: pointer;
+    cursor: default;
     box-shadow: 0 4px 8px var(--shadow-color);
     transition: background-color 0.3s, box-shadow 0.3s, border 0.3s;
 }

@@ -48,27 +48,14 @@
     border: 1px solid var(--border-color);
 }
 
-.home-header__container-left__top-avatar {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    min-width: 4rem;
-    width: 6rem;
-    height: 100%;
-}
-
-.home-header__container-left__top-avatar .avatarImage {
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
+.home-header__container-left__top img {
+    width: 5rem;
+    height: 5rem;
     object-fit: cover;
-    box-shadow: 0 4px 8px var(--shadow-color);
     cursor: pointer;
-    transition: box-shadow 0.3s;
 }
 
-.home-header__container-left__top-avatar .avatarImage:hover {
+.home-header__container-left__top img:hover {
     transform: scale(1.05);
 }
 

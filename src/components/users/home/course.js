@@ -1,11 +1,13 @@
 import Lesson from "./lesson"
 import "../../../styles/users/home/course.css"
+import { useNavigate } from "react-router-dom"
 
 const Course = ({ CourseData }) => {
+    const navigator = useNavigate();
     return (
         <div className="home-course">
             <div className="home-course__container">
-                <div className="home-course__container-left">
+                <div className="home-course__container-left" onClick={() => { navigator(`/course/${CourseData.id}`) }}>
                     <img src={CourseData.image} alt="course" loading="lazy" />
                     <p className="home-course__name">{CourseData.name}</p>
                 </div>
@@ -20,7 +22,7 @@ const Course = ({ CourseData }) => {
                             />
                         ))
                     ) : (
-                        <p>Không có bài kiểm tra nào.</p>
+                        <p>Không có bài học nào.</p>
                     )}
                 </div>
             </div>

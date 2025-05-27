@@ -28,12 +28,10 @@
 }
 
 .test-body__left-top img {
-    width: 120px;
-    height: 120px;
+    max-width: 160px;
+    max-height: 160px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid var(--border-color);
-    box-shadow: 0 2px 4px var(--shadow-color);
     transition: all 0.3s;
 }
 
@@ -73,6 +71,13 @@
     border-left: 1px dashed var(--border-color);
     padding: 20px;
     transition: all 0.3s;
+}
+
+.test-body__right>p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin: 0;
+    padding: 0;
 }
 
 .test-body__right::-webkit-scrollbar {

@@ -1,6 +1,7 @@
 import React from "react";
 import List from "./list";
 import "../../../styles/users/test/body.css";
+import AvatarDefault from "../../../assets/images/defaultAvatar.png";
 
 const Body = ({ User, Tests }) => {
     const testCount = Tests ? Tests.length : 0;
@@ -9,7 +10,7 @@ const Body = ({ User, Tests }) => {
         <div className="test-body">
             <div className="test-body__left">
                 <div className="test-body__left-top">
-                    <img src="/avatar.png" alt="Avatar profile" loading="lazy" />
+                    <img src={AvatarDefault} alt="Avatar profile" loading="lazy" />
                 </div>
                 <div className="test-body__left-body">
                     <p>Xin chào, {User.fullname}!</p>
