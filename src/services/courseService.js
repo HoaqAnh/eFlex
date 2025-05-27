@@ -2,7 +2,13 @@ import TokenService from './tokenService';
 
 const BASE_URL = "http://localhost:8080/api/v1";
 
-export const getCourseDetails = async (courseId) => {
+// Hàm loại bỏ timestamp khỏi URL
+const removeTimestampFromUrl = (url) => {
+  return url.replace(/(\.\w+)_\d+$/, '$1');
+};
+
+// Helper function để gửi request tạo khóa học
+const sendCourseRequest = async (courseData, imageUrl, endpoint) => {
   try {
     const token = TokenService.getToken();
     if (!token) {
@@ -10,18 +16,29 @@ export const getCourseDetails = async (courseId) => {
       return null;
     }
 
+    // Kiểm tra token hợp lệ
     if (!TokenService.isTokenValid()) {
       console.error("Token không hợp lệ hoặc đã hết hạn");
       TokenService.clearTokens();
       return null;
     }
 
-    const response = await fetch(`${BASE_URL}/courses/${courseId}`, {
-      method: "GET",
+    const payload = {
+      tenMon: courseData.tenMon.trim(),
+      moTa: courseData.moTa.trim(),
+      anhMonHoc: imageUrl,
+      category: {
+        id: parseInt(courseData.category)
+      }
+    };
+
+    const response = await fetch(`${BASE_URL}/${endpoint}`, {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
       },
+      body: JSON.stringify(payload),
       credentials: 'include'
     });
 
@@ -34,10 +51,9 @@ export const getCourseDetails = async (courseId) => {
       }
     }
 
-    const responseData = await response.json();
-    return responseData.data;
+    return await response.json();
   } catch (error) {
-    console.error('Lỗi khi lấy thông tin khóa học:', error);
+    console.error('API request error:', error);
     throw error;
   }
 };
@@ -100,8 +116,8 @@ export const CourseApi = {
   }
 };
 
-// Helper function để gửi request tạo khóa học
-const sendCourseRequest = async (courseData, imageUrl, endpoint) => {
+// Hàm cập nhật thông tin khóa học
+export const updateCourse = async (courseId, courseData, imageUrl) => {
   try {
     const token = TokenService.getToken();
     if (!token) {
@@ -109,7 +125,6 @@ const sendCourseRequest = async (courseData, imageUrl, endpoint) => {
       return null;
     }
 
-    // Kiểm tra token hợp lệ
     if (!TokenService.isTokenValid()) {
       console.error("Token không hợp lệ hoặc đã hết hạn");
       TokenService.clearTokens();
@@ -119,14 +134,20 @@ const sendCourseRequest = async (courseData, imageUrl, endpoint) => {
     const payload = {
       tenMon: courseData.tenMon.trim(),
       moTa: courseData.moTa.trim(),
-      anhMonHoc: imageUrl,
       category: {
         id: parseInt(courseData.category)
       }
     };
 
-    const response = await fetch(`${BASE_URL}/${endpoint}`, {
-      method: 'POST',
+    if (imageUrl) {
+      payload.anhMonHoc = imageUrl;
+    } else if (courseData.anhMonHoc) {
+      payload.anhMonHoc = courseData.anhMonHoc;
+    }
+
+
+    const response = await fetch(`${BASE_URL}/courses/${courseId}`, {
+      method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
@@ -146,14 +167,9 @@ const sendCourseRequest = async (courseData, imageUrl, endpoint) => {
 
     return await response.json();
   } catch (error) {
-    console.error('API request error:', error);
+    console.error('Lỗi khi cập nhật khóa học:', error);
     throw error;
   }
-};
-
-// Hàm loại bỏ timestamp khỏi URL
-const removeTimestampFromUrl = (url) => {
-  return url.replace(/(\.\w+)_\d+$/, '$1');
 };
 
 //Hàm xóa khóa học
@@ -250,6 +266,46 @@ export const fetchCourses = async (paginationParams = { page: 0, size: 10 }) => 
     }
   } catch (error) {
     console.error('Error fetching courses:', error);
+    throw error;
+  }
+};
+
+export const getCourseDetails = async (courseId) => {
+  try {
+    const token = TokenService.getToken();
+    if (!token) {
+      console.error("Không tìm thấy token, người dùng chưa đăng nhập");
+      return null;
+    }
+
+    if (!TokenService.isTokenValid()) {
+      console.error("Token không hợp lệ hoặc đã hết hạn");
+      TokenService.clearTokens();
+      return null;
+    }
+
+    const response = await fetch(`${BASE_URL}/courses/${courseId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      credentials: 'include'
+    });
+
+    if (!response.ok) {
+      if (response.status === 401 || response.status === 403) {
+        TokenService.clearTokens();
+        throw new Error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
+      } else {
+        throw new Error(`Error: ${response.status}. ${response.statusText}`);
+      }
+    }
+
+    const responseData = await response.json();
+    return responseData.data;
+  } catch (error) {
+    console.error('Lỗi khi lấy thông tin khóa học:', error);
     throw error;
   }
 };
