@@ -2,6 +2,7 @@ package EduConnect.Domain;
 
 import EduConnect.Util.Enum.AnswerCorrect;
 import EduConnect.Util.Enum.Dificulty;
+import EduConnect.Util.Enum.QuestionType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -37,11 +38,19 @@ public class Exercise {
     private Dificulty dificulty;
 
     private long Id_BaiHoc;
-
-
+    @Enumerated(EnumType.STRING)
+    private QuestionType questionType;
     @ManyToOne
     @JoinColumn(name = "id_bkt")
     @JsonBackReference(value = "testExercise_exercise")
     private TestExercise testExercise;
 
+    @ManyToOne
+    @JoinColumn(name = "id_DoanVan")
+    @JsonBackReference(value = "readingPass_exercise")
+    private ReadingPassage readingPassage;
+
+    @ManyToOne
+    @JoinColumn(name = "id_NhomCauNghe")
+    private ListeningGroup listeningGroup;
 }

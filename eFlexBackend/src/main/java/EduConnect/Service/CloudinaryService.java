@@ -54,6 +54,12 @@ public class CloudinaryService {
                         "folder", folderName
                 ));
     }
+    public Map uploadAudio(MultipartFile file, String folderName) throws IOException {
+        return cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap(
+                "resource_type", "video",  // rất quan trọng!
+                "folder", folderName
+        ));
+    }
 
     public boolean videoExists(String videoUrl) {
         try {

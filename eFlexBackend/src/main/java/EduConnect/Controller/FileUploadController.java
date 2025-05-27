@@ -105,4 +105,17 @@ public class FileUploadController {
             }
         throw new IdInValidException("Section Not Found");
     }
+    @PostMapping("/upload/listening-audio")
+    public ResponseEntity<?> uploadAudioFile(@RequestParam("file") MultipartFile file) throws IdInValidException {
+        try {
+            String audioUrl = (String) cloudinaryService.uploadAudio(file, "listening").get("secure_url");
+
+            VideoResponse audioResponse = new VideoResponse();
+            audioResponse.setVideoUrl(audioUrl + "_" + System.currentTimeMillis());
+            return ResponseEntity.ok(audioResponse);
+        } catch (IOException e) {
+            throw new IdInValidException("Failed to upload audio file: " + e.getMessage());
+        }
+    }
+
 }

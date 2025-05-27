@@ -11,6 +11,7 @@ import EduConnect.Repository.LessonRepository;
 import EduConnect.Repository.TestExerciseRepository;
 import EduConnect.Util.Enum.AnswerCorrect;
 import EduConnect.Util.Enum.Dificulty;
+import EduConnect.Util.Enum.QuestionType;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -135,6 +136,18 @@ public class ExerciseService {
 
     @Transactional
     public Exercise save(Exercise exercise) {
+        if(exercise.getListeningGroup()!=null)
+        {
+            exercise.setQuestionType(QuestionType.LISTENING);
+        }
+        else if(exercise.getReadingPassage()!=null)
+        {
+            exercise.setQuestionType(QuestionType.READ);
+        }
+        else {
+            exercise.setQuestionType(QuestionType.MultipleChoice);
+        }
+
         return exerciseRepository.save(exercise);
     }
 
