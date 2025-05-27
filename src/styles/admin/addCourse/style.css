@@ -1,9 +1,0 @@
-.addCourse {
-  display: flex;
-  flex-direction: column;
-  overflow-y: hidden;
-  gap: 1em;
-  height: 100%;
-  background-color: var(--background-primary);
-  transition: background-color 0.3s;
-}
