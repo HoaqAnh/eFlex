@@ -116,8 +116,8 @@ export const CourseApi = {
   }
 };
 
-// Hàm cập nhật thông tin khóa học
-export const updateCourse = async (courseId, courseData, imageUrl) => {
+// Hàm câp nhật khóa học
+export const updateCourse = async (courseId, coursePayload) => {
   try {
     const token = TokenService.getToken();
     if (!token) {
@@ -131,20 +131,14 @@ export const updateCourse = async (courseId, courseData, imageUrl) => {
       return null;
     }
 
-    const payload = {
-      tenMon: courseData.tenMon.trim(),
-      moTa: courseData.moTa.trim(),
+    const payloadToSend = {
+      tenMon: coursePayload.tenMon.trim(),
+      moTa: coursePayload.moTa.trim(),
+      anhMonHoc: coursePayload.anhMonHoc,
       category: {
-        id: parseInt(courseData.category)
+        id: parseInt(coursePayload.category)
       }
     };
-
-    if (imageUrl) {
-      payload.anhMonHoc = imageUrl;
-    } else if (courseData.anhMonHoc) {
-      payload.anhMonHoc = courseData.anhMonHoc;
-    }
-
 
     const response = await fetch(`${BASE_URL}/courses/${courseId}`, {
       method: 'PUT',
@@ -152,7 +146,7 @@ export const updateCourse = async (courseId, courseData, imageUrl) => {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(payloadToSend),
       credentials: 'include'
     });
 

@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react"
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-hot-toast';
-import { CourseApi, deleteCourse, fetchCourses, getCourseDetails } from '../../services/courseService';
+import { CourseApi, deleteCourse, fetchCourses, getCourseDetails, updateCourse } from '../../services/courseService';
 import { useValidation } from '../admin/useValidation';
 
 let courseListeners = [];
@@ -16,7 +16,10 @@ const notifyListeners = (newData, newMeta) => {
 
 export const useAdminCourse = (currentPaginationParams) => {
     const navigate = useNavigate();
-    const [courseData, setCourseData] = useState(globalCourseData);
+    const initialCourseState = { tenMon: "", moTa: "", category: "", anhMonHoc: null };
+
+    const [courseData, setCourseData] = useState(globalCourseData.length > 0 ? globalCourseData[0] : { ...initialCourseState });
+
     const [hasMore, setHasMore] = useState(() => {
         if (globalCourseMeta.page !== undefined && globalCourseMeta.pages !== undefined) {
             return globalCourseMeta.page < globalCourseMeta.pages;
@@ -31,12 +34,7 @@ export const useAdminCourse = (currentPaginationParams) => {
     const [selectedImage, setSelectedImage] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
     const { validateCourseForm } = useValidation();
-    const [formErrors, setFormErrors] = useState({
-        tenMon: "",
-        moTa: "",
-        category: "",
-        image: null
-    });
+    const [formErrors, setFormErrors] = useState({ ...initialCourseState });
 
     useEffect(() => {
         const listener = (newData, newMeta) => {
@@ -123,12 +121,24 @@ export const useAdminCourse = (currentPaginationParams) => {
         }
     };
 
+    const setInitialCourseDataForEdit = useCallback((data) => {
+        setCourseData({
+            tenMon: data.tenMon || "",
+            moTa: data.moTa || "",
+            category: data.category?.id?.toString() || "",
+            anhMonHoc: data.anhMonHoc || null
+        });
+        setImagePreview(data.anhMonHoc || null);
+        setSelectedImage(null);
+        setFormErrors({ ...initialCourseState });
+    }, []);
+
     const submitCourse = async (apiMethod, redirectPath, extractId = false) => {
         if (!validateForm()) {
             toast.error("Vui lòng điền đầy đủ thông tin bắt buộc.");
             return;
         }
-        
+
         try {
             setLoading(true);
             setError(null);
@@ -160,6 +170,60 @@ export const useAdminCourse = (currentPaginationParams) => {
         } catch (err) {
             console.error('Lỗi khi thêm khóa học:', err);
             setError(err.message || 'Không thể thêm khóa học. Vui lòng thử lại sau.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const processCourseUpdate = async (courseIdToUpdate, dataForUpdate, shouldRedirectPath, shouldExtractId = false) => {
+        if (!validateForm()) {
+            toast.error("Vui lòng điền đầy đủ thông tin bắt buộc.");
+            return;
+        }
+
+        try {
+            setLoading(true);
+            setError(null);
+
+            let payload = { ...dataForUpdate };
+
+            if (selectedImage) {
+                setUploadingImage(true);
+                try {
+                    const newImageUrl = await CourseApi.uploadCourseImage(selectedImage);
+                    payload.anhMonHoc = newImageUrl;
+                } catch (err) {
+                    toast.error('Không thể upload hình ảnh. Vui lòng thử lại.');
+                    setLoading(false);
+                    setUploadingImage(false);
+                    return;
+                } finally {
+                    setUploadingImage(false);
+                }
+            }
+
+            const response = await updateCourse(courseIdToUpdate, payload);
+            toast.success("Cập nhật khóa học thành công!");
+
+            setSelectedImage(null);
+            // Giữ lại imagePreview nếu không có selectedImage mới, hoặc xóa nếu muốn
+            // Nếu payload.anhMonHoc là URL mới, có thể cập nhật imagePreview ở đây
+            // setImagePreview(payload.anhMonHoc);
+
+
+            fetchCourse({ page: 0 });
+
+            if (shouldExtractId && response && response.data && response.data.id) {
+                return response.data.id;
+            } else if (shouldRedirectPath) {
+                handleNavigate(shouldRedirectPath);
+            }
+            return response;
+
+        } catch (err) {
+            console.error('Lỗi khi cập nhật khóa học:', err);
+            toast.error(err.message || 'Không thể cập nhật khóa học. Vui lòng thử lại sau.');
+            throw err;
         } finally {
             setLoading(false);
         }
@@ -255,8 +319,24 @@ export const useAdminCourse = (currentPaginationParams) => {
         navigate(`/admin/${path}`, options);
     }, [navigate]);
 
+    const handleUpdate = async (courseIdToUpdate) => {
+        await processCourseUpdate(courseIdToUpdate, courseData, 'course');
+    };
+
+    const handleUpdateAndNext = async (courseIdToUpdate) => {
+        const response = await processCourseUpdate(courseIdToUpdate, courseData, null, true); // Extract ID, không redirect
+        if (response && typeof response === 'number') { // Giả sử trả về courseId
+            handleNavigate(`course/addCourse/${response}/addLesson`); // Ví dụ: đi đến trang thêm bài học cho khóa vừa sửa
+        }
+        // const updatedCourseId = await processCourseUpdate(courseIdToUpdate, courseData, null, true);
+        // if (updatedCourseId) {
+        //     handleNavigate(`course/addCourse/${updatedCourseId}/addLesson`);
+        // }
+    };
+
     return {
         courseData,
+        setCourseDataForEdit,
         loading,
         error,
         hasMore,
@@ -274,10 +354,12 @@ export const useAdminCourse = (currentPaginationParams) => {
         handleSubmitDraft,
         handleNavigate,
         handleDelete,
-        handleUpdate: () => console.log("Update clicked!"),
-        handleUpdateAndNext: () => console.log("Update and next clicked!")
+        handleUpdate,
+        handleUpdateAndNext
     };
 };
+
+
 
 export const useCourseDetail = (courseId) => {
     const [loading, setLoading] = useState(false);
