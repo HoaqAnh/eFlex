@@ -336,7 +336,7 @@ export const useAdminCourse = (currentPaginationParams) => {
 
     return {
         courseData,
-        setCourseDataForEdit,
+        setInitialCourseDataForEdit,
         loading,
         error,
         hasMore,
@@ -358,8 +358,6 @@ export const useAdminCourse = (currentPaginationParams) => {
         handleUpdateAndNext
     };
 };
-
-
 
 export const useCourseDetail = (courseId) => {
     const [loading, setLoading] = useState(false);
