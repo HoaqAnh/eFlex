@@ -296,6 +296,9 @@ export const useAdminCourse = (currentPaginationParams) => {
             ...prev,
             anhMonHoc: null
         }));
+        if (formErrors.image) {
+            setFormErrors(prev => ({ ...prev, image: "" }));
+        }
     };
 
     const validateForm = () => {
@@ -360,13 +363,12 @@ export const useAdminCourse = (currentPaginationParams) => {
 };
 
 export const useCourseDetail = (courseId) => {
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [courseDetail, setCourseDetail] = useState([]);
     useEffect(() => {
         const fetchCourseDetail = async () => {
             try {
-                setLoading(true);
                 setError(null);
                 const data = await getCourseDetails(courseId);
 
@@ -380,7 +382,9 @@ export const useCourseDetail = (courseId) => {
                 console.error(err);
                 setError(err.message || 'Có lỗi xảy ra khi lấy dữ liệu.');
             } finally {
-                setLoading(false);
+                setTimeout(() => {
+                    setLoading(false);
+                }, [300]);
             }
         }
 

@@ -11,6 +11,7 @@ import "../../../styles/button/style.css";
 const AddCourse = () => {
     const { categoryData, loading: categoriesLoading, error: categoriesError } = useCategory();
     const {
+        courseData,
         loading: addCourseLoading,
         error: addCourseError,
         formErrors,
@@ -32,34 +33,30 @@ const AddCourse = () => {
         );
     }
 
+    if (loading) {
+        return <div className="editCourse"><Loading Title="Đang tải..." /></div>
+    }
+
     return (
         <div className="addCourse">
-            {error && <div className="error-message">Có lỗi xảy ra vui lòng thử lại sau ít phút.</div>}
-            {loading ? (
-                <Loading Title="Đang tải lên khóa học..." />
-            ) : (
-                <>
-                    <Header
-                        Title="Thêm khóa học"
-                    />
-                    <Body
-                        categories={categoryData}
-                        categoriesLoading={categoriesLoading}
-                        categoriesError={categoriesError}
-                        imagePreview={imagePreview}
-                        selectedImage={selectedImage}
-                        formErrors={formErrors}
-                        handleInputChange={handleInputChange}
-                        handleImageSelect={handleImageSelect}
-                        handleRemoveImage={handleRemoveImage}
-                    />
-                    <Footer
-                        handleBack={() => handleNavigate("course")}
-                        handleSubmitDraft={handleSubmitDraft}
-                        handleNext={handleNext}
-                    />
-                </>
-            )}
+            <Header
+                Title="Thêm khóa học"
+            />
+            <Body
+                formData={courseData}
+                categories={categoryData}
+                imagePreview={imagePreview}
+                selectedImage={selectedImage}
+                formErrors={formErrors}
+                handleInputChange={handleInputChange}
+                handleImageSelect={handleImageSelect}
+                handleRemoveImage={handleRemoveImage}
+            />
+            <Footer
+                handleBack={() => handleNavigate("course")}
+                handleSubmitDraft={handleSubmitDraft}
+                handleNext={handleNext}
+            />
         </div>
     );
 }

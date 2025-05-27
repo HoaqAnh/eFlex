@@ -1,6 +1,3 @@
-import React from "react";
-
-//styles
 import "../../../../styles/admin/addCourse/header.css";
 
 const Header = ({ Title }) => (

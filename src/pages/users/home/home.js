@@ -16,7 +16,6 @@ const HomePage = () => {
     return <div className="home"><Error Title="Lỗi tải dữ liệu người dùng, vui lòng thử lại sau ít phút!" /></div>
   }
 
-  console.log("User data loaded:", userData);
   return (
     <div className="home">
       <Header UserData={userData} />

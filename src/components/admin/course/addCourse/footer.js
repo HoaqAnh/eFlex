@@ -1,4 +1,3 @@
-import React from "react";
 import "../../../../styles/admin/addCourse/footer.css";
 
 const Footer = ({ handleBack, handleSubmitDraft, handleNext }) => (
