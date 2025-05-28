@@ -29,4 +29,6 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
     @Query("select t.testExercise from Exercise t where t.id = :exerciseId")
     TestExercise findExerciseById(Long exerciseId);
 
+
+
 }

@@ -26,5 +26,4 @@ public class ReadingPassage {
     @JsonIgnore
     private List<WordList> wordLists;
 
-
 }
