@@ -36,7 +36,7 @@ public class ListeningController {
             throw new IllegalArgumentException("Audio file not found for ListeningGroup with ID: " + listeningGroupId);
         }
         return ResponseEntity.ok()
-                .body(listeningGroup.getAudioFile());
+                .body(listeningGroup.getAudioFile().toString().split("_")[0]);
     }
 
 }
