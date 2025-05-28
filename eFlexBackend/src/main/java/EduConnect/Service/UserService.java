@@ -51,7 +51,7 @@ public class UserService {
                 userDTO.setRoleName(role1.getRoleName());
             }
         } else {
-            userDTO.setRoleName("USER");
+            userDTO.setRoleName("user");
         }
 
         return userDTO;

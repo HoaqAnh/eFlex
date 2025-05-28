@@ -106,7 +106,7 @@ public class AuthController {
             Map<String, Object> response = new HashMap<>();
             response.put("status", "Đăng nhập thành công.");
             response.put("access_token", accessTokenJWT);
-            response.put("user", Map.of("email", user.getEmail(), "name", user.getFullname(), "role", "USER"));
+            response.put("user", Map.of("email", user.getEmail(), "name", user.getFullname(), "role", "user"));
 
             ResponseCookie resCookies = ResponseCookie.from("refresh_token1", refreshTokenJWT)
                     .httpOnly(true)
