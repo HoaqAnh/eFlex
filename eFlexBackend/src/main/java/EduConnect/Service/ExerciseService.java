@@ -310,4 +310,11 @@ public class ExerciseService {
         }
     }
 
+    public List<Exercise> findByReadingPassage(long idReadingPassage){
+        return this.exerciseRepository.findByReadingPassageId(idReadingPassage);
+    }
+
+    public List<Exercise> findByReadingPassageIdEachTestExercise(long idReadingPassage, long testExercise){
+        return this.exerciseRepository.findByReadingPassageIdEachTestExercise(idReadingPassage,testExercise);
+    }
 }

@@ -9,5 +9,9 @@ import java.util.List;
 
 @Repository
 public interface ReadingPassageRepository extends JpaRepository<ReadingPassage, Long> {
-    List<ReadingPassage> findByTestExerciseId(long idExercise);
+
+    @Query("select distinct e.readingPassage " +
+            "from Exercise e " +
+            "where e.testExercise.id = :testExerciseId")
+    List<ReadingPassage> findReadingPassagesByTestExerciseId(long testExerciseId);
 }
