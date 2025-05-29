@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { useValidation } from './useValidation';
-import { creTest, creListeningTest as createListeningGroup, creReadingTest as createReadingPassage } from '../../services/testService'; // Đổi tên để rõ ràng hơn
+import { creTest, creListeningTest as createListeningGroup, creReadingTest as createReadingPassage } from '../../services/testService';
 import { uploadExerciseExcel, uploadListeningAudio, uploadListeningExcel, uploadReadingExcel } from '../../services/exerciseService';
 import { toast } from 'react-hot-toast';
 
@@ -25,7 +25,6 @@ export const useCreTest = () => {
 
     if (!lessonId || !courseId) {
         console.error('Không tìm thấy courseId hoặc lessonId');
-        // navigate('/admin/course'); // Nên để component gọi navigate
         return {
             testData: { ...initialTestData, lesson: { id: null } },
             setTestData: () => { },
@@ -74,8 +73,7 @@ export const useCreTest = () => {
             if (!result.success) {
                 throw new Error(result.error?.message || result.message || "Không thể tạo bài kiểm tra.");
             }
-            // toast.success("Khung bài kiểm tra đã được tạo thành công!"); // Thông báo ở AddTest
-            return { success: true, data: result.data }; // data chứa ID của test
+            return { success: true, data: result.data };
         } catch (err) {
             console.error('Lỗi khi tạo bài kiểm tra (khung):', err);
             const errorMessage = err.message || 'Không thể tạo bài kiểm tra. Vui lòng thử lại sau.';
@@ -122,14 +120,12 @@ export const useCreMultipleChoiceTest = () => {
 
     const handleSubmitMC = async (testId) => {
         if (!validateMCForm()) {
-            // toast.error("Vui lòng chọn file Excel cho phần trắc nghiệm."); // Thông báo ở AddTest
             return { success: false, error: "Dữ liệu trắc nghiệm không hợp lệ" };
         }
         setLoadingMC(true);
         setErrorMC(null);
         try {
             await uploadExerciseExcel(testId, excelFileMC);
-            // toast.success("Tải lên file Excel trắc nghiệm thành công!"); // Thông báo ở AddTest
             return { success: true };
         } catch (err) {
             console.error('Lỗi khi tải lên file Excel trắc nghiệm:', err);
@@ -196,20 +192,19 @@ export const useCreListeningTest = () => {
 
     const handleSubmitListening = async (testExerciseId) => {
         if (!validateListeningForm()) {
-            // toast.error("Vui lòng hoàn thành thông tin cho phần Listening."); // Thông báo ở AddTest
             return { success: false, error: "Dữ liệu Listening không hợp lệ" };
         }
         setLoadingListening(true);
         setErrorListening(null);
         try {
             const audioUrl = await uploadListeningAudio(audioFile);
-            if (!audioUrl) { // uploadListeningAudio trả về URL trực tiếp hoặc throw error
+            if (!audioUrl) {
                 throw new Error("Không thể tải file audio lên server.");
             }
 
             const listeningGroupPayload = {
                 groupName: listeningData.groupName,
-                audioFile: audioUrl // Service trả về URL trực tiếp
+                audioFile: audioUrl
             };
             const listeningGroupResult = await createListeningGroup(listeningGroupPayload);
             if (!listeningGroupResult.success || !listeningGroupResult.data || !listeningGroupResult.data.id) {
@@ -220,7 +215,6 @@ export const useCreListeningTest = () => {
             const excelUploadParams = { id_TestExercise: testExerciseId, id_Listening: listeningGroupId };
             await uploadListeningExcel(excelUploadParams, excelFileListening);
 
-            // toast.success("Tạo phần nghe và tải file thành công!"); // Thông báo ở AddTest
             return { success: true };
         } catch (err) {
             console.error('Lỗi khi tạo phần Listening:', err);
@@ -279,7 +273,6 @@ export const useCreReadingTest = () => {
 
     const handleSubmitReading = async (testExerciseId) => {
         if (!validateReadingForm()) {
-            // toast.error("Vui lòng hoàn thành thông tin cho phần Reading."); // Thông báo ở AddTest
             return { success: false, error: "Dữ liệu Reading không hợp lệ" };
         }
         setLoadingReading(true);
@@ -298,7 +291,6 @@ export const useCreReadingTest = () => {
             const excelUploadParams = { id_TestExercise: testExerciseId, id_readingPassage: readingPassageId };
             await uploadReadingExcel(excelUploadParams, excelFileReading);
 
-            // toast.success("Tạo phần đọc hiểu và tải file thành công!"); // Thông báo ở AddTest
             return { success: true };
         } catch (err) {
             console.error('Lỗi khi tạo phần Reading:', err);

@@ -18,7 +18,7 @@ const Body = ({
     readingData, readingErrors, excelFileReading,
     handleReadingInputChange, handleReadingExcelFileChange,
 }) => (
-    <form className="addTest-body" onSubmit={(e) => e.preventDefault()}> {/* Ngăn submit mặc định của form */}
+    <form className="addTest-body" onSubmit={(e) => e.preventDefault()}>
         <div className="addTest-body__form-group">
             <div className="addTest-body__form-subgroup">
                 <label className="addTest-body__label" htmlFor="testName">Tên bài kiểm tra *</label>
@@ -39,7 +39,7 @@ const Body = ({
                     type="number"
                     className={`addTest-body__input ${testErrors.duration ? 'input-error' : ''}`}
                     placeholder="Nhập thời gian làm bài"
-                    value={testData.duration === 0 ? '' : testData.duration} // Hiển thị rỗng nếu là 0
+                    value={testData.duration === 0 ? '' : testData.duration}
                     onChange={(e) => handleTestInputChange('duration', e.target.value === '' ? 0 : parseInt(e.target.value, 10))}
                     min="1"
                 />
@@ -50,42 +50,40 @@ const Body = ({
         <div className="addTest-body__form-group">
             <div className="addExercise-body__form-group">
                 <div className="addExercise-body__form-group-label">
-                    <label className="addExercise-body__label">Chọn các thể loại câu hỏi cho bài kiểm tra:</label>
+                    <label className="addExercise-body__label">Chọn thể loại câu hỏi cho bài kiểm tra:</label>
                 </div>
                 <div className="addExercise-body__form-group-actions">
                     <div
                         className={`addExercise-body__option ${selectedTestTypes.multipleChoice ? 'option-enabled' : 'option-disabled'}`}
                         onClick={() => handleTestTypeChange('multipleChoice')}
-                        tabIndex={0} // Cho phép focus
-                        onKeyPress={(e) => e.key === 'Enter' && handleTestTypeChange('multipleChoice')} // Cho phép chọn bằng Enter
-                        role="button" // Vai trò
+                        tabIndex={0}
+                        onChange={(e) => e.key === 'Enter' && handleTestTypeChange('multipleChoice')}
+                        role="button"
                     >
-                        <p>Trắc nghiệm (Multiple Choice)</p>
+                        <p>Trắc nghiệm</p>
                     </div>
                     <div
                         className={`addExercise-body__option ${selectedTestTypes.listening ? 'option-enabled' : 'option-disabled'}`}
                         onClick={() => handleTestTypeChange('listening')}
                         tabIndex={0}
-                        onKeyPress={(e) => e.key === 'Enter' && handleTestTypeChange('listening')}
+                        onChange={(e) => e.key === 'Enter' && handleTestTypeChange('listening')}
                         role="button"
                     >
-                        <p>Nghe (Listening)</p>
+                        <p>Nghe</p>
                     </div>
                     <div
                         className={`addExercise-body__option ${selectedTestTypes.reading ? 'option-enabled' : 'option-disabled'}`}
                         onClick={() => handleTestTypeChange('reading')}
                         tabIndex={0}
-                        onKeyPress={(e) => e.key === 'Enter' && handleTestTypeChange('reading')}
+                        onChange={(e) => e.key === 'Enter' && handleTestTypeChange('reading')}
                         role="button"
                     >
-                        <p>Đọc hiểu (Reading)</p>
+                        <p>Đọc hiểu</p>
                     </div>
-                    {/* Speaking có thể thêm tương tự nếu cần */}
                 </div>
             </div>
         </div>
 
-        {/* Hiển thị form tương ứng với lựa chọn */}
         {selectedTestTypes.multipleChoice && (
             <fieldset className="addTest-body__fieldset">
                 <legend className="addTest-body__legend">Phần Trắc Nghiệm</legend>

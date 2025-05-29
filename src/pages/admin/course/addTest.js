@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
-import { useNavigate }
-    from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
     useCreTest,
     useCreMultipleChoiceTest,
@@ -20,7 +19,7 @@ const AddTest = () => {
     const {
         testData, setTestData, loading: loadingTest, error: errorTest, testErrors,
         handleTestInputChange, validateTestForm, resetTestForm: resetMainTestForm, handleSubmitTest,
-        courseId, lessonId // Lấy courseId, lessonId từ useCreTest
+        courseId, lessonId
     } = useCreTest();
 
     const {
@@ -60,7 +59,6 @@ const AddTest = () => {
     const handleTestTypeChange = (type) => {
         setSelectedTestTypes(prev => {
             const newState = { ...prev, [type]: !prev[type] };
-            // Reset form con khi bỏ chọn
             if (!newState.multipleChoice && prev.multipleChoice) resetMCForm();
             if (!newState.listening && prev.listening) resetListeningForm();
             if (!newState.reading && prev.reading) resetReadingForm();
@@ -102,7 +100,7 @@ const AddTest = () => {
         }
 
         // Bước 3: Tạo Test chính
-        const testResult = await handleSubmitTest(); // handleSubmitTest từ useCreTest đã bao gồm payload
+        const testResult = await handleSubmitTest();
 
         if (!testResult || !testResult.success || !testResult.data || !testResult.data.id) {
             toast.error(testResult.error || "Tạo bài kiểm tra thất bại.");
@@ -113,7 +111,7 @@ const AddTest = () => {
 
         // Bước 4: Submit các phần con
         let allSubPartsSuccessful = true;
-        let mcSuccess = !selectedTestTypes.multipleChoice; // True nếu không chọn
+        let mcSuccess = !selectedTestTypes.multipleChoice;
         let listeningSuccess = !selectedTestTypes.listening;
         let readingSuccess = !selectedTestTypes.reading;
 
@@ -158,14 +156,12 @@ const AddTest = () => {
                 } else if (keepFormForNewTest) {
                     resetAllForms();
                     toast.success("Form đã được làm mới để bạn tạo bài kiểm tra tiếp theo.");
-                } else { // Default submit (từ nút submit chính trong footer)
-                    navigate(`/admin/course/editCourse/${courseId}/editLesson/${lessonId}`); // Hoặc trang chi tiết bài học
+                } else {
+                    navigate(`/admin/course`);
                 }
             } else {
                 toast.error("Có lỗi xảy ra trong quá trình xử lý một số phần của bài kiểm tra. Vui lòng kiểm tra lại.");
-                // Cân nhắc việc xóa Test Exercise nếu các phần con lỗi nặng? Hoặc cho phép sửa sau.
             }
-
         } catch (overallError) {
             console.error("Lỗi tổng thể khi xử lý các phần con:", overallError);
             toast.error("Đã có lỗi nghiêm trọng xảy ra khi xử lý các phần con: " + overallError.message);
@@ -193,7 +189,6 @@ const AddTest = () => {
     };
 
     const handleCancel = () => {
-        // Navigate về trang danh sách bài học của khóa học hiện tại, hoặc trang quản lý khóa học
         navigate(`/admin/course/addCourse/${courseId}/addLesson`);
     };
 
@@ -204,7 +199,7 @@ const AddTest = () => {
     if (errorTest && errorTest !== 'Không tìm thấy courseId hoặc lessonId trong URL.') { // Hiển thị lỗi khác ngoài lỗi ID
         return <div className="addTest"><Error Title={`Có lỗi xảy ra: ${errorTest}. Vui lòng thử lại sau ít phút.`} /></div>
     }
-    // Hiển thị loading tổng thể
+
     const isLoadingOverall = loadingTest || loadingMC || loadingListening || loadingReading;
     if (isLoadingOverall) {
         return <div className="addTest"><Loading Title="Đang xử lý dữ liệu..." /></div>
@@ -222,7 +217,7 @@ const AddTest = () => {
                 handleTestTypeChange={handleTestTypeChange}
 
                 // Multiple Choice Props
-                mcData={{ excelFile: excelFileMC }} // mcData có thể mở rộng sau
+                mcData={{ excelFile: excelFileMC }}
                 mcErrors={mcErrors}
                 handleMCFileChange={handleFileChangeMC}
 
@@ -246,7 +241,7 @@ const AddTest = () => {
                 handleCancel={handleCancel}
                 handleSubmitAndCreateTest={handleSubmitAndCreateTest}
                 handleSubmitAndCreateLesson={handleSubmitAndCreateLesson}
-                onSubmit={handleOverallSubmit} // Nút submit chính
+                onSubmit={handleOverallSubmit}
             />
         </div>
     );

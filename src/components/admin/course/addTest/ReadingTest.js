@@ -3,7 +3,7 @@ const ReadingTest = ({
     handleInputChange, handleExcelFileChange
 }) => (
     <div className="addExercise-body__form-group">
-        <div className="addExercise-upload-file"> {/* Giữ class để đồng bộ style nếu có */}
+        <div className="addExercise-upload-file">
             <label className="addExercise-body__create-question-label" htmlFor="readingPassageTitle">
                 Tiêu đề đoạn văn *
             </label>
