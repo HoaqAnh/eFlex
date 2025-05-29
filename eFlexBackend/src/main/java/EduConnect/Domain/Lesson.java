@@ -28,11 +28,6 @@ public class Lesson {
     @JsonBackReference
     private Course course;
 
-    @ElementCollection
-    @CollectionTable(name = "lesson_question_types", joinColumns = @JoinColumn(name = "lesson_id"))
-    @Enumerated(EnumType.STRING)
-    private List<QuestionType> questionTypes = new ArrayList<>();
-
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Section> sections = new ArrayList<>();

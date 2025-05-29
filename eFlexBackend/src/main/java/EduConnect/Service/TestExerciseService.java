@@ -72,7 +72,7 @@ public class TestExerciseService {
         return testExerciseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Bài kiểm tra không tồn tại: " + id));
     }
- public Map<String, Object> submitTestAndRecommend(Long userId, List<AnswerRequest> answers) {
+    public Map<String, Object> submitTestAndRecommend(Long userId, List<AnswerRequest> answers) {
         log.info("Bước 1: Bắt đầu xử lý bài kiểm tra cho userId={} với {} câu trả lời", userId, answers.size());
 
         if (answers.isEmpty()) {
@@ -184,7 +184,7 @@ public class TestExerciseService {
         }
         log.info("Điểm trung bình lịch sử: {}", averageHistoricalRate);
 
-        log.info("Bước 6: Gợi ý bài học");
+        log.info("Bước 6: Gợi ý dựa trên kỹ năng yếu nhất");
         double dynamicThreshold = 0.7 + (answers.size() < 10 ? 0.1 : 0.0);
 
         // Tìm questionType yếu nhất
@@ -203,46 +203,30 @@ public class TestExerciseService {
                 .mapToDouble(LessonPerformance::getWeightedCorrectRate)
                 .min().orElse(1.0);
 
-        if (historyList.size() == 1) { // Chỉ có bản ghi vừa lưu, coi là người dùng mới
+        if (historyList.size() == 1) { // Người dùng mới (chỉ có bản ghi vừa lưu)
             if (lowestLessonRate >= dynamicThreshold) {
                 if (averageTimePerQuestion < 5.0) {
-                    log.info("Người dùng mới làm nhanh, gợi ý bài kiểm tra bổ sung");
-                    return createRecommendation(currentLesson, "Bạn làm bài nhanh và đúng! Hãy làm thêm bài kiểm tra để xác nhận");
+                    log.info("Người dùng mới làm nhanh ({}s/câu), gợi ý làm bài kiểm tra bổ sung", averageTimePerQuestion);
+                    return createRecommendation("Bạn làm bài nhanh và đúng! Hãy làm thêm bài kiểm tra để xác nhận khả năng");
                 } else {
-                    log.info("Người dùng mới đạt điểm cao, gợi ý ôn lại bài hiện tại");
-                    return createRecommendation(currentLesson, "Bạn làm bài rất tốt! Ôn lại bài " + currentLesson.getTenBai() + " để củng cố");
+                    log.info("Người dùng mới đạt điểm cao (rate={}), gợi ý ôn tập kỹ năng {}", lowestLessonRate, weakestType);
+                    return createRecommendation("Bạn làm bài rất tốt! Hãy ôn tập kỹ năng " + weakestType + " để củng cố");
                 }
             } else {
-                Lesson reviewLesson = findLessonByQuestionType(lessons, weakestType, currentLesson);
-                log.info("Người dùng mới có hiệu suất thấp, gợi ý ôn lại bài liên quan đến {}", weakestType);
-                return createRecommendation(reviewLesson, "Ôn lại bài " + reviewLesson.getTenBai() + " Hệ thống đánh giá kĩ năng " + weakestType +" bạn cần cải thiện. ");
+                log.info("Người dùng mới có hiệu suất thấp (rate={}), gợi ý ôn tập kỹ năng {}", lowestLessonRate, weakestType);
+                return createRecommendation("Hãy ôn tập kỹ năng " + weakestType + " để cải thiện hiệu suất");
             }
         } else if (lowestTypeRate < dynamicThreshold && weakestType != null) {
-            Lesson reviewLesson = findLessonByQuestionType(lessons, weakestType, currentLesson);
-            log.info("Hiệu suất thấp nhất cho {} (rate={}), gợi ý ôn lại bài liên quan", weakestType, lowestTypeRate);
-            return createRecommendation(reviewLesson, "Ôn lại bài " + reviewLesson.getTenBai() + " Hệ thống đánh giá kĩ năng " + weakestType +" bạn cần cải thiện. ");
+            log.info("Hiệu suất thấp nhất cho {} (rate={}), gợi ý ôn tập kỹ năng", weakestType, lowestTypeRate);
+            return createRecommendation("Hãy ôn tập kỹ năng " + weakestType + " để cải thiện hiệu suất");
         } else if (averageHistoricalRate < 0.65) {
-            Long weakestLessonId = historyList.stream()
-                    .collect(Collectors.groupingBy(h -> h.getTestExercise().getLesson().getId(),
-                            Collectors.averagingDouble(HistoryTestExercise::getWeightedCorrectRate)))
-                    .entrySet().stream()
-                    .min(Map.Entry.comparingByValue())
-                    .map(Map.Entry::getKey)
-                    .orElse(currentLesson.getId());
-            Lesson reviewLesson = lessons.stream()
-                    .filter(lesson -> lesson.getId() == weakestLessonId)
-                    .findFirst()
-                    .orElse(currentLesson);
-            return createRecommendation(reviewLesson, "Ôn lại bài " + reviewLesson.getTenBai() + " do hiệu suất lịch sử thấp");
+            log.info("Lịch sử kém (averageHistoricalRate={}), gợi ý ôn tập kỹ năng yếu nhất", averageHistoricalRate);
+            return createRecommendation("Hãy ôn tập kỹ năng " + weakestType + " do hiệu suất lịch sử thấp");
         }
 
-        return recommendNextLessonAfterCurrent(lessons, latestLessonOrder);
-    }
-    private Lesson findLessonByQuestionType(List<Lesson> lessons, QuestionType questionType, Lesson defaultLesson) {
-        return lessons.stream()
-                .filter(lesson -> lesson.getQuestionTypes() != null && lesson.getQuestionTypes().contains(questionType))
-                .min(Comparator.comparingInt(Lesson::getViTri))
-                .orElse(defaultLesson);
+        // Gợi ý học kỹ năng tiếp theo
+        log.info("Bước 7: Gợi ý học kỹ năng tiếp theo");
+        return createRecommendation("Hãy tiếp tục học kỹ năng tiếp theo trong khóa học");
     }
 
     private double getDifficultyWeight(Dificulty dificulty) {
@@ -260,30 +244,12 @@ public class TestExerciseService {
         return Math.max(0.1, 1.0 - daysAgo * 0.05);
     }
 
-    private Map<String, Object> recommendNextLessonAfterCurrent(List<Lesson> lessons, int latestLessonOrder) {
-        int nextLessonOrder = latestLessonOrder + 1;
-        Lesson nextLesson = lessons.stream()
-                .filter(lesson -> lesson.getViTri() == nextLessonOrder)
-                .findFirst()
-                .orElse(null);
-
-        if (nextLesson != null) {
-            return createRecommendation(nextLesson, "Tiếp tục học bài " + nextLesson.getTenBai());
-        } else {
-            return createRecommendation(lessons.get(lessons.size() - 1), "Bạn đã hoàn thành tất cả bài học. Ôn lại bài " + lessons.get(lessons.size() - 1).getTenBai());
-        }
-    }
-
-    private Map<String, Object> createRecommendation(Lesson lesson, String message) {
+    private Map<String, Object> createRecommendation(String message) {
         Map<String, Object> recommendation = new HashMap<>();
-        recommendation.put("lesson_id", lesson.getId());
-        recommendation.put("ten_bai_hoc", lesson.getTenBai());
-        recommendation.put("vi_tri", lesson.getViTri());
         recommendation.put("message", message);
         return recommendation;
     }
-    @Getter
-    @Setter
+
     private static class LessonPerformance {
         private final double weightedCorrectRate;
         private final int correctAnswers;
@@ -299,8 +265,7 @@ public class TestExerciseService {
             return weightedCorrectRate;
         }
     }
-    @Getter
-    @Setter
+
     private static class TypePerformance {
         private double totalWeightedScore = 0.0;
         private double totalWeight = 0.0;

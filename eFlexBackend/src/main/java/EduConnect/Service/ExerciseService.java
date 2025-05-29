@@ -317,10 +317,13 @@ public class ExerciseService {
     public List<Exercise> findByTestExerciseId(Long testExerciseId) {
         return exerciseRepository.findByTestExerciseId(testExerciseId);
     }
-    public ExerciseResponseDTO getGroupedExercisesForTestExercise(Long testExerciseId) {
-        TestExercise testExercise = testExerciseRepository.findById(testExerciseId)
-                .orElseThrow(() -> new RuntimeException("TestExercise not found"));
 
+    public ExerciseResponseDTO getGroupedExercisesForTestExercise(Long testExerciseId) {
+
+        TestExercise testExercise = testExerciseRepository.findById(testExerciseId)
+                .orElseThrow(() -> {
+                    return new RuntimeException("TestExercise not found");
+                });
         Lesson currentLesson = testExercise.getLesson();
         if (currentLesson == null) {
             throw new RuntimeException("Lesson not found for TestExercise");
@@ -346,10 +349,18 @@ public class ExerciseService {
             }
         }
 
-        // Nhóm câu hỏi theo questionType
         Map<String, ExerciseResponseDTO.ExerciseGroupDTO> groupedExercises = new HashMap<>();
         for (Exercise exercise : exercises) {
             String questionType = exercise.getQuestionType() != null ? exercise.getQuestionType().toString() : "Unknown";
+            String groupKey;
+
+            if ("LISTENING".equals(questionType) && exercise.getListeningGroup() != null) {
+                groupKey = "LISTENING_" + exercise.getListeningGroup().getId();
+            } else if ("READ".equals(questionType) && exercise.getReadingPassage() != null) {
+                groupKey = "READ_" + exercise.getReadingPassage().getId();
+            } else {
+                groupKey = questionType;
+            }
 
             ExerciseResponseDTO.ExerciseDTO exerciseDTO = new ExerciseResponseDTO.ExerciseDTO();
             exerciseDTO.setId(exercise.getId());
@@ -362,20 +373,20 @@ public class ExerciseService {
             exerciseDTO.setDificulty(exercise.getDificulty() != null ? exercise.getDificulty().toString() : null);
             exerciseDTO.setQuestionType(questionType);
 
-            // Thêm vào nhóm
-            groupedExercises.computeIfAbsent(questionType, k -> new ExerciseResponseDTO.ExerciseGroupDTO())
-                    .getExercises().add(exerciseDTO);
+            ExerciseResponseDTO.ExerciseGroupDTO group = groupedExercises.computeIfAbsent(groupKey, k -> new ExerciseResponseDTO.ExerciseGroupDTO());
+            group.getExercises().add(exerciseDTO);
 
-            // Nếu là LISTENING, thêm audioFile
             if ("LISTENING".equals(questionType) && exercise.getListeningGroup() != null) {
-                groupedExercises.get(questionType)
-                        .setAudioFile(exercise.getListeningGroup().getAudioFile());
+                group.setNameGroup(exercise.getListeningGroup().getGroupName());
+                group.setAudioFile(exercise.getListeningGroup().getAudioFile());
+            } else if ("READ".equals(questionType) && exercise.getReadingPassage() != null) {
+                group.setNameGroup(exercise.getReadingPassage().getContent());
+                group.setPassageId(exercise.getReadingPassage().getId());
             }
         }
 
         ExerciseResponseDTO responseDTO = new ExerciseResponseDTO();
         responseDTO.setData(groupedExercises);
-
         return responseDTO;
     }
 

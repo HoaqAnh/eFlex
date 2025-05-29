@@ -16,18 +16,14 @@ import java.util.Map;
 public class ExerciseResponseDTO {
     private Map<String, ExerciseGroupDTO> data;
 
-    public Map<String, ExerciseGroupDTO> getData() {
-        return data;
-    }
-
-    public void setData(Map<String, ExerciseGroupDTO> data) {
-        this.data = data;
-    }
     @Getter
     @Setter
     public static class ExerciseGroupDTO {
         private String audioFile;
+        private String nameGroup;
+        private Long passageId;
         private List<ExerciseDTO> exercises = new ArrayList<>();
+
 
     }
     @Getter
@@ -42,5 +38,6 @@ public class ExerciseResponseDTO {
         private String dapAnDung;
         private String dificulty;
         private String questionType;
+
     }
 }
