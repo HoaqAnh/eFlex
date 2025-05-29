@@ -19,6 +19,7 @@ public class HistoryTestExercise {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private Instant ngayTao;
+    private Double weightedCorrectRate;
 
     @ManyToOne
     @JoinColumn(name = "id_User")
