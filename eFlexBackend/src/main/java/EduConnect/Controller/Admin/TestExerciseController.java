@@ -61,6 +61,7 @@ public class TestExerciseController {
     }
     @GetMapping("/lesson/{idLesson}")
     public ResponseEntity<List<TestExercise>> getTestExerciseByLessonn(@PathVariable Long idLesson) {
+
         Lesson lesson=lessonRepository.getLessonById(idLesson);
         List<TestExercise> testExerciseList = this.testExerciseService.getTestByLesson(idLesson,lesson.getCourse().getTenMon());
         return ResponseEntity.ok(testExerciseList);

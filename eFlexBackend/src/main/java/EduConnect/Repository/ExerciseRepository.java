@@ -36,4 +36,8 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
             "where e.readingPassage.id = :readingPassageId " +
             "and e.testExercise.id = :testExerciseId")
     List<Exercise> findByReadingPassageIdEachTestExercise(Long readingPassageId, long testExerciseId);
+
+    @Query(value = "SELECT * FROM  bai_tap e WHERE e.id_bkt IN :testExerciseIds ORDER BY RAND() LIMIT :limit", nativeQuery = true)
+    List<Exercise> findRandomExercisesByTestExerciseIds(@Param("testExerciseIds") List<Long> testExerciseIds,
+                                                        @Param("limit") int limit);
 }

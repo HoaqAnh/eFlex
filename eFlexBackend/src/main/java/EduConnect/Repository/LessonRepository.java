@@ -26,7 +26,7 @@ public interface LessonRepository extends JpaRepository<Lesson, Integer> , JpaSp
     boolean existsByCourse_IdAndViTri(Long courseId, int viTri);
     @Query("SELECT MAX(l.viTri) FROM Lesson l WHERE l.course.id = ?1")
     Integer findMaxViTriByCourseId(long courseId);
-
+    List<Lesson> findByCourseIdAndViTriLessThan(long courseId, int viTri);
 
     List<Lesson> findByCourseId(Long courseId);
 }

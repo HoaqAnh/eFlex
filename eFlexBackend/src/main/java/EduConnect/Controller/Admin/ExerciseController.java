@@ -3,12 +3,14 @@ package EduConnect.Controller.Admin;
 import EduConnect.Domain.Exercise;
 import EduConnect.Domain.Lesson;
 import EduConnect.Domain.Request.AnswerRequest;
+import EduConnect.Domain.Response.ExerciseResponseDTO;
 import EduConnect.Domain.Response.ScoreRes;
 import EduConnect.Domain.TestExercise;
 import EduConnect.Repository.TestExerciseRepository;
 import EduConnect.Service.ExerciseService;
 import EduConnect.Util.ApiMessage;
 import EduConnect.Util.Enum.Dificulty;
+import EduConnect.Util.Enum.QuestionType;
 import EduConnect.Util.Error.IdInValidException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +21,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -36,14 +40,21 @@ public class ExerciseController {
     @PostMapping("/exercise/excel/{idTestExercise}")
     @ApiMessage("Excel for Exercise")
     public  ResponseEntity<List<Exercise>> getExercise(@PathVariable long idTestExercise,@RequestParam("file") MultipartFile file) {
-        return ResponseEntity.ok(this.exerciseService.excelExercise(file,idTestExercise));
+        return ResponseEntity.ok(this.exerciseService.excelExercise(file,idTestExercise, QuestionType.MultipleChoice));
     }
     @PostMapping("/exercise/excel")
     @ApiMessage("Excel for Exercise")
     public  ResponseEntity<List<Exercise>> createExerciseForListening
             (@RequestParam(name = "id_TestExercise") Long idTestExercise
             ,@RequestParam("id_Listening") Long idListening,@RequestParam("file") MultipartFile file) {
-        return ResponseEntity.ok(this.exerciseService.uploadQuestionsForListening(file,idTestExercise,idListening));
+        return ResponseEntity.ok(this.exerciseService.uploadQuestionsForListening(file,idTestExercise,idListening,QuestionType.LISTENING));
+    }
+    @PostMapping("/exercise/excel/reading")
+    @ApiMessage("Excel for Exercise")
+    public  ResponseEntity<List<Exercise>> createExerciseForReading
+            (@RequestParam(name = "id_TestExercise") Long idTestExercise
+                    ,@RequestParam("id_readingPassage") Long idreadingPassage,@RequestParam("file") MultipartFile file) {
+        return ResponseEntity.ok(this.exerciseService.uploadQuestionsForReading(file,idTestExercise,idreadingPassage,QuestionType.READ));
     }
     @PostMapping("/exercise")
     public ResponseEntity<Exercise> createExercise(@RequestBody Exercise exercise) {
@@ -90,11 +101,16 @@ public class ExerciseController {
     }
 
     @GetMapping("/lesson/{testExerciseId}/exercises")
-    public ResponseEntity<List<Exercise>> getExercisesByLesson(
-            @PathVariable("testExerciseId") Long testExerciseId)
-           {
+    public ResponseEntity<Map<String, Object>> getExercisesByTestExercise(
+            @PathVariable("testExerciseId") Long testExerciseId) {
+        ExerciseResponseDTO responseDTO = exerciseService.getGroupedExercisesForTestExercise(testExerciseId);
 
-        return ResponseEntity.ok(exerciseService.findByTestExerciseId(testExerciseId));
+        Map<String, Object> response = new HashMap<>();
+        response.put("statusCode", 200);
+        response.put("message", "Call API SUCCESS");
+        response.put("data", responseDTO.getData());
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/exercises")
