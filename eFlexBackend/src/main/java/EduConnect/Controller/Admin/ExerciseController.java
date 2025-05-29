@@ -129,7 +129,6 @@ public class ExerciseController {
 
         return ResponseEntity.ok(exerciseService.findAll(pageable));
     }
-
     @PostMapping("/toScore/{testExerciseId}")
     public ResponseEntity<ScoreRes> scoreExercises(
             @PathVariable Long testExerciseId,

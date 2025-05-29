@@ -203,7 +203,7 @@ public class TestExerciseService {
                 .mapToDouble(LessonPerformance::getWeightedCorrectRate)
                 .min().orElse(1.0);
 
-        if (historyList.size() == 1) { // Người dùng mới (chỉ có bản ghi vừa lưu)
+        if (historyList.size() == 1) {
             if (lowestLessonRate >= dynamicThreshold) {
                 if (averageTimePerQuestion < 5.0) {
                     log.info("Người dùng mới làm nhanh ({}s/câu), gợi ý làm bài kiểm tra bổ sung", averageTimePerQuestion);

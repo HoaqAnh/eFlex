@@ -3,6 +3,7 @@ package EduConnect.Controller.Admin;
 import EduConnect.Domain.Course;
 import EduConnect.Domain.Exercise;
 import EduConnect.Domain.Lesson;
+import EduConnect.Domain.Response.ExerciseResponseDTO;
 import EduConnect.Domain.TestExercise;
 import EduConnect.Repository.ExerciseRepository;
 import EduConnect.Repository.LessonRepository;
@@ -16,7 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/test-exercises")
@@ -67,29 +70,21 @@ public class TestExerciseController {
         return ResponseEntity.ok(testExerciseList);
     }
     @GetMapping("/assessmentTest/{courseId}")
-    public ResponseEntity<TestExercise> getRandomTestExerciseByCourseId(@PathVariable Long courseId) {
-        Course course = courseService.findById(courseId);
-        long lessonId = course.getLessonList().get(0).getId();
-        Lesson lesson = lessonRepository.findById(lessonId).get();
-        String nameTest = "Level Assessment Test " + course.getTenMon();
-        TestExercise testExercise=this.testExerciseService.findByName(nameTest);
-        if(this.testExerciseService.findByName(nameTest)==null)
-        {
-            TestExercise newTestExercise = new TestExercise();
-            newTestExercise.setName(nameTest);
+    public ResponseEntity<Map<String, Object>> getRandomTestExerciseByCourseId(@PathVariable Long courseId) {
+        try {
+            ExerciseResponseDTO responseDTO = courseService.createAssessmentTest(courseId);
 
-            List<Exercise> exerciseList = courseService.createExerciseListByCourseId(courseId, 2);
-            newTestExercise.setExerciseList(exerciseList);
-            newTestExercise.setLesson(lesson);
-            newTestExercise.setDuration(exerciseList.size() + 15);
-            testExerciseService.save(newTestExercise);
-            return new ResponseEntity<>(newTestExercise, HttpStatus.CREATED);
+            Map<String, Object> response = new HashMap<>();
+            response.put("statusCode", 200);
+            response.put("message", "Call API SUCCESS");
+            response.put("data", responseDTO.getData());
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("statusCode", 500);
+            errorResponse.put("error", "Lỗi khi tạo bài kiểm tra: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
-        List<Exercise> exerciseList = courseService.createExerciseListByCourseId(courseId, 2);
-        testExercise.setExerciseList(exerciseList);
-        testExercise.setDuration(exerciseList.size() + 15);
-        testExerciseService.save(testExercise);
-        return new ResponseEntity<>(testExercise, HttpStatus.OK);
     }
 
 }
