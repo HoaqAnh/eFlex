@@ -8,4 +8,5 @@ import lombok.Setter;
 public class AnswerRequest {
     private long idExercise;
     private String answer;
+    private long timeTaken;
 }

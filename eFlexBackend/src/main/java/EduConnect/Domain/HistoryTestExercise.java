@@ -20,7 +20,7 @@ public class HistoryTestExercise {
     private long id;
     private Instant ngayTao;
     private Double weightedCorrectRate;
-
+    private Double timeWeight;
     @ManyToOne
     @JoinColumn(name = "id_User")
     @JsonIgnore

@@ -1,5 +1,6 @@
 package EduConnect.Domain;
 
+import EduConnect.Util.Enum.QuestionType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -26,6 +27,11 @@ public class Lesson {
     @JoinColumn(name = "id_Course")
     @JsonBackReference
     private Course course;
+
+    @ElementCollection
+    @CollectionTable(name = "lesson_question_types", joinColumns = @JoinColumn(name = "lesson_id"))
+    @Enumerated(EnumType.STRING)
+    private List<QuestionType> questionTypes = new ArrayList<>();
 
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore

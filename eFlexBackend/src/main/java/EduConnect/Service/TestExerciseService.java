@@ -4,6 +4,7 @@ import EduConnect.Domain.*;
 import EduConnect.Domain.Request.AnswerRequest;
 import EduConnect.Repository.*;
 import EduConnect.Util.Enum.Dificulty;
+import EduConnect.Util.Enum.QuestionType;
 import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -69,7 +72,7 @@ public class TestExerciseService {
         return testExerciseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Bài kiểm tra không tồn tại: " + id));
     }
-    public Map<String, Object> submitTestAndRecommend(Long userId, List<AnswerRequest> answers) {
+ public Map<String, Object> submitTestAndRecommend(Long userId, List<AnswerRequest> answers) {
         log.info("Bước 1: Bắt đầu xử lý bài kiểm tra cho userId={} với {} câu trả lời", userId, answers.size());
 
         if (answers.isEmpty()) {
@@ -80,12 +83,17 @@ public class TestExerciseService {
         // Lấy User
         User user = userRepository.findById(userId);
 
-        // Lấy TestExercise từ câu hỏi đầu tiên
-        Exercise firstExercise = exerciseRepository.findById(answers.get(0).getIdExercise())
-                .orElseThrow(() -> {
-                    log.error("Không tìm thấy câu hỏi với idExercise={}", answers.get(0).getIdExercise());
-                    return new RuntimeException("Không tìm thấy câu hỏi");
-                });
+        // Tối ưu: Lấy tất cả Exercise trong một lần query
+        List<Long> exerciseIds = answers.stream().map(AnswerRequest::getIdExercise).collect(Collectors.toList());
+        Map<Long, Exercise> exerciseMap = exerciseRepository.findAllById(exerciseIds)
+                .stream().collect(Collectors.toMap(Exercise::getId, e -> e));
+        if (exerciseMap.size() != exerciseIds.size()) {
+            log.error("Không tìm thấy một số câu hỏi: requested={}, found={}", exerciseIds.size(), exerciseMap.size());
+            throw new RuntimeException("Không tìm thấy một số câu hỏi");
+        }
+
+        // Lấy TestExercise
+        Exercise firstExercise = exerciseMap.get(answers.get(0).getIdExercise());
         TestExercise test = firstExercise.getTestExercise();
         if (test == null) {
             log.error("Không tìm thấy TestExercise cho câu hỏi idExercise={}", firstExercise.getId());
@@ -102,38 +110,32 @@ public class TestExerciseService {
         int latestLessonOrder = currentLesson.getViTri();
         log.info("Bài học hiện tại: lessonId={}, viTri={}, courseId={}", currentLesson.getId(), latestLessonOrder, courseId);
 
-        log.info("Bước 3: Lấy danh sách bài học trong môn học courseId={}", courseId);
+        log.info("Bước 3: Lấy danh sách bài học");
         List<Lesson> lessons = lessonRepository.findByCourseId(courseId);
         lessons.sort(Comparator.comparingInt(Lesson::getViTri));
-        log.info("Danh sách bài học: {}", lessons.stream().map(Lesson::getId).collect(Collectors.toList()));
 
-        log.info("Bước 4: Nhóm câu hỏi theo bài học và tính hiệu suất có cân nhắc độ khó");
+        log.info("Bước 4: Tính hiệu suất theo questionType và bài học");
+        Map<QuestionType, TypePerformance> typePerformance = new HashMap<>();
         Map<Long, LessonPerformance> lessonPerformance = new HashMap<>();
+        double totalTimeTaken = 0.0;
+
         Map<Long, List<AnswerRequest>> answersByLesson = answers.stream()
-                .collect(Collectors.groupingBy(answer -> {
-                    Exercise exercise = exerciseRepository.findById(answer.getIdExercise())
-                            .orElseThrow(() -> {
-                                log.error("Không tìm thấy câu hỏi với idExercise={}", answer.getIdExercise());
-                                return new RuntimeException("Không tìm thấy câu hỏi");
-                            });
-                    return exercise.getId_BaiHoc();
-                }));
+                .collect(Collectors.groupingBy(answer -> exerciseMap.get(answer.getIdExercise()).getId_BaiHoc()));
 
         for (Map.Entry<Long, List<AnswerRequest>> entry : answersByLesson.entrySet()) {
             Long lessonId = entry.getKey();
             List<AnswerRequest> lessonAnswers = entry.getValue();
-            log.info("Tính hiệu suất cho bài học lessonId={}", lessonId);
 
             double totalWeightedScore = 0.0;
             double totalWeight = 0.0;
             int correctAnswers = 0;
 
             for (AnswerRequest answer : lessonAnswers) {
-                Exercise exercise = exerciseRepository.findById(answer.getIdExercise())
-                        .orElseThrow(() -> new RuntimeException("Không tìm thấy câu hỏi"));
-
+                Exercise exercise = exerciseMap.get(answer.getIdExercise());
+                QuestionType questionType = exercise.getQuestionType() != null ? exercise.getQuestionType() : QuestionType.MultipleChoice;
                 double weight = getDifficultyWeight(exercise.getDificulty());
                 totalWeight += weight;
+                totalTimeTaken += answer.getTimeTaken();
 
                 boolean isCorrect = answer.getAnswer().equals(exercise.getDapAnDung().toString());
                 if (isCorrect) {
@@ -141,79 +143,24 @@ public class TestExerciseService {
                     totalWeightedScore += weight;
                 }
 
-                log.debug("Câu hỏi idExercise={}, độ khó={}, đáp án chọn={}, đáp án đúng={}, đúng/sai={}",
-                        answer.getIdExercise(), exercise.getDificulty(), answer.getAnswer(), exercise.getDapAnDung(), isCorrect);
+                // Cập nhật hiệu suất theo questionType
+                TypePerformance typePerf = typePerformance.computeIfAbsent(questionType, k -> new TypePerformance());
+                typePerf.addAnswer(isCorrect, weight);
+
+                log.debug("Câu hỏi idExercise={}, questionType={}, độ khó={}, đúng/sai={}",
+                        answer.getIdExercise(), questionType, exercise.getDificulty(), isCorrect);
             }
 
             double weightedCorrectRate = totalWeight > 0 ? totalWeightedScore / totalWeight : 0.0;
             lessonPerformance.put(lessonId, new LessonPerformance(weightedCorrectRate, correctAnswers, lessonAnswers.size()));
-            log.info("Hiệu suất bài học lessonId={}: đúng={} / {}, tỷ lệ có trọng số={}",
+            log.info("Hiệu suất bài học lessonId={}: đúng={} / {}, tỷ lệ={}",
                     lessonId, correctAnswers, lessonAnswers.size(), weightedCorrectRate);
         }
 
-        log.info("Bước 5: Lấy lịch sử làm bài kiểm tra");
-        List<HistoryTestExercise> historyList = historyTestExerciseRepository.findByUserIdAndTestExerciseLessonCourseId(userId, courseId);
-        double averageHistoricalRate = historyList.stream()
-                .mapToDouble(HistoryTestExercise::getWeightedCorrectRate)
-                .average()
-                .orElse(0.0);
-        log.info("Điểm trung bình lịch sử của userId={} trong courseId={}: {}", userId, courseId, averageHistoricalRate);
+        double averageTimePerQuestion = answers.size() > 0 ? totalTimeTaken / answers.size() : 0.0;
+        log.info("Thời gian trung bình mỗi câu: {} giây", averageTimePerQuestion);
 
-        log.info("Bước 6: Gợi ý bài học dựa trên hiệu suất hiện tại và lịch sử");
-        Lesson lessonToReview = null;
-        double lowestWeightedCorrectRate = 1.0;
-
-        for (Map.Entry<Long, LessonPerformance> entry : lessonPerformance.entrySet()) {
-            Long lessonId = entry.getKey();
-            double correctRate = entry.getValue().getWeightedCorrectRate();
-            if (correctRate < lowestWeightedCorrectRate) {
-                lowestWeightedCorrectRate = correctRate;
-                lessonToReview = lessons.stream()
-                        .filter(lesson -> lesson.getId() == lessonId)
-                        .findFirst()
-                        .orElse(null);
-            }
-        }
-
-        // Logic gợi ý
-        if (historyList.isEmpty()) {
-            // Người dùng mới
-            if (lowestWeightedCorrectRate >= 0.8) {
-                log.info("Người dùng mới đạt điểm cao (weightedCorrectRate={}), gợi ý ôn lại bài hiện tại để xác nhận", lowestWeightedCorrectRate);
-                return createRecommendation(currentLesson, "Bạn làm bài rất tốt! Ôn lại bài " + currentLesson.getTenBai() + " để củng cố kiến thức trước khi tiếp tục");
-            } else {
-                log.info("Người dùng mới có hiệu suất thấp (weightedCorrectRate={}), gợi ý ôn lại bài hiện tại", lowestWeightedCorrectRate);
-                return createRecommendation(currentLesson, "Ôn lại bài " + currentLesson.getTenBai() + " để cải thiện hiệu suất");
-            }
-        } else if (lowestWeightedCorrectRate < 0.8 && lessonToReview != null) {
-            // Hiệu suất thấp, ôn lại bài yếu
-            log.info("Hiệu suất thấp nhất (< 0.8), gợi ý ôn lại bài học: lessonId={}, weightedCorrectRate={}",
-                    lessonToReview.getId(), lowestWeightedCorrectRate);
-            return createRecommendation(lessonToReview, "Ôn lại bài " + lessonToReview.getTenBai() + " do hiệu suất thấp");
-        } else if (averageHistoricalRate < 0.7) {
-            // Lịch sử kém, ôn lại bài yếu nhất trong lịch sử
-            Long weakestLessonId = historyList.stream()
-                    .collect(Collectors.groupingBy(h -> h.getTestExercise().getLesson().getId(),
-                            Collectors.averagingDouble(HistoryTestExercise::getWeightedCorrectRate)))
-                    .entrySet().stream()
-                    .min(Map.Entry.comparingByValue())
-                    .map(Map.Entry::getKey)
-                    .orElse(currentLesson.getId());
-            lessonToReview = lessons.stream()
-                    .filter(lesson -> lesson.getId() == weakestLessonId)
-                    .findFirst()
-                    .orElse(currentLesson);
-            log.info("Lịch sử kém (averageHistoricalRate={}), gợi ý ôn lại bài yếu nhất: lessonId={}",
-                    averageHistoricalRate, lessonToReview.getId());
-            return createRecommendation(lessonToReview, "Ôn lại bài " + lessonToReview.getTenBai() + " do hiệu suất lịch sử thấp");
-        }
-
-        // Gợi ý bài học tiếp theo
-        log.info("Bước 7: Gợi ý bài học tiếp theo");
-        Map<String, Object> recommendation = recommendNextLessonAfterCurrent(lessons, latestLessonOrder);
-        log.info("Kết quả gợi ý: {}", recommendation);
-
-        // Lưu kết quả bài kiểm tra vào HistoryTestExercise sau khi gợi ý
+        // Lưu kết quả bài kiểm tra
         double currentWeightedCorrectRate = lessonPerformance.values().stream()
                 .mapToDouble(LessonPerformance::getWeightedCorrectRate)
                 .average()
@@ -222,31 +169,98 @@ public class TestExerciseService {
         history.setUser(user);
         history.setTestExercise(test);
         history.setWeightedCorrectRate(currentWeightedCorrectRate);
+        history.setTimeWeight(getTimeWeight(Instant.now()));
         historyTestExerciseRepository.save(history);
-        log.info("Lưu lịch sử bài kiểm tra: userId={}, testExerciseId={}, weightedCorrectRate={}",
+        log.info("Lưu lịch sử: userId={}, testExerciseId={}, weightedCorrectRate={}",
                 userId, test.getId(), currentWeightedCorrectRate);
 
-        return recommendation;
+        log.info("Bước 5: Lấy lịch sử làm bài kiểm tra");
+        List<HistoryTestExercise> historyList = historyTestExerciseRepository.findByUserIdAndTestExerciseLessonCourseId(userId, courseId);
+        double averageHistoricalRate = historyList.stream()
+                .mapToDouble(h -> h.getWeightedCorrectRate() * getTimeWeight(h.getNgayTao()))
+                .sum() / historyList.stream().mapToDouble(h -> getTimeWeight(h.getNgayTao())).sum();
+        if (historyList.isEmpty()) {
+            averageHistoricalRate = 0.0;
+        }
+        log.info("Điểm trung bình lịch sử: {}", averageHistoricalRate);
+
+        log.info("Bước 6: Gợi ý bài học");
+        double dynamicThreshold = 0.7 + (answers.size() < 10 ? 0.1 : 0.0);
+
+        // Tìm questionType yếu nhất
+        QuestionType weakestType = null;
+        double lowestTypeRate = 1.0;
+        for (Map.Entry<QuestionType, TypePerformance> entry : typePerformance.entrySet()) {
+            double typeRate = entry.getValue().getWeightedCorrectRate();
+            if (typeRate < lowestTypeRate) {
+                lowestTypeRate = typeRate;
+                weakestType = entry.getKey();
+            }
+        }
+
+        // Logic gợi ý
+        double lowestLessonRate = lessonPerformance.values().stream()
+                .mapToDouble(LessonPerformance::getWeightedCorrectRate)
+                .min().orElse(1.0);
+
+        if (historyList.size() == 1) { // Chỉ có bản ghi vừa lưu, coi là người dùng mới
+            if (lowestLessonRate >= dynamicThreshold) {
+                if (averageTimePerQuestion < 5.0) {
+                    log.info("Người dùng mới làm nhanh, gợi ý bài kiểm tra bổ sung");
+                    return createRecommendation(currentLesson, "Bạn làm bài nhanh và đúng! Hãy làm thêm bài kiểm tra để xác nhận");
+                } else {
+                    log.info("Người dùng mới đạt điểm cao, gợi ý ôn lại bài hiện tại");
+                    return createRecommendation(currentLesson, "Bạn làm bài rất tốt! Ôn lại bài " + currentLesson.getTenBai() + " để củng cố");
+                }
+            } else {
+                Lesson reviewLesson = findLessonByQuestionType(lessons, weakestType, currentLesson);
+                log.info("Người dùng mới có hiệu suất thấp, gợi ý ôn lại bài liên quan đến {}", weakestType);
+                return createRecommendation(reviewLesson, "Ôn lại bài " + reviewLesson.getTenBai() + " Hệ thống đánh giá kĩ năng " + weakestType +" bạn cần cải thiện. ");
+            }
+        } else if (lowestTypeRate < dynamicThreshold && weakestType != null) {
+            Lesson reviewLesson = findLessonByQuestionType(lessons, weakestType, currentLesson);
+            log.info("Hiệu suất thấp nhất cho {} (rate={}), gợi ý ôn lại bài liên quan", weakestType, lowestTypeRate);
+            return createRecommendation(reviewLesson, "Ôn lại bài " + reviewLesson.getTenBai() + " Hệ thống đánh giá kĩ năng " + weakestType +" bạn cần cải thiện. ");
+        } else if (averageHistoricalRate < 0.65) {
+            Long weakestLessonId = historyList.stream()
+                    .collect(Collectors.groupingBy(h -> h.getTestExercise().getLesson().getId(),
+                            Collectors.averagingDouble(HistoryTestExercise::getWeightedCorrectRate)))
+                    .entrySet().stream()
+                    .min(Map.Entry.comparingByValue())
+                    .map(Map.Entry::getKey)
+                    .orElse(currentLesson.getId());
+            Lesson reviewLesson = lessons.stream()
+                    .filter(lesson -> lesson.getId() == weakestLessonId)
+                    .findFirst()
+                    .orElse(currentLesson);
+            return createRecommendation(reviewLesson, "Ôn lại bài " + reviewLesson.getTenBai() + " do hiệu suất lịch sử thấp");
+        }
+
+        return recommendNextLessonAfterCurrent(lessons, latestLessonOrder);
+    }
+    private Lesson findLessonByQuestionType(List<Lesson> lessons, QuestionType questionType, Lesson defaultLesson) {
+        return lessons.stream()
+                .filter(lesson -> lesson.getQuestionTypes() != null && lesson.getQuestionTypes().contains(questionType))
+                .min(Comparator.comparingInt(Lesson::getViTri))
+                .orElse(defaultLesson);
     }
 
     private double getDifficultyWeight(Dificulty dificulty) {
-        if (dificulty == null) {
-            return 1.0;
-        }
+        if (dificulty == null) return 1.0;
         switch (dificulty) {
-            case EASY:
-                return 1.0;
-            case MEDIUM:
-                return 2.0;
-            case HARD:
-                return 3.0;
-            default:
-                return 1.0;
+            case EASY: return 1.0;
+            case MEDIUM: return 2.0;
+            case HARD: return 3.0;
+            default: return 1.0;
         }
     }
 
+    private double getTimeWeight(Instant ngayTao) {
+        long daysAgo = ChronoUnit.DAYS.between(ngayTao, Instant.now());
+        return Math.max(0.1, 1.0 - daysAgo * 0.05);
+    }
+
     private Map<String, Object> recommendNextLessonAfterCurrent(List<Lesson> lessons, int latestLessonOrder) {
-        log.info("Tìm bài học tiếp theo sau viTri={}", latestLessonOrder);
         int nextLessonOrder = latestLessonOrder + 1;
         Lesson nextLesson = lessons.stream()
                 .filter(lesson -> lesson.getViTri() == nextLessonOrder)
@@ -254,16 +268,13 @@ public class TestExerciseService {
                 .orElse(null);
 
         if (nextLesson != null) {
-            log.info("Gợi ý học bài tiếp theo: lessonId={}, viTri={}", nextLesson.getId(), nextLessonOrder);
             return createRecommendation(nextLesson, "Tiếp tục học bài " + nextLesson.getTenBai());
         } else {
-            log.info("Đã hoàn thành tất cả bài học, gợi ý ôn lại bài cuối: lessonId={}", lessons.get(lessons.size() - 1).getId());
             return createRecommendation(lessons.get(lessons.size() - 1), "Bạn đã hoàn thành tất cả bài học. Ôn lại bài " + lessons.get(lessons.size() - 1).getTenBai());
         }
     }
 
     private Map<String, Object> createRecommendation(Lesson lesson, String message) {
-        log.info("Tạo gợi ý: lessonId={}, message={}", lesson.getId(), message);
         Map<String, Object> recommendation = new HashMap<>();
         recommendation.put("lesson_id", lesson.getId());
         recommendation.put("ten_bai_hoc", lesson.getTenBai());
@@ -282,6 +293,31 @@ public class TestExerciseService {
             this.weightedCorrectRate = weightedCorrectRate;
             this.correctAnswers = correctAnswers;
             this.totalAnswers = totalAnswers;
+        }
+
+        public double getWeightedCorrectRate() {
+            return weightedCorrectRate;
+        }
+    }
+    @Getter
+    @Setter
+    private static class TypePerformance {
+        private double totalWeightedScore = 0.0;
+        private double totalWeight = 0.0;
+        private int correctAnswers = 0;
+        private int totalAnswers = 0;
+
+        public void addAnswer(boolean isCorrect, double weight) {
+            totalWeight += weight;
+            totalAnswers++;
+            if (isCorrect) {
+                correctAnswers++;
+                totalWeightedScore += weight;
+            }
+        }
+
+        public double getWeightedCorrectRate() {
+            return totalWeight > 0 ? totalWeightedScore / totalWeight : 0.0;
         }
     }
 
