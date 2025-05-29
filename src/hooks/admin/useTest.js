@@ -1,12 +1,11 @@
-import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useState, useCallback } from 'react';
+import { useParams } from 'react-router-dom';
 import { useValidation } from './useValidation';
-import { createTest } from '../../services/testService';
-import { uploadExerciseExcel } from '../../services/exerciseService';
+import { creTest, creListeningTest as createListeningGroup, creReadingTest as createReadingPassage } from '../../services/testService'; // Đổi tên để rõ ràng hơn
+import { uploadExerciseExcel, uploadListeningAudio, uploadListeningExcel, uploadReadingExcel } from '../../services/exerciseService';
 import { toast } from 'react-hot-toast';
 
-export const useTest = () => {
-    const navigate = useNavigate();
+export const useCreTest = () => {
     const { id: courseId, lessonId } = useParams();
     const validation = useValidation();
 
@@ -17,160 +16,305 @@ export const useTest = () => {
             id: lessonId
         }
     };
-
-    const initialTestErrorState = {
-        name: "",
-        duration: "",
-        lesson: "",
-        excelFile: ""
-    };
+    const initialTestErrorState = { name: "", duration: "" };
 
     const [testData, setTestData] = useState({ ...initialTestData });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [excelFile, setExcelFile] = useState(null);
     const [testErrors, setTestErrors] = useState({ ...initialTestErrorState });
 
     if (!lessonId || !courseId) {
         console.error('Không tìm thấy courseId hoặc lessonId');
-        navigate('/admin/course');
+        // navigate('/admin/course'); // Nên để component gọi navigate
         return {
             testData: { ...initialTestData, lesson: { id: null } },
             setTestData: () => { },
             loading: false,
-            setLoading: () => { },
-            error: 'Không tìm thấy courseId hoặc lessonId',
-            setError: () => { },
+            error: 'Không tìm thấy courseId hoặc lessonId trong URL.',
             testErrors: { ...initialTestErrorState },
-            setTestErrors: () => { },
-            excelFile: null,
-            setExcelFile: () => { },
             handleTestInputChange: () => { },
             validateTestForm: () => false,
             resetTestForm: () => { },
-            handleUploadExcel: async () => ({ success: false, error: "ID không hợp lệ" }),
-            handleSubmit: async () => ({ success: false, error: "ID không hợp lệ" }),
-            handleCancel: () => navigate('/admin/course'),
-            handleSubmitAndCreateLesson: async () => { },
-            handleSubmitAndCreateTest: async () => { }
+            handleSubmitTest: async () => ({ success: false, error: "ID khóa học hoặc bài học không hợp lệ", data: null }),
+            courseId: null,
+            lessonId: null,
         };
     }
 
+    const handleTestInputChange = useCallback((field, value) => {
+        setTestData(prev => ({ ...prev, [field]: value }));
+        setTestErrors(prev => ({ ...prev, [field]: "" }));
+    }, []);
 
-    const handleTestInputChange = (field, value) => {
-        setTestData(prev => ({
-            ...prev,
-            [field]: value
-        }));
-
-        if (field === 'name' || field === 'duration') {
-            setTestErrors(prev => ({
-                ...prev,
-                [field]: ""
-            }));
-        }
-    };
-
-    const validateTestForm = () => {
-        const result = validation.validateTestForm(testData, excelFile);
+    const validateTestForm = useCallback(() => {
+        const result = validation.validateTestForm(testData);
         setTestErrors(result.errors);
         return result.isValid;
-    };
+    }, [testData, validation]);
 
-    const resetTestForm = () => {
+    const resetTestForm = useCallback(() => {
         setTestData({ ...initialTestData, lesson: { id: lessonId } });
         setTestErrors({ ...initialTestErrorState });
-        setExcelFile(null);
-    };
+    }, [lessonId, initialTestData, initialTestErrorState]);
 
-    const handleUploadExcel = async (file) => {
-        try {
-            setExcelFile(file);
-            setTestErrors(prev => ({
-                ...prev,
-                excelFile: ""
-            }));
-            toast.success("Đã chọn file Excel thành công!");
-            return { success: true };
-        } catch (error) {
-            toast.error(error.message || "Có lỗi xảy ra khi chọn file");
-            return { success: false, error: error.message };
-        }
-    };
-
-    const handleSubmit = async () => {
+    const handleSubmitTest = async () => {
         if (!validateTestForm()) {
-            toast.error("Vui lòng điền đầy đủ thông tin bắt buộc bao gồm cả file Excel.");
-            return { success: false };
+            toast.error("Vui lòng điền đầy đủ thông tin chung của bài kiểm tra.");
+            return { success: false, error: "Dữ liệu không hợp lệ", data: null };
         }
 
         setLoading(true);
         setError(null);
-
         try {
-            const testPayload = {
+            const payload = {
                 ...testData,
-                duration: parseInt(testData.duration, 10) || 0,
+                duration: parseInt(testData.duration, 10),
             };
-            const result = await createTest(testPayload);
-
+            const result = await creTest(payload);
             if (!result.success) {
                 throw new Error(result.error?.message || result.message || "Không thể tạo bài kiểm tra.");
             }
-
-            const createdTestId = result.data.id;
-
-            if (excelFile) {
-                await uploadExerciseExcel(createdTestId, excelFile);
-                toast.success("Tạo bài kiểm tra và tải lên file Excel thành công!");
-            } else {
-                toast.success("Tạo bài kiểm tra thành công!");
-            }
-
-            return { success: true, data: result.data };
-
+            // toast.success("Khung bài kiểm tra đã được tạo thành công!"); // Thông báo ở AddTest
+            return { success: true, data: result.data }; // data chứa ID của test
         } catch (err) {
-            console.error('Lỗi khi tạo bài kiểm tra:', err);
+            console.error('Lỗi khi tạo bài kiểm tra (khung):', err);
             const errorMessage = err.message || 'Không thể tạo bài kiểm tra. Vui lòng thử lại sau.';
             setError(errorMessage);
             toast.error(errorMessage);
-            return { success: false, error: err };
+            return { success: false, error: err, data: null };
         } finally {
             setLoading(false);
         }
     };
 
-    const handleCancel = () => {
-        navigate(`/admin/course/addCourse/${courseId}/addLesson`);
+    return {
+        testData, setTestData, loading, error, testErrors,
+        handleTestInputChange, validateTestForm, resetTestForm, handleSubmitTest,
+        courseId, lessonId
     };
+};
 
-    const handleSubmitAndCreateLesson = async () => {
-        const result = await handleSubmit();
-        if (result.success) {
-            navigate(`/admin/course/addCourse/${courseId}/addLesson`);
+export const useCreMultipleChoiceTest = () => {
+    const validation = useValidation();
+    const [loadingMC, setLoadingMC] = useState(false);
+    const [errorMC, setErrorMC] = useState(null);
+    const [excelFileMC, setExcelFileMC] = useState(null);
+    const [mcErrors, setMcErrors] = useState({ excelFile: "" });
+
+    const handleUploadExcelMC = useCallback((file) => {
+        setExcelFileMC(file);
+        if (file) {
+            setMcErrors(prev => ({ ...prev, excelFile: "" }));
+            toast.success("Đã chọn file Excel cho trắc nghiệm.");
         }
-    };
+    }, []);
 
-    const handleSubmitAndCreateTest = async () => {
-        const result = await handleSubmit();
-        if (result.success) {
-            resetTestForm();
+    const validateMCForm = useCallback(() => {
+        const result = validation.validateMCForm(excelFileMC);
+        setMcErrors(result.errors);
+        return result.isValid;
+    }, [excelFileMC, validation]);
+
+    const resetMCForm = useCallback(() => {
+        setExcelFileMC(null);
+        setMcErrors({ excelFile: "" });
+    }, []);
+
+    const handleSubmitMC = async (testId) => {
+        if (!validateMCForm()) {
+            // toast.error("Vui lòng chọn file Excel cho phần trắc nghiệm."); // Thông báo ở AddTest
+            return { success: false, error: "Dữ liệu trắc nghiệm không hợp lệ" };
+        }
+        setLoadingMC(true);
+        setErrorMC(null);
+        try {
+            await uploadExerciseExcel(testId, excelFileMC);
+            // toast.success("Tải lên file Excel trắc nghiệm thành công!"); // Thông báo ở AddTest
+            return { success: true };
+        } catch (err) {
+            console.error('Lỗi khi tải lên file Excel trắc nghiệm:', err);
+            const errorMessage = err.message || 'Không thể tải lên file Excel trắc nghiệm.';
+            setErrorMC(errorMessage);
+            toast.error(errorMessage);
+            return { success: false, error: err };
+        } finally {
+            setLoadingMC(false);
         }
     };
 
     return {
-        testData,
-        loading,
-        error,
-        testErrors,
-        excelFile,
-        handleTestInputChange,
-        validateTestForm,
-        resetTestForm,
-        handleUploadExcel,
-        handleSubmit,
-        handleCancel,
-        handleSubmitAndCreateLesson,
-        handleSubmitAndCreateTest
+        loadingMC, errorMC, mcErrors, excelFileMC,
+        handleUploadExcelMC, validateMCForm, resetMCForm, handleSubmitMC
+    };
+};
+
+export const useCreListeningTest = () => {
+    const validation = useValidation();
+    const initialListeningData = { groupName: "" };
+    const initialListeningErrorState = { groupName: "", audioFile: "", excelFile: "" };
+
+    const [listeningData, setListeningData] = useState({ ...initialListeningData });
+    const [loadingListening, setLoadingListening] = useState(false);
+    const [errorListening, setErrorListening] = useState(null);
+    const [audioFile, setAudioFile] = useState(null);
+    const [excelFileListening, setExcelFileListening] = useState(null);
+    const [listeningErrors, setListeningErrors] = useState({ ...initialListeningErrorState });
+
+    const handleListeningInputChange = useCallback((field, value) => {
+        setListeningData(prev => ({ ...prev, [field]: value }));
+        setListeningErrors(prev => ({ ...prev, [field]: "" }));
+    }, []);
+
+    const handleUploadAudioFile = useCallback((file) => {
+        setAudioFile(file);
+        if (file) {
+            setListeningErrors(prev => ({ ...prev, audioFile: "" }));
+            toast.success("Đã chọn file Audio.");
+        }
+    }, []);
+
+    const handleUploadListeningExcelFile = useCallback((file) => {
+        setExcelFileListening(file);
+        if (file) {
+            setListeningErrors(prev => ({ ...prev, excelFile: "" }));
+            toast.success("Đã chọn file Excel cho bài nghe.");
+        }
+    }, []);
+
+    const validateListeningForm = useCallback(() => {
+        const result = validation.validateListeningForm(listeningData, audioFile, excelFileListening);
+        setListeningErrors(result.errors);
+        return result.isValid;
+    }, [listeningData, audioFile, excelFileListening, validation]);
+
+    const resetListeningForm = useCallback(() => {
+        setListeningData({ ...initialListeningData });
+        setAudioFile(null);
+        setExcelFileListening(null);
+        setListeningErrors({ ...initialListeningErrorState });
+    }, [initialListeningData, initialListeningErrorState]);
+
+    const handleSubmitListening = async (testExerciseId) => {
+        if (!validateListeningForm()) {
+            // toast.error("Vui lòng hoàn thành thông tin cho phần Listening."); // Thông báo ở AddTest
+            return { success: false, error: "Dữ liệu Listening không hợp lệ" };
+        }
+        setLoadingListening(true);
+        setErrorListening(null);
+        try {
+            const audioUrl = await uploadListeningAudio(audioFile);
+            if (!audioUrl) { // uploadListeningAudio trả về URL trực tiếp hoặc throw error
+                throw new Error("Không thể tải file audio lên server.");
+            }
+
+            const listeningGroupPayload = {
+                groupName: listeningData.groupName,
+                audioFile: audioUrl // Service trả về URL trực tiếp
+            };
+            const listeningGroupResult = await createListeningGroup(listeningGroupPayload);
+            if (!listeningGroupResult.success || !listeningGroupResult.data || !listeningGroupResult.data.id) {
+                throw new Error(listeningGroupResult.error?.message || "Không thể tạo nhóm câu hỏi nghe.");
+            }
+            const listeningGroupId = listeningGroupResult.data.id;
+
+            const excelUploadParams = { id_TestExercise: testExerciseId, id_Listening: listeningGroupId };
+            await uploadListeningExcel(excelUploadParams, excelFileListening);
+
+            // toast.success("Tạo phần nghe và tải file thành công!"); // Thông báo ở AddTest
+            return { success: true };
+        } catch (err) {
+            console.error('Lỗi khi tạo phần Listening:', err);
+            const errorMessage = err.message || 'Không thể tạo phần Listening.';
+            setErrorListening(errorMessage);
+            toast.error(errorMessage);
+            return { success: false, error: err };
+        } finally {
+            setLoadingListening(false);
+        }
+    };
+
+    return {
+        listeningData, loadingListening, errorListening, listeningErrors,
+        audioFile, excelFileListening,
+        handleListeningInputChange, handleUploadAudioFile, handleUploadListeningExcelFile,
+        validateListeningForm, resetListeningForm, handleSubmitListening
+    };
+};
+
+export const useCreReadingTest = () => {
+    const validation = useValidation();
+    const initialReadingData = { title: "", readingPassage: "" };
+    const initialReadingErrorState = { title: "", readingPassage: "", excelFile: "" };
+
+    const [readingData, setReadingData] = useState({ ...initialReadingData });
+    const [loadingReading, setLoadingReading] = useState(false);
+    const [errorReading, setErrorReading] = useState(null);
+    const [excelFileReading, setExcelFileReading] = useState(null);
+    const [readingErrors, setReadingErrors] = useState({ ...initialReadingErrorState });
+
+    const handleReadingInputChange = useCallback((field, value) => {
+        setReadingData(prev => ({ ...prev, [field]: value }));
+        setReadingErrors(prev => ({ ...prev, [field]: "" }));
+    }, []);
+
+    const handleUploadReadingExcelFile = useCallback((file) => {
+        setExcelFileReading(file);
+        if (file) {
+            setReadingErrors(prev => ({ ...prev, excelFile: "" }));
+            toast.success("Đã chọn file Excel cho bài đọc hiểu.");
+        }
+    }, []);
+
+    const validateReadingForm = useCallback(() => {
+        const result = validation.validateReadingForm(readingData, excelFileReading);
+        setReadingErrors(result.errors);
+        return result.isValid;
+    }, [readingData, excelFileReading, validation]);
+
+    const resetReadingForm = useCallback(() => {
+        setReadingData({ ...initialReadingData });
+        setExcelFileReading(null);
+        setReadingErrors({ ...initialReadingErrorState });
+    }, [initialReadingData, initialReadingErrorState]);
+
+    const handleSubmitReading = async (testExerciseId) => {
+        if (!validateReadingForm()) {
+            // toast.error("Vui lòng hoàn thành thông tin cho phần Reading."); // Thông báo ở AddTest
+            return { success: false, error: "Dữ liệu Reading không hợp lệ" };
+        }
+        setLoadingReading(true);
+        setErrorReading(null);
+        try {
+            const readingPassagePayload = {
+                title: readingData.title,
+                content: readingData.readingPassage
+            };
+            const readingPassageResult = await createReadingPassage(readingPassagePayload);
+            if (!readingPassageResult.success || !readingPassageResult.data || !readingPassageResult.data.id) {
+                throw new Error(readingPassageResult.error?.message || "Không thể tạo đoạn văn đọc hiểu.");
+            }
+            const readingPassageId = readingPassageResult.data.id;
+
+            const excelUploadParams = { id_TestExercise: testExerciseId, id_readingPassage: readingPassageId };
+            await uploadReadingExcel(excelUploadParams, excelFileReading);
+
+            // toast.success("Tạo phần đọc hiểu và tải file thành công!"); // Thông báo ở AddTest
+            return { success: true };
+        } catch (err) {
+            console.error('Lỗi khi tạo phần Reading:', err);
+            const errorMessage = err.message || 'Không thể tạo phần Reading.';
+            setErrorReading(errorMessage);
+            toast.error(errorMessage);
+            return { success: false, error: err };
+        } finally {
+            setLoadingReading(false);
+        }
+    };
+
+    return {
+        readingData, loadingReading, errorReading, readingErrors,
+        excelFileReading,
+        handleReadingInputChange, handleUploadReadingExcelFile,
+        validateReadingForm, resetReadingForm, handleSubmitReading
     };
 };

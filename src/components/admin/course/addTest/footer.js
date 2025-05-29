@@ -1,4 +1,3 @@
-import React from "react";
 import "../../../../styles/admin/addTest/footer.css";
 
 const Footer = ({ handleCancel, handleSubmitAndCreateTest, handleSubmitAndCreateLesson, onSubmit }) => {

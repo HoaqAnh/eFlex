@@ -52,23 +52,23 @@ export const useValidation = () => {
         const validationResults = sectionForms.map(form => validateSectionForm(form));
         const isAllValid = validationResults.every(result => result.isValid);
         const errors = validationResults.map(result => result.errors);
-        
+
         return { isAllValid, errors };
     };
 
     // Validate file Excel
     const validateExcelFile = (file) => {
         if (!file) {
-            return { 
-                isValid: false, 
-                error: "Vui lòng chọn file Excel để tải lên" 
+            return {
+                isValid: false,
+                error: "Vui lòng chọn file Excel để tải lên"
             };
         }
 
         if (!file.name.endsWith('.xlsx') && !file.name.endsWith('.xls')) {
-            return { 
-                isValid: false, 
-                error: "Vui lòng chọn file Excel (.xlsx hoặc .xls)" 
+            return {
+                isValid: false,
+                error: "Vui lòng chọn file Excel (.xlsx hoặc .xls)"
             };
         }
 
@@ -107,43 +107,67 @@ export const useValidation = () => {
     };
 
     // Validate test form
-    const validateTestForm = (testData, excelFile) => {
+    const validateTestForm = (testData) => {
+        const errors = { name: "", duration: "" };
         let isValid = true;
-        const errors = {
-            name: "",
-            duration: "",
-            lesson: "",
-            excelFile: ""
-        };
-
-        // Kiểm tra tên bài kiểm tra
-        if (!testData.name?.trim()) {
-            errors.name = "Vui lòng nhập tên bài kiểm tra";
+        if (!testData.name.trim()) {
+            errors.name = "Tên bài kiểm tra không được để trống.";
             isValid = false;
         }
-
-        // Kiểm tra thời lượng
-        if (!testData.duration || testData.duration <= 0) {
-            errors.duration = "Vui lòng nhập thời lượng lớn hơn 0";
+        if (!testData.duration || parseInt(testData.duration, 10) <= 0) {
+            errors.duration = "Thời gian làm bài phải là số dương.";
+            isValid = false;
+        } else if (isNaN(parseInt(testData.duration, 10))) {
+            errors.duration = "Thời gian làm bài phải là một số.";
             isValid = false;
         }
+        return { errors, isValid };
+    };
 
-        // Kiểm tra lesson
-        if (!testData.lesson || !testData.lesson.id) {
-            errors.lesson = "Không tìm thấy thông tin bài học";
-            isValid = false;
-        }
-
-        // Kiểm tra file Excel
+    const validateMCForm = (excelFile) => {
+        const errors = { excelFile: "" };
+        let isValid = true;
         if (!excelFile) {
-            errors.excelFile = "Vui lòng chọn file Excel để tải lên";
-            isValid = false;
-        } else if (!excelFile.name.endsWith('.xlsx') && !excelFile.name.endsWith('.xls')) {
-            errors.excelFile = "Vui lòng chọn file Excel (.xlsx hoặc .xls)";
+            errors.excelFile = "Vui lòng chọn file Excel cho câu hỏi trắc nghiệm.";
             isValid = false;
         }
+        return { errors, isValid };
+    };
 
-        return { isValid, errors };
+    const validateListeningForm = (listeningData, audioFile, excelFile) => {
+        const errors = { groupName: "", audioFile: "", excelFile: "" };
+        let isValid = true;
+        if (!listeningData.groupName.trim()) {
+            errors.groupName = "Tên bài kiểm tra nghe không được để trống.";
+            isValid = false;
+        }
+        if (!audioFile) {
+            errors.audioFile = "Vui lòng chọn file Audio.";
+            isValid = false;
+        }
+        if (!excelFile) {
+            errors.excelFile = "Vui lòng chọn file Excel cho câu hỏi nghe.";
+            isValid = false;
+        }
+        return { errors, isValid };
+    };
+
+    const validateReadingForm = (readingData, excelFile) => {
+        const errors = { title: "", readingPassage: "", excelFile: "" };
+        let isValid = true;
+        if (!readingData.title.trim()) {
+            errors.title = "Tiêu đề đoạn văn không được để trống.";
+            isValid = false;
+        }
+        if (!readingData.readingPassage.trim()) {
+            errors.readingPassage = "Nội dung đoạn văn không được để trống.";
+            isValid = false;
+        }
+        if (!excelFile) {
+            errors.excelFile = "Vui lòng chọn file Excel cho câu hỏi đọc hiểu.";
+            isValid = false;
+        }
+        return { errors, isValid };
     };
 
     return {
@@ -152,6 +176,9 @@ export const useValidation = () => {
         validateMultipleSectionForms,
         validateExcelFile,
         validateCourseForm,
-        validateTestForm
+        validateTestForm,
+        validateMCForm,
+        validateListeningForm,
+        validateReadingForm
     };
 };
