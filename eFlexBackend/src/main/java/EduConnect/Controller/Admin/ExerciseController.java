@@ -109,6 +109,9 @@ public class ExerciseController {
         response.put("statusCode", 200);
         response.put("message", "Call API SUCCESS");
         response.put("data", responseDTO.getData());
+        response.put("testExerciseId", testExerciseId);
+        response.put("totalQuestion", responseDTO.getData().size());
+        response.put("duration",responseDTO.getData().size() + 15);
 
         return ResponseEntity.ok(response);
     }
