@@ -1,4 +1,4 @@
-/* Container chính */
+/* Container chính
 .reading__question {
     display: flex;
     flex-direction: row;
@@ -21,7 +21,7 @@
   transform: translateY(-2px);
 }
 
-/* Header của câu hỏi */
+/* Header của câu hỏi
 .reading__question-form-header {
   padding-bottom: 16px;
   border-bottom: 2px solid #f3f4f6;
@@ -46,7 +46,7 @@
   color: #374151;
 }
 
-/* Nội dung đoạn văn */
+/* Nội dung đoạn văn
 .reading__question-form-content {
   margin-bottom: 20px;
 }
@@ -63,7 +63,7 @@
   margin-bottom: 20px;
 }
 
-/* Form câu hỏi */
+/* Form câu hỏi
 .reading__question-form {
   background: #f9fafb;
   border-radius: 12px;
@@ -71,7 +71,7 @@
   border: 1px solid #e5e7eb;
 }
 
-/* Tổng quan trả lời */
+/* Tổng quan trả lời
 .reading__question-form-answer_overview {
   display: flex;
   flex-wrap: wrap;
@@ -106,7 +106,7 @@
   transform: translateY(0);
 }
 
-/* Body của form câu hỏi */
+/* Body của form câu hỏi
 .reading__question-form-body {
   margin-top: 20px;
 }
@@ -118,9 +118,9 @@
   margin-top: 16px;
 }
 
-/* Nút câu trả lời */
+/* Nút câu trả lời
 .button-question {
-  background: #ffffff;
+  background: var(--background-secondary);
   border: 2px solid #e5e7eb;
   border-radius: 8px;
   padding: 16px 20px;
@@ -140,7 +140,6 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
   transition: left 0.5s ease;
 }
 
@@ -150,7 +149,7 @@
 
 .button-question:hover {
   border-color: #059669;
-  background: #f0fdfa;
+  background: var(--background-primary);
   transform: translateX(4px);
   box-shadow: 0 4px 8px rgba(5, 150, 105, 0.1);
 }
@@ -158,7 +157,7 @@
 .button-question.selected {
   background: linear-gradient(135deg, #059669 0%, #047857 100%);
   border-color: #047857;
-  color: white;
+  color: var(--text-primary);
   transform: translateX(4px);
   box-shadow: 0 6px 12px rgba(5, 150, 105, 0.3);
 }
@@ -175,13 +174,13 @@
 }
 
 .button-question.selected p {
-  color: white;
+  color: var(--text-primary);
   font-weight: 600;
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
 
-/* Tablets (768px - 1024px) */
+/* Tablets (768px - 1024px)
 @media screen and (max-width: 1024px) {
   .reading__question {
     padding: 20px;
@@ -208,7 +207,7 @@
   }
 }
 
-/* Mobile Landscape (481px - 767px) */
+/* Mobile Landscape (481px - 767px)
 @media screen and (max-width: 767px) {
   .reading__question_group {
     padding: 16px;
@@ -262,7 +261,7 @@
   }
 }
 
-/* Mobile Portrait (320px - 480px) */
+/* Mobile Portrait (320px - 480px)
 @media screen and (max-width: 480px) {
   .reading__question_group {
     padding: 12px;
@@ -342,7 +341,7 @@
   }
 }
 
-/* Very Small Mobile (max 320px) */
+/* Very Small Mobile (max 320px)
 @media screen and (max-width: 320px) {
   .reading__question_group {
     padding: 8px;
@@ -380,3 +379,5 @@
     font-size: 12px !important;
   }
 }
+
+*/
