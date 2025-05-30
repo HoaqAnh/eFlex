@@ -175,10 +175,22 @@ public class TestExerciseService {
                 userId, test.getId(), currentWeightedCorrectRate);
 
         log.info("Bước 5: Lấy lịch sử làm bài kiểm tra");
+//        List<HistoryTestExercise> historyList = historyTestExerciseRepository.findByUserIdAndTestExerciseLessonCourseId(userId, courseId);
+//        double averageHistoricalRate = historyList.stream()
+//                .mapToDouble(h -> h.getWeightedCorrectRate() * getTimeWeight(h.getNgayTao()))
+//                .sum() / historyList.stream().mapToDouble(h -> getTimeWeight(h.getNgayTao())).sum();
+//        if (historyList.isEmpty()) {
+//            averageHistoricalRate = 0.0;
+//        }
         List<HistoryTestExercise> historyList = historyTestExerciseRepository.findByUserIdAndTestExerciseLessonCourseId(userId, courseId);
-        double averageHistoricalRate = historyList.stream()
+        log.info("Lấy ra lịch sử 5 bài gần đây nhất");
+        List<HistoryTestExercise> recent5Tests = historyList.stream()
+                .sorted(Comparator.comparing(HistoryTestExercise::getNgayTao).reversed())
+                .limit(5)
+                .collect(Collectors.toList());
+        double averageHistoricalRate = recent5Tests.stream()
                 .mapToDouble(h -> h.getWeightedCorrectRate() * getTimeWeight(h.getNgayTao()))
-                .sum() / historyList.stream().mapToDouble(h -> getTimeWeight(h.getNgayTao())).sum();
+                .sum() / recent5Tests.stream().mapToDouble(h -> getTimeWeight(h.getNgayTao())).sum();
         if (historyList.isEmpty()) {
             averageHistoricalRate = 0.0;
         }
