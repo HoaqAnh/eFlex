@@ -105,13 +105,20 @@ public class ExerciseController {
             @PathVariable("testExerciseId") Long testExerciseId) {
         ExerciseResponseDTO responseDTO = exerciseService.getGroupedExercisesForTestExercise(testExerciseId);
 
+        Map<String, ExerciseResponseDTO.ExerciseGroupDTO> dataMap = responseDTO.getData();
+        int totalQuestions = 0;
+        for (ExerciseResponseDTO.ExerciseGroupDTO group : dataMap.values()) {
+            totalQuestions += group.getExercises().size();
+        }
+
         Map<String, Object> response = new HashMap<>();
         response.put("statusCode", 200);
         response.put("message", "Call API SUCCESS");
         response.put("data", responseDTO.getData());
         response.put("testExerciseId", testExerciseId);
-        response.put("totalQuestion", responseDTO.getData().size());
-        response.put("duration",responseDTO.getData().size() + 15);
+        response.put("totalQuestion", totalQuestions);
+        response.put("duration", totalQuestions + 15);
+
 
         return ResponseEntity.ok(response);
     }
