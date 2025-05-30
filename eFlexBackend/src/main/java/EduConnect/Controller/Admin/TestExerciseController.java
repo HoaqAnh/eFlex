@@ -58,9 +58,26 @@ public class TestExerciseController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<TestExercise> getTestExercise(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> getTestExercise(@PathVariable Long id) {
         TestExercise testExercise = testExerciseService.getTestExerciseById(id);
-        return new ResponseEntity<>(testExercise, HttpStatus.OK);
+        ExerciseResponseDTO responseDTO = exerciseService.getGroupedExercisesForTestExercise(id);
+
+        Map<String, ExerciseResponseDTO.ExerciseGroupDTO> dataMap = responseDTO.getData();
+        int totalQuestions = 0;
+        for (ExerciseResponseDTO.ExerciseGroupDTO group : dataMap.values()) {
+            totalQuestions += group.getExercises().size();
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("statusCode", 200);
+        response.put("message", "Call API SUCCESS");
+        response.put("testExerciseId", id);
+        response.put("name",testExercise.getName());
+        response.put("totalQuestion", totalQuestions);
+        response.put("duration", totalQuestions + 15);
+        response.put("data", responseDTO.getData());
+        return ResponseEntity.ok(response);
+
     }
     @GetMapping("/lesson/{idLesson}")
     public ResponseEntity<List<TestExercise>> getTestExerciseByLessonn(@PathVariable Long idLesson) {
