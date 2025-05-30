@@ -36,5 +36,6 @@ export const useExercise = (id, type) => {
         }
         exercises();
     }, [id, type]);
+
     return { exercises, loading, error }
 }

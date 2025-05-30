@@ -45,8 +45,8 @@ export const useSubmitTest = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const executeSubmit = async (userId, testId, answers) => {
-        if (!userId || !testId || !answers) {
+    const executeSubmit = async (userId, answers) => {
+        if (!userId || !answers) {
             const errMsg = 'Thông tin userId, testId, hoặc answers không được để trống khi nộp bài.';
             console.error(errMsg);
             setError(errMsg);
@@ -57,7 +57,7 @@ export const useSubmitTest = () => {
             setLoading(true);
             setError(null);
             setLoading(false);
-            return await submitTestService(userId, testId, answers);
+            return await submitTestService(userId, answers);
         } catch (err) {
             setError(err.message || "Có lỗi trong quá trình gửi dữ liệu.");
             setLoading(false);

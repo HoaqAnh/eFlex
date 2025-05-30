@@ -33,7 +33,7 @@ const Exercises = () => {
 
     const { timeLeft, setTimeLeft,
         isAbandonedConfirmPopupOpen, setIsAbandonedConfirmPopupOpen,
-        handleRestartAbandonedTest } = useTestLifecycle(exercises, exercises.id);
+        handleRestartAbandonedTest } = useTestLifecycle(exercises, exercises.testExerciseId);
 
     const {
         userAnswers, setUserAnswers, handleAnswerSelected,
@@ -46,21 +46,21 @@ const Exercises = () => {
 
     useEffect(() => {
         if (exercises) {
-            const loadedAnswers = getStoredUserAnswers(exercises.id);
+            const loadedAnswers = getStoredUserAnswers(exercises.testExerciseId);
             if (loadedAnswers && Object.keys(loadedAnswers).length > 0) {
                 setUserAnswers(loadedAnswers);
             } else {
                 resetUserAnswers();
             }
         }
-    }, [exercises.id, exercises, answerInstanceKey, setUserAnswers, resetUserAnswers]);
+    }, [exercises.testExerciseId, exercises, answerInstanceKey, setUserAnswers, resetUserAnswers]);
 
     // Effect để lưu câu trả lời vào sessionStorage khi chúng thay đổi
     useEffect(() => {
-        if (exercises.id && userAnswers) {
-            storeUserAnswers(exercises.id, userAnswers);
+        if (exercises.testExerciseId && userAnswers) {
+            storeUserAnswers(exercises.testExerciseId, userAnswers);
         }
-    }, [userAnswers, exercises.id]);
+    }, [userAnswers, exercises.testExerciseId]);
 
     const handleConfirmSubmit = useCallback(async () => {
         setIsSubmitConfirmPopupOpen(false);
@@ -70,7 +70,7 @@ const Exercises = () => {
             return navigate(`/login`);
         }
 
-        if (!exercises || !exercises.id) {
+        if (!exercises || !exercises.testExerciseId) {
             toast.error("Không tìm thấy thông tin bài thi để nộp bài.");
             return navigate(lessonId ? `/course/${courseId}/lesson/${lessonId}/test` : `/course/${courseId}`);
         }
@@ -80,18 +80,18 @@ const Exercises = () => {
             answer: answer,
         }));
 
-        if (exercises.id) {
-            clearStoredEndTime(exercises.id);
-            clearTestAbandonedFlag(exercises.id);
-            clearStoredUserAnswers(exercises.id);
+        if (exercises.testExerciseId) {
+            clearStoredEndTime(exercises.testExerciseId);
+            clearTestAbandonedFlag(exercises.testExerciseId);
+            clearStoredUserAnswers(exercises.testExerciseId);
         }
 
-        if ((answersToSubmit.length < exercises.exerciseList.length) && timeLeft > 0) {
+        if ((answersToSubmit.length < exercises.totalQuestion) && timeLeft > 0) {
             toast.error("Vui lòng hoàn thành tất cả câu hỏi trước khi nộp.")
             return;
         }
 
-        const result = await executeSubmit(userData.id, exercises.id, answersToSubmit);
+        const result = await executeSubmit(userData.id, answersToSubmit);
 
         if (result && result.statusCode === 200 && result.data) {
             if (result.data.recommendation && result.data.recommendation.lesson_id) {
@@ -109,12 +109,12 @@ const Exercises = () => {
 
     useEffect(() => {
         if (timeLeft === 0 && exercises && !submitLoading && !isRecommendationPopupOpen && !isCancelConfirmPopupOpen && !isSubmitConfirmPopupOpen) {
-            if (exercises.id) {
-                clearTestAbandonedFlag(exercises.id);
+            if (exercises.testExerciseId) {
+                clearTestAbandonedFlag(exercises.testExerciseId);
             }
             handleConfirmSubmit();
         }
-    }, [timeLeft, exercises, exercises.id, submitLoading, isRecommendationPopupOpen, isCancelConfirmPopupOpen, isSubmitConfirmPopupOpen, handleConfirmSubmit]);
+    }, [timeLeft, exercises, exercises.testExerciseId, submitLoading, isRecommendationPopupOpen, isCancelConfirmPopupOpen, isSubmitConfirmPopupOpen, handleConfirmSubmit]);
 
     const handleSubmitButtonPressed = () => {
         setIsSubmitConfirmPopupOpen(true);
@@ -130,13 +130,13 @@ const Exercises = () => {
 
     const confirmCancelTest = useCallback(() => {
         setIsCancelConfirmPopupOpen(false);
-        if (exercises.id) {
-            clearStoredEndTime(exercises.id);
-            clearTestAbandonedFlag(exercises.id);
-            clearStoredUserAnswers(exercises.id);
+        if (exercises.testExerciseId) {
+            clearStoredEndTime(exercises.testExerciseId);
+            clearTestAbandonedFlag(exercises.testExerciseId);
+            clearStoredUserAnswers(exercises.testExerciseId);
         }
         navigate(lessonId ? `/course/${courseId}/lesson/${lessonId}/test` : `/course/${courseId}`);
-    }, [navigate, courseId, lessonId, exercises.id]);
+    }, [navigate, courseId, lessonId, exercises.testExerciseId]);
 
     const closeCancelConfirmPopup = () => {
         setIsCancelConfirmPopupOpen(false);
@@ -159,20 +159,20 @@ const Exercises = () => {
     const handleRestartTestFlow = useCallback(() => {
         handleRestartAbandonedTest();
         resetUserAnswers();
-        clearStoredUserAnswers(exercises.id);
+        clearStoredUserAnswers(exercises.testExerciseId);
         setIsAbandonedConfirmPopupOpen(false);
         setAnswerInstanceKey(Date.now());
-    }, [handleRestartAbandonedTest, resetUserAnswers, exercises.id, setIsAbandonedConfirmPopupOpen]);
+    }, [handleRestartAbandonedTest, resetUserAnswers, exercises.testExerciseId, setIsAbandonedConfirmPopupOpen]);
 
     const handleLeaveAbandonedTest = useCallback(() => {
-        if (exercises.id) {
-            clearTestAbandonedFlag(exercises.id);
-            clearStoredEndTime(exercises.id);
-            clearStoredUserAnswers(exercises.id);
+        if (exercises.testExerciseId) {
+            clearTestAbandonedFlag(exercises.testExerciseId);
+            clearStoredEndTime(exercises.testExerciseId);
+            clearStoredUserAnswers(exercises.testExerciseId);
         }
         navigate(lessonId ? `/course/${courseId}/lesson/${lessonId}/test` : `/course/${courseId}`);
         setIsAbandonedConfirmPopupOpen(false);
-    }, [exercises.id, navigate, courseId, lessonId, setIsAbandonedConfirmPopupOpen]);
+    }, [exercises.testExerciseId, navigate, courseId, lessonId, setIsAbandonedConfirmPopupOpen]);
 
     const formatTime = (seconds) => {
         if (seconds === null || seconds < 0) return "00:00";
@@ -183,12 +183,11 @@ const Exercises = () => {
 
     if (exerciseLoading || userDataLoading) return <div className="exercises"><Loader text="Đang tải dữ liệu bài tập..." /></div>;
     if (exerciseError || userDataError) return <div className="exercises"><Error Title={`Lỗi tải bài tập: ${exerciseError.message || String(exerciseError)}`} /></div>;
-    if (!exercises || !exercises.exerciseList || exercises.exerciseList.length === 0) {
+    if (!exercises) {
         return <div className="exercises"><Error Title="Không tìm thấy dữ liệu bài tập hoặc bài tập không có câu hỏi." /></div>;
     }
 
     const answeredQuestionsCount = Object.keys(userAnswers).length;
-    const totalQuestions = exercises.exerciseList.length;
     const recommendationPopupMessage = recommendationDetails ? `${recommendationDetails.message}. Bấm xác nhận để chuyển đến bài học ngay.` : "";
 
     return (
@@ -197,7 +196,7 @@ const Exercises = () => {
             <div className="exercises__main-content">
                 <Header
                     testName={exercises.name}
-                    totalQuestions={totalQuestions}
+                    totalQuestions={exercises.totalQuestion}
                     duration={exercises.duration}
                     timeLeft={formatTime(timeLeft)}
                     answeredQuestionsCount={answeredQuestionsCount}
@@ -206,7 +205,7 @@ const Exercises = () => {
                 />
                 <div className="exercises__content-wrapper">
                     <Body
-                        questions={exercises.exerciseList}
+                        questions={exercises.data}
                         fontSize={fontSize}
                         autoNextQuestionEnabled={autoNextQuestion}
                         onAnswerSelected={handleAnswerSelected}

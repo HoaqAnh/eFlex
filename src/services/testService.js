@@ -85,7 +85,7 @@ export const getTests = async (lessonId) => {
 };
 
 // Submit Test
-export const submitTest = async (userId, testId, testData) => {
+export const submitTest = async (userId, testData) => {
     try {
         const token = TokenService.getToken();
         if (!token) {
@@ -99,7 +99,7 @@ export const submitTest = async (userId, testId, testData) => {
             return null;
         }
 
-        const response = await fetch(`${BASE_URL}/submit-test/${userId}/${testId}`, {
+        const response = await fetch(`${BASE_URL}/submit-test/${userId}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
