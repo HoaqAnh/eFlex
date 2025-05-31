@@ -1,14 +1,12 @@
 package EduConnect.Controller.User;
 
+import EduConnect.Domain.Exercise;
 import EduConnect.Domain.HistoryLearn;
 import EduConnect.Domain.Request.AnswerRequest;
 import EduConnect.Domain.TestExercise;
 import EduConnect.Domain.User;
 import EduConnect.Repository.TestExerciseRepository;
-import EduConnect.Service.HistoryLearnService;
-import EduConnect.Service.LessonService;
-import EduConnect.Service.TestExerciseService;
-import EduConnect.Service.UserService;
+import EduConnect.Service.*;
 import EduConnect.Util.Error.IdInValidException;
 import EduConnect.Util.SecurityUtil;
 import org.springframework.http.HttpStatus;
@@ -30,14 +28,19 @@ public class HistoryLearnController {
     private final LessonService lessonService;
     private final TestExerciseService testExerciseService;
     private final TestExerciseRepository testExerciseRepository;
+    private final ExerciseService exerciseService;
 
-    public HistoryLearnController(HistoryLearnService historyLearnService, UserService userService, RestTemplate restTemplate, LessonService lessonService, TestExerciseService testExerciseService, TestExerciseRepository testExerciseRepository) {
+    public HistoryLearnController(HistoryLearnService historyLearnService,
+                                  UserService userService, RestTemplate restTemplate,
+                                  LessonService lessonService, TestExerciseService testExerciseService,
+                                  TestExerciseRepository testExerciseRepository, ExerciseService exerciseService) {
         this.historyLearnService = historyLearnService;
         this.userService = userService;
         this.restTemplate = restTemplate;
         this.lessonService = lessonService;
         this.testExerciseService = testExerciseService;
         this.testExerciseRepository = testExerciseRepository;
+        this.exerciseService = exerciseService;
     }
 
 
@@ -76,7 +79,8 @@ public class HistoryLearnController {
         try {
             Map<String, Object> recommendation = testExerciseService.submitTestAndRecommend(userId, answers);
             long idExercise = answers.get(0).getIdExercise();
-            TestExercise testExercise = testExerciseService.getTestExerciseById(idExercise);
+            Exercise exercise = exerciseService.findById(idExercise);
+            TestExercise testExercise = testExerciseService.getTestExerciseById(exercise.getTestExercise().getId());
             Map<String, Object> response = new HashMap<>();
             response.put("statusCode", 200);
             response.put("message", "Đã xử lý bài kiểm tra");
