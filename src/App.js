@@ -81,7 +81,10 @@ const App = () => {
     <ThemeProvider>
       <GoogleOAuthProvider clientId={clientId}>
         <Router>
-          <Toaster position="top-right" />
+          <Toaster
+            position="top-center"
+            reverseOrder={true}
+          />
           <Routes>
             {/* Các route không cần WebSocketProvider */}
             <Route path="/login/google" element={<GoogleLogin />} />
