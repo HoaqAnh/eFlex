@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import Loading from "../../../../components/layout/loader/loading"
+import Error from "../../../../components/layout/loader/error"
 import MultipleChoice from "./multipleChoice";
 import Listening from "./listening";
 import Reading from './reading';
@@ -140,12 +141,14 @@ const Body = ({ questions, fontSize, autoNextQuestionEnabled, onAnswerSelected, 
 
 
     if (orderedPartKeys.length === 0 || !currentPartData) {
-        return <div
-            className="exercises__body-content"
-            style={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center" }}
-        >
-            <Loading Title="Đang tải dữ liệu câu hỏi hoặc không có câu hỏi nào để hiển thị." />
-        </div>;
+        return (
+            <div
+                className="exercises__body-content"
+                style={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center" }}
+            >
+                <Loading Title="Đang tải dữ liệu hoặc không tìm thấy câu hỏi nào, vui lòng làm mới lại trang nếu quá trình này diễn ra lâu." />
+            </div>
+        );
     }
 
     // Xác định trạng thái của nút Previous/Next
@@ -194,7 +197,14 @@ const Body = ({ questions, fontSize, autoNextQuestionEnabled, onAnswerSelected, 
             if (exercisesInCurrentPart.length === 0 && (currentPartType === 'MULTIPLE_CHOICE' || currentPartType === 'LISTENING' || currentPartType === 'READING')) {
                 return <Loading />;
             }
-            return <Loading />;
+            return (
+                <div
+                    className="exercises__body-content"
+                    style={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center" }}
+                >
+                    <Loading Title="Đã hiển thị toàn bộ câu hỏi của bài kiểm tra này" />
+                </div>
+            );
         }
 
         const commonQuestionProps = {
