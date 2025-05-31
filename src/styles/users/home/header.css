@@ -136,6 +136,23 @@
     transition: color 0.3s;
 }
 
+.home-header__container-left__bottom-content::-webkit-scrollbar {
+    width: 4px;
+}
+
+.home-header__container-left__bottom-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.home-header__container-left__bottom-content::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+.home-header__container-left__bottom-content::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
 .home-header__container-left__content {
     display: flex;
     flex-direction: column;

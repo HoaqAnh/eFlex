@@ -35,7 +35,8 @@ const Header = ({ UserData }) => {
                             Thông báo
                         </p>
                         <p className="home-header__container-left__bottom-content">
-                            Chào mừng bạn đến với eFlex, chúc bạn có một trải nghiệm và học tập tốt trên ứng dụng của chúng tôi!
+                            eFlex là ứng dụng web học tập đột phá, được thiết kế để cá nhân hóa lộ trình kiến thức của bạn. 
+                            Bằng cách phân tích năng lực riêng biệt, eFlex đề xuất nội dung học tập phù hợp, giúp bạn tiếp cận tri thức một cách hiệu quả và tối ưu nhất.
                         </p>
                     </div>
                 </div>

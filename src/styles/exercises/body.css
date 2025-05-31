@@ -36,19 +36,6 @@
     min-height: 0;
 }
 
-/* .exercises__body-answer_overview-header {
-    color: var(--text-primary);
-    margin: 0 0 1rem 0;
-    font-weight: 600;
-    text-align: center;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid var(--border-color);
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    flex-shrink: 0;
-} */
-
 .exercises__body-answer_overview-body {
     display: flex;
     flex-direction: column;
