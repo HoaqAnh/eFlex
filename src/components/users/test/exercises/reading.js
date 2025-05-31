@@ -1,102 +1,68 @@
-import { useState } from 'react';
 import "../../../../styles/exercises/reading.css";
 
-const Reading = ({ nameGroup, exercises, fontSize = 16, onAnswerSelect, selectedAnswers = {} }) => {
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+const Reading = ({
+    passageTitle,
+    passageContent,
+    question,
+    fontSize,
+    onAnswerSelect,
+    selectedAnswerKey,
+    currentQuestionDisplayIndex
+}) => {
+    if (!question) {
+        return (
+            <div className='exercises__question'>
+                <main className='reading__question-main'>
+                    <div className="reading__question-form-content">
+                        <h3 style={{ fontSize: `${fontSize}px` }}>{passageTitle || "Đoạn văn đọc hiểu"}</h3>
+                        {passageContent && <span style={{ fontSize: `${fontSize - 2}px`, whiteSpace: 'pre-wrap' }}>{passageContent}</span>}
+                        <p style={{ marginTop: '1rem' }}>Phần này không có câu hỏi cụ thể hoặc câu hỏi chưa được tải.</p>
+                    </div>
+                </main>
+            </div>
+        );
+    }
 
-    if (!exercises || exercises.length === 0) return null;
 
     const answerKeys = ['A', 'B', 'C', 'D'];
 
-    const handleQuestionNavigation = (index) => {
-        setCurrentQuestionIndex(index);
-    };
-
-    const handleAnswerSelect = (questionIndex, answerKey) => {
-        if (onAnswerSelect) {
-            onAnswerSelect(questionIndex, answerKey);
-        }
-    };
-
-    const renderQuestion = (question, questionIndex) => {
-        if (!question) return null;
-
-        return (
-            <div key={questionIndex} className={questionIndex}>
-                <div className="reading__question-form-header">
-                    <h4 style={{ fontSize: `${fontSize}px` }}>
-                        Câu {questionIndex + 1}: {question.cauHoi}
-                    </h4>
-                </div>
-
-                <div className="reading__question-form-body-group">
-                    {answerKeys.map((key, index) => {
-                        const answerText = question[`dapAn${index + 1}`];
-                        if (!answerText) return null;
-
-                        const isSelected = selectedAnswers[questionIndex] === key;
-                        const buttonClassName = `button-question ${isSelected ? 'selected' : ''}`;
-
-                        return (
-                            <button
-                                key={key}
-                                className={buttonClassName}
-                                onClick={() => handleAnswerSelect(questionIndex, key)}
-                            >
-                                <p style={{ fontSize: `${fontSize}px` }}>{key}. {answerText}</p>
-                            </button>
-                        );
-                    })}
-                </div>
-            </div>
-        );
-    };
-
     return (
-        <div className='reading__question'>
-            <div className="reading__question_group">
-                <div className="reading__question-form-header">
-                    <h3 style={{ fontSize: `${fontSize + 4}px` }}>
-                        Đoạn văn đọc hiểu
-                    </h3>
-                </div>
-
-                <div className="reading__question-form-content">
-                    <div className="reading__question-content_text">
-                        {nameGroup}
+        <div className='exercises__question'>
+            <main className='reading__question-main'>
+                {(passageTitle || passageContent) && (
+                    <div className="reading__question-form-content">
+                        {passageTitle && <h3 style={{ fontSize: `${fontSize}px` }}>{passageTitle}</h3>}
+                        {passageContent && <div className="reading-passage" style={{ fontSize: `${fontSize - 2}px`, whiteSpace: 'pre-wrap' }}>{passageContent}</div>}
                     </div>
-                </div>
-            </div>
+                )}
 
-            <div className="reading__question_group" >
-                {/* <div className="reading__question-form"> */}
-                    <div className="reading__question-form-header">
-                        <div>
-                            <h3 style={{ fontSize: `${fontSize + 4}px` }}>
-                                Bạn có {exercises.length} câu trong phần đọc hiểu
-                            </h3>
-                        </div>
+                <div className="exercises__question-form-body">
+                    <div className="exercises__question-form-body_content">
+                        <h4 style={{ fontSize: `${fontSize + 2}px` }}>
+                            Câu {currentQuestionDisplayIndex + 1}: {question.cauHoi}
+                        </h4>
+                    </div>
 
-                        {/* Tổng quan trả lời */}
-                        <div className='reading__question-form-answer_overview'>
-                            {exercises.map((_, index) => (
-                                <div
-                                    key={index}
-                                    style={{ fontSize: `${fontSize - 4}px` }}
-                                    onClick={() => handleQuestionNavigation(index)}
+                    <div className="exercises__question-form-body-group">
+                        {answerKeys.map((keyLetter, answerIndex) => {
+                            const answerText = question[`dapAn${answerIndex + 1}`];
+                            if (!answerText) return null;
+
+                            const buttonClassName = `button-question ${selectedAnswerKey === keyLetter ? 'selected' : ''}`;
+
+                            return (
+                                <button
+                                    key={keyLetter}
+                                    className={buttonClassName}
+                                    onClick={() => onAnswerSelect(keyLetter)}
                                 >
-                                    {index + 1}: {selectedAnswers[index] || '---'}
-                                </div>
-                            ))}
-                        </div>
+                                    <p style={{ fontSize: `${fontSize}px` }}>{keyLetter}. {answerText}</p>
+                                </button>
+                            );
+                        })}
                     </div>
-
-                    {/* Hiển thị câu hỏi */}
-                    <div className="reading__question-form-body">
-                        {renderQuestion(exercises[currentQuestionIndex], currentQuestionIndex)}
-                    </div>
-                {/* </div> */}
-            </div>
+                </div>
+            </main>
         </div>
     );
 };

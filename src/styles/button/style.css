@@ -382,3 +382,52 @@
 .google-login-btn img {
     height: 24px;
 }
+
+.button-question {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    width: 100%;
+    min-height: 3.5rem;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    background-color: var(--background-secondary);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.button-question:hover {
+    background-color: var(--hover-color);
+    border-color: var(--li-border-color);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.button-question.selected {
+    background-color: var(--li--background-active);
+    border-color: var(--li-border-color);
+    color: var(--text-primary);
+    font-weight: 600;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    transition: all 0.3s;
+}
+
+.button-question.selected::before {
+    content: '✓';
+    position: absolute;
+    right: 1rem;
+    color: var(--circle-check-color);
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.button-question p {
+    margin: 0;
+    line-height: 1.4;
+    text-align: left;
+    width: 100%;
+}

@@ -1,10 +1,12 @@
 import { useState, useEffect, useMemo } from "react";
+import Loading from "../../../../components/layout/loader/loading"
 import MultipleChoice from "./multipleChoice";
 import Listening from "./listening";
 import Reading from './reading';
 import "../../../../styles/exercises/body.css";
 
 const getPartType = (key) => {
+    if (!key) return 'UNKNOWN';
     if (key.startsWith('LISTENING_')) return 'LISTENING';
     if (key.startsWith('READ_')) return 'READING';
     if (key === 'MultipleChoice') return 'MULTIPLE_CHOICE';
@@ -14,18 +16,18 @@ const getPartType = (key) => {
 const Body = ({ questions, fontSize, autoNextQuestionEnabled, onAnswerSelected, userAnswers }) => {
     const [orderedPartKeys, setOrderedPartKeys] = useState([]);
     const [currentPartDisplayIndex, setCurrentPartDisplayIndex] = useState(0);
-    const [currentMCQuestionIndex, setCurrentMCQuestionIndex] = useState(0);
+    const [currentQuestionIndexInPart, setCurrentQuestionIndexInPart] = useState(0);
 
     useEffect(() => {
         if (questions && typeof questions === 'object' && Object.keys(questions).length > 0) {
             const keys = Object.keys(questions);
             setOrderedPartKeys(keys);
             setCurrentPartDisplayIndex(0);
-            setCurrentMCQuestionIndex(0);
+            setCurrentQuestionIndexInPart(0);
         } else {
             setOrderedPartKeys([]);
             setCurrentPartDisplayIndex(0);
-            setCurrentMCQuestionIndex(0);
+            setCurrentQuestionIndexInPart(0);
         }
     }, [questions]);
 
@@ -34,7 +36,6 @@ const Body = ({ questions, fontSize, autoNextQuestionEnabled, onAnswerSelected, 
     }, [orderedPartKeys, currentPartDisplayIndex]);
 
     const currentPartType = useMemo(() => {
-        if (!currentPartKey) return 'UNKNOWN';
         return getPartType(currentPartKey);
     }, [currentPartKey]);
 
@@ -43,196 +44,253 @@ const Body = ({ questions, fontSize, autoNextQuestionEnabled, onAnswerSelected, 
         return questions[currentPartKey];
     }, [questions, currentPartKey]);
 
+    // exercisesInCurrentPart: danh sách các câu hỏi trong phần hiện tại
     const exercisesInCurrentPart = useMemo(() => {
         return currentPartData?.exercises || [];
     }, [currentPartData]);
 
-    const currentMultipleChoiceQuestion = useMemo(() => {
-        if (currentPartType === 'MULTIPLE_CHOICE' && exercisesInCurrentPart.length > 0) {
-            return exercisesInCurrentPart[currentMCQuestionIndex];
+    // currentExercise: đối tượng câu hỏi hiện tại đang được hiển thị
+    const currentExercise = useMemo(() => {
+        if (exercisesInCurrentPart.length > 0 && currentQuestionIndexInPart < exercisesInCurrentPart.length) {
+            return exercisesInCurrentPart[currentQuestionIndexInPart];
         }
         return null;
-    }, [currentPartType, exercisesInCurrentPart, currentMCQuestionIndex]);
+    }, [exercisesInCurrentPart, currentQuestionIndexInPart]);
 
-    const currentGlobalMCQuestionDisplayIndex = useMemo(() => {
-        if (currentPartType !== 'MULTIPLE_CHOICE' || !questions || orderedPartKeys.length === 0) return 0;
+    // currentGlobalQuestionDisplayIndex: Tính số thứ tự câu hỏi trên toàn bộ bài thi
+    const currentGlobalQuestionDisplayIndex = useMemo(() => {
+        if (!questions || orderedPartKeys.length === 0 || !currentExercise) return 0;
 
         let count = 0;
         for (let i = 0; i < currentPartDisplayIndex; i++) {
             const partKey = orderedPartKeys[i];
-            if (questions[partKey] && questions[partKey].exercises) {
-                count += questions[partKey].exercises.length;
+            const partExercises = questions[partKey]?.exercises;
+            if (partExercises) {
+                count += partExercises.length;
             }
         }
-        return count + currentMCQuestionIndex;
-    }, [questions, orderedPartKeys, currentPartDisplayIndex, currentMCQuestionIndex, currentPartType]);
+
+        if (exercisesInCurrentPart && exercisesInCurrentPart.length > 0) {
+            count += currentQuestionIndexInPart;
+        }
+        return count;
+    }, [questions, orderedPartKeys, currentPartDisplayIndex, currentQuestionIndexInPart, currentExercise, exercisesInCurrentPart]);
 
 
     const handleNextQuestion = () => {
-        if (currentPartType === 'MULTIPLE_CHOICE') {
-            if (currentMCQuestionIndex < exercisesInCurrentPart.length - 1) {
-                setCurrentMCQuestionIndex(prev => prev + 1);
-            } else if (currentPartDisplayIndex < orderedPartKeys.length - 1) {
-                setCurrentPartDisplayIndex(prev => prev + 1);
-                setCurrentMCQuestionIndex(0);
-            }
+        const partHasExercises = exercisesInCurrentPart && exercisesInCurrentPart.length > 0;
+
+        if (partHasExercises && currentQuestionIndexInPart < exercisesInCurrentPart.length - 1) {
+            setCurrentQuestionIndexInPart(prev => prev + 1);
         } else {
             if (currentPartDisplayIndex < orderedPartKeys.length - 1) {
                 setCurrentPartDisplayIndex(prev => prev + 1);
-                setCurrentMCQuestionIndex(0);
+                setCurrentQuestionIndexInPart(0);
             }
         }
     };
 
     const handlePreQuestion = () => {
-        if (currentPartType === 'MULTIPLE_CHOICE') {
-            if (currentMCQuestionIndex > 0) {
-                setCurrentMCQuestionIndex(prev => prev - 1);
-            } else if (currentPartDisplayIndex > 0) {
-                const prevPartIndex = currentPartDisplayIndex - 1;
-                const prevPartKey = orderedPartKeys[prevPartIndex];
-                const prevPartType = getPartType(prevPartKey);
+        const partHasExercises = exercisesInCurrentPart && exercisesInCurrentPart.length > 0;
 
-                setCurrentPartDisplayIndex(prevPartIndex);
-                if (prevPartType === 'MULTIPLE_CHOICE') {
-                    setCurrentMCQuestionIndex((questions[prevPartKey]?.exercises?.length || 1) - 1);
-                } else {
-                    setCurrentMCQuestionIndex(0);
-                }
-            }
+        if (partHasExercises && currentQuestionIndexInPart > 0) {
+            setCurrentQuestionIndexInPart(prev => prev - 1);
         } else {
             if (currentPartDisplayIndex > 0) {
                 const prevPartIndex = currentPartDisplayIndex - 1;
-                const prevPartKey = orderedPartKeys[prevPartIndex];
-                const prevPartType = getPartType(prevPartKey);
-
                 setCurrentPartDisplayIndex(prevPartIndex);
-                if (prevPartType === 'MULTIPLE_CHOICE') {
-                    setCurrentMCQuestionIndex((questions[prevPartKey]?.exercises?.length || 1) - 1);
+
+                const prevPartKey = orderedPartKeys[prevPartIndex];
+                const prevPartExercises = questions[prevPartKey]?.exercises;
+                if (prevPartExercises && prevPartExercises.length > 0) {
+                    setCurrentQuestionIndexInPart(prevPartExercises.length - 1);
                 } else {
-                    setCurrentMCQuestionIndex(0);
+                    setCurrentQuestionIndexInPart(0);
                 }
             }
         }
     };
 
-    const selectedAnswersForPart = useMemo(() => {
-        if (currentPartType === 'LISTENING' || currentPartType === 'READING') {
-            const partAnswers = {};
-            if (exercisesInCurrentPart && userAnswers) {
-                exercisesInCurrentPart.forEach((q, index) => {
-                    if (userAnswers[q.id]) {
-                        partAnswers[index] = userAnswers[q.id];
-                    }
+    const allFlattenedQuestions = useMemo(() => {
+        if (!questions || orderedPartKeys.length === 0) return [];
+        const flattened = [];
+        let globalIndexCounter = 0;
+        orderedPartKeys.forEach((partKey, partIdx) => {
+            const partData = questions[partKey];
+            if (partData && partData.exercises && partData.exercises.length > 0) {
+                partData.exercises.forEach((exercise, questionInPartIdx) => {
+                    flattened.push({
+                        ...exercise,
+                        globalDisplayIndex: globalIndexCounter,
+                        partKey: partKey,
+                        partDisplayIndex: partIdx,
+                        questionIndexInPart: questionInPartIdx,
+                    });
+                    globalIndexCounter++;
                 });
             }
-            return partAnswers;
-        }
-        return {};
-    }, [currentPartType, exercisesInCurrentPart, userAnswers]);
+        });
+        return flattened;
+    }, [questions, orderedPartKeys]);
+
+    const handleGoToQuestion = (partIndex, questionInPartIdx) => {
+        setCurrentPartDisplayIndex(partIndex);
+        setCurrentQuestionIndexInPart(questionInPartIdx);
+    };
+
 
     if (orderedPartKeys.length === 0 || !currentPartData) {
-        return <div className="exercises__body-content"><p>Đang tải dữ liệu câu hỏi hoặc không có câu hỏi nào để hiển thị.</p></div>;
+        return <div
+            className="exercises__body-content"
+            style={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center" }}
+        >
+            <Loading Title="Đang tải dữ liệu câu hỏi hoặc không có câu hỏi nào để hiển thị." />
+        </div>;
+    }
+
+    // Xác định trạng thái của nút Previous/Next
+    const isFirstQuestionOverall = currentPartDisplayIndex === 0 && currentQuestionIndexInPart === 0;
+    const isLastQuestionOverall = () => {
+        if (orderedPartKeys.length === 0) return true;
+        const lastPartIndex = orderedPartKeys.length - 1;
+        if (currentPartDisplayIndex < lastPartIndex) return false;
+
+        // Đang ở phần cuối cùng
+        const lastPartExercises = questions[orderedPartKeys[lastPartIndex]]?.exercises;
+        if (lastPartExercises && lastPartExercises.length > 0) {
+            return currentQuestionIndexInPart >= lastPartExercises.length - 1;
+        }
+        return true;
+    };
+
+
+    let prevButtonText = "Trước đó";
+    let nextButtonText = "Tiếp theo";
+
+    const currentPartHasExercises = exercisesInCurrentPart && exercisesInCurrentPart.length > 0;
+    if (currentPartHasExercises) {
+        if (currentQuestionIndexInPart > 0) {
+            prevButtonText = "Câu hỏi trước đó";
+        } else if (currentPartDisplayIndex > 0) {
+            prevButtonText = "Phần trước đó";
+        }
+
+        if (currentQuestionIndexInPart < exercisesInCurrentPart.length - 1) {
+            nextButtonText = "Câu hỏi tiếp theo";
+        } else if (currentPartDisplayIndex < orderedPartKeys.length - 1) {
+            nextButtonText = "Phần tiếp theo";
+        }
+    } else {
+        if (currentPartDisplayIndex > 0) {
+            prevButtonText = "Phần trước đó";
+        }
+        if (currentPartDisplayIndex < orderedPartKeys.length - 1) {
+            nextButtonText = "Phần tiếp theo";
+        }
     }
 
     const renderContent = () => {
+        if (!currentExercise && (currentPartType === 'MULTIPLE_CHOICE' || currentPartType === 'LISTENING' || currentPartType === 'READING')) {
+            if (exercisesInCurrentPart.length === 0 && (currentPartType === 'MULTIPLE_CHOICE' || currentPartType === 'LISTENING' || currentPartType === 'READING')) {
+                return <Loading />;
+            }
+            return <Loading />;
+        }
+
+        const commonQuestionProps = {
+            question: currentExercise,
+            fontSize: fontSize,
+            onAnswerSelect: (selectedKey) => {
+                if (currentExercise && currentExercise.id) {
+                    onAnswerSelected(currentExercise.id, selectedKey);
+                    if (autoNextQuestionEnabled) {
+                        setTimeout(() => {
+                            handleNextQuestion();
+                        }, 300);
+                    }
+                }
+            },
+            selectedAnswerKey: currentExercise && userAnswers ? userAnswers[currentExercise.id] : undefined,
+            currentQuestionDisplayIndex: currentGlobalQuestionDisplayIndex
+        };
+
         switch (currentPartType) {
             case 'LISTENING':
+                if (!currentExercise && exercisesInCurrentPart.length > 0) return <p>Đang chọn câu hỏi nghe...</p>;
+                if (!currentExercise && exercisesInCurrentPart.length === 0) return <p>Phần nghe này không có câu hỏi nào.</p>;
                 return (
                     <Listening
+                        {...commonQuestionProps}
                         nameGroup={currentPartData.nameGroup}
                         audioFile={currentPartData.audioFile}
-                        exercises={exercisesInCurrentPart}
-                        fontSize={fontSize}
-                        onAnswerSelect={(localIndex, selectedKey) => {
-                            const questionId = exercisesInCurrentPart[localIndex]?.id;
-                            if (questionId) {
-                                onAnswerSelected(questionId, selectedKey);
-                            }
-                        }}
-                        selectedAnswers={selectedAnswersForPart}
                     />
                 );
             case 'READING':
+                if (!currentExercise && exercisesInCurrentPart.length > 0) return <p>Đang chọn câu hỏi đọc...</p>;
+                if (!currentExercise && exercisesInCurrentPart.length === 0) return <p>Phần đọc này không có câu hỏi nào.</p>;
                 return (
                     <Reading
-                        nameGroup={currentPartData.nameGroup}
-                        exercises={exercisesInCurrentPart}
-                        fontSize={fontSize}
-                        onAnswerSelect={(localIndex, selectedKey) => {
-                            const questionId = exercisesInCurrentPart[localIndex]?.id;
-                            if (questionId) {
-                                onAnswerSelected(questionId, selectedKey);
-                            }
-                        }}
-                        selectedAnswers={selectedAnswersForPart}
+                        {...commonQuestionProps}
+                        passageTitle="{currentPartData.nameGroup}"
+                        passageContent={currentPartData.nameGroup}
                     />
                 );
             case 'MULTIPLE_CHOICE':
-                if (!currentMultipleChoiceQuestion) {
-                    return <p>Không có câu hỏi trắc nghiệm nào trong phần này hoặc phần trắc nghiệm rỗng.</p>;
-                }
+                if (!currentExercise && exercisesInCurrentPart.length > 0) return <p>Đang chọn câu hỏi trắc nghiệm...</p>;
+                if (!currentExercise && exercisesInCurrentPart.length === 0) return <p>Phần trắc nghiệm này không có câu hỏi nào.</p>;
                 return (
                     <MultipleChoice
-                        currentQuestionDisplayIndex={currentGlobalMCQuestionDisplayIndex}
-                        question={currentMultipleChoiceQuestion}
-                        fontSize={fontSize}
-                        onAnswerSelect={(selectedKey) => {
-                            const questionId = currentMultipleChoiceQuestion.id;
-                            onAnswerSelected(questionId, selectedKey);
-
-                            if (autoNextQuestionEnabled) {
-                                setTimeout(() => {
-                                    handleNextQuestion();
-                                }, 300);
-                            }
-                        }}
-                        selectedAnswerKey={userAnswers ? userAnswers[currentMultipleChoiceQuestion.id] : undefined}
+                        {...commonQuestionProps}
                     />
                 );
             default:
-                return <p>Loại câu hỏi không xác định: {currentPartKey}.</p>;
+                if (currentPartData && currentPartData.nameGroup) {
+                    return <div><h4>{currentPartData.nameGroup}</h4><p>Nội dung của phần này không phải là câu hỏi trắc nghiệm, nghe hoặc đọc.</p></div>;
+                }
+                return <p>Loại phần không xác định hoặc không có nội dung: {currentPartKey}.</p>;
         }
     };
 
-    const isFirstOverall = currentPartDisplayIndex === 0 && (currentPartType !== 'MULTIPLE_CHOICE' || currentMCQuestionIndex === 0);
-    const isLastOverall = currentPartDisplayIndex === orderedPartKeys.length - 1 &&
-        (currentPartType !== 'MULTIPLE_CHOICE' || currentMCQuestionIndex === (exercisesInCurrentPart.length > 0 ? exercisesInCurrentPart.length - 1 : 0));
-
-
-    let prevButtonText = "Phần trước đó";
-    if (currentPartType === 'MULTIPLE_CHOICE' && currentMCQuestionIndex > 0) {
-        prevButtonText = "Câu hỏi trước đó";
-    }
-
-    let nextButtonText = "Phần tiếp theo";
-    if (currentPartType === 'MULTIPLE_CHOICE' && exercisesInCurrentPart.length > 0 && currentMCQuestionIndex < exercisesInCurrentPart.length - 1) {
-        nextButtonText = "Câu hỏi tiếp theo";
-    }
-
-
     return (
         <div className="exercises__body">
-            <div className="exercises__body-content">
-                {renderContent()}
-            </div>
+            <main className="exercises__body-main">
+                <div className="exercises__body-content">
+                    {renderContent()}
+                </div>
+                <div className="exercises__body-answer_overview">
+                    <div className="exercises__body-answer_overview-body">
+                        {allFlattenedQuestions.map((q) => (
+                            <button
+                                key={q.id}
+                                className={`exercises__body-answer_overview-item ${currentExercise && currentExercise.id === q.id ? 'active' : ''
+                                    } ${userAnswers && userAnswers[q.id] ? 'answered' : ''}`}
+                                onClick={() => handleGoToQuestion(q.partDisplayIndex, q.questionIndexInPart)}
+                                title={q.cauHoi}
+                            >
+                                Câu {q.globalDisplayIndex + 1}: {userAnswers && userAnswers[q.id] ? userAnswers[q.id] : '--'}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            </main>
+
             {orderedPartKeys.length > 0 && (
-                <div className="exercises__body-content-actions">
+                <footer>
                     <button
                         className="btn btn-secondary"
                         onClick={handlePreQuestion}
-                        disabled={isFirstOverall}
+                        disabled={isFirstQuestionOverall}
                     >
                         {prevButtonText}
                     </button>
                     <button
                         className="btn btn-secondary"
                         onClick={handleNextQuestion}
-                        disabled={isLastOverall}
+                        disabled={isLastQuestionOverall()}
                     >
                         {nextButtonText}
                     </button>
-                </div>
+                </footer>
             )}
         </div>
     );

@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 
-export const useExerciseInteraction = (initialFontSize = 16, initialAutoNext = false) => {
+export const useExerciseInteraction = (initialFontSize = 20, initialAutoNext = false) => {
     const [userAnswers, setUserAnswers] = useState({});
     const [fontSize, setFontSize] = useState(initialFontSize);
     const [autoNextQuestion, setAutoNextQuestion] = useState(initialAutoNext);
@@ -12,8 +12,8 @@ export const useExerciseInteraction = (initialFontSize = 16, initialAutoNext = f
         }));
     }, []);
 
-    const handleZoomIn = useCallback(() => setFontSize(prevSize => Math.min(prevSize + 2, 28)), []);
-    const handleZoomOut = useCallback(() => setFontSize(prevSize => Math.max(prevSize - 2, 12)), []);
+    const handleZoomIn = useCallback(() => setFontSize(prevSize => Math.min(prevSize + 2, 24)), []);
+    const handleZoomOut = useCallback(() => setFontSize(prevSize => Math.max(prevSize - 2, 16)), []);
     const handleToggleAutoNext = useCallback(() => setAutoNextQuestion(prev => !prev), []);
 
     const resetUserAnswers = useCallback(() => setUserAnswers({}), []);

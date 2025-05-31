@@ -4,6 +4,9 @@
     min-height: 100vh;
     height: 100vh;
     background-color: var(--background-primary);
+    user-select: none;
+    -webkit-user-select: none;
+    transition: all 0.3s;
 }
 
 .exercises__main-content {

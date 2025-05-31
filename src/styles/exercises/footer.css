@@ -3,6 +3,8 @@
     background: var(--background-secondary);
     border-top: 1px solid var(--border-color);
     padding: 1rem 0;
+    height: 5vh;
+    transition: all 0.3s;
 }
 
 .exercises__footer-content {
@@ -38,6 +40,7 @@
 .button-ZoomOut:hover {
     background-color: var(--text-primary);
     transform: scale(1.1);
+
 }
 
 .zoom-icon {
@@ -72,4 +75,5 @@
     color: var(--text-primary);
     font-size: 0.9rem;
     cursor: pointer;
+    transition: all 0.3s;
 }

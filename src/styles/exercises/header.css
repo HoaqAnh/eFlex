@@ -2,6 +2,8 @@
     background: var(--background-secondary);
     border-bottom: 1px solid var(--border-color);
     padding: 1rem 0;
+    height: 15vh;
+    transition: all 0.3s;
 }
 
 .exercises__header-content {
@@ -9,8 +11,6 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
 }
 
 .exercises__header-right {
@@ -29,11 +29,13 @@
     margin: 0;
     font-size: 1.5rem;
     color: var(--text-primary);
+    transition: all 0.3s;
 }
 
 .exercises__header-right-subcontent p {
     margin: 0;
     color: var(--text-secondary);
+    transition: all 0.3s;
 }
 
 .exercises__header-left {
@@ -50,17 +52,17 @@
 .exercises__header-left-content h4 {
     color: var(--text-secondary);
     font-size: 0.9rem;
+    transition: all 0.3s;
 }
 
 .exercises__timeleft {
     font-size: 1.5rem;
     font-weight: bold;
     color: var(--text-secondary);
+    transition: all 0.3s;
 }
 
 .exercises__header-left-actions {
     display: flex;
     gap: 1rem;
 }
-
-
