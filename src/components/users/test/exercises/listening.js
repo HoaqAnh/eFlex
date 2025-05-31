@@ -38,7 +38,7 @@ const Listening = ({
         <div className="exercises__question">
             <main className='listening__question-main'>
                 <div className="listening__question-form-header">
-                    <h3>{nameGroup}</h3>
+                    <h3 style={{ fontSize: `${fontSize}px` }}> Bài nghe chủ đề {nameGroup}</h3>
                     {audioFile && (
                         <div className='audio-media'>
                             <audio controls preload="metadata" src={audioFile}>

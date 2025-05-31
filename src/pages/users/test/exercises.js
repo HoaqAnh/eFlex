@@ -94,8 +94,8 @@ const Exercises = () => {
         const result = await executeSubmit(userData.id, answersToSubmit);
 
         if (result && result.statusCode === 200 && result.data) {
-            if (result.data.recommendation && result.data.recommendation.lesson_id) {
-                setRecommendationDetails(result.data.recommendation);
+            if (result.data.recommendation && result.data.lessonId) {
+                setRecommendationDetails(result.data);
                 setIsRecommendationPopupOpen(true);
             } else {
                 toast.success(result.data.message || "Nộp bài thành công! Không có gợi ý bài học.");
@@ -144,8 +144,8 @@ const Exercises = () => {
 
     const confirmRecommendationNavigation = useCallback(() => {
         setIsRecommendationPopupOpen(false);
-        if (recommendationDetails && recommendationDetails.lesson_id) {
-            navigate(`/course/${courseId}/lesson/${recommendationDetails.lesson_id}`);
+        if (recommendationDetails && recommendationDetails.lessonId) {
+            navigate(`/course/${courseId}/lesson/${recommendationDetails.lessonId}`);
         }
         setRecommendationDetails(null);
     }, [navigate, courseId, recommendationDetails]);
@@ -153,7 +153,7 @@ const Exercises = () => {
     const closeRecommendationPopup = useCallback(() => {
         setIsRecommendationPopupOpen(false);
         setRecommendationDetails(null);
-        navigate(`/course/${courseId}`);
+        navigate(lessonId ? `/course/${courseId}/lesson/${lessonId}/test` : `/course/${courseId}`);
     }, [navigate, courseId]);
 
     const handleRestartTestFlow = useCallback(() => {
@@ -188,14 +188,14 @@ const Exercises = () => {
     }
 
     const answeredQuestionsCount = Object.keys(userAnswers).length;
-    const recommendationPopupMessage = recommendationDetails ? `${recommendationDetails.message}. Bấm xác nhận để chuyển đến bài học ngay.` : "";
+    const recommendationPopupMessage = recommendationDetails ? `${recommendationDetails.recommendation.message}. Bấm xác nhận để chuyển đến bài học ngay.` : "";
 
     return (
         <div className="exercises">
             {submitLoading && <Loader text="Đang nộp bài..." />}
             <div className="exercises__main-content">
                 <Header
-                    testName={exercises.name}
+                    testName={exercises.TestExerciseName}
                     totalQuestions={exercises.totalQuestion}
                     duration={exercises.duration}
                     timeLeft={formatTime(timeLeft)}

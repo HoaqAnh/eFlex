@@ -241,7 +241,7 @@ const Body = ({ questions, fontSize, autoNextQuestionEnabled, onAnswerSelected, 
                 return (
                     <Reading
                         {...commonQuestionProps}
-                        passageTitle="{currentPartData.nameGroup}"
+                        passageTitle={currentPartData.title}
                         passageContent={currentPartData.nameGroup}
                     />
                 );

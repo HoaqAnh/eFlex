@@ -29,13 +29,6 @@ const Reading = ({
     return (
         <div className='exercises__question'>
             <main className='reading__question-main'>
-                {(passageTitle || passageContent) && (
-                    <div className="reading__question-form-content">
-                        {passageTitle && <h3 style={{ fontSize: `${fontSize}px` }}>{passageTitle}</h3>}
-                        {passageContent && <div className="reading-passage" style={{ fontSize: `${fontSize - 2}px`, whiteSpace: 'pre-wrap' }}>{passageContent}</div>}
-                    </div>
-                )}
-
                 <div className="exercises__question-form-body">
                     <div className="exercises__question-form-body_content">
                         <h4 style={{ fontSize: `${fontSize + 2}px` }}>
@@ -62,6 +55,12 @@ const Reading = ({
                         })}
                     </div>
                 </div>
+                {(passageTitle || passageContent) && (
+                    <div className="reading__question-form-content">
+                        {passageTitle && <h3 style={{ fontSize: `${fontSize}px` }}>{passageTitle}</h3>}
+                        {passageContent && <div className="reading-passage" style={{ fontSize: `${fontSize - 2}px`, whiteSpace: 'pre-wrap' }}>{passageContent}</div>}
+                    </div>
+                )}
             </main>
         </div>
     );

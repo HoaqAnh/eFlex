@@ -47,7 +47,7 @@ export const useSubmitTest = () => {
 
     const executeSubmit = async (userId, answers) => {
         if (!userId || !answers) {
-            const errMsg = 'Thông tin userId, testId, hoặc answers không được để trống khi nộp bài.';
+            const errMsg = 'Thông tin userId hoặc answers không được để trống khi nộp bài.';
             console.error(errMsg);
             setError(errMsg);
             return { statusCode: 400, message: errMsg, data: null };
