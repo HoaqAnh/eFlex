@@ -21,6 +21,7 @@ public class ExerciseResponseDTO {
     public static class ExerciseGroupDTO {
         private String audioFile;
         private String nameGroup;
+        private String title;
         private Long passageId;
         private List<ExerciseDTO> exercises = new ArrayList<>();
 

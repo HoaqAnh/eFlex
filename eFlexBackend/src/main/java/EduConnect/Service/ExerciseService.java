@@ -382,6 +382,7 @@ public class ExerciseService {
             } else if ("READ".equals(questionType) && exercise.getReadingPassage() != null) {
                 group.setNameGroup(exercise.getReadingPassage().getContent());
                 group.setPassageId(exercise.getReadingPassage().getId());
+                group.setTitle(exercise.getReadingPassage().getTitle());
             }
         }
 

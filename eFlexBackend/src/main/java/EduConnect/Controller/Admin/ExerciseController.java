@@ -8,6 +8,7 @@ import EduConnect.Domain.Response.ScoreRes;
 import EduConnect.Domain.TestExercise;
 import EduConnect.Repository.TestExerciseRepository;
 import EduConnect.Service.ExerciseService;
+import EduConnect.Service.TestExerciseService;
 import EduConnect.Util.ApiMessage;
 import EduConnect.Util.Enum.Dificulty;
 import EduConnect.Util.Enum.QuestionType;
@@ -31,11 +32,13 @@ import java.util.Optional;
 public class ExerciseController {
     private final ExerciseService exerciseService;
     private final TestExerciseRepository testExerciseRepository;
+    private final TestExerciseService testExerciseService;
 
     public ExerciseController(ExerciseService exerciseService,
-                              TestExerciseRepository testExerciseRepository) {
+                              TestExerciseRepository testExerciseRepository, TestExerciseService testExerciseService) {
         this.exerciseService = exerciseService;
         this.testExerciseRepository = testExerciseRepository;
+        this.testExerciseService = testExerciseService;
     }
     @PostMapping("/exercise/excel/{idTestExercise}")
     @ApiMessage("Excel for Exercise")
@@ -104,7 +107,7 @@ public class ExerciseController {
     public ResponseEntity<Map<String, Object>> getExercisesByTestExercise(
             @PathVariable("testExerciseId") Long testExerciseId) {
         ExerciseResponseDTO responseDTO = exerciseService.getGroupedExercisesForTestExercise(testExerciseId);
-
+        TestExercise testExercise = testExerciseService.getTestExerciseById(testExerciseId);
         Map<String, ExerciseResponseDTO.ExerciseGroupDTO> dataMap = responseDTO.getData();
         int totalQuestions = 0;
         for (ExerciseResponseDTO.ExerciseGroupDTO group : dataMap.values()) {
@@ -116,6 +119,7 @@ public class ExerciseController {
         response.put("message", "Call API SUCCESS");
         response.put("data", responseDTO.getData());
         response.put("testExerciseId", testExerciseId);
+        response.put("TestExerciseName",testExercise.getName());
         response.put("totalQuestion", totalQuestions);
         response.put("duration", totalQuestions + 15);
 
