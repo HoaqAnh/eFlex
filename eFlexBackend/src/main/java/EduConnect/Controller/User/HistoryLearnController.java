@@ -75,10 +75,12 @@ public class HistoryLearnController {
             @RequestBody List<AnswerRequest> answers) throws IdInValidException {
         try {
             Map<String, Object> recommendation = testExerciseService.submitTestAndRecommend(userId, answers);
-
+            long idExercise = answers.get(0).getIdExercise();
+            TestExercise testExercise = testExerciseService.getTestExerciseById(idExercise);
             Map<String, Object> response = new HashMap<>();
             response.put("statusCode", 200);
             response.put("message", "Đã xử lý bài kiểm tra");
+            response.put("lessonId", testExercise.getLesson().getId());
             response.put("recommendation", recommendation);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
