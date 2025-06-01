@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface HistoryTestExerciseRepository extends JpaRepository<HistoryTestExercise, Integer> {
-    List<HistoryTestExercise> findByUserIdAndTestExerciseLessonCourseId(Long userId, Long courseId);
+    List<HistoryTestExercise> findByUserIdAndTestExercise_Id(Long userId, Long testId);
 }

@@ -72,17 +72,18 @@ public class TestExerciseService {
         return testExerciseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Bài kiểm tra không tồn tại: " + id));
     }
+    @Transactional
     public Map<String, Object> submitTestAndRecommend(Long userId, List<AnswerRequest> answers) {
         log.info("Bước 1: Bắt đầu xử lý bài kiểm tra cho userId={} với {} câu trả lời", userId, answers.size());
 
-        if (answers.isEmpty()) {
+        // Kiểm tra đầu vào
+        if (answers == null || answers.isEmpty()) {
             log.warn("Danh sách câu trả lời rỗng");
             throw new IllegalArgumentException("Danh sách câu trả lời không được rỗng");
         }
 
         // Lấy User
         User user = userRepository.findById(userId);
-
         // Tối ưu: Lấy tất cả Exercise trong một lần query
         List<Long> exerciseIds = answers.stream().map(AnswerRequest::getIdExercise).collect(Collectors.toList());
         Map<Long, Exercise> exerciseMap = exerciseRepository.findAllById(exerciseIds)
@@ -174,71 +175,72 @@ public class TestExerciseService {
         log.info("Lưu lịch sử: userId={}, testExerciseId={}, weightedCorrectRate={}",
                 userId, test.getId(), currentWeightedCorrectRate);
 
-        log.info("Bước 5: Lấy lịch sử làm bài kiểm tra");
-//        List<HistoryTestExercise> historyList = historyTestExerciseRepository.findByUserIdAndTestExerciseLessonCourseId(userId, courseId);
-//        double averageHistoricalRate = historyList.stream()
-//                .mapToDouble(h -> h.getWeightedCorrectRate() * getTimeWeight(h.getNgayTao()))
-//                .sum() / historyList.stream().mapToDouble(h -> getTimeWeight(h.getNgayTao())).sum();
-//        if (historyList.isEmpty()) {
-//            averageHistoricalRate = 0.0;
-//        }
-        List<HistoryTestExercise> historyList = historyTestExerciseRepository.findByUserIdAndTestExerciseLessonCourseId(userId, courseId);
-        log.info("Lấy ra lịch sử 5 bài gần đây nhất");
+        log.info("Bước 5: Lấy lịch sử làm bài kiểm tra cho bài kiểm tra hiện tại");
+        List<HistoryTestExercise> historyList = historyTestExerciseRepository.findByUserIdAndTestExercise_Id(userId, test.getId());
+        log.info("Lấy ra lịch sử 5 bài gần đây nhất cho bài kiểm tra testId={}", test.getId());
         List<HistoryTestExercise> recent5Tests = historyList.stream()
                 .sorted(Comparator.comparing(HistoryTestExercise::getNgayTao).reversed())
                 .limit(5)
                 .collect(Collectors.toList());
+
+        // Tính hiệu suất lịch sử cho bài kiểm tra hiện tại
         double averageHistoricalRate = recent5Tests.stream()
                 .mapToDouble(h -> h.getWeightedCorrectRate() * getTimeWeight(h.getNgayTao()))
-                .sum() / recent5Tests.stream().mapToDouble(h -> getTimeWeight(h.getNgayTao())).sum();
+                .sum();
+        double totalTimeWeight = recent5Tests.stream()
+                .mapToDouble(h -> getTimeWeight(h.getNgayTao()))
+                .sum();
+        averageHistoricalRate = totalTimeWeight > 0 ? averageHistoricalRate / totalTimeWeight : 0.0;
         if (historyList.isEmpty()) {
             averageHistoricalRate = 0.0;
         }
-        log.info("Điểm trung bình lịch sử: {}", averageHistoricalRate);
+        log.info("Điểm trung bình lịch sử cho bài kiểm tra testId={}: {}", test.getId(), averageHistoricalRate);
 
-        log.info("Bước 6: Gợi ý dựa trên kỹ năng yếu nhất");
+        log.info("Bước 6: Gợi ý dựa trên hiệu suất bài học");
         double dynamicThreshold = 0.7 + (answers.size() < 10 ? 0.1 : 0.0);
 
-        // Tìm questionType yếu nhất
-        QuestionType weakestType = null;
-        double lowestTypeRate = 1.0;
-        for (Map.Entry<QuestionType, TypePerformance> entry : typePerformance.entrySet()) {
-            double typeRate = entry.getValue().getWeightedCorrectRate();
-            if (typeRate < lowestTypeRate) {
-                lowestTypeRate = typeRate;
-                weakestType = entry.getKey();
+        // Tìm bài học yếu nhất
+        Long weakestLessonId = null;
+        double lowestLessonRate = 1.0;
+        for (Map.Entry<Long, LessonPerformance> entry : lessonPerformance.entrySet()) {
+            Long lessonId = entry.getKey();
+            double rate = entry.getValue().getWeightedCorrectRate();
+            if (rate < lowestLessonRate) {
+                lowestLessonRate = rate;
+                weakestLessonId = lessonId; // Variable modified here
             }
         }
+
+        // Kết hợp hiệu suất hiện tại và lịch sử
+        double combinedRate = historyList.isEmpty() ? lowestLessonRate : (0.7 * lowestLessonRate + 0.3 * averageHistoricalRate);
 
         // Logic gợi ý
-        double lowestLessonRate = lessonPerformance.values().stream()
-                .mapToDouble(LessonPerformance::getWeightedCorrectRate)
-                .min().orElse(1.0);
-
-        if (historyList.size() == 1) {
-            if (lowestLessonRate >= dynamicThreshold) {
-                if (averageTimePerQuestion < 5.0) {
-                    log.info("Người dùng mới làm nhanh ({}s/câu), gợi ý làm bài kiểm tra bổ sung", averageTimePerQuestion);
-                    return createRecommendation("Bạn làm bài nhanh và đúng! Hãy làm thêm bài kiểm tra để xác nhận khả năng");
-                } else {
-                    log.info("Người dùng mới đạt điểm cao (rate={}), gợi ý ôn tập kỹ năng {}", lowestLessonRate, weakestType);
-                    return createRecommendation("Bạn làm bài rất tốt! Hãy ôn tập kỹ năng " + weakestType + " để củng cố");
-                }
-            } else {
-                log.info("Người dùng mới có hiệu suất thấp (rate={}), gợi ý ôn tập kỹ năng {}", lowestLessonRate, weakestType);
-                return createRecommendation("Hãy ôn tập kỹ năng " + weakestType + " để cải thiện hiệu suất");
+        if (weakestLessonId != null && combinedRate < dynamicThreshold) {
+            // Create a final copy of weakestLessonId to use in the lambda
+            final Long finalWeakestLessonId = weakestLessonId;
+            Lesson weakestLesson = lessons.stream()
+                    .filter(lesson -> lesson.getId() == finalWeakestLessonId) // Use finalWeakestLessonId in lambda
+                    .findFirst()
+                    .orElse(null);
+            if (weakestLesson != null) {
+                log.info("Hiệu suất thấp nhất cho bài học lessonId={} (combinedRate={}), gợi ý ôn tập", finalWeakestLessonId, combinedRate);
+                return createRecommendation("Hãy ôn tập bài học '" + weakestLesson.getTenBai() + "' để cải thiện hiệu suất", weakestLesson.getId());
             }
-        } else if (lowestTypeRate < dynamicThreshold && weakestType != null) {
-            log.info("Hiệu suất thấp nhất cho {} (rate={}), gợi ý ôn tập kỹ năng", weakestType, lowestTypeRate);
-            return createRecommendation("Hãy ôn tập kỹ năng " + weakestType + " để cải thiện hiệu suất");
-        } else if (averageHistoricalRate < 0.65) {
-            log.info("Lịch sử kém (averageHistoricalRate={}), gợi ý ôn tập kỹ năng yếu nhất", averageHistoricalRate);
-            return createRecommendation("Hãy ôn tập kỹ năng " + weakestType + " do hiệu suất lịch sử thấp");
         }
 
-        // Gợi ý học kỹ năng tiếp theo
-        log.info("Bước 7: Gợi ý học kỹ năng tiếp theo");
-        return createRecommendation("Hãy tiếp tục học kỹ năng tiếp theo trong khóa học");
+        // Nếu không có bài học yếu, gợi ý bài học tiếp theo
+        log.info("Bước 7: Gợi ý bài học tiếp theo");
+        // Create a final copy of latestLessonOrder to use in the lambda
+        final int finalLatestLessonOrder = latestLessonOrder;
+        Lesson nextLesson = lessons.stream()
+                .filter(lesson -> lesson.getViTri() == finalLatestLessonOrder + 1) // Use finalLatestLessonOrder in lambda
+                .findFirst()
+                .orElse(null);
+        if (nextLesson != null) {
+            return createRecommendation("Hãy tiếp tục học bài học '" + nextLesson.getTenBai() + "' trong khóa học", nextLesson.getId());
+        }
+
+        return createRecommendation("Bạn đã hoàn thành tất cả bài học trong khóa học này!", null);
     }
 
     private double getDifficultyWeight(Dificulty dificulty) {
@@ -256,9 +258,12 @@ public class TestExerciseService {
         return Math.max(0.1, 1.0 - daysAgo * 0.05);
     }
 
-    private Map<String, Object> createRecommendation(String message) {
+    private Map<String, Object> createRecommendation(String message, Long lessonId) {
         Map<String, Object> recommendation = new HashMap<>();
         recommendation.put("message", message);
+        if (lessonId != null) {
+            recommendation.put("lessonId", lessonId);
+        }
         return recommendation;
     }
 
