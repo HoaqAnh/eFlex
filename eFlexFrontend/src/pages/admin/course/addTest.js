@@ -17,25 +17,25 @@ import "../../../styles/admin/addTest/style.css";
 const AddTest = () => {
     const navigate = useNavigate();
     const {
-        testData, setTestData, loading: loadingTest, error: errorTest, testErrors,
+        testData, loading: loadingTest, error: errorTest, testErrors,
         handleTestInputChange, validateTestForm, resetTestForm: resetMainTestForm, handleSubmitTest,
-        courseId, lessonId
+        courseId
     } = useCreTest();
 
     const {
-        loadingMC, errorMC, mcErrors, excelFileMC,
+        loadingMC, mcErrors, excelFileMC,
         handleUploadExcelMC, validateMCForm, resetMCForm, handleSubmitMC
     } = useCreMultipleChoiceTest();
 
     const {
-        listeningData, loadingListening, errorListening, listeningErrors,
+        listeningData, loadingListening, listeningErrors,
         audioFile, excelFileListening,
         handleListeningInputChange, handleUploadAudioFile, handleUploadListeningExcelFile,
         validateListeningForm, resetListeningForm, handleSubmitListening
     } = useCreListeningTest();
 
     const {
-        readingData, loadingReading, errorReading, readingErrors,
+        readingData, loadingReading, readingErrors,
         excelFileReading,
         handleReadingInputChange, handleUploadReadingExcelFile,
         validateReadingForm, resetReadingForm, handleSubmitReading

@@ -154,7 +154,7 @@ const Exercises = () => {
         setIsRecommendationPopupOpen(false);
         setRecommendationDetails(null);
         navigate(lessonId ? `/course/${courseId}/lesson/${lessonId}/test` : `/course/${courseId}`);
-    }, [navigate, courseId]);
+    }, [navigate, courseId, lessonId]);
 
     const handleRestartTestFlow = useCallback(() => {
         handleRestartAbandonedTest();
