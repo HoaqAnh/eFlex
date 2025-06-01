@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useValidation } from './useValidation';
 import { creTest, creListeningTest as createListeningGroup, creReadingTest as createReadingPassage } from '../../services/testService';
@@ -9,19 +9,37 @@ export const useCreTest = () => {
     const { id: courseId, lessonId } = useParams();
     const validation = useValidation();
 
-    const initialTestData = {
+    const initialTestData = useMemo(() => ({
         name: "",
         duration: 0,
         lesson: {
             id: lessonId
         }
-    };
-    const initialTestErrorState = { name: "", duration: "" };
+    }), [lessonId]);
+
+    const initialTestErrorState = useMemo(() => ({ name: "", duration: "" }), []);
 
     const [testData, setTestData] = useState({ ...initialTestData });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [testErrors, setTestErrors] = useState({ ...initialTestErrorState });
+
+
+    const handleTestInputChange = useCallback((field, value) => {
+        setTestData(prev => ({ ...prev, [field]: value }));
+        setTestErrors(prev => ({ ...prev, [field]: "" }));
+    }, []);
+
+    const validateTestForm = useCallback(() => {
+        const result = validation.validateTestForm(testData);
+        setTestErrors(result.errors);
+        return result.isValid;
+    }, [testData, validation]);
+
+    const resetTestForm = useCallback(() => {
+        setTestData({ ...initialTestData, lesson: { id: lessonId } });
+        setTestErrors({ ...initialTestErrorState });
+    }, [lessonId, initialTestData, initialTestErrorState]);
 
     if (!lessonId || !courseId) {
         console.error('Không tìm thấy courseId hoặc lessonId');
@@ -39,22 +57,6 @@ export const useCreTest = () => {
             lessonId: null,
         };
     }
-
-    const handleTestInputChange = useCallback((field, value) => {
-        setTestData(prev => ({ ...prev, [field]: value }));
-        setTestErrors(prev => ({ ...prev, [field]: "" }));
-    }, []);
-
-    const validateTestForm = useCallback(() => {
-        const result = validation.validateTestForm(testData);
-        setTestErrors(result.errors);
-        return result.isValid;
-    }, [testData, validation]);
-
-    const resetTestForm = useCallback(() => {
-        setTestData({ ...initialTestData, lesson: { id: lessonId } });
-        setTestErrors({ ...initialTestErrorState });
-    }, [lessonId, initialTestData, initialTestErrorState]);
 
     const handleSubmitTest = async () => {
         if (!validateTestForm()) {
@@ -146,8 +148,8 @@ export const useCreMultipleChoiceTest = () => {
 
 export const useCreListeningTest = () => {
     const validation = useValidation();
-    const initialListeningData = { groupName: "" };
-    const initialListeningErrorState = { groupName: "", audioFile: "", excelFile: "" };
+    const initialListeningData = useMemo(() => ({ groupName: "" }), []);
+    const initialListeningErrorState = useMemo(() => ({ groupName: "", audioFile: "", excelFile: "" }), []);
 
     const [listeningData, setListeningData] = useState({ ...initialListeningData });
     const [loadingListening, setLoadingListening] = useState(false);
@@ -237,8 +239,8 @@ export const useCreListeningTest = () => {
 
 export const useCreReadingTest = () => {
     const validation = useValidation();
-    const initialReadingData = { title: "", readingPassage: "" };
-    const initialReadingErrorState = { title: "", readingPassage: "", excelFile: "" };
+    const initialReadingData = useMemo(() => ({ title: "", readingPassage: "" }), []);
+    const initialReadingErrorState = useMemo(() => ({ title: "", readingPassage: "", excelFile: "" }), []);
 
     const [readingData, setReadingData] = useState({ ...initialReadingData });
     const [loadingReading, setLoadingReading] = useState(false);
