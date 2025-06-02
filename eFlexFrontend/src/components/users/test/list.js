@@ -1,14 +1,13 @@
-import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../../../styles/users/test/list.css";
 
 const List = ({ testData }) => {
     const { id: courseId, lessonId } = useParams();
     const navigate = useNavigate();
-
-    const testName = testData.name;
-    const exercisesCount = testData.exerciseList ? testData.exerciseList.length : 0;
-    const duration = testData.duration;
+    console.log(testData)
+    const testName = testData.name || "Không có tên cho bài kiểm tra";
+    const exercisesCount = testData.totalQuestion || 0;
+    const duration = testData.duration || 0;
     const testId = testData.id;
 
     const handleNavigateToTest = () => {
