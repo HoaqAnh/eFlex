@@ -58,31 +58,9 @@ public class TestExerciseController {
         testExerciseService.deleteTestExercise(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    @GetMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> getTestExercise(@PathVariable Long id) {
-        TestExercise testExercise = testExerciseService.getTestExerciseById(id);
-        ExerciseResponseDTO responseDTO = exerciseService.getGroupedExercisesForTestExercise(id);
 
-        Map<String, ExerciseResponseDTO.ExerciseGroupDTO> dataMap = responseDTO.getData();
-        int totalQuestions = 0;
-        for (ExerciseResponseDTO.ExerciseGroupDTO group : dataMap.values()) {
-            totalQuestions += group.getExercises().size();
-        }
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("statusCode", 200);
-        response.put("message", "Call API SUCCESS");
-        response.put("testExerciseId", id);
-        response.put("TestExerciseName",testExercise.getName());
-        response.put("totalQuestion", totalQuestions);
-        response.put("duration", totalQuestions + 15);
-        response.put("data", responseDTO.getData());
-        return ResponseEntity.ok(response);
-
-    }
     @GetMapping("/lesson/{idLesson}")
     public ResponseEntity<List<TestExerciseResponse>> getTestExerciseByLessonn(@PathVariable Long idLesson) {
-
         Lesson lesson=lessonRepository.getLessonById(idLesson);
         List<TestExercise> testExerciseList = this.testExerciseService.getTestByLesson(idLesson,lesson.getCourse().getTenMon());
         List<TestExerciseResponse> responses = new ArrayList<>();
@@ -91,7 +69,7 @@ public class TestExerciseController {
             testExerciseResponse.setId(testExercise.getId());
             testExerciseResponse.setName(testExercise.getName());
             testExerciseResponse.setDuration(testExercise.getDuration());
-            testExerciseResponse.setTotalQuestion(testExercise.getExerciseList().size());
+            testExerciseResponse.setTotalQuestion(testExercise.getExerciseList().size() + lesson.getViTri()*3);
             responses.add(testExerciseResponse);
         }
         return ResponseEntity.ok(responses);
@@ -118,7 +96,7 @@ public class TestExerciseController {
             response.put("testExerciseId", testExercise.getId());
             response.put("TestExerciseName", testExercise.getName());
             response.put("totalQuestion", totalQuestions);
-            response.put("duration", totalQuestions + 15);
+            response.put("duration", testExercise.getDuration());
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             Map<String, Object> errorResponse = new HashMap<>();
@@ -127,5 +105,4 @@ public class TestExerciseController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
-
 }

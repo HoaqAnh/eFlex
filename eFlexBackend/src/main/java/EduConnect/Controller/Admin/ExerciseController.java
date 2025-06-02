@@ -121,7 +121,7 @@ public class ExerciseController {
         response.put("testExerciseId", testExerciseId);
         response.put("TestExerciseName",testExercise.getName());
         response.put("totalQuestion", totalQuestions);
-        response.put("duration", totalQuestions + 15);
+        response.put("duration", testExercise.getDuration());
 
 
         return ResponseEntity.ok(response);
