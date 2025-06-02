@@ -35,6 +35,7 @@ public class TestExercise {
     private List<Exercise> exerciseList;
 
     @OneToMany(mappedBy = "testExercise", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<HistoryTestExercise> historyTestExercises;
 
     @PrePersist

@@ -4,6 +4,7 @@ import EduConnect.Domain.Course;
 import EduConnect.Domain.Exercise;
 import EduConnect.Domain.Lesson;
 import EduConnect.Domain.Response.ExerciseResponseDTO;
+import EduConnect.Domain.Response.TestExerciseResponse;
 import EduConnect.Domain.TestExercise;
 import EduConnect.Repository.ExerciseRepository;
 import EduConnect.Repository.LessonRepository;
@@ -80,11 +81,20 @@ public class TestExerciseController {
 
     }
     @GetMapping("/lesson/{idLesson}")
-    public ResponseEntity<List<TestExercise>> getTestExerciseByLessonn(@PathVariable Long idLesson) {
+    public ResponseEntity<List<TestExerciseResponse>> getTestExerciseByLessonn(@PathVariable Long idLesson) {
 
         Lesson lesson=lessonRepository.getLessonById(idLesson);
         List<TestExercise> testExerciseList = this.testExerciseService.getTestByLesson(idLesson,lesson.getCourse().getTenMon());
-        return ResponseEntity.ok(testExerciseList);
+        List<TestExerciseResponse> responses = new ArrayList<>();
+        for (TestExercise testExercise : testExerciseList) {
+            TestExerciseResponse testExerciseResponse = new TestExerciseResponse();
+            testExerciseResponse.setId(testExercise.getId());
+            testExerciseResponse.setName(testExercise.getName());
+            testExerciseResponse.setDuration(testExercise.getDuration());
+            testExerciseResponse.setTotalQuestion(testExercise.getExerciseList().size());
+            responses.add(testExerciseResponse);
+        }
+        return ResponseEntity.ok(responses);
     }
     @GetMapping("/assessmentTest/{courseId}")
     public ResponseEntity<Map<String, Object>> getRandomTestExerciseByCourseId(@PathVariable Long courseId) {
