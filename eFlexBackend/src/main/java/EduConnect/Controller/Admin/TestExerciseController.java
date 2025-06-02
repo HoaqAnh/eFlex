@@ -72,7 +72,7 @@ public class TestExerciseController {
         response.put("statusCode", 200);
         response.put("message", "Call API SUCCESS");
         response.put("testExerciseId", id);
-        response.put("name",testExercise.getName());
+        response.put("TestExerciseName",testExercise.getName());
         response.put("totalQuestion", totalQuestions);
         response.put("duration", totalQuestions + 15);
         response.put("data", responseDTO.getData());
@@ -104,11 +104,11 @@ public class TestExerciseController {
             Map<String, Object> response = new HashMap<>();
             response.put("statusCode", 200);
             response.put("message", "Call API SUCCESS");
-            response.put("TestExerciseId", testExercise.getId());
-            response.put("name", testExercise.getName());
+            response.put("data", responseDTO.getData());
+            response.put("testExerciseId", testExercise.getId());
+            response.put("TestExerciseName", testExercise.getName());
             response.put("totalQuestion", totalQuestions);
             response.put("duration", totalQuestions + 15);
-            response.put("data", responseDTO.getData());
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             Map<String, Object> errorResponse = new HashMap<>();
