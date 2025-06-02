@@ -90,10 +90,24 @@ public class TestExerciseController {
     public ResponseEntity<Map<String, Object>> getRandomTestExerciseByCourseId(@PathVariable Long courseId) {
         try {
             ExerciseResponseDTO responseDTO = courseService.createAssessmentTest(courseId);
+            //Các bước lấy thông tin Test để trả cho Frontend
+            Course course = courseService.findById(courseId);
+            String nameTest = "Level Assessment Test " + course.getTenMon();
+            TestExercise testExercise = testExerciseService.findByName(nameTest);
+            Map<String, ExerciseResponseDTO.ExerciseGroupDTO> dataMap = responseDTO.getData();
+            int totalQuestions = 0;
+            for (ExerciseResponseDTO.ExerciseGroupDTO group : dataMap.values()) {
+                totalQuestions += group.getExercises().size();
+            }
 
+            // Map data và return
             Map<String, Object> response = new HashMap<>();
             response.put("statusCode", 200);
             response.put("message", "Call API SUCCESS");
+            response.put("TestExerciseId", testExercise.getId());
+            response.put("name", testExercise.getName());
+            response.put("totalQuestion", totalQuestions);
+            response.put("duration", totalQuestions + 15);
             response.put("data", responseDTO.getData());
             return ResponseEntity.ok(response);
         } catch (Exception e) {
