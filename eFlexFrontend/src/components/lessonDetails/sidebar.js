@@ -10,8 +10,7 @@ const Sidebar = ({ selectedSection, currentLesson, sections, handleSectionClick,
                 <div className="lesson-details__sidebar-content-body">
                     {sections && sections.map((section) => (
                         <div
-                            className={`lesson-details__sidebar-content-body-item 
-                                ${selectedSection && selectedSection.id === section.id ? "active" : ""}`}
+                            className={`lesson-details__sidebar-content-body-item ${selectedSection && selectedSection.id === section.id ? "active" : ""}`}
                             key={section.id}
                             onClick={() => handleSectionClick(section)}
                         >

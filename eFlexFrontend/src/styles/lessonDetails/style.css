@@ -24,3 +24,30 @@
     border-radius: 10px;
     -webkit-transition: background 0.3s
 }
+
+/* Tablet landscape và desktop nhỏ */
+@media (max-width: 1024px) {
+    .lesson-details {
+        gap: 0.25rem;
+        padding: 0.25rem;
+    }
+}
+
+/* Tablet portrait */
+@media (max-width: 768px) {
+    .lesson-details {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        height: auto;
+        min-height: 100vh;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .lesson-details {
+        padding: 0.25rem;
+        gap: 0.25rem;
+    }
+}
