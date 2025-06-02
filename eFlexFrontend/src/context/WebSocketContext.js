@@ -23,19 +23,16 @@ export const WebSocketProvider = ({ children }) => {
     const stompClient = new Client({
       webSocketFactory: () => socket,
       reconnectDelay: 5000,
-      // debug: (str) => console.log(str),
     });
 
     stompClientRef.current = stompClient;
 
     stompClient.onConnect = (frame) => {
-      // console.log("WebSocket Connected: " + frame);
       setIsConnected(true);
 
       stompClient.subscribe("/topic/public", (message) => {
         try {
           const response = JSON.parse(message.body);
-          // console.log("Received message from /topic/public:", response);
           if (response && typeof response.activeUsers === "number") {
             setActiveUsers(response.activeUsers);
           } else {
@@ -57,21 +54,18 @@ export const WebSocketProvider = ({ children }) => {
     };
 
     stompClient.onStompError = (frame) => {
-      console.error("STOMP error:", frame);
       setIsConnected(false);
       hasSentInitialMessage.current = false;
       hasSentJoinMessage.current = false;
     };
 
     stompClient.onWebSocketError = (event) => {
-      console.error("WebSocket error:", event);
       setIsConnected(false);
       hasSentInitialMessage.current = false;
       hasSentJoinMessage.current = false;
     };
 
     stompClient.onWebSocketClose = () => {
-      // console.log("WebSocket connection closed");
       setIsConnected(false);
       hasSentInitialMessage.current = false;
       hasSentJoinMessage.current = false;
@@ -89,7 +83,6 @@ export const WebSocketProvider = ({ children }) => {
             isAdmin: userInfo.isAdmin,
           }),
         });
-        // console.log("User LEAVE message sent successfully");
       }
     };
 
@@ -106,7 +99,6 @@ export const WebSocketProvider = ({ children }) => {
               isAdmin: userInfo.isAdmin,
             }),
           });
-          // console.log("User LEAVE message sent successfully");
         }
         stompClientRef.current.deactivate();
         stompClientRef.current = null;
@@ -115,11 +107,10 @@ export const WebSocketProvider = ({ children }) => {
         hasSentJoinMessage.current = false;
       }
     };
-  }, [userInfo]);
+  }, []);
 
   // Gửi JOIN khi userInfo thay đổi
   useEffect(() => {
-    // console.log("[WebSocketContext JOIN Effect] Running. UserInfo:", userInfo, "IsConnected:", isConnected, "HasSentJoin:", hasSentJoinMessage.current);
     if (
       userInfo &&
       isConnected &&
@@ -135,7 +126,6 @@ export const WebSocketProvider = ({ children }) => {
           isAdmin: userInfo.isAdmin,
         }),
       });
-      console.log("User JOIN message sent successfully");
       hasSentJoinMessage.current = true;
     }
   }, [userInfo, isConnected]);
