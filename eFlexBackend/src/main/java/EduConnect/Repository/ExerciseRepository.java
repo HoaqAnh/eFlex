@@ -40,4 +40,8 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
     @Query(value = "SELECT * FROM  bai_tap e WHERE e.id_bkt IN :testExerciseIds ORDER BY RAND() LIMIT :limit", nativeQuery = true)
     List<Exercise> findRandomExercisesByTestExerciseIds(@Param("testExerciseIds") List<Long> testExerciseIds,
                                                         @Param("limit") int limit);
+
+    @Query(value = "select * from bai_tap e where e.id_bkt = :testExercise ORDER BY RAND() LIMIT :limit ",nativeQuery = true)
+    List<Exercise> RandomExercisesByTestExerciseIds(@Param("testExercise") long testExercise,
+                                                    @Param("limit") int limit);
 }

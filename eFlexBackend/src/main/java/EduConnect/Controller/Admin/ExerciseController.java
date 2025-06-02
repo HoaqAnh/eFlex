@@ -108,6 +108,7 @@ public class ExerciseController {
             @PathVariable("testExerciseId") Long testExerciseId) {
         ExerciseResponseDTO responseDTO = exerciseService.getGroupedExercisesForTestExercise(testExerciseId);
         TestExercise testExercise = testExerciseService.getTestExerciseById(testExerciseId);
+        Lesson lesson = testExercise.getLesson();
         Map<String, ExerciseResponseDTO.ExerciseGroupDTO> dataMap = responseDTO.getData();
         int totalQuestions = 0;
         for (ExerciseResponseDTO.ExerciseGroupDTO group : dataMap.values()) {

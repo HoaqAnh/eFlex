@@ -333,7 +333,7 @@ public class ExerciseService {
         Long courseId = currentLesson.getCourse().getId();
 
         List<Exercise> exercises = new ArrayList<>();
-        exercises.addAll(exerciseRepository.findByTestExerciseId(testExerciseId));
+        exercises.addAll(exerciseRepository.RandomExercisesByTestExerciseIds(testExerciseId,40));
 
         if (currentPosition > 0) {
             List<Lesson> previousLessons = lessonRepository.findByCourseIdAndViTriLessThan(courseId, currentPosition);
@@ -341,7 +341,6 @@ public class ExerciseService {
                     .flatMap(lesson -> lesson.getTestExercise().stream())
                     .map(TestExercise::getId)
                     .collect(Collectors.toList());
-
             if (!previousTestExerciseIds.isEmpty()) {
                 List<Exercise> previousExercises = exerciseRepository.findRandomExercisesByTestExerciseIds(
                         previousTestExerciseIds, 3);
