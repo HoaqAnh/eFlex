@@ -1,5 +1,3 @@
-import "../../../../styles/exercises/multipleChoice.css";
-
 const MultipleChoice = ({ currentQuestionDisplayIndex, question, fontSize, onAnswerSelect, selectedAnswerKey }) => {
     if (!question) return null;
 

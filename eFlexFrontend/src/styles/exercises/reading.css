@@ -1,9 +1,9 @@
 .reading__question-main {
   flex: 1;
+  gap: 1em;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 1rem;
 }
 
 .reading__question-form-content {

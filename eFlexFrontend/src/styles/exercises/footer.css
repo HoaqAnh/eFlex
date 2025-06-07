@@ -3,7 +3,7 @@
     background: var(--background-secondary);
     border-top: 1px solid var(--border-color);
     padding: 1rem 0;
-    height: 5vh;
+    min-height: 5vh;
     transition: all 0.3s;
 }
 

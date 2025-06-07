@@ -7,11 +7,12 @@
     user-select: none;
     -webkit-user-select: none;
     transition: all 0.3s;
+    overflow: hidden;
 }
 
 .exercises__main-content {
     flex: 1;
-    overflow-y: auto;
+    overflow-y: hidden;
     display: flex;
     flex-direction: column;
 }
@@ -23,7 +24,7 @@
     display: flex;
     flex: 1;
     flex-direction: column;
-    overflow: auto;
+    overflow-y: auto;
     justify-content: center;
     box-shadow: 0 2px 4px var(--shadow-color);
     transition: box-shadow 0.3s;

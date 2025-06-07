@@ -1,6 +1,6 @@
 .home-RecommendItem {
     height: 14rem;
-    min-width: 10rem;
+    width: 10rem;
     border-radius: 5px;
 }
 
@@ -34,4 +34,5 @@
     margin-top: 0.5rem;
     color: var(--text-primary);
     transition: color 0.3s;
+    text-align: center;
 }

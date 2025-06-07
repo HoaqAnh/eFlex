@@ -1,9 +1,9 @@
 .exercises__header {
-    background: var(--background-secondary);
+    background-color: var(--background-secondary);
     border-bottom: 1px solid var(--border-color);
     padding: 1rem 0;
-    height: 15vh;
-    transition: all 0.3s;
+    min-height: 15vh;
+    transition: background-color 0.3s;
 }
 
 .exercises__header-content {
