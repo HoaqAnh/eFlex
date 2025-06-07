@@ -1,0 +1,10 @@
+[33m97229f9[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mbackend[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m HEAD@{0}: reset: moving to origin/main
+[33mf576b76[m HEAD@{1}: reset: moving to origin/backend
+[33mdb8eae3[m HEAD@{2}: commit: Update Section API: Get List Section
+[33m9ec80ed[m HEAD@{3}: commit: Update Section APIs
+[33mbc695b4[m HEAD@{4}: pull: Fast-forward
+[33m8dda12c[m HEAD@{5}: commit: Section APIs
+[33md8c33f1[m HEAD@{6}: pull: Fast-forward
+[33m60bece1[m HEAD@{7}: commit: Category API
+[33m2aef17e[m HEAD@{8}: checkout: moving from main to backend
+[33m97229f9[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mbackend[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m HEAD@{9}: clone: from https://github.com/HoaqAnh/eFlex.git
