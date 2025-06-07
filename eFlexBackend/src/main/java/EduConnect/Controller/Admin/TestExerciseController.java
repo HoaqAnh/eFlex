@@ -87,8 +87,6 @@ public class TestExerciseController {
             for (ExerciseResponseDTO.ExerciseGroupDTO group : dataMap.values()) {
                 totalQuestions += group.getExercises().size();
             }
-
-
             Map<String, Object> response = new HashMap<>();
             response.put("statusCode", 200);
             response.put("message", "Call API SUCCESS");
