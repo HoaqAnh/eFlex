@@ -1,0 +1,14 @@
+.addTest-footer {
+    display: flex;
+    flex-direction: row;
+    cursor: default;
+    overflow: hidden;
+    margin-top: auto;
+    padding: 15px;
+    border-radius: 20px;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 0 8px var(--shadow-color);
+    gap: 0.5rem;
+    transition: box-shadow 0.3s, border 0.3s;
+}

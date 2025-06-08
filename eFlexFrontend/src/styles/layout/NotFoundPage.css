@@ -1,0 +1,123 @@
+.not-found-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Arial', sans-serif;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.content404-wrapper {
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 60px 40px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.error404-code {
+  font-size: 120px;
+  font-weight: 900;
+  color: #ffffff;
+  margin: 0 0 20px 0;
+  line-height: 1;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  opacity: 0.9;
+}
+
+.error404-title {
+  font-size: 32px;
+  color: #ffffff;
+  margin: 0 0 20px 0;
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.error404-message {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 40px 0;
+  line-height: 1.6;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.home-button {
+  background: #ffffff;
+  color: #667eea;
+  border: none;
+  padding: 15px 40px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.home-button:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.home-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .content-wrapper {
+    padding: 40px 30px;
+  }
+  
+  .error404-code {
+    font-size: 80px;
+  }
+  
+  .error404-title {
+    font-size: 24px;
+  }
+  
+  .error404-message {
+    font-size: 16px;
+  }
+  
+  .home-button {
+    padding: 12px 30px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .not-found-container {
+    padding: 15px;
+  }
+  
+  .content-wrapper {
+    padding: 30px 20px;
+  }
+  
+  .error404-code {
+    font-size: 60px;
+  }
+  
+  .error404-title {
+    font-size: 20px;
+  }
+  
+  .error404-message {
+    font-size: 14px;
+    margin-bottom: 30px;
+  }
+}

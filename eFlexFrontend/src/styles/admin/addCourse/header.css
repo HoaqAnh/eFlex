@@ -1,0 +1,29 @@
+.adminCourse-header {
+    display: flex;
+    flex-direction: column;
+    cursor: default;
+    background-color: transparent;
+    overflow: hidden;
+    margin-bottom: auto;
+    gap: 0.5rem;
+}
+
+.adminCourse-header h1 {
+    font-weight: bold;
+    margin: 0;
+    position: relative;
+    padding-bottom: 8px;
+    color: var(--text-primary);
+    transition: color 0.3s;
+}
+
+.adminCourse-header h1::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 2em;
+    height: 0.1em;
+    background: linear-gradient(90deg, #2980B9, #27c744);
+    border-radius: 10px;
+}

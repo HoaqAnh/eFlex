@@ -1,0 +1,130 @@
+.sidebar {
+  width: 80px;
+  min-width: 80px;
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+  box-shadow: 2px 0 10px var(--shadow-color);
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: width 0.2s ease, min-width 0.2s ease, background-color 0.3s, box-shadow 0.3s;
+  position: sticky;
+  top: 0;
+}
+
+.sidebar.expanded {
+  width: 250px;
+  min-width: 250px;
+}
+
+.side-navigation {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.side-navigation ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.side-navigation li {
+  display: flex;
+  align-items: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
+  margin-bottom: 10px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.sidebar.collapsed .side-navigation li {
+  padding-left: 0;
+  padding-right: 0;
+  justify-content: center;
+  border-radius: 0;
+}
+
+.sidebar.collapsed .side-navigation li .nav-icon {
+  margin-right: 0;
+}
+
+
+.sidebar.expanded .side-navigation li {
+  padding-left: 20px;
+  padding-right: 10px;
+  justify-content: flex-start;
+}
+
+.sidebar.expanded .side-navigation li .nav-icon {
+  margin-right: 15px;
+}
+
+
+.side-navigation li:hover {
+  background-color: var(--li--background);
+  border-left-color: var(--li-border-color);
+}
+
+.sidebar.expanded .side-navigation li:hover {
+  transform: translateX(5px);
+}
+
+.side-navigation li.active {
+  background-color: var(--li--background-active);
+  border-left-color: #E0312E;
+  font-weight: 600;
+}
+
+.nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  background-color: var(--background-secondary);
+  border-radius: 8px;
+  box-shadow: 0 2px 5px var(--shadow-color);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  color: var(--text-primary);
+}
+
+.side-navigation li:hover .nav-icon {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.side-navigation li.active .nav-icon {
+  background-color: #14375F;
+  color: #FFFFFF;
+}
+
+.side-navigation span {
+  font-size: 15px;
+  color: var(--text-primary);
+  transition: opacity 0.2s ease-in-out, max-width 0.3s ease-in-out;
+  opacity: 0;
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-left: 0;
+}
+
+.sidebar.expanded .side-navigation span {
+  opacity: 1;
+  max-width: 150px;
+}
+
+.sidebar.expanded .side-navigation li.active span {
+  color: var(--text-primary);
+}
+
+.nav-icon svg {
+  width: 24px;
+  height: 24px;
+  transition: fill 0.3s ease;
+}

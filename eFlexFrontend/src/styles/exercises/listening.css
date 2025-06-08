@@ -1,0 +1,43 @@
+.listening__question-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.listening__question-form-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    background-color: var(--background-secondary);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.listening__question-form-header h3 {
+    color: var(--text-primary);
+    width: 100%;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+/* Audio Player Styling */
+.audio-media {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.audio-media audio {
+    width: 100%;
+    height: 50px;
+    border-radius: 8px;
+    outline: none;
+}
+
+.audio-media audio:focus {
+    border-color: var(--li-border-color);
+    box-shadow: 0 0 0 3px rgba(20, 55, 95, 0.1);
+}
