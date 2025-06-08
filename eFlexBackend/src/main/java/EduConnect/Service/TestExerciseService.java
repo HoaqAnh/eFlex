@@ -81,7 +81,6 @@ public class TestExerciseService {
         }
 
         User user = userRepository.findById(userId);
-        // Tối ưu: Lấy tất cả Exercise trong một lần query
         List<Long> exerciseIds = answers.stream().map(AnswerRequest::getIdExercise).collect(Collectors.toList());
         Map<Long, Exercise> exerciseMap = exerciseRepository.findAllById(exerciseIds)
                 .stream().collect(Collectors.toMap(Exercise::getId, e -> e));
@@ -90,7 +89,6 @@ public class TestExerciseService {
             throw new RuntimeException("Không tìm thấy một số câu hỏi");
         }
 
-        // Lấy TestExercise
         Exercise firstExercise = exerciseMap.get(answers.get(0).getIdExercise());
         TestExercise test = firstExercise.getTestExercise();
         if (test == null) {
@@ -115,7 +113,6 @@ public class TestExerciseService {
         log.info("Bước 4: Tính hiệu suất theo questionType và bài học");
         Map<QuestionType, TypePerformance> typePerformance = new HashMap<>();
         Map<Long, LessonPerformance> lessonPerformance = new HashMap<>();
-        double totalTimeTaken = 0.0;
 
         Map<Long, List<AnswerRequest>> answersByLesson = answers.stream()
                 .collect(Collectors.groupingBy(answer -> exerciseMap.get(answer.getIdExercise()).getId_BaiHoc()));
@@ -133,7 +130,6 @@ public class TestExerciseService {
                 QuestionType questionType = exercise.getQuestionType() != null ? exercise.getQuestionType() : QuestionType.MultipleChoice;
                 double weight = getDifficultyWeight(exercise.getDificulty());
                 totalWeight += weight;
-                totalTimeTaken += answer.getTimeTaken();
 
                 boolean isCorrect = answer.getAnswer().equals(exercise.getDapAnDung().toString());
                 if (isCorrect) {
@@ -141,7 +137,6 @@ public class TestExerciseService {
                     totalWeightedScore += weight;
                 }
 
-                // Cập nhật hiệu suất theo questionType
                 TypePerformance typePerf = typePerformance.computeIfAbsent(questionType, k -> new TypePerformance());
                 typePerf.addAnswer(isCorrect, weight);
 
@@ -155,10 +150,6 @@ public class TestExerciseService {
                     lessonId, correctAnswers, lessonAnswers.size(), weightedCorrectRate);
         }
 
-        double averageTimePerQuestion = answers.size() > 0 ? totalTimeTaken / answers.size() : 0.0;
-        log.info("Thời gian trung bình mỗi câu: {} giây", averageTimePerQuestion);
-
-        // Lưu kết quả bài kiểm tra
         double currentWeightedCorrectRate = lessonPerformance.values().stream()
                 .mapToDouble(LessonPerformance::getWeightedCorrectRate)
                 .average()
@@ -167,7 +158,7 @@ public class TestExerciseService {
         history.setUser(user);
         history.setTestExercise(test);
         history.setWeightedCorrectRate(currentWeightedCorrectRate);
-        history.setTimeWeight(getTimeWeight(Instant.now()));
+        history.setTimeWeight(1.0); // bỏ thời gian thực tế, dùng mặc định 1.0 hoặc xoá luôn nếu không cần
         historyTestExerciseRepository.save(history);
         log.info("Lưu lịch sử: userId={}, testExerciseId={}, weightedCorrectRate={}",
                 userId, test.getId(), currentWeightedCorrectRate);
@@ -180,14 +171,10 @@ public class TestExerciseService {
                 .limit(5)
                 .collect(Collectors.toList());
 
-        // Tính hiệu suất lịch sử cho bài kiểm tra hiện tại
         double averageHistoricalRate = recent5Tests.stream()
-                .mapToDouble(h -> h.getWeightedCorrectRate() * getTimeWeight(h.getNgayTao()))
-                .sum();
-        double totalTimeWeight = recent5Tests.stream()
-                .mapToDouble(h -> getTimeWeight(h.getNgayTao()))
-                .sum();
-        averageHistoricalRate = totalTimeWeight > 0 ? averageHistoricalRate / totalTimeWeight : 0.0;
+                .mapToDouble(HistoryTestExercise::getWeightedCorrectRate)
+                .average()
+                .orElse(0.0);
         if (historyList.isEmpty()) {
             averageHistoricalRate = 0.0;
         }
@@ -196,7 +183,6 @@ public class TestExerciseService {
         log.info("Bước 6: Gợi ý dựa trên hiệu suất bài học");
         double dynamicThreshold = 0.7 + (answers.size() < 10 ? 0.1 : 0.0);
 
-        // Tìm bài học yếu nhất
         Long weakestLessonId = null;
         double lowestLessonRate = 1.0;
         for (Map.Entry<Long, LessonPerformance> entry : lessonPerformance.entrySet()) {
@@ -208,10 +194,8 @@ public class TestExerciseService {
             }
         }
 
-        // Kết hợp hiệu suất hiện tại và lịch sử
         double combinedRate = historyList.isEmpty() ? lowestLessonRate : (0.7 * lowestLessonRate + 0.3 * averageHistoricalRate);
 
-        // Logic gợi ý
         if (weakestLessonId != null && combinedRate < dynamicThreshold) {
             final Long finalWeakestLessonId = weakestLessonId;
             Lesson weakestLesson = lessons.stream()
@@ -224,12 +208,10 @@ public class TestExerciseService {
             }
         }
 
-        // Nếu không có bài học yếu, gợi ý bài học tiếp theo
         log.info("Bước 7: Gợi ý bài học tiếp theo");
-
         final int finalLatestLessonOrder = latestLessonOrder;
         Lesson nextLesson = lessons.stream()
-                .filter(lesson -> lesson.getViTri() == finalLatestLessonOrder + 1) // Use finalLatestLessonOrder in lambda
+                .filter(lesson -> lesson.getViTri() == finalLatestLessonOrder + 1)
                 .findFirst()
                 .orElse(null);
         if (nextLesson != null) {
@@ -238,6 +220,7 @@ public class TestExerciseService {
 
         return createRecommendation("Bạn đã hoàn thành tất cả bài học trong khóa học này!", null);
     }
+
     @Transactional
     public Map<String, Object> submitAssessmentTest(Long userId, List<AnswerRequest> answers) {
         log.info("Bắt đầu xử lý bài đánh giá năng lực đầu vào cho userId={} với {} câu trả lời", userId, answers.size());
@@ -321,7 +304,7 @@ public class TestExerciseService {
         if (dificulty == null) return 1.0;
         switch (dificulty) {
             case EASY: return 1.0;
-            case MEDIUM: return 2.0;
+            case MEDIUM: return 1.5;
             case HARD: return 3.0;
             default: return 1.0;
         }

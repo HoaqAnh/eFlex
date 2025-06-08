@@ -154,9 +154,12 @@ public class CourseService {
             group.getExercises().add(exerciseDTO);
 
             if ("LISTENING".equals(questionType) && exercise.getListeningGroup() != null) {
+                group.setNameGroup(exercise.getListeningGroup().getGroupName());
                 group.setAudioFile(exercise.getListeningGroup().getAudioFile());
             } else if ("READ".equals(questionType) && exercise.getReadingPassage() != null) {
+                group.setNameGroup(exercise.getReadingPassage().getContent());
                 group.setPassageId(exercise.getReadingPassage().getId());
+                group.setTitle(exercise.getReadingPassage().getTitle());
             }
         }
 
