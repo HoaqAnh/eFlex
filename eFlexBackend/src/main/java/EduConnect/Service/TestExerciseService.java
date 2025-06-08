@@ -75,14 +75,11 @@ public class TestExerciseService {
     @Transactional
     public Map<String, Object> submitTestAndRecommend(Long userId, List<AnswerRequest> answers) {
         log.info("Bước 1: Bắt đầu xử lý bài kiểm tra cho userId={} với {} câu trả lời", userId, answers.size());
-
-        // Kiểm tra đầu vào
         if (answers == null || answers.isEmpty()) {
             log.warn("Danh sách câu trả lời rỗng");
             throw new IllegalArgumentException("Danh sách câu trả lời không được rỗng");
         }
 
-        // Lấy User
         User user = userRepository.findById(userId);
         // Tối ưu: Lấy tất cả Exercise trong một lần query
         List<Long> exerciseIds = answers.stream().map(AnswerRequest::getIdExercise).collect(Collectors.toList());
@@ -207,7 +204,7 @@ public class TestExerciseService {
             double rate = entry.getValue().getWeightedCorrectRate();
             if (rate < lowestLessonRate) {
                 lowestLessonRate = rate;
-                weakestLessonId = lessonId; // Variable modified here
+                weakestLessonId = lessonId;
             }
         }
 
@@ -216,10 +213,9 @@ public class TestExerciseService {
 
         // Logic gợi ý
         if (weakestLessonId != null && combinedRate < dynamicThreshold) {
-            // Create a final copy of weakestLessonId to use in the lambda
             final Long finalWeakestLessonId = weakestLessonId;
             Lesson weakestLesson = lessons.stream()
-                    .filter(lesson -> lesson.getId() == finalWeakestLessonId) // Use finalWeakestLessonId in lambda
+                    .filter(lesson -> lesson.getId() == finalWeakestLessonId)
                     .findFirst()
                     .orElse(null);
             if (weakestLesson != null) {
@@ -230,7 +226,7 @@ public class TestExerciseService {
 
         // Nếu không có bài học yếu, gợi ý bài học tiếp theo
         log.info("Bước 7: Gợi ý bài học tiếp theo");
-        // Create a final copy of latestLessonOrder to use in the lambda
+
         final int finalLatestLessonOrder = latestLessonOrder;
         Lesson nextLesson = lessons.stream()
                 .filter(lesson -> lesson.getViTri() == finalLatestLessonOrder + 1) // Use finalLatestLessonOrder in lambda
@@ -242,6 +238,84 @@ public class TestExerciseService {
 
         return createRecommendation("Bạn đã hoàn thành tất cả bài học trong khóa học này!", null);
     }
+    @Transactional
+    public Map<String, Object> submitAssessmentTest(Long userId, List<AnswerRequest> answers) {
+        log.info("Bắt đầu xử lý bài đánh giá năng lực đầu vào cho userId={} với {} câu trả lời", userId, answers.size());
+
+        if (answers == null || answers.isEmpty()) {
+            throw new IllegalArgumentException("Danh sách câu trả lời không được rỗng");
+        }
+
+        User user = userRepository.findById(userId);
+        if (user == null) throw new RuntimeException("Không tìm thấy người dùng");
+
+        // Lấy tất cả bài tập từ danh sách id
+        List<Long> exerciseIds = answers.stream()
+                .map(AnswerRequest::getIdExercise)
+                .collect(Collectors.toList());
+
+        Map<Long, Exercise> exerciseMap = exerciseRepository.findAllById(exerciseIds).stream()
+                .collect(Collectors.toMap(Exercise::getId, e -> e));
+
+        if (exerciseMap.size() != exerciseIds.size()) {
+            throw new RuntimeException("Một số câu hỏi không tồn tại trong hệ thống");
+        }
+
+        // Gom câu trả lời theo bài học
+        Map<Long, List<AnswerRequest>> answersByLesson = answers.stream()
+                .collect(Collectors.groupingBy(
+                        a -> exerciseMap.get(a.getIdExercise()).getId_BaiHoc()
+                ));
+
+        Map<Long, LessonPerformance> lessonPerformanceMap = new HashMap<>();
+
+        for (Map.Entry<Long, List<AnswerRequest>> entry : answersByLesson.entrySet()) {
+            Long lessonId = entry.getKey();
+            List<AnswerRequest> lessonAnswers = entry.getValue();
+
+            int correctCount = 0;
+            double totalWeight = 0;
+            double correctWeight = 0;
+
+            for (AnswerRequest answer : lessonAnswers) {
+                Exercise exercise = exerciseMap.get(answer.getIdExercise());
+                boolean isCorrect = answer.getAnswer().equals(exercise.getDapAnDung().toString());
+                double weight = getDifficultyWeight(exercise.getDificulty());
+
+                totalWeight += weight;
+                if (isCorrect) correctWeight += weight;
+
+                if (isCorrect) correctCount++;
+            }
+
+            double rate = totalWeight > 0 ? correctWeight / totalWeight : 0.0;
+            lessonPerformanceMap.put(lessonId, new LessonPerformance(rate, correctCount, lessonAnswers.size()));
+            log.info("LessonId={} - Correct {}/{} - WeightedCorrectRate={}", lessonId, correctCount, lessonAnswers.size(), rate);
+        }
+
+        // Tìm bài học yếu nhất
+        Long weakestLessonId = null;
+        double lowestRate = 1.0;
+
+        for (Map.Entry<Long, LessonPerformance> entry : lessonPerformanceMap.entrySet()) {
+            if (entry.getValue().getWeightedCorrectRate() < lowestRate) {
+                lowestRate = entry.getValue().getWeightedCorrectRate();
+                weakestLessonId = entry.getKey();
+            }
+        }
+
+        // Gợi ý bài học yếu nhất
+        if (weakestLessonId != null && lowestRate < 0.7) {
+            Lesson weakestLesson = lessonRepository.findById(weakestLessonId).orElse(null);
+            if (weakestLesson != null) {
+                return createRecommendation("Bạn nên ôn lại bài học '" + weakestLesson.getTenBai() + "' để cải thiện năng lực.", weakestLesson.getId());
+            }
+        }
+
+
+        return createRecommendation("Hệ thống đánh giá kiến thức của bạn hiện tại đã nắm chắc ở môn học này.", null);
+    }
+
 
     private double getDifficultyWeight(Dificulty dificulty) {
         if (dificulty == null) return 1.0;

@@ -341,6 +341,7 @@ public class ExerciseService {
                     .flatMap(lesson -> lesson.getTestExercise().stream())
                     .map(TestExercise::getId)
                     .collect(Collectors.toList());
+
             if (!previousTestExerciseIds.isEmpty()) {
                 for(Long exerciseId : previousTestExerciseIds) {
                     List<Exercise> previousExercises = exerciseRepository.RandomExercisesByTestExerciseIds(

@@ -94,4 +94,25 @@ public class HistoryLearnController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
+    @PostMapping("/submit-assessment-test/{userId}")
+    public ResponseEntity<Map<String, Object>> submitAssessmentTest(
+            @PathVariable("userId") Long userId,
+            @RequestBody List<AnswerRequest> answers) {
+        try {
+            Map<String, Object> recommendation = testExerciseService.submitAssessmentTest(userId, answers);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("statusCode", 200);
+            response.put("message", "Đã xử lý bài đánh giá năng lực");
+            response.put("recommendation", recommendation);
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("statusCode", 500);
+            errorResponse.put("error", "Lỗi khi xử lý bài đánh giá: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
+    }
+
 }

@@ -122,9 +122,9 @@ public class CourseService {
             testExercise.setLesson(lesson);
         }
 
-        List<Exercise> exerciseList = createExerciseListByCourseId(courseId, 2);
+        List<Exercise> exerciseList = createExerciseListByCourseId(courseId, 10);
         testExercise.setExerciseList(exerciseList);
-        testExercise.setDuration(exerciseList.size() + 15);
+        testExercise.setDuration(exerciseList.size() +15);
         testExerciseService.save(testExercise);
 
         Map<String, ExerciseResponseDTO.ExerciseGroupDTO> groupedExercises = new HashMap<>();
