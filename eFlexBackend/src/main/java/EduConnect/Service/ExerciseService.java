@@ -345,7 +345,7 @@ public class ExerciseService {
             if (!previousTestExerciseIds.isEmpty()) {
                 for(Long exerciseId : previousTestExerciseIds) {
                     List<Exercise> previousExercises = exerciseRepository.RandomExercisesByTestExerciseIds(
-                            exerciseId, 3);
+                            exerciseId, currentLesson.getViTri()*3);
                     exercises.addAll(previousExercises);
                 }
             }
