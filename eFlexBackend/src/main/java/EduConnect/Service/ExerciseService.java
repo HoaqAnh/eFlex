@@ -342,11 +342,9 @@ public class ExerciseService {
                     .map(TestExercise::getId)
                     .collect(Collectors.toList());
             if (!previousTestExerciseIds.isEmpty()) {
-                for(Long exerciseId : previousTestExerciseIds) {
-                    List<Exercise> previousExercises = exerciseRepository.RandomExercisesByTestExerciseIds(
-                            exerciseId, 3);
-                    exercises.addAll(previousExercises);
-                }
+                List<Exercise> previousExercises = exerciseRepository.findRandomExercisesByTestExerciseIds(
+                        previousTestExerciseIds, 3);
+                exercises.addAll(previousExercises);
             }
         }
 

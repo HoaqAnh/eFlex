@@ -1,0 +1,9 @@
+.chat {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  gap: 0.5rem;
+  height: 100%;
+  overflow: hidden;
+  background-color: transparent;
+}

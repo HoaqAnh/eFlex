@@ -1,0 +1,38 @@
+.home-RecommendItem {
+    height: 14rem;
+    width: 10rem;
+    border-radius: 5px;
+}
+
+.home-RecommendItem:hover {
+    border: 1px dashed var(--border-color);
+    transform: scale(1.05);
+}
+
+.home-RecommendItem__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+}
+
+.home-RecommendItem__container img {
+    height: 80%;
+    width: 90%;
+    border-radius: 5px;
+    object-fit: cover;
+    user-select: none;
+    -webkit-user-select: none;
+    pointer-events: none;
+}
+
+.home-RecommendItem__container p {
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    color: var(--text-primary);
+    transition: color 0.3s;
+    text-align: center;
+}

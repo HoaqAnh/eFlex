@@ -1,0 +1,38 @@
+.home-courseStudying {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0.5rem;
+    height: 100%;
+    width: 100%;
+    gap: 2rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-user-select: none;
+}
+
+.home-courseStudying::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.home-courseStudying::-webkit-scrollbar-track {
+    background: var(--scrollbarTrack-background);
+    border-radius: 10px;
+    -webkit-transition: background 0.3s
+}
+
+.home-courseStudying::-webkit-scrollbar-thumb {
+    background: var(--scrollbarThumb-background);
+    border-radius: 10px;
+    -webkit-transition: background 0.3s
+}
+
+.NoContentCourseStudying {
+    flex: 1;
+    color: var(--text-primary);
+    font-style: italic;
+    text-align: center;
+    transition: color 0.3s;
+}
