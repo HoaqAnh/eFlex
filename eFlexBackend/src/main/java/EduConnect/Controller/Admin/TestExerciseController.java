@@ -94,7 +94,7 @@ public class TestExerciseController {
             response.put("testExerciseId", testExercise.getId());
             response.put("TestExerciseName", testExercise.getName());
             response.put("totalQuestion", totalQuestions);
-            response.put("duration", totalQuestions*2);
+            response.put("duration", testExercise.getDuration());
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             Map<String, Object> errorResponse = new HashMap<>();
