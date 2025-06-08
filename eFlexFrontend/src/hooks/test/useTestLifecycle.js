@@ -6,8 +6,8 @@ import {
 } from '../../components/users/test/testStorage';
 
 export const useTestLifecycle = (exercises, initialTestId) => {
-    const location = useLocation(); // Lấy location bên trong hook
-    const { id: courseIdParam, lessonId: lessonIdParam, testId: testIdParam } = useParams(); // Hoặc nhận testId trực tiếp
+    const location = useLocation();
+    const { id: courseIdParam, lessonId: lessonIdParam, testId: testIdParam } = useParams();
 
     const testId = initialTestId || testIdParam;
 

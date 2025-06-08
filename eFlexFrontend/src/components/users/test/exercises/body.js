@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import Loading from "../../../../components/layout/loader/loading"
 import Error from "../../../../components/layout/loader/error"
 import MultipleChoice from "./multipleChoice";
@@ -14,7 +14,7 @@ const getPartType = (key) => {
     return 'UNKNOWN';
 };
 
-const Body = ({ questions, fontSize, autoNextQuestionEnabled, onAnswerSelected, userAnswers }) => {
+const Body = ({ questions, fontSize, autoNextQuestionEnabled, onAnswerSelected, userAnswers, timeData, setTimeData }) => {
     const [orderedPartKeys, setOrderedPartKeys] = useState([]);
     const [currentPartDisplayIndex, setCurrentPartDisplayIndex] = useState(0);
     const [currentQuestionIndexInPart, setCurrentQuestionIndexInPart] = useState(0);
@@ -77,6 +77,45 @@ const Body = ({ questions, fontSize, autoNextQuestionEnabled, onAnswerSelected, 
         return count;
     }, [questions, orderedPartKeys, currentPartDisplayIndex, currentQuestionIndexInPart, currentExercise, exercisesInCurrentPart]);
 
+    const startTimeRef = useRef(Date.now());
+    const currentQuestionIdRef = useRef(null);
+
+    useEffect(() => {
+        const previousQuestionId = currentQuestionIdRef.current;
+        const newQuestionId = currentExercise ? currentExercise.id : null;
+
+        if (previousQuestionId) {
+            const timeElapsed = (Date.now() - startTimeRef.current) / 1000;
+
+            setTimeData(prevTimeData => {
+                const oldTotalTime = prevTimeData[previousQuestionId] || 0;
+                return {
+                    ...prevTimeData,
+                    [previousQuestionId]: oldTotalTime + timeElapsed
+                };
+            });
+        }
+
+        currentQuestionIdRef.current = newQuestionId;
+        startTimeRef.current = Date.now();
+
+    }, [currentExercise, setTimeData]);
+
+    useEffect(() => {
+        return () => {
+            const lastQuestionId = currentQuestionIdRef.current;
+            if (lastQuestionId) {
+                const timeElapsed = (Date.now() - startTimeRef.current) / 1000;
+                 setTimeData(prevTimeData => {
+                    const oldTotalTime = prevTimeData[lastQuestionId] || 0;
+                    return {
+                        ...prevTimeData,
+                        [lastQuestionId]: oldTotalTime + timeElapsed
+                    };
+                });
+            }
+        };
+    }, [setTimeData])
 
     const handleNextQuestion = () => {
         const partHasExercises = exercisesInCurrentPart && exercisesInCurrentPart.length > 0;

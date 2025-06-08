@@ -61,3 +61,34 @@ export const clearStoredUserAnswers = (testId) => {
     if (!testId) return;
     sessionStorage.removeItem(`userAnswers_${testId}`);
 };
+
+// --- Helpers cho dữ liệu thời gian (Time Data) ---
+export const getStoredTimeData = (testId) => {
+    if (!testId) return null;
+    const timeDataString = sessionStorage.getItem(`timeData_${testId}`);
+    try {
+        return timeDataString ? JSON.parse(timeDataString) : null;
+    } catch (e) {
+        console.error("Lỗi phân tích dữ liệu thời gian từ sessionStorage:", e);
+        sessionStorage.removeItem(`timeData_${testId}`);
+        return null;
+    }
+};
+
+export const storeTimeData = (testId, timeData) => {
+    if (!testId) return;
+    try {
+        if (timeData && Object.keys(timeData).length > 0) {
+            sessionStorage.setItem(`timeData_${testId}`, JSON.stringify(timeData));
+        } else {
+            sessionStorage.removeItem(`timeData_${testId}`);
+        }
+    } catch (e) {
+        console.error("Lỗi lưu dữ liệu thời gian vào sessionStorage:", e);
+    }
+};
+
+export const clearStoredTimeData = (testId) => {
+    if (!testId) return;
+    sessionStorage.removeItem(`timeData_${testId}`);
+};

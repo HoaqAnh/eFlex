@@ -15,7 +15,8 @@ import useGetUserData from "../../../hooks/useUserData";
 import "../../../styles/exercises/style.css";
 import {
     clearStoredEndTime, clearTestAbandonedFlag,
-    getStoredUserAnswers, storeUserAnswers, clearStoredUserAnswers
+    getStoredUserAnswers, storeUserAnswers, clearStoredUserAnswers,
+    getStoredTimeData, storeTimeData, clearStoredTimeData
 } from "../../../components/users/test/testStorage";
 
 const Exercises = () => {
@@ -42,18 +43,28 @@ const Exercises = () => {
         handleToggleAutoNext, resetUserAnswers
     } = useExerciseInteraction();
 
+    const [timeData, setTimeData] = useState({});
     const [answerInstanceKey, setAnswerInstanceKey] = useState(Date.now());
 
     useEffect(() => {
-        if (exercises) {
-            const loadedAnswers = getStoredUserAnswers(exercises.testExerciseId);
+        if (exercises && exercises.testExerciseId) {
+            const testId = exercises.testExerciseId;
+            // Khôi phục câu trả lời
+            const loadedAnswers = getStoredUserAnswers(testId);
             if (loadedAnswers && Object.keys(loadedAnswers).length > 0) {
                 setUserAnswers(loadedAnswers);
             } else {
                 resetUserAnswers();
             }
+            // Khôi phục dữ liệu thời gian
+            const loadedTimeData = getStoredTimeData(testId);
+            if (loadedTimeData && Object.keys(loadedTimeData).length > 0) {
+                setTimeData(loadedTimeData);
+            } else {
+                setTimeData({});
+            }
         }
-    }, [exercises.testExerciseId, exercises, answerInstanceKey, setUserAnswers, resetUserAnswers]);
+    }, [exercises, exercises.testExerciseId, answerInstanceKey, setUserAnswers, resetUserAnswers]);
 
     // Effect để lưu câu trả lời vào sessionStorage khi chúng thay đổi
     useEffect(() => {
@@ -61,6 +72,13 @@ const Exercises = () => {
             storeUserAnswers(exercises.testExerciseId, userAnswers);
         }
     }, [userAnswers, exercises.testExerciseId]);
+
+    // Lưu dữ liệu thời gian vào sessionStorage khi thay đổi
+    useEffect(() => {
+        if (exercises.testExerciseId && timeData) {
+            storeTimeData(exercises.testExerciseId, timeData);
+        }
+    }, [timeData, exercises.testExerciseId]);
 
     const handleConfirmSubmit = useCallback(async () => {
         setIsSubmitConfirmPopupOpen(false);
@@ -78,12 +96,14 @@ const Exercises = () => {
         const answersToSubmit = Object.entries(userAnswers).map(([questionId, answer]) => ({
             idExercise: parseInt(questionId),
             answer: answer,
+            timeTaken: Math.round(timeData[questionId] || 0)
         }));
 
         if (exercises.testExerciseId) {
             clearStoredEndTime(exercises.testExerciseId);
             clearTestAbandonedFlag(exercises.testExerciseId);
             clearStoredUserAnswers(exercises.testExerciseId);
+            clearStoredTimeData(exercises.testExerciseId);
         }
 
         if ((answersToSubmit.length < exercises.totalQuestion) && timeLeft > 0) {
@@ -134,6 +154,7 @@ const Exercises = () => {
             clearStoredEndTime(exercises.testExerciseId);
             clearTestAbandonedFlag(exercises.testExerciseId);
             clearStoredUserAnswers(exercises.testExerciseId);
+            clearStoredTimeData(exercises.testExerciseId);
         }
         navigate(lessonId ? `/course/${courseId}/lesson/${lessonId}/test` : `/course/${courseId}`);
     }, [navigate, courseId, lessonId, exercises.testExerciseId]);
@@ -160,6 +181,8 @@ const Exercises = () => {
         handleRestartAbandonedTest();
         resetUserAnswers();
         clearStoredUserAnswers(exercises.testExerciseId);
+        clearStoredTimeData(exercises.testExerciseId);
+        setTimeData({});
         setIsAbandonedConfirmPopupOpen(false);
         setAnswerInstanceKey(Date.now());
     }, [handleRestartAbandonedTest, resetUserAnswers, exercises.testExerciseId, setIsAbandonedConfirmPopupOpen]);
@@ -169,6 +192,7 @@ const Exercises = () => {
             clearTestAbandonedFlag(exercises.testExerciseId);
             clearStoredEndTime(exercises.testExerciseId);
             clearStoredUserAnswers(exercises.testExerciseId);
+            clearStoredTimeData(exercises.testExerciseId);
         }
         navigate(lessonId ? `/course/${courseId}/lesson/${lessonId}/test` : `/course/${courseId}`);
         setIsAbandonedConfirmPopupOpen(false);
@@ -210,6 +234,8 @@ const Exercises = () => {
                         autoNextQuestionEnabled={autoNextQuestion}
                         onAnswerSelected={handleAnswerSelected}
                         userAnswers={userAnswers}
+                        timeData={timeData}
+                        setTimeData={setTimeData}
                     />
                 </div>
                 <Footer
