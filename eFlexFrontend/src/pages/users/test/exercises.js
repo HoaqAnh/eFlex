@@ -144,8 +144,8 @@ const Exercises = () => {
 
     const confirmRecommendationNavigation = useCallback(() => {
         setIsRecommendationPopupOpen(false);
-        if (recommendationDetails && recommendationDetails.lessonId) {
-            navigate(`/course/${courseId}/lesson/${recommendationDetails.lessonId}`);
+        if (recommendationDetails && recommendationDetails.recommendation.lessonId) {
+            navigate(`/course/${courseId}/lesson/${recommendationDetails.recommendation.lessonId}`);
         }
         setRecommendationDetails(null);
     }, [navigate, courseId, recommendationDetails]);
