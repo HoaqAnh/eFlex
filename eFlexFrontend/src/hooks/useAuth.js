@@ -47,7 +47,7 @@ export const useAuth = () => {
           setIsAdmin(false);
         }
 
-        if (isConnected && userData?.data?.fullname) {
+        if (userData.data.fullname) {
           setUser(userData.data.fullname, roleName === "admin");
         }
         setIsLoading(false);
@@ -67,7 +67,7 @@ export const useAuth = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [isConnected, setUser, hasFetchedUser]);
+  }, [setUser, hasFetchedUser]);
 
   useEffect(() => {
     let isMounted = true;
