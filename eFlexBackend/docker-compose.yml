@@ -29,7 +29,7 @@ services:
       - SMTP_HOST=smtp.gmail.com
       - SMTP_PORT=587
       - SMTP_USERNAME=xamthang09@gmail.com
-      - SMTP_PASSWORD=enotqwjnuyphtfzd
+      - SMTP_PASSWORD=kwskbcogcudyfbvs
       - GEMINI_API_KEY=AIzaSyAnGoBuTNS4jCcozAzcr0OaciTQFScOEzg
       - CLOUDINARY_CLOUD_NAME=ddqxvxnbc
       - CLOUDINARY_API_KEY=574289475634492
