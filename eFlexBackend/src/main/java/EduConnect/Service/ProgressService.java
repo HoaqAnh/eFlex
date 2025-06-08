@@ -72,7 +72,7 @@ public class ProgressService {
         long completedSections = progressSectionRepository.countByUserIdAndSectionLessonIdAndCompleteTrue(nguoiDungId, baiHocId);
         System.out.println("completedSections: " + completedSections);
 
-        if (totalSections > 0 || totalSections == completedSections) {
+        if (totalSections == completedSections) {
             ProgressLesson progressLesson = new ProgressLesson();
             progressLesson.setUser(currentUser);
             progressLesson.setLesson(lesson);
