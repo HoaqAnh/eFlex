@@ -12,7 +12,7 @@ const Header = ({ courseDetail, countLessonAndTest }) => {
                 <h1 className="header-content__title">{courseDetail?.tenMon || 'Khóa học'}</h1>
                 <p>{courseDetail?.moTa}</p>
                 <div className="course-details__header-bottom">
-                    <p>{countLessonAndTest?.baiHoc} bài học - {countLessonAndTest?.baiTap} câu hỏi</p>
+                    <p>{countLessonAndTest?.baiHoc} bài học - {countLessonAndTest?.baiTap} bài kiểm tra</p>
                     <div className="course-details__header-right-button">
                         <button className="btn btn-primary" onClick={hanldeAssessmentTest}>Đánh giá năng lực</button>
 

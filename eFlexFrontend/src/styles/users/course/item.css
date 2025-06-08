@@ -24,7 +24,7 @@
     align-items: center;
     overflow: hidden;
     border-radius: 10px 10px 0 0;
-    height: 15em;
+    height: 14em;
 }
 
 .course-item__thumbnail .course-thumbnail {
@@ -41,7 +41,7 @@
     overflow: hidden;
     gap: 0.5em;
     padding: 20px;
-    height: 5em;
+    height: 6em;
     border-radius: 0 0 10px 10px;
     background-color: var(--background-primary);
     transition: background-color 0.3s;
