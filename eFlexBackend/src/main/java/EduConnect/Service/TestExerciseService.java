@@ -110,8 +110,7 @@ public class TestExerciseService {
         List<Lesson> lessons = lessonRepository.findByCourseId(courseId);
         lessons.sort(Comparator.comparingInt(Lesson::getViTri));
 
-        log.info("Bước 4: Tính hiệu suất theo questionType và bài học");
-        Map<QuestionType, TypePerformance> typePerformance = new HashMap<>();
+
         Map<Long, LessonPerformance> lessonPerformance = new HashMap<>();
 
         Map<Long, List<AnswerRequest>> answersByLesson = answers.stream()
@@ -136,9 +135,6 @@ public class TestExerciseService {
                     correctAnswers++;
                     totalWeightedScore += weight;
                 }
-
-                TypePerformance typePerf = typePerformance.computeIfAbsent(questionType, k -> new TypePerformance());
-                typePerf.addAnswer(isCorrect, weight);
 
                 log.debug("Câu hỏi idExercise={}, questionType={}, độ khó={}, đúng/sai={}",
                         answer.getIdExercise(), questionType, exercise.getDificulty(), isCorrect);
@@ -310,10 +306,6 @@ public class TestExerciseService {
         }
     }
 
-    private double getTimeWeight(Instant ngayTao) {
-        long daysAgo = ChronoUnit.DAYS.between(ngayTao, Instant.now());
-        return Math.max(0.1, 1.0 - daysAgo * 0.05);
-    }
 
     private Map<String, Object> createRecommendation(String message, Long lessonId) {
         Map<String, Object> recommendation = new HashMap<>();

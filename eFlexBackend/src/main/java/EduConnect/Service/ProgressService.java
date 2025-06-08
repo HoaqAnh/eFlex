@@ -72,9 +72,7 @@ public class ProgressService {
         long completedSections = progressSectionRepository.countByUserIdAndSectionLessonIdAndCompleteTrue(nguoiDungId, baiHocId);
         System.out.println("completedSections: " + completedSections);
 
-
-        boolean exists = progressLessonRepository.existsByUserIdAndLessonId(nguoiDungId, baiHocId);
-        if (!exists) {
+        if (totalSections > 0 || totalSections == completedSections) {
             ProgressLesson progressLesson = new ProgressLesson();
             progressLesson.setUser(currentUser);
             progressLesson.setLesson(lesson);
@@ -82,11 +80,6 @@ public class ProgressService {
 
             progressLessonRepository.save(progressLesson);
         }
-//        if (totalSections > 0 || totalSections == completedSections) {
-//
-//        }
-
-
         // Tính phần trăm Progress sau khi làm xong 1 section
         Long idCourse = lesson.getCourse().getId();
         Optional<Course> monHoc = courseRepository.findById(idCourse);
