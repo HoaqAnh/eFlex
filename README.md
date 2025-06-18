@@ -57,11 +57,11 @@
 
 ### Thành viên nhóm
 
-| Họ và Tên | Nhiệm vụ chính |
+| Tên thành viên | Nhiệm vụ chính |
 | :--- | :--- |
-| Nguyễn Toàn Thắng | Phân tích & Thiết kế hệ thống, Phát triển Backend, Triển khai (Docker)|
-| Nguyễn Đức Thiện | Phân tích & Thiết kế hệ thống, Phát triển Backend |
-| Trần Phạm Hoàng Anh | Thiết kế Giao diện (UI/UX), phát triển Frontend (ReactJS). |
+| [Nguyễn Toàn Thắng](https://github.com/imthq1) | Phân tích & Thiết kế hệ thống, Phát triển Backend, Triển khai (Docker)|
+| [Nguyễn Đức Thiện](https://github.com/nguyenducthienlq1) | Phân tích & Thiết kế hệ thống, Phát triển Backend |
+| [Trần Phạm Hoàng Anh](https://github.com/HoaqAnh) | Thiết kế Giao diện (UI/UX), phát triển Frontend (ReactJS). |
 
 ---
 
