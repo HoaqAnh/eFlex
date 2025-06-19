@@ -50,7 +50,7 @@
 
 | Phần | Công nghệ |
 | :-------- | :----------------------------------------------------------------------------------------------------------------------------------- |
-| **Backend** |  **Java 17**, **Spring Boot 3**, Spring Security, Spring Data JPA<br/> **JWT**, **OAuth 2.0** (Google Login)<br/> **MySQL** (Database chính), **Redis** (Caching)<br/> **Cloudinary** (Lưu trữ hình ảnh, video, audio)<br/> **WebSocket** <br/> **Java Mail Sender** (Gửi email xác thực)<br/> **Docker** (Đóng gói backend) |
+| **Backend** |  **Java**, **Spring Boot**, Spring Security, Spring Data JPA<br/> **JWT**, **OAuth 2.0** (Google Login)<br/> **MySQL** (Database chính), **Redis** (Caching)<br/> **Cloudinary** (Lưu trữ hình ảnh, video, audio)<br/> **WebSocket** <br/> **Java Mail Sender** (Gửi email xác thực)<br/> **Docker** (Đóng gói backend) |
 | **Frontend** |  **ReactJS**, React Router, React Hooks<br/> **CSS3**<br/> **Fetch**<br/> **NPM** |
 
 ---
