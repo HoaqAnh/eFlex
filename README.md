@@ -42,7 +42,7 @@ This is a "Đồ án Cơ sở" by Software Engineering students. The project aim
 
 ### For Administrators (Admin)
 
--   **Overview Dashboard:** View statistics on user counts, courses, and other activities.
+-   **Overview Dashboard:** View statistics on access user online counts, courses, and other activities.
 -   **User Management:** View the user list, search for users, and lock/unlock accounts.
 -   **Course Management:** Add, edit, and delete courses, sections, and lessons.
 -   **Test Management:** Create and manage question banks for tests.
