@@ -54,7 +54,7 @@ This is a "Đồ án Cơ sở" by Software Engineering students. The project aim
 
 | Backend | Frontend |
 | :--- | :--- |
-| <ul><li>**Frameworks:** Spring Boot, Spring Security</li><li>**Language:** Java </li><li>**Databases:** MySQL, Redis</li><li>**Authentication:** JWT, OAuth 2.0</li><li>**Others:** WebSocket, Cloudinary, Docker, Mail Sender</li></ul> | <ul><li>**Libraries:** ReactJS, React Router</li><li>**Language:** JavaScript (ES14)</li><li>**Styling:** CSS3</li><li>**Package Manager:** NPM</li><li>**API:** Fetch API</li></ul> |
+| <ul><li>**Frameworks:** Spring Boot, Spring Security</li><li>**Language:** Java </li><li>**Databases:** MySQL, Redis</li><li>**Authentication:** JWT, OAuth 2.0</li><li>**Others:** WebSocket, Cloudinary, Docker, Mail Sender</li></ul> | <ul><li>**Libraries:** ReactJS, React Router</li><li>**Language:** JavaScript (ES6+)</li><li>**Styling:** CSS3</li><li>**Package Manager:** NPM</li><li>**API:** Fetch API</li></ul> |
 
 ---
 
